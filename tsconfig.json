@@ -11,10 +11,11 @@
         "allowSyntheticDefaultImports": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "declarationDir": "./dist",
         "outDir": "./dist",
+        "rootDir": "./src", 
+        "noImplicitAny": true,
         "typeRoots": ["node_modules/@types"]
     },
-    "exclude": ["node_modules"]
+    "exclude": ["node_modules", "__tests__"]
 }
 
