@@ -1,0 +1,9 @@
+name: "FairSECO-action"
+description: "GitHub Action that assesses fairness in software"
+author: "Utrecht University"
+runs:
+    using: "node16"
+    main: "dist/index.js"
+branding:
+    color: "purple"
+    icon: "align-left"
