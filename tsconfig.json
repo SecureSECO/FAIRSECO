@@ -1,20 +1,20 @@
-{  "compilerOptions": 
-    {
+{
+    "compilerOptions": {
         "moduleResolution": "node",
         "target": "es6",
         "module": "commonjs",
         "lib": ["esnext"],
         "strict": true,
-        "sourceMap": true,
-        "declaration": true,
+        "sourceMap": false,
+        "declaration": false,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
-        "declarationDir": "./dist",
+        "emitDecoratorMetadata": false,
         "outDir": "./dist",
+        "rootDir": "./src",
+        "noImplicitAny": true,
         "typeRoots": ["node_modules/@types"]
     },
-    "exclude": ["node_modules"]
+    "exclude": ["node_modules", "__tests__"]
 }
-

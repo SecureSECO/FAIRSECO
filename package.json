@@ -30,5 +30,8 @@
   "bugs": {
     "url": "https://github.com/QDUNI/FairSECO/issues"
   },
-  "homepage": "https://github.com/QDUNI/FairSECO#readme"
+  "homepage": "https://github.com/QDUNI/FairSECO#readme",
+  "dependencies": {
+    "yaml": "^2.1.3"
+  }
 }
