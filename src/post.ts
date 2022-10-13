@@ -23,9 +23,8 @@ function createReport(result: ReturnObject[]): void {
     try {
         fs.writeSync(fd, YAML.stringify(result));
         console.log("Successfully wrote YML file to dir");
-        fs.close(fd);
+        fs.closeSync(fd);
     } catch {
         console.error("Error writing yaml file");
     }
-    fs.closeSync(fd);
 }
