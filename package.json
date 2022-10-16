@@ -33,6 +33,7 @@
   "homepage": "https://github.com/QDUNI/FairSECO#readme",
   "dependencies": {
     "@actions/artifact": "^1.1.0",
+    "path": "^0.12.7",
     "yaml": "^2.1.3"
   }
 }

@@ -1,23 +1,49 @@
 import { ReturnObject } from "../getdata";
 import * as artifact from "@actions/artifact";
 import * as fs from "fs";
+import * as path from "path";
 import YAML from "yaml";
 
 export async function runTortellini(): Promise<ReturnObject> {
-    const artifactClient: artifact.ArtifactClient = artifact.create();
-    const downloadResponse = await artifactClient.downloadArtifact(
+    const downloadResponse = await getArtifactData(
         "tortellini-result",
-        "tortellini-artifact/out"
+        ".tortellini-artifact"
     );
 
-    const buffer = fs.readFileSync(
-        downloadResponse.downloadPath + "/evaluation-result.yml"
+    const fileContents = await getFileFromArtifact(
+        downloadResponse,
+        "evaluation-result.yml"
     );
-    const fileContents = buffer.toString();
 
     const obj = YAML.parse(fileContents);
+
     return {
         ReturnName: "Tortellini",
         ReturnData: obj,
     };
+}
+
+// Download the artifact that was uploaded by Tortellini
+async function getArtifactData(
+    artifactName: string,
+    destination: string
+): Promise<artifact.DownloadResponse> {
+    const artifactClient = artifact.create();
+    const downloadResponse = await artifactClient.downloadArtifact(
+        artifactName,
+        destination
+    );
+
+    return downloadResponse;
+}
+
+// Get a file from the artifact as a string
+async function getFileFromArtifact(
+    dlResponse: artifact.DownloadResponse,
+    fileName: string
+): Promise<string> {
+    const filePath = path.join(dlResponse.downloadPath, fileName);
+    const buffer = fs.readFileSync(filePath);
+
+    return buffer.toString();
 }
