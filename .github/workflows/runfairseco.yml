@@ -11,10 +11,10 @@ jobs:
             - uses: actions/checkout@v3
             
             - uses: tortellini-tools/action@main
-            - uses: actions/upload-artifact@v3
-              with:
-                  name: tortellini-result
-                  path: .tortellini/out
+#             - uses: actions/upload-artifact@v3
+#               with:
+#                   name: tortellini-result
+#                   path: .tortellini/out
             - uses: ./
             - uses: actions/upload-artifact@v3
               with:
