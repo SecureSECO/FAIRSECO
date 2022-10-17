@@ -46,7 +46,6 @@ async function getFileFromArtifact(
     const filePath = path.join(dlResponse.downloadPath, fileName);
     const buffer = fs.readFileSync(filePath);
     console.log("Start loggggggg-------------------");
-    console.log(filepath);
     console.log(buffer);
     return buffer.toString();
 }
