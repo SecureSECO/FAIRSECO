@@ -19,7 +19,10 @@ export async function runTortellini(): Promise<ReturnObject> {
 
     return {
         ReturnName: "Tortellini",
-        ReturnData: obj,
+        ReturnData: {
+            result: obj.analyzer.result,
+            violations: obj.evaluator.violations,
+        },
     };
 }
 
@@ -44,5 +47,6 @@ async function getFileFromArtifact(
 ): Promise<string> {
     const filePath = path.join(dlResponse.downloadPath, fileName);
     const buffer = fs.readFileSync(filePath);
+
     return buffer.toString();
 }
