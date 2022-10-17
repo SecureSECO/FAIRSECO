@@ -5,7 +5,6 @@ import * as path from "path";
 import YAML from "yaml";
 
 export async function runTortellini(): Promise<ReturnObject> {
-    console.error(1);
     const downloadResponse = await getArtifactData(
         "tortellini-result",
         ".tortellini-artifact"
@@ -45,7 +44,5 @@ async function getFileFromArtifact(
 ): Promise<string> {
     const filePath = path.join(dlResponse.downloadPath, fileName);
     const buffer = fs.readFileSync(filePath);
-    console.log("Start loggggggg-------------------");
-    console.log(buffer);
     return buffer.toString();
 }

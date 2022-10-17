@@ -10,7 +10,6 @@ export async function data(): Promise<ReturnObject[]> {
     const output: ReturnObject[] = [];
     try {
         const tortelliniResult = await runTortellini();
-        console.error(2);
         output.push(tortelliniResult);
     } catch (error) {
         console.error("Tortellini threw an error.");
