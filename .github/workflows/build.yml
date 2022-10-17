@@ -2,7 +2,7 @@ name: build
 
 on:
     # Allows you to run this workflow manually from the Actions tab
-    push:
+    workflow_dispatch:
 
 jobs:
     build:
