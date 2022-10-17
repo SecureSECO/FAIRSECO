@@ -11,7 +11,7 @@ jobs:
             - uses: actions/checkout@v3
                         
             # Building
-            - uses: ./.github/workflows/build.yml
+            - uses: /.github/workflows/build.yml@license-checking
             # -
             
             - uses: tortellini-tools/action@main
