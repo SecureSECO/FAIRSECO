@@ -8,11 +8,12 @@ jobs:
     RunFairSECO:
         runs-on: ubuntu-latest
         steps:
+            - uses: actions/checkout@v3
+                        
             # Building
             - uses: ./.github/workflows/build.yml
             # -
             
-            - uses: actions/checkout@v3
             - uses: tortellini-tools/action@main
             - uses: actions/upload-artifact@v3
               with:
