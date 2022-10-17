@@ -9542,7 +9542,6 @@ function data() {
         const output = [];
         try {
             const tortelliniResult = yield (0, tortellini_1.runTortellini)();
-            console.error(2);
             output.push(tortelliniResult);
         }
         catch (error) {
@@ -9737,13 +9736,15 @@ const path = __importStar(__nccwpck_require__(1017));
 const yaml_1 = __importDefault(__nccwpck_require__(1317));
 function runTortellini() {
     return __awaiter(this, void 0, void 0, function* () {
-        console.error(1);
         const downloadResponse = yield getArtifactData("tortellini-result", ".tortellini-artifact");
         const fileContents = yield getFileFromArtifact(downloadResponse, "evaluation-result.yml");
         const obj = yaml_1.default.parse(fileContents);
         return {
             ReturnName: "Tortellini",
-            ReturnData: obj,
+            ReturnData: {
+                result: obj.analyzer.result,
+                violations: obj.evaluator.violations,
+            },
         };
     });
 }
@@ -9761,8 +9762,6 @@ function getFileFromArtifact(dlResponse, fileName) {
     return __awaiter(this, void 0, void 0, function* () {
         const filePath = path.join(dlResponse.downloadPath, fileName);
         const buffer = fs.readFileSync(filePath);
-        console.log("Start loggggggg-------------------");
-        console.log(buffer);
         return buffer.toString();
     });
 }
