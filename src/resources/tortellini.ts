@@ -5,6 +5,7 @@ import * as path from "path";
 import YAML from "yaml";
 
 export async function runTortellini(): Promise<ReturnObject> {
+    console.error(1);
     const downloadResponse = await getArtifactData(
         "tortellini-result",
         ".tortellini-artifact"
