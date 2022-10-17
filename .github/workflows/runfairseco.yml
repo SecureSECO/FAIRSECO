@@ -8,11 +8,23 @@ jobs:
     RunFairSECO:
         runs-on: ubuntu-latest
         steps:
+            - uses: actions/checkout@v3
+                        
             # Building
-            - uses: ./.github/workflows/build.yml
+            - name: Use Node.js 16.x
+              uses: actions/setup-node@v2
+              with:
+                node-version: 16.x
+                cache: 'npm'
+                cache-dependency-path: package-lock.json
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Build
+              run: npm run build
             # -
             
-            - uses: actions/checkout@v3
             - uses: tortellini-tools/action@main
             - uses: actions/upload-artifact@v3
               with:
