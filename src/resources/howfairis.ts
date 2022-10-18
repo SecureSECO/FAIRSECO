@@ -5,10 +5,10 @@ import  * as fs from "fs";
 export async function runHowfairis(): Promise<ReturnObject> {
     console.log("howfairis started");
 
-    const fileName = "./howfairis-output.json";
+    
 
     const cmd = "docker";
-    const args = ["run", "--rm", "fairsoftware/fairtally", "--format", "json", "-o", "-", "https://github.com/fair-software/fairtally", ">", fileName];
+    const args = ["run", "--rm", "fairsoftware/fairtally", "--format", "json", "-o", "-", "https://github.com/fair-software/fairtally"];
 
     let stdout = "";
     let stderr = "";
@@ -29,12 +29,10 @@ export async function runHowfairis(): Promise<ReturnObject> {
     const exitCode = await exec(cmd, args, options);
     console.log("docker running fairtally returned " + exitCode);
     
-    let jsonOutput = fs.readFileSync(fileName, "utf8");
-    
-    console.log(jsonOutput);
+    console.log(stdout);
 
     return {
         ReturnName: "HowFairIs",
-        ReturnData: JSON.parse(jsonOutput)
+        ReturnData: JSON.parse(stdout)
     };
 }
