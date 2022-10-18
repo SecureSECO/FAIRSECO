@@ -9729,7 +9729,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.runTortellini = void 0;
+exports.functionsToTest = exports.runTortellini = void 0;
 const artifact = __importStar(__nccwpck_require__(9151));
 const fs = __importStar(__nccwpck_require__(7147));
 const path = __importStar(__nccwpck_require__(1017));
@@ -9749,6 +9749,20 @@ function runTortellini() {
     });
 }
 exports.runTortellini = runTortellini;
+function runTortelliniTest(name, destination, fileName) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const downloadResponse = yield getArtifactData(name, destination);
+        const fileContents = yield getFileFromArtifact(downloadResponse, fileName);
+        const obj = yaml_1.default.parse(fileContents);
+        return {
+            ReturnName: "Tortellini",
+            ReturnData: {
+                result: obj.analyzer.result,
+                violations: obj.evaluator.violations,
+            },
+        };
+    });
+}
 // Download the artifact that was uploaded by Tortellini
 function getArtifactData(artifactName, destination) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -9765,6 +9779,11 @@ function getFileFromArtifact(dlResponse, fileName) {
         return buffer.toString();
     });
 }
+exports.functionsToTest = {
+    getArtifactData,
+    getFileFromArtifact,
+    runTortelliniTest,
+};
 
 
 /***/ }),
