@@ -52,7 +52,7 @@ function uploadDummyArtifact(
     content: string,
     fileName: string
 ) {
-    const fd: number = fs.openSync(location + fileName, "w+");
+    const fd: number = fs.openSync(location + "/" + fileName, "w+");
     try {
         //console.log(result);
         fs.writeSync(fd, content);
