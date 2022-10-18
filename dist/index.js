@@ -1454,7 +1454,7 @@ const fs = __importStar(__nccwpck_require__(7147));
 function runHowfairis() {
     return __awaiter(this, void 0, void 0, function* () {
         console.log("howfairis started");
-        const fileName = "howfairis-output.json";
+        const fileName = "./howfairis-output.json";
         const cmd = "docker";
         const args = ["run", "--rm", "fairsoftware/fairtally", "--format", "json", "-o", "-", "https://github.com/fair-software/fairtally", ">", fileName];
         let stdout = "";
