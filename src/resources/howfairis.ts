@@ -17,12 +17,15 @@ export async function runHowfairis(): Promise<ReturnObject> {
     options.listeners = {
         stdout: (data: Buffer) => {
             stdout += data.toString()
+            console.log(data.toString());
         },
         stderr: (data: Buffer) => {
             stderr += data.toString()
+            console.log(data.toString());
         }
     };
     const exitCode = await exec(cmd, args, options);
+    console.log("docker running fairtally returned " + exitCode);
     
     let jsonOutput = fs.readFileSync(fileName, "utf8");
     
