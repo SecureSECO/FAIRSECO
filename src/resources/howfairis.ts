@@ -3,6 +3,8 @@ import {exec, ExecOptions} from '@actions/exec';
 import  * as fs from "fs";
 
 export async function runHowfairis(): Promise<ReturnObject> {
+    console.log("howfairis started");
+
     const fileName = "howfairis-output.json";
 
     const cmd = "docker";
