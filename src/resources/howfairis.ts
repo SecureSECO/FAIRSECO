@@ -25,6 +25,8 @@ export async function runHowfairis(): Promise<ReturnObject> {
     const exitCode = await exec(cmd, args, options);
     
     let jsonOutput = fs.readFileSync(fileName, "utf8");
+    
+    console.log(jsonOutput);
 
     return {
         ReturnName: "HowFairIs",
