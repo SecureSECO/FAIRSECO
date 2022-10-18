@@ -64,8 +64,8 @@ function uploadDummyArtifact(
         //console.log("Successfully wrote YML file to dir");
         fs.closeSync(fd);
     } catch {
-        console.error("Error writing txt file");
+        console.error("Error writing file");
     }
     const artClient = artifact.create();
-    artClient.uploadArtifact(artName, [location + "/test.txt"], location);
+    artClient.uploadArtifact(artName, [location + "/" + fileName], location);
 }
