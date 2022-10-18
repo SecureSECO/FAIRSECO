@@ -9,13 +9,13 @@ const { getArtifactData, getFileFromArtifact } = functionsToTest;
 test("Test retrieval of artifacts", async () => {
     uploadDummyArtifact(
         "getArtifactData-test",
-        "./.getArtifactData-test/in",
+        ".getArtifactData-test-in",
         "test",
         "test.txt"
     );
     const dlResponse = await getArtifactData(
         "getArtifactData-test",
-        "./.getArtifactData-test/out"
+        ".getArtifactData-test-out"
     );
     const result = await getFileFromArtifact(dlResponse, "test.txt");
 
@@ -30,14 +30,14 @@ test("Test if runTortellini returns a correct ReturnObject", async () => {
     const content = YAML.stringify(yamlContent);
     uploadDummyArtifact(
         "runTortellini-test",
-        "/.runTortellini-test/in",
+        ".runTortellini-test-in",
         content,
         "test.yml"
     );
 
     const dlResponse = await getArtifactData(
         "runTortellini-test",
-        "/.runTortellini-test/out"
+        ".runTortellini-test-out"
     );
     const result = await getFileFromArtifact(dlResponse, "test.yml");
 
