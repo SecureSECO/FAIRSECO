@@ -6,7 +6,7 @@ export async function runHowfairis(): Promise<ReturnObject> {
     const fileName = "howfairis-output.json";
 
     const cmd = "docker";
-    const args = ["run", "--rm", "fairsoftware/fairtally", "--format", "json", "-o", "-https://github.com/fair-software/fairtally", ">", fileName];
+    const args = ["run", "--rm", "fairsoftware/fairtally", "--format", "json", "-o", "-", "https://github.com/fair-software/fairtally", ">", fileName];
 
     let stdout = "";
     let stderr = "";
