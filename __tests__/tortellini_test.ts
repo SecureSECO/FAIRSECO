@@ -67,5 +67,5 @@ function uploadDummyArtifact(
         console.error("Error writing txt file");
     }
     const artClient = artifact.create();
-    artClient.uploadArtifact(artName, [location + "test.txt"], location);
+    artClient.uploadArtifact(artName, [location + "/test.txt"], location);
 }
