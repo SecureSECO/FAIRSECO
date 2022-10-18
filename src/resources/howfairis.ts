@@ -2,13 +2,13 @@ import { ReturnObject } from "../getdata";
 import {exec, ExecOptions} from '@actions/exec';
 import  * as fs from "fs";
 
-export async function runHowfairis(): Promise<ReturnObject> {
+export async function runHowfairis(repository: string): Promise<ReturnObject> {
     console.log("howfairis started");
 
     
 
     const cmd = "docker";
-    const args = ["run", "--rm", "fairsoftware/fairtally", "--format", "json", "-o", "-", "https://github.com/QDUNI/FairSECO/"];
+    const args = ["run", "--rm", "fairsoftware/fairtally", "--format", "json", "-o", "-", "https://github.com/" + repository];
 
     let stdout = "";
     let stderr = "";

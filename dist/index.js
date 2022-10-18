@@ -4002,9 +4002,8 @@ function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const repository = core.getInput('repository');
-            console.log(repository);
             (0, pre_1.pre)(); // call preconditions check.
-            const result = yield (0, getdata_1.data)(); // call data check.
+            const result = yield (0, getdata_1.data)(repository); // call data check.
             (0, post_1.post)(result); // call post check.
         }
         catch (error) {
@@ -4036,7 +4035,7 @@ exports.data = void 0;
 const tortellini_1 = __nccwpck_require__(5234);
 const howfairis_1 = __nccwpck_require__(31);
 const searchseco_1 = __nccwpck_require__(1239);
-function data() {
+function data(repository) {
     return __awaiter(this, void 0, void 0, function* () {
         const output = [];
         try {
@@ -4048,7 +4047,7 @@ function data() {
             console.error(error);
         }
         try {
-            const howfairisResult = yield (0, howfairis_1.runHowfairis)();
+            const howfairisResult = yield (0, howfairis_1.runHowfairis)(repository);
             output.push(howfairisResult);
         }
         catch (error) {
@@ -4148,11 +4147,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.runHowfairis = void 0;
 const exec_1 = __nccwpck_require__(9710);
-function runHowfairis() {
+function runHowfairis(repository) {
     return __awaiter(this, void 0, void 0, function* () {
         console.log("howfairis started");
         const cmd = "docker";
-        const args = ["run", "--rm", "fairsoftware/fairtally", "--format", "json", "-o", "-", "https://github.com/QDUNI/FairSECO/"];
+        const args = ["run", "--rm", "fairsoftware/fairtally", "--format", "json", "-o", "-", "https://github.com/" + repository];
         let stdout = "";
         let stderr = "";
         const options = {
