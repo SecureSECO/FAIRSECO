@@ -14,7 +14,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/jest": "^29.1.1",
-    "@types/node": "^18.7.23",
+    "@types/node": "^18.11.0",
     "@typescript-eslint/eslint-plugin": "^5.38.1",
     "eslint": "^8.24.0",
     "eslint-config-prettier": "^8.5.0",
@@ -32,6 +32,8 @@
   },
   "homepage": "https://github.com/QDUNI/FairSECO#readme",
   "dependencies": {
+    "@actions/exec": "^1.1.1",
+    "@vercel/ncc": "^0.34.0",
     "yaml": "^2.1.3"
   }
 }
