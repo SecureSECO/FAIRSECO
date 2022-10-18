@@ -55,7 +55,7 @@ function uploadDummyArtifact(
     try {
         fs.mkdirSync(location);
     } catch {
-        console.log("Folder already exists");
+        console.log("Folder " + location + " already exists");
     }
     const fd: number = fs.openSync(location + "/" + fileName, "w+");
     try {
