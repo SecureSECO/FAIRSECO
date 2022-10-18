@@ -26,6 +26,26 @@ export async function runTortellini(): Promise<ReturnObject> {
     };
 }
 
+async function runTortelliniTest(
+    name: string,
+    destination: string,
+    fileName: string
+): Promise<ReturnObject> {
+    const downloadResponse = await getArtifactData(name, destination);
+
+    const fileContents = await getFileFromArtifact(downloadResponse, fileName);
+
+    const obj = YAML.parse(fileContents);
+
+    return {
+        ReturnName: "Tortellini",
+        ReturnData: {
+            result: obj.analyzer.result,
+            violations: obj.evaluator.violations,
+        },
+    };
+}
+
 // Download the artifact that was uploaded by Tortellini
 async function getArtifactData(
     artifactName: string,
@@ -50,3 +70,9 @@ async function getFileFromArtifact(
 
     return buffer.toString();
 }
+
+export const functionsToTest = {
+    getArtifactData,
+    getFileFromArtifact,
+    runTortelliniTest,
+};
