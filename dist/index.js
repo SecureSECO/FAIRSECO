@@ -1326,21 +1326,24 @@ function data() {
             output.push(tortelliniResult);
         }
         catch (error) {
-            console.error("Tortellini threw an error.");
+            console.error("Tortellini threw an error:");
+            console.error(error);
         }
         try {
             const howfairisResult = yield (0, howfairis_1.runHowfairis)();
             output.push(howfairisResult);
         }
         catch (error) {
-            console.error("Howfairis threw an error.");
+            console.error("Howfairis threw an error:");
+            console.error(error);
         }
         try {
             const searchsecoResult = yield (0, searchseco_1.runSearchseco)();
             output.push(searchsecoResult);
         }
         catch (error) {
-            console.error("Searchseco threw an error.");
+            console.error("Searchseco threw an error:");
+            console.error(error);
         }
         return output;
     });
