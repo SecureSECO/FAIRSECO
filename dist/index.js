@@ -9749,20 +9749,6 @@ function runTortellini() {
     });
 }
 exports.runTortellini = runTortellini;
-function runTortelliniTest(name, destination, fileName) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const downloadResponse = yield getArtifactData(name, destination);
-        const fileContents = yield getFileFromArtifact(downloadResponse, fileName);
-        const obj = yaml_1.default.parse(fileContents);
-        return {
-            ReturnName: "Tortellini",
-            ReturnData: {
-                result: obj.analyzer.result,
-                violations: obj.evaluator.violations,
-            },
-        };
-    });
-}
 // Download the artifact that was uploaded by Tortellini
 function getArtifactData(artifactName, destination) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -9782,7 +9768,6 @@ function getFileFromArtifact(dlResponse, fileName) {
 exports.functionsToTest = {
     getArtifactData,
     getFileFromArtifact,
-    runTortelliniTest,
 };
 
 
