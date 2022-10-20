@@ -7,43 +7,26 @@ import YAML from "yaml";
 const { getArtifactData, getFileFromArtifact } = functionsToTest;
 
 test("Test retrieval of artifacts", async () => {
-    uploadDummyArtifact(
-        "getArtifactData-test",
-        ".getArtifactData-test-in",
-        "test",
-        "test.txt"
-    );
     const dlResponse = await getArtifactData(
-        "getArtifactData-test",
-        ".getArtifactData-test-out"
+        "tortellini-result",
+        ".tortellini-artifact"
     );
-    const result = await getFileFromArtifact(dlResponse, "test.txt");
+    const result = await getFileFromArtifact(
+        dlResponse,
+        "evaluation-result.yml"
+    );
 
-    expect(result).toBe("test");
+    // If the result is not truthy, it is either an empty string or undefined,
+    // which is not correct
+    expect(result).toBeTruthy();
 });
 
 test("Test if runTortellini returns a correct ReturnObject", async () => {
-    const yamlContent = {
-        test1: "value1",
-        test2: "value2",
-    };
-    const content = YAML.stringify(yamlContent);
-    uploadDummyArtifact(
-        "runTortellini-test",
-        ".runTortellini-test-in",
-        content,
-        "test.yml"
-    );
+    const result = await runTortellini();
 
-    const dlResponse = await getArtifactData(
-        "runTortellini-test",
-        ".runTortellini-test-out"
-    );
-    const result = await getFileFromArtifact(dlResponse, "test.yml");
-
-    const parsedResult = YAML.parse(result);
-
-    expect(parsedResult).toEqual(yamlContent);
+    expect(result).not.toBeUndefined();
+    expect(result.ReturnName).toBe("Tortellini");
+    expect(result.ReturnData).not.toBeUndefined();
 });
 
 function uploadDummyArtifact(
