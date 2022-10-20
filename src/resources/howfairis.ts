@@ -6,7 +6,8 @@ import { exec, ExecOptions } from '@actions/exec';
 export async function runHowfairis(): Promise<ReturnObject> {
     console.debug("HowFairIs started");
     const cmd = "docker";
-    const args = ["run", "--rm", "fairsoftware/fairtally", "--format", "json", "-o", "-", "https://github.com/" + String(getRepoUrl())];
+    const git = await getRepoUrl();
+    const args = ["run", "--rm", "fairsoftware/fairtally", "--format", "json", "-o", "-", "https://github.com/" + String(git)];
 
     let stdout = "";
     let stderr = "";
