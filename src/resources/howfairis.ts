@@ -1,14 +1,12 @@
 import { ReturnObject } from "../getdata";
-import {exec, ExecOptions} from '@actions/exec';
-import  * as fs from "fs";
+import { getRepoUrl } from "../git";
+import { exec, ExecOptions } from '@actions/exec';
 
-export async function runHowfairis(repository: string): Promise<ReturnObject> {
-    console.log("howfairis started");
 
-    
-
+export async function runHowfairis(): Promise<ReturnObject> {
+    console.debug("HowFairIs started");
     const cmd = "docker";
-    const args = ["run", "--rm", "fairsoftware/fairtally", "--format", "json", "-o", "-", "https://github.com/" + repository];
+    const args = ["run", "--rm", "fairsoftware/fairtally", "--format", "json", "-o", "-", "https://github.com/" + String(getRepoUrl())];
 
     let stdout = "";
     let stderr = "";
@@ -18,18 +16,19 @@ export async function runHowfairis(repository: string): Promise<ReturnObject> {
     };
     options.listeners = {
         stdout: (data: Buffer) => {
-            stdout += data.toString()
-            console.log(data.toString());
+            stdout += data.toString()   
         },
         stderr: (data: Buffer) => {
             stderr += data.toString()
-            console.log(data.toString());
         }
     };
     const exitCode = await exec(cmd, args, options);
-    console.log("docker running fairtally returned " + exitCode);
-    
-    console.log(stdout);
+
+    console.debug("Docker running fairtally returned " + String(exitCode));
+    console.debug("stdout:");
+    console.debug(stdout);
+    console.debug("stderr:");
+    console.debug(stderr);
 
     return {
         ReturnName: "HowFairIs",

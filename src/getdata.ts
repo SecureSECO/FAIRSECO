@@ -6,7 +6,7 @@ export interface ReturnObject {
     ReturnName: string;
     ReturnData: object;
 }
-export async function data(repository: string): Promise<ReturnObject[]> {
+export async function data(): Promise<ReturnObject[]> {
     const output: ReturnObject[] = [];
     try {
         const tortelliniResult = await runTortellini();
@@ -17,7 +17,7 @@ export async function data(repository: string): Promise<ReturnObject[]> {
     }
 
     try {
-        const howfairisResult = await runHowfairis(repository);
+        const howfairisResult = await runHowfairis();
         output.push(howfairisResult);
     } catch (error) {
         console.error("Howfairis threw an error:");   
