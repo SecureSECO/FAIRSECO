@@ -11047,7 +11047,8 @@ function runHowfairis() {
     return __awaiter(this, void 0, void 0, function* () {
         console.debug("HowFairIs started");
         const cmd = "docker";
-        const args = ["run", "--rm", "fairsoftware/fairtally", "--format", "json", "-o", "-", "https://github.com/" + String((0, git_1.getRepoUrl)())];
+        const git = yield (0, git_1.getRepoUrl)();
+        const args = ["run", "--rm", "fairsoftware/fairtally", "--format", "json", "-o", "-", "https://github.com/" + String(git)];
         let stdout = "";
         let stderr = "";
         const options = {
