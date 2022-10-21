@@ -1,14 +1,29 @@
-import { runTortellini, functionsToTest } from "../src/resources/tortellini";
+import * as tort from "../src/resources/tortellini";
 import { expect, test } from "@jest/globals";
 
-const { getArtifactData, getFileFromArtifact } = functionsToTest;
+const mockArtifact = createMockArtifact();
 
-test("Test retrieval of artifacts", async () => {
-    const dlResponse = await getArtifactData(
+test("Check if a correct downloadResponse is generated", async () => {
+    const dlResponse = await tort.getArtifactData(
         "tortellini-result",
-        ".tortellini-artifact"
+        ".tortellini-unit-test",
+        mockArtifact
     );
-    const result = await getFileFromArtifact(
+
+    expect(dlResponse).toEqual({
+        artifactName: "tortellini-result",
+        downloadPath: ".tortellini-unit-test",
+    });
+});
+
+test("Check if a file can be retrieved with the downloadResponse", async () => {
+    const dlResponse = await tort.getArtifactData(
+        "tortellini-result",
+        ".tortellini-unit-test",
+        mockArtifact
+    );
+
+    const result = await tort.getFileFromArtifact(
         dlResponse,
         "evaluation-result.yml"
     );
@@ -19,9 +34,33 @@ test("Test retrieval of artifacts", async () => {
 });
 
 test("Test if runTortellini returns a correct ReturnObject", async () => {
-    const result = await runTortellini();
+    const result = await tort.runTortellini(mockArtifact);
 
     expect(result).not.toBeUndefined();
     expect(result.ReturnName).toBe("Tortellini");
     expect(result.ReturnData).not.toBeUndefined();
 });
+
+function createMockArtifact(): tort.Artifact {
+    // Create DLArtFunc
+    const downloadArt = function (
+        name: string,
+        path?: string | undefined,
+        options?: tort.DownloadOptions
+    ) {
+        return { artifactName: name, downloadPath: path };
+    };
+
+    // Create TestClient
+    const client: tort.TestClient = { downloadArtifact: downloadArt };
+
+    // Create create function
+    const create_ = function () {
+        return client;
+    };
+
+    const testArt: tort.TestArtifact = { create: create_ };
+
+    // Create TestArtifact
+    return testArt;
+}
