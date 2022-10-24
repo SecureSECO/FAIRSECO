@@ -8,9 +8,9 @@ export async function main(): Promise<void> {
         const check = await pre();
         if (check){
 
-        const result = await data(); // call data check.
-        
-        post(result); // call post check.
+        const result = await data(); // call data check.  
+        await post(result); // call post check.
+
 
         }
     } catch (error) {

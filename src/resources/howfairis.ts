@@ -1,5 +1,6 @@
 import { ReturnObject } from "../getdata";
 import { getRepoUrl } from "../git";
+
 import { exec, ExecOptions } from "@actions/exec";
 
 export async function runHowfairis(): Promise<ReturnObject> {
@@ -17,10 +18,12 @@ export async function runHowfairis(): Promise<ReturnObject> {
         gitrepo,
     ];
 
+
     let stdout = "";
     let stderr = "";
 
     const options: ExecOptions = {
+
         ignoreReturnCode: true,
     };
     options.listeners = {
@@ -30,6 +33,7 @@ export async function runHowfairis(): Promise<ReturnObject> {
         stderr: (data: Buffer) => {
             stderr += data.toString();
         },
+
     };
     const exitCode = await exec(cmd, args, options);
 
@@ -41,6 +45,7 @@ export async function runHowfairis(): Promise<ReturnObject> {
 
     return {
         ReturnName: "HowFairIs",
-        ReturnData: JSON.parse(stdout),
+        ReturnData: JSON.parse(stdout)
+
     };
 }

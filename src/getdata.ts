@@ -8,6 +8,7 @@ export interface ReturnObject {
 }
 export async function data(): Promise<ReturnObject[]> {
     const output: ReturnObject[] = [];
+    
     try {
         const tortelliniResult = await runTortellini();
         output.push(tortelliniResult);

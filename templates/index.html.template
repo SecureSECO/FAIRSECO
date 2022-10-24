@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <link href="style.css" rel="stylesheet" type="text/css">
+  </head>
+
+    <body>
+        <img src="" alt="HowFairIs badge" id="badge">
+        <p>Placeholder</p>
+
+        <script>
+            // Initialisation
+            var allData = {{node inserts the data here}};
+            var tortellini;
+            var howFairIs;
+            var searchSeco;
+            //
+
+            // A generic way of storing the different data in vars
+            for(let i = 0; i < allData.length; i++){
+                const element = allData[i];
+                switch(element.ReturnName) {
+                    case "Tortellini":
+                        tortellini = element.ReturnData;
+                        break;
+                    case "HowFairIs":
+                        howFairIs = element.ReturnData;
+                        break;
+                    case "SearchSeco":
+                        searchSeco = element.ReturnData;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            //
+
+            // Debugging
+            console.log("Tortellini:");
+            console.log(tortellini);
+            console.log("HowFairIs:")
+            console.log(howFairIs);
+            console.log("SearchSeco:")            
+            console.log(searchSeco);
+            //
+
+            // Try to place an element on the page (HowFairIs badge in this case)
+            document.getElementById("badge").src=howFairIs[0].badge;
+            
+        </script>
+    </body>
+</html>
