@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+      <!--
+    WARNING! Make sure that you match all Quasar related
+    tags to the same version! (Below it's "@2.0.0-rc.1")
+  -->
+
+  <head>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/quasar@2.0.0-rc.1/dist/quasar.prod.css" rel="stylesheet" type="text/css">
+  </head>
+
+    <body>
+        <script>
+            var allData = {{node inserts the data here}};
+            var tortellini;
+            var howFairIs;
+            var searchSeco;
+            //console.log(allData);
+            for(let i = 0; i < allData.length; i++){
+                const element = allData[i];
+                switch(element.ReturnName) {
+                    case "Tortellini":
+                        tortellini = element.ReturnData;
+                        break;
+                    case "HowFairIs":
+                        howFairIs = element.ReturnData;
+                        break;
+                    case "SearchSeco":
+                        searchSeco = element.ReturnData;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            console.log("Tortellini:");
+            console.log(tortellini);
+            console.log("-");
+            console.log("HowFairIs:")
+            console.log(howFairIs);
+            console.log("-");
+            console.log("SearchSeco:")            
+            console.log(searchSeco);
+            
+        </script>
+    </body>
+</html>
