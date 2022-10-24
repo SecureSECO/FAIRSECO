@@ -3,40 +3,37 @@ import path from 'path'
 import { ReturnObject } from './getdata'
 
 // Write the data to a html file
-export async function write_html(
+export async function WriteHTML(
     data: ReturnObject[],
-    file_path: string
+    filePath: string
 ): Promise<void> {
-    const template_filename = path.join(
+    const templateFilename = path.join(
         __dirname,
         '..',
         'templates',
         'index.html.template'
     )
-    const template = await fs.promises.readFile(template_filename, 'utf8')
+
+    const template = await fs.promises.readFile(templateFilename, 'utf8')
     const app = template.replace(
         '{{node inserts the data here}}',
         JSON.stringify(data)
     )
 
-    await fs.promises.writeFile(file_path, app, 'utf8')
-
-    return
+    await fs.promises.writeFile(filePath, app, 'utf8')
 }
 
 // Write the local css file also to where the HTML file comes.
-export async function write_css(
-    file_path: string
+export async function WriteCSS(
+    filePath: string
 ): Promise<void> {
-    const css_filename = path.join(
+    const cssFilename = path.join(
         __dirname,
         '..',
         'templates',
         'style.css'
     )
-    const cssContent = await fs.promises.readFile(css_filename, 'utf8')
-    
-    await fs.promises.writeFile(file_path, cssContent, 'utf8')
-    
-    return
+
+    const cssContent = await fs.promises.readFile(cssFilename, 'utf8')
+    await fs.promises.writeFile(filePath, cssContent, 'utf8')
 }

@@ -10956,6 +10956,7 @@ function createFairSECODir(path) {
         console.log("Folder already exists, skipping");
     }
 }
+// Generate the report of FairSeco
 function createReport(result) {
     const fd = fs_1.default.openSync("./.FairSECO/Report.yml", "w+");
     try {
@@ -10968,10 +10969,11 @@ function createReport(result) {
         console.error("Error writing yaml file");
     }
 }
+// Make a webapp from the report
 function generateHTML(result) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            yield (0, webapp_1.write_overview)(result, "./.FairSECO/index.html");
+            yield (0, webapp_1.write_html)(result, "./.FairSECO/index.html");
             console.log("Successfully wrote HTML to dir");
             yield (0, webapp_1.write_css)("./.FairSECO/style.css");
             console.log("Successfully wrote CSS to dir");
@@ -11259,10 +11261,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.write_css = exports.write_overview = void 0;
+exports.write_css = exports.write_html = void 0;
 const fs = __importStar(__nccwpck_require__(7147));
 const path_1 = __importDefault(__nccwpck_require__(1017));
-function write_overview(data, file_path) {
+// Write the data to a html file
+function write_html(data, file_path) {
     return __awaiter(this, void 0, void 0, function* () {
         const template_filename = path_1.default.join(__dirname, '..', 'templates', 'index.html.template');
         const template = yield fs.promises.readFile(template_filename, 'utf8');
@@ -11271,7 +11274,8 @@ function write_overview(data, file_path) {
         return;
     });
 }
-exports.write_overview = write_overview;
+exports.write_html = write_html;
+// Write the local css file also to where the HTML file comes.
 function write_css(file_path) {
     return __awaiter(this, void 0, void 0, function* () {
         const css_filename = path_1.default.join(__dirname, '..', 'templates', 'style.css');
