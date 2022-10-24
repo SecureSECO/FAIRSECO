@@ -3,10 +3,10 @@ import YAML from "yaml";
 import fs, { PathLike } from "fs";
 import {WriteHTML, WriteCSS} from './webapp'
 
-export function post(result: ReturnObject[]): boolean {
+export async function post(result: ReturnObject[]): Promise<boolean> {
     createFairSECODir("./.FairSECO/");
     createReport(result);
-    generateHTML(result);
+    await generateHTML(result);
     return true;
 }
 

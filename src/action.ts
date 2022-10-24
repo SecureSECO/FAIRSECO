@@ -10,7 +10,7 @@ export async function main(): Promise<void> {
 
         const result = await data(); // call data check.
         
-        post(result); // call post check.
+        await post(result); // call post check.
 
         }
     } catch (error) {
