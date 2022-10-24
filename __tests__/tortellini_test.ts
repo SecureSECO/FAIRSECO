@@ -38,6 +38,8 @@ test("Test if runTortellini returns a correct ReturnObject", async () => {
 
     const data: any = result.ReturnData;
 
+    console.log(data);
+
     const properties = [
         "project",
         "project.id",
