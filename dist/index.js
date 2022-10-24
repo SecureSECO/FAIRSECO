@@ -11227,7 +11227,7 @@ function filterData(obj) {
                 authors: pack.authors,
                 vcs: pack.vcs_processed,
             };
-            console.log(p);
+            console.log(pack);
             packData.push(p);
         }
         // Violations
