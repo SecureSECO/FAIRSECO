@@ -22,6 +22,7 @@ function createFairSECODir(path: PathLike): void {
 function createReport(result: ReturnObject[]): void {
     const fd: number = fs.openSync("./.FairSECO/Report.yml", "w+");
     try {
+        console.log(result);
         fs.writeSync(fd, YAML.stringify(result));
         console.log("Successfully wrote YML file to dir");
         fs.closeSync(fd);

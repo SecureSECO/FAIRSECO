@@ -35,6 +35,8 @@
   },
   "homepage": "https://github.com/QDUNI/FairSECO#readme",
   "dependencies": {
+    "@actions/artifact": "^1.1.0",
+    "path": "^0.12.7",
     "@actions/core": "^1.10.0",
     "@actions/exec": "^1.1.1",
     "@vercel/ncc": "^0.34.0",
