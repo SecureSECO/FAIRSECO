@@ -41,8 +41,31 @@ test("Test if runTortellini returns a correct ReturnObject", async () => {
     expect(result).not.toBeUndefined();
     expect(result.ReturnName).toBe("Tortellini");
     expect(data).toHaveProperty("project");
+    const proj = data.project;
+    expect(proj).toHaveProperty("id");
+    expect(proj).toHaveProperty("licenses");
+    expect(proj).toHaveProperty("authors");
+    expect(proj).toHaveProperty("vcs");
+    expect(proj.vcs).toHaveProperty("url");
+
     expect(data).toHaveProperty("packages");
+    const pack = data.packages[0];
+    expect(pack).toHaveProperty("id");
+    expect(pack).toHaveProperty("licenses");
+    expect(pack).toHaveProperty("description");
+    expect(pack).toHaveProperty("authors");
+    expect(pack).toHaveProperty("vcs");
+    expect(pack.vcs).toHaveProperty("url");
+
     expect(data).toHaveProperty("violations");
+    const viol = data.violations[0];
+    expect(viol).toHaveProperty("rule");
+    expect(viol).toHaveProperty("pkg");
+    expect(viol).toHaveProperty("license");
+    expect(viol).toHaveProperty("license_source");
+    expect(viol).toHaveProperty("severity");
+    expect(viol).toHaveProperty("message");
+    expect(viol).toHaveProperty("how_to_fix");
 });
 
 function createMockArtifact(): tort.Artifact {
