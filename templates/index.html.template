@@ -11,6 +11,9 @@
   </head>
 
     <body>
+        <img src="" alt="HowFairIs badge" id="badge">
+
+
         <script>
             var allData = {{node inserts the data here}};
             var tortellini;
@@ -36,12 +39,12 @@
 
             console.log("Tortellini:");
             console.log(tortellini);
-            console.log("-");
             console.log("HowFairIs:")
             console.log(howFairIs);
-            console.log("-");
             console.log("SearchSeco:")            
             console.log(searchSeco);
+
+            document.getElementById("badge").src=howFairIs[0].badge;
             
         </script>
     </body>
