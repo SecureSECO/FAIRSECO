@@ -123,7 +123,7 @@ export async function filterData(obj: any): Promise<any> {
             authors: pack.package.authors,
             vcs: pack.package.vcs_processed,
         };
-        console.log(pack);
+        console.log(p);
         packData.push(p);
     }
 
