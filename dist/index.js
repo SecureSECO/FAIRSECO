@@ -11167,12 +11167,10 @@ function runTortellini(artifactObject) {
         const downloadResponse = yield getArtifactData("tortellini-result", destination, artifactObject);
         const fileContents = yield getFileFromArtifact(downloadResponse, "evaluation-result.yml");
         const obj = yaml_1.default.parse(fileContents);
-        // console.log(obj.result);
-        // console.log(obj.result.packages);
-        // const filteredData = filterData(obj);
+        const filteredData = filterData(obj);
         return {
             ReturnName: "Tortellini",
-            ReturnData: obj.result,
+            ReturnData: filteredData,
         };
     });
 }
@@ -11219,8 +11217,7 @@ function filterData(obj) {
         // description
         // authors
         // vcs_processed
-        const packages = obj.result.packages;
-        console.log(packages);
+        const packages = obj.analyzer.result.packages;
         const packData = [];
         for (const pack of packages) {
             const p = {
