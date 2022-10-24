@@ -102,7 +102,7 @@ export async function filterData(obj: any): Promise<any> {
     const project = obj.analyzer.result.projects[0];
     const projData = {
         id: project.id,
-        licenses: project.declared_licenses_processed.spdx_expression,
+        licenses: project.declared_licenses,
         description: project.description,
         vcs: project.vcs_processed,
     };
@@ -118,11 +118,12 @@ export async function filterData(obj: any): Promise<any> {
     for (const pack of packages) {
         const p = {
             id: pack.id,
-            licenses: pack.declared_licenses_processed.spdx_expression,
+            licenses: pack.declared_licenses,
             description: pack.description,
             authors: pack.authors,
             vcs: pack.vcs_processed,
         };
+        console.log(p);
         packData.push(p);
     }
 
