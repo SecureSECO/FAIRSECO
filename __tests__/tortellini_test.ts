@@ -40,31 +40,7 @@ test("Test if runTortellini returns a correct ReturnObject", async () => {
 
     console.log(data);
 
-    const properties = [
-        "project",
-        "project.id",
-        "project.licenses",
-        "project.description",
-        "project.vcs",
-        "project.vcs.type",
-        "project.vcs.url",
-        "project.vcs.revision",
-        "packages",
-        "packages[0].id",
-        "packages[0].licenses",
-        "packages[0].description",
-        "packages[0].vcs",
-        "packages[0].vcs.type",
-        "packages[0].vcs.url",
-        "packages[0].vcs.revision",
-        "violations",
-        "violations[0].rule",
-        "violations[0].pkg",
-        "violations[0].license",
-        "violations[0].severity",
-        "violations[0].message",
-        "violations[0].how_to_fix",
-    ];
+    const properties = ["project", "packages", "violations"];
 
     expect(result).not.toBeUndefined();
     expect(result.ReturnName).toBe("Tortellini");
