@@ -57,7 +57,7 @@ export async function runTortellini(
 
     const obj = YAML.parse(fileContents);
 
-    const filteredData = filterData(obj);
+    const filteredData = await filterData(obj);
 
     return {
         ReturnName: "Tortellini",
@@ -130,5 +130,5 @@ export async function filterData(obj: any): Promise<any> {
     // Violations
     const viol = obj.evaluator.violations;
 
-    return { projectData: projData, packageData: packData, violations: viol };
+    return { project: projData, packages: packData, violations: viol };
 }
