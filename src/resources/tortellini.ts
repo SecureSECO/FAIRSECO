@@ -114,6 +114,7 @@ export async function filterData(obj: any): Promise<Object> {
     // authors
     // vcs_processed
     const packages = obj.result.packages;
+    console.log(packages);
     const packData = [];
     for (const pack of packages) {
         const p = {
