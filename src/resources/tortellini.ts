@@ -117,11 +117,11 @@ export async function filterData(obj: any): Promise<any> {
     const packData = [];
     for (const pack of packages) {
         const p = {
-            id: pack.id,
-            licenses: pack.declared_licenses,
-            description: pack.description,
-            authors: pack.authors,
-            vcs: pack.vcs_processed,
+            id: pack.package.id,
+            licenses: pack.package.declared_licenses,
+            description: pack.package.description,
+            authors: pack.package.authors,
+            vcs: pack.package.vcs_processed,
         };
         console.log(pack);
         packData.push(p);
