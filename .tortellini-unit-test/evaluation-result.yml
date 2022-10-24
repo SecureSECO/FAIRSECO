@@ -1,0 +1,1057 @@
+---
+repository:
+  vcs:
+    type: "Git"
+    url: "https://github.com/JarnoHendriksen/github-actions-test"
+    revision: "af5dddb41c2af78f141c1fdef7cabca3f98eface"
+    path: ""
+  vcs_processed:
+    type: "Git"
+    url: "https://github.com/JarnoHendriksen/github-actions-test.git"
+    revision: "af5dddb41c2af78f141c1fdef7cabca3f98eface"
+    path: ""
+  config: {}
+analyzer:
+  start_time: "2022-10-07T21:30:09.831058Z"
+  end_time: "2022-10-07T21:30:19.272038Z"
+  environment:
+    ort_version: "DOCKER-SNAPSHOT"
+    java_version: "11.0.8"
+    os: "Linux"
+    processors: 2
+    max_memory: 1822425088
+    variables:
+      JAVA_HOME: "/opt/java/openjdk"
+      ANDROID_HOME: "/opt/android-sdk"
+      GOPATH: "/go"
+    tool_versions: {}
+  config:
+    ignore_tool_versions: false
+    allow_dynamic_versions: false
+  result:
+    projects:
+    - id: "NPM::github-actions-test:1.0.0"
+      definition_file_path: "package.json"
+      declared_licenses:
+      - "GPL-3.0"
+      declared_licenses_processed:
+        spdx_expression: "GPL-3.0-only"
+        mapped:
+          GPL-3.0: "GPL-3.0-only"
+      vcs:
+        type: "Git"
+        url: "git+https://github.com/JarnoHendriksen/github-actions-test.git"
+        revision: ""
+        path: ""
+      vcs_processed:
+        type: "Git"
+        url: "https://github.com/JarnoHendriksen/github-actions-test.git"
+        revision: "af5dddb41c2af78f141c1fdef7cabca3f98eface"
+        path: ""
+      homepage_url: "https://github.com/JarnoHendriksen/github-actions-test#readme"
+      scopes:
+      - name: "dependencies"
+        dependencies:
+        - id: "NPM:@actions:core:1.9.1"
+          dependencies:
+          - id: "NPM::uuid:8.3.2"
+          - id: "NPM:@actions:http-client:2.0.1"
+            dependencies:
+            - id: "NPM::tunnel:0.0.6"
+        - id: "NPM:@actions:github:5.0.3"
+          dependencies:
+          - id: "NPM:@actions:http-client:2.0.1"
+            dependencies:
+            - id: "NPM::tunnel:0.0.6"
+          - id: "NPM:@octokit:core:3.6.0"
+            dependencies:
+            - id: "NPM::before-after-hook:2.2.2"
+            - id: "NPM::universal-user-agent:6.0.0"
+            - id: "NPM:@octokit:auth-token:2.5.0"
+              dependencies:
+              - id: "NPM:@octokit:types:6.41.0"
+                dependencies:
+                - id: "NPM:@octokit:openapi-types:12.11.0"
+            - id: "NPM:@octokit:graphql:4.8.0"
+              dependencies:
+              - id: "NPM::universal-user-agent:6.0.0"
+              - id: "NPM:@octokit:request:5.6.3"
+                dependencies:
+                - id: "NPM::is-plain-object:5.0.0"
+                - id: "NPM::node-fetch:2.6.7"
+                  dependencies:
+                  - id: "NPM::whatwg-url:5.0.0"
+                    dependencies:
+                    - id: "NPM::tr46:0.0.3"
+                    - id: "NPM::webidl-conversions:3.0.1"
+                - id: "NPM::universal-user-agent:6.0.0"
+                - id: "NPM:@octokit:endpoint:6.0.12"
+                  dependencies:
+                  - id: "NPM::is-plain-object:5.0.0"
+                  - id: "NPM::universal-user-agent:6.0.0"
+                  - id: "NPM:@octokit:types:6.41.0"
+                    dependencies:
+                    - id: "NPM:@octokit:openapi-types:12.11.0"
+                - id: "NPM:@octokit:request-error:2.1.0"
+                  dependencies:
+                  - id: "NPM::deprecation:2.3.1"
+                  - id: "NPM::once:1.4.0"
+                    dependencies:
+                    - id: "NPM::wrappy:1.0.2"
+                  - id: "NPM:@octokit:types:6.41.0"
+                    dependencies:
+                    - id: "NPM:@octokit:openapi-types:12.11.0"
+                - id: "NPM:@octokit:types:6.41.0"
+                  dependencies:
+                  - id: "NPM:@octokit:openapi-types:12.11.0"
+              - id: "NPM:@octokit:types:6.41.0"
+                dependencies:
+                - id: "NPM:@octokit:openapi-types:12.11.0"
+            - id: "NPM:@octokit:request:5.6.3"
+              dependencies:
+              - id: "NPM::is-plain-object:5.0.0"
+              - id: "NPM::node-fetch:2.6.7"
+                dependencies:
+                - id: "NPM::whatwg-url:5.0.0"
+                  dependencies:
+                  - id: "NPM::tr46:0.0.3"
+                  - id: "NPM::webidl-conversions:3.0.1"
+              - id: "NPM::universal-user-agent:6.0.0"
+              - id: "NPM:@octokit:endpoint:6.0.12"
+                dependencies:
+                - id: "NPM::is-plain-object:5.0.0"
+                - id: "NPM::universal-user-agent:6.0.0"
+                - id: "NPM:@octokit:types:6.41.0"
+                  dependencies:
+                  - id: "NPM:@octokit:openapi-types:12.11.0"
+              - id: "NPM:@octokit:request-error:2.1.0"
+                dependencies:
+                - id: "NPM::deprecation:2.3.1"
+                - id: "NPM::once:1.4.0"
+                  dependencies:
+                  - id: "NPM::wrappy:1.0.2"
+                - id: "NPM:@octokit:types:6.41.0"
+                  dependencies:
+                  - id: "NPM:@octokit:openapi-types:12.11.0"
+              - id: "NPM:@octokit:types:6.41.0"
+                dependencies:
+                - id: "NPM:@octokit:openapi-types:12.11.0"
+            - id: "NPM:@octokit:request-error:2.1.0"
+              dependencies:
+              - id: "NPM::deprecation:2.3.1"
+              - id: "NPM::once:1.4.0"
+                dependencies:
+                - id: "NPM::wrappy:1.0.2"
+              - id: "NPM:@octokit:types:6.41.0"
+                dependencies:
+                - id: "NPM:@octokit:openapi-types:12.11.0"
+            - id: "NPM:@octokit:types:6.41.0"
+              dependencies:
+              - id: "NPM:@octokit:openapi-types:12.11.0"
+          - id: "NPM:@octokit:plugin-paginate-rest:2.21.3"
+            dependencies:
+            - id: "NPM:@octokit:types:6.41.0"
+              dependencies:
+              - id: "NPM:@octokit:openapi-types:12.11.0"
+          - id: "NPM:@octokit:plugin-rest-endpoint-methods:5.16.2"
+            dependencies:
+            - id: "NPM::deprecation:2.3.1"
+            - id: "NPM:@octokit:types:6.41.0"
+              dependencies:
+              - id: "NPM:@octokit:openapi-types:12.11.0"
+        - id: "NPM:@vercel:ncc:0.34.0"
+      - name: "devDependencies"
+        dependencies:
+        - id: "NPM::typescript:4.8.3"
+    packages:
+    - package:
+        id: "NPM::before-after-hook:2.2.2"
+        purl: "pkg:npm/before-after-hook@2.2.2"
+        authors:
+        - "Gregor Martynus"
+        declared_licenses:
+        - "Apache-2.0"
+        declared_licenses_processed:
+          spdx_expression: "Apache-2.0"
+        description: "asynchronous before/error/after hooks for internal functionality"
+        homepage_url: "https://github.com/gr2m/before-after-hook#readme"
+        binary_artifact:
+          url: ""
+          hash:
+            value: ""
+            algorithm: ""
+        source_artifact:
+          url: "https://registry.npmjs.org/before-after-hook/-/before-after-hook-2.2.2.tgz"
+          hash:
+            value: "a6e8ca41028d90ee2c24222f201c90956091613e"
+            algorithm: "SHA-1"
+        vcs:
+          type: "Git"
+          url: "git+https://github.com/gr2m/before-after-hook.git"
+          revision: "f237b9665e594c50a6fdd2ed3c26ef8a919796cc"
+          path: ""
+        vcs_processed:
+          type: "Git"
+          url: "https://github.com/gr2m/before-after-hook.git"
+          revision: "f237b9665e594c50a6fdd2ed3c26ef8a919796cc"
+          path: ""
+      curations: []
+    - package:
+        id: "NPM::deprecation:2.3.1"
+        purl: "pkg:npm/deprecation@2.3.1"
+        declared_licenses:
+        - "ISC"
+        declared_licenses_processed:
+          spdx_expression: "ISC"
+        description: "Log a deprecation message with stack"
+        homepage_url: "https://github.com/gr2m/deprecation#readme"
+        binary_artifact:
+          url: ""
+          hash:
+            value: ""
+            algorithm: ""
+        source_artifact:
+          url: "https://registry.npmjs.org/deprecation/-/deprecation-2.3.1.tgz"
+          hash:
+            value: "6368cbdb40abf3373b525ac87e4a260c3a700919"
+            algorithm: "SHA-1"
+        vcs:
+          type: "Git"
+          url: "git+https://github.com/gr2m/deprecation.git"
+          revision: ""
+          path: ""
+        vcs_processed:
+          type: "Git"
+          url: "https://github.com/gr2m/deprecation.git"
+          revision: ""
+          path: ""
+      curations: []
+    - package:
+        id: "NPM::is-plain-object:5.0.0"
+        purl: "pkg:npm/is-plain-object@5.0.0"
+        authors:
+        - "Jon Schlinkert"
+        declared_licenses:
+        - "MIT"
+        declared_licenses_processed:
+          spdx_expression: "MIT"
+        description: "Returns true if an object was created by the `Object` constructor,\
+          \ or Object.create(null)."
+        homepage_url: "https://github.com/jonschlinkert/is-plain-object"
+        binary_artifact:
+          url: ""
+          hash:
+            value: ""
+            algorithm: ""
+        source_artifact:
+          url: "https://registry.npmjs.org/is-plain-object/-/is-plain-object-5.0.0.tgz"
+          hash:
+            value: "4427f50ab3429e9025ea7d52e9043a9ef4159344"
+            algorithm: "SHA-1"
+        vcs:
+          type: "Git"
+          url: "https://github.com/jonschlinkert/is-plain-object.git"
+          revision: ""
+          path: ""
+        vcs_processed:
+          type: "Git"
+          url: "https://github.com/jonschlinkert/is-plain-object.git"
+          revision: ""
+          path: ""
+      curations: []
+    - package:
+        id: "NPM::node-fetch:2.6.7"
+        purl: "pkg:npm/node-fetch@2.6.7"
+        authors:
+        - "David Frank"
+        declared_licenses:
+        - "MIT"
+        declared_licenses_processed:
+          spdx_expression: "MIT"
+        description: "A light-weight module that brings window.fetch to node.js"
+        homepage_url: "https://github.com/bitinn/node-fetch"
+        binary_artifact:
+          url: ""
+          hash:
+            value: ""
+            algorithm: ""
+        source_artifact:
+          url: "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.7.tgz"
+          hash:
+            value: "24de9fba827e3b4ae44dc8b20256a379160052ad"
+            algorithm: "SHA-1"
+        vcs:
+          type: "Git"
+          url: "git+https://github.com/bitinn/node-fetch.git"
+          revision: "1ef4b560a17e644a02a3bfdea7631ffeee578b35"
+          path: ""
+        vcs_processed:
+          type: "Git"
+          url: "https://github.com/bitinn/node-fetch.git"
+          revision: "1ef4b560a17e644a02a3bfdea7631ffeee578b35"
+          path: ""
+      curations: []
+    - package:
+        id: "NPM::once:1.4.0"
+        purl: "pkg:npm/once@1.4.0"
+        authors:
+        - "Isaac Z. Schlueter"
+        declared_licenses:
+        - "ISC"
+        declared_licenses_processed:
+          spdx_expression: "ISC"
+        description: "Run a function exactly one time"
+        homepage_url: "https://github.com/isaacs/once#readme"
+        binary_artifact:
+          url: ""
+          hash:
+            value: ""
+            algorithm: ""
+        source_artifact:
+          url: "https://registry.npmjs.org/once/-/once-1.4.0.tgz"
+          hash:
+            value: "583b1aa775961d4b113ac17d9c50baef9dd76bd1"
+            algorithm: "SHA-1"
+        vcs:
+          type: "Git"
+          url: "git://github.com/isaacs/once.git"
+          revision: "0e614d9f5a7e6f0305c625f6b581f6d80b33b8a6"
+          path: ""
+        vcs_processed:
+          type: "Git"
+          url: "https://github.com/isaacs/once.git"
+          revision: "0e614d9f5a7e6f0305c625f6b581f6d80b33b8a6"
+          path: ""
+      curations: []
+    - package:
+        id: "NPM::tr46:0.0.3"
+        purl: "pkg:npm/tr46@0.0.3"
+        authors:
+        - "Sebastian Mayr"
+        declared_licenses:
+        - "MIT"
+        declared_licenses_processed:
+          spdx_expression: "MIT"
+        description: "An implementation of the Unicode TR46 spec"
+        homepage_url: "https://github.com/Sebmaster/tr46.js#readme"
+        binary_artifact:
+          url: ""
+          hash:
+            value: ""
+            algorithm: ""
+        source_artifact:
+          url: "https://registry.npmjs.org/tr46/-/tr46-0.0.3.tgz"
+          hash:
+            value: "8184fd347dac9cdc185992f3a6622e14b9d9ab6a"
+            algorithm: "SHA-1"
+        vcs:
+          type: "Git"
+          url: "git+https://github.com/Sebmaster/tr46.js.git"
+          revision: "a8009f9ce80ff5dbe71dd71e203afe4e4c878d28"
+          path: ""
+        vcs_processed:
+          type: "Git"
+          url: "https://github.com/Sebmaster/tr46.js.git"
+          revision: "a8009f9ce80ff5dbe71dd71e203afe4e4c878d28"
+          path: ""
+      curations: []
+    - package:
+        id: "NPM::tunnel:0.0.6"
+        purl: "pkg:npm/tunnel@0.0.6"
+        authors:
+        - "Koichi Kobayashi"
+        declared_licenses:
+        - "MIT"
+        declared_licenses_processed:
+          spdx_expression: "MIT"
+        description: "Node HTTP/HTTPS Agents for tunneling proxies"
+        homepage_url: "https://github.com/koichik/node-tunnel/"
+        binary_artifact:
+          url: ""
+          hash:
+            value: ""
+            algorithm: ""
+        source_artifact:
+          url: "https://registry.npmjs.org/tunnel/-/tunnel-0.0.6.tgz"
+          hash:
+            value: "72f1314b34a5b192db012324df2cc587ca47f92c"
+            algorithm: "SHA-1"
+        vcs:
+          type: "Git"
+          url: "git+https://github.com/koichik/node-tunnel.git"
+          revision: "5fb2fb424788597146b7be6729006cad1cf9e9a8"
+          path: ""
+        vcs_processed:
+          type: "Git"
+          url: "https://github.com/koichik/node-tunnel.git"
+          revision: "5fb2fb424788597146b7be6729006cad1cf9e9a8"
+          path: ""
+      curations: []
+    - package:
+        id: "NPM::typescript:4.8.3"
+        purl: "pkg:npm/typescript@4.8.3"
+        authors:
+        - "Microsoft Corp."
+        declared_licenses:
+        - "Apache-2.0"
+        declared_licenses_processed:
+          spdx_expression: "Apache-2.0"
+        description: "TypeScript is a language for application scale JavaScript development"
+        homepage_url: "https://www.typescriptlang.org/"
+        binary_artifact:
+          url: ""
+          hash:
+            value: ""
+            algorithm: ""
+        source_artifact:
+          url: "https://registry.npmjs.org/typescript/-/typescript-4.8.3.tgz"
+          hash:
+            value: "d59344522c4bc464a65a730ac695007fdb66dd88"
+            algorithm: "SHA-1"
+        vcs:
+          type: "Git"
+          url: "git+https://github.com/Microsoft/TypeScript.git"
+          revision: ""
+          path: ""
+        vcs_processed:
+          type: "Git"
+          url: "https://github.com/Microsoft/TypeScript.git"
+          revision: ""
+          path: ""
+      curations: []
+    - package:
+        id: "NPM::universal-user-agent:6.0.0"
+        purl: "pkg:npm/universal-user-agent@6.0.0"
+        declared_licenses:
+        - "ISC"
+        declared_licenses_processed:
+          spdx_expression: "ISC"
+        description: "Get a user agent string in both browser and node"
+        homepage_url: "https://github.com/gr2m/universal-user-agent#readme"
+        binary_artifact:
+          url: ""
+          hash:
+            value: ""
+            algorithm: ""
+        source_artifact:
+          url: "https://registry.npmjs.org/universal-user-agent/-/universal-user-agent-6.0.0.tgz"
+          hash:
+            value: "3381f8503b251c0d9cd21bc1de939ec9df5480ee"
+            algorithm: "SHA-1"
+        vcs:
+          type: "Git"
+          url: "git+https://github.com/gr2m/universal-user-agent.git"
+          revision: ""
+          path: ""
+        vcs_processed:
+          type: "Git"
+          url: "https://github.com/gr2m/universal-user-agent.git"
+          revision: ""
+          path: ""
+      curations: []
+    - package:
+        id: "NPM::uuid:8.3.2"
+        purl: "pkg:npm/uuid@8.3.2"
+        declared_licenses:
+        - "MIT"
+        declared_licenses_processed:
+          spdx_expression: "MIT"
+        description: "RFC4122 (v1, v4, and v5) UUIDs"
+        homepage_url: "https://github.com/uuidjs/uuid#readme"
+        binary_artifact:
+          url: ""
+          hash:
+            value: ""
+            algorithm: ""
+        source_artifact:
+          url: "https://registry.npmjs.org/uuid/-/uuid-8.3.2.tgz"
+          hash:
+            value: "80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
+            algorithm: "SHA-1"
+        vcs:
+          type: "Git"
+          url: "git+https://github.com/uuidjs/uuid.git"
+          revision: "ed3240154759b748f6a3b7d545f3b10759ee4ba7"
+          path: ""
+        vcs_processed:
+          type: "Git"
+          url: "https://github.com/uuidjs/uuid.git"
+          revision: "ed3240154759b748f6a3b7d545f3b10759ee4ba7"
+          path: ""
+      curations: []
+    - package:
+        id: "NPM::webidl-conversions:3.0.1"
+        purl: "pkg:npm/webidl-conversions@3.0.1"
+        authors:
+        - "Domenic Denicola"
+        declared_licenses:
+        - "BSD-2-Clause"
+        declared_licenses_processed:
+          spdx_expression: "BSD-2-Clause"
+        description: "Implements the WebIDL algorithms for converting to and from\
+          \ JavaScript values"
+        homepage_url: "https://github.com/jsdom/webidl-conversions#readme"
+        binary_artifact:
+          url: ""
+          hash:
+            value: ""
+            algorithm: ""
+        source_artifact:
+          url: "https://registry.npmjs.org/webidl-conversions/-/webidl-conversions-3.0.1.tgz"
+          hash:
+            value: "24534275e2a7bc6be7bc86611cc16ae0a5654871"
+            algorithm: "SHA-1"
+        vcs:
+          type: "Git"
+          url: "git+https://github.com/jsdom/webidl-conversions.git"
+          revision: "e21056f891736db755cfe0d72e4ce083a9034ace"
+          path: ""
+        vcs_processed:
+          type: "Git"
+          url: "https://github.com/jsdom/webidl-conversions.git"
+          revision: "e21056f891736db755cfe0d72e4ce083a9034ace"
+          path: ""
+      curations: []
+    - package:
+        id: "NPM::whatwg-url:5.0.0"
+        purl: "pkg:npm/whatwg-url@5.0.0"
+        authors:
+        - "Sebastian Mayr"
+        declared_licenses:
+        - "MIT"
+        declared_licenses_processed:
+          spdx_expression: "MIT"
+        description: "An implementation of the WHATWG URL Standard's URL API and parsing\
+          \ machinery"
+        homepage_url: "https://github.com/jsdom/whatwg-url#readme"
+        binary_artifact:
+          url: ""
+          hash:
+            value: ""
+            algorithm: ""
+        source_artifact:
+          url: "https://registry.npmjs.org/whatwg-url/-/whatwg-url-5.0.0.tgz"
+          hash:
+            value: "966454e8765462e37644d3626f6742ce8b70965d"
+            algorithm: "SHA-1"
+        vcs:
+          type: "Git"
+          url: "git+https://github.com/jsdom/whatwg-url.git"
+          revision: "d34854a7af6ed1204f55d7da7761497bad350a7b"
+          path: ""
+        vcs_processed:
+          type: "Git"
+          url: "https://github.com/jsdom/whatwg-url.git"
+          revision: "d34854a7af6ed1204f55d7da7761497bad350a7b"
+          path: ""
+      curations: []
+    - package:
+        id: "NPM::wrappy:1.0.2"
+        purl: "pkg:npm/wrappy@1.0.2"
+        authors:
+        - "Isaac Z. Schlueter"
+        declared_licenses:
+        - "ISC"
+        declared_licenses_processed:
+          spdx_expression: "ISC"
+        description: "Callback wrapping utility"
+        homepage_url: "https://github.com/npm/wrappy"
+        binary_artifact:
+          url: ""
+          hash:
+            value: ""
+            algorithm: ""
+        source_artifact:
+          url: "https://registry.npmjs.org/wrappy/-/wrappy-1.0.2.tgz"
+          hash:
+            value: "b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
+            algorithm: "SHA-1"
+        vcs:
+          type: "Git"
+          url: "git+https://github.com/npm/wrappy.git"
+          revision: "71d91b6dc5bdeac37e218c2cf03f9ab55b60d214"
+          path: ""
+        vcs_processed:
+          type: "Git"
+          url: "https://github.com/npm/wrappy.git"
+          revision: "71d91b6dc5bdeac37e218c2cf03f9ab55b60d214"
+          path: ""
+      curations: []
+    - package:
+        id: "NPM:@actions:core:1.9.1"
+        purl: "pkg:npm/%40actions/core@1.9.1"
+        declared_licenses:
+        - "MIT"
+        declared_licenses_processed:
+          spdx_expression: "MIT"
+        description: "Actions core lib"
+        homepage_url: "https://github.com/actions/toolkit/tree/main/packages/core"
+        binary_artifact:
+          url: ""
+          hash:
+            value: ""
+            algorithm: ""
+        source_artifact:
+          url: "https://registry.npmjs.org/@actions/core/-/core-1.9.1.tgz"
+          hash:
+            value: "97c0201b1f9856df4f7c3a375cdcdb0c2a2f750b"
+            algorithm: "SHA-1"
+        vcs:
+          type: "Git"
+          url: "git+https://github.com/actions/toolkit.git"
+          revision: ""
+          path: "packages/core"
+        vcs_processed:
+          type: "Git"
+          url: "https://github.com/actions/toolkit.git"
+          revision: ""
+          path: "packages/core"
+      curations: []
+    - package:
+        id: "NPM:@actions:github:5.0.3"
+        purl: "pkg:npm/%40actions/github@5.0.3"
+        declared_licenses:
+        - "MIT"
+        declared_licenses_processed:
+          spdx_expression: "MIT"
+        description: "Actions github lib"
+        homepage_url: "https://github.com/actions/toolkit/tree/main/packages/github"
+        binary_artifact:
+          url: ""
+          hash:
+            value: ""
+            algorithm: ""
+        source_artifact:
+          url: "https://registry.npmjs.org/@actions/github/-/github-5.0.3.tgz"
+          hash:
+            value: "b305765d6173962d113451ea324ff675aa674f35"
+            algorithm: "SHA-1"
+        vcs:
+          type: "Git"
+          url: "git+https://github.com/actions/toolkit.git"
+          revision: ""
+          path: "packages/github"
+        vcs_processed:
+          type: "Git"
+          url: "https://github.com/actions/toolkit.git"
+          revision: ""
+          path: "packages/github"
+      curations: []
+    - package:
+        id: "NPM:@actions:http-client:2.0.1"
+        purl: "pkg:npm/%40actions/http-client@2.0.1"
+        declared_licenses:
+        - "MIT"
+        declared_licenses_processed:
+          spdx_expression: "MIT"
+        description: "Actions Http Client"
+        homepage_url: "https://github.com/actions/toolkit/tree/main/packages/http-client"
+        binary_artifact:
+          url: ""
+          hash:
+            value: ""
+            algorithm: ""
+        source_artifact:
+          url: "https://registry.npmjs.org/@actions/http-client/-/http-client-2.0.1.tgz"
+          hash:
+            value: "873f4ca98fe32f6839462a6f046332677322f99c"
+            algorithm: "SHA-1"
+        vcs:
+          type: "Git"
+          url: "git+https://github.com/actions/toolkit.git"
+          revision: ""
+          path: "packages/http-client"
+        vcs_processed:
+          type: "Git"
+          url: "https://github.com/actions/toolkit.git"
+          revision: ""
+          path: "packages/http-client"
+      curations: []
+    - package:
+        id: "NPM:@octokit:auth-token:2.5.0"
+        purl: "pkg:npm/%40octokit/auth-token@2.5.0"
+        declared_licenses:
+        - "MIT"
+        declared_licenses_processed:
+          spdx_expression: "MIT"
+        description: "GitHub API token authentication for browsers and Node.js"
+        homepage_url: "https://github.com/octokit/auth-token.js#readme"
+        binary_artifact:
+          url: ""
+          hash:
+            value: ""
+            algorithm: ""
+        source_artifact:
+          url: "https://registry.npmjs.org/@octokit/auth-token/-/auth-token-2.5.0.tgz"
+          hash:
+            value: "27c37ea26c205f28443402477ffd261311f21e36"
+            algorithm: "SHA-1"
+        vcs:
+          type: "Git"
+          url: "git+https://github.com/octokit/auth-token.js.git"
+          revision: "43a6d249982377fa7fa509ec9b137289fac956d8"
+          path: ""
+        vcs_processed:
+          type: "Git"
+          url: "https://github.com/octokit/auth-token.js.git"
+          revision: "43a6d249982377fa7fa509ec9b137289fac956d8"
+          path: ""
+      curations: []
+    - package:
+        id: "NPM:@octokit:core:3.6.0"
+        purl: "pkg:npm/%40octokit/core@3.6.0"
+        declared_licenses:
+        - "MIT"
+        declared_licenses_processed:
+          spdx_expression: "MIT"
+        description: "Extendable client for GitHub's REST & GraphQL APIs"
+        homepage_url: "https://github.com/octokit/core.js#readme"
+        binary_artifact:
+          url: ""
+          hash:
+            value: ""
+            algorithm: ""
+        source_artifact:
+          url: "https://registry.npmjs.org/@octokit/core/-/core-3.6.0.tgz"
+          hash:
+            value: "3376cb9f3008d9b3d110370d90e0a1fcd5fe6085"
+            algorithm: "SHA-1"
+        vcs:
+          type: "Git"
+          url: "git+https://github.com/octokit/core.js.git"
+          revision: "7081bb3f8885389c23252859231806a239adb5bc"
+          path: ""
+        vcs_processed:
+          type: "Git"
+          url: "https://github.com/octokit/core.js.git"
+          revision: "7081bb3f8885389c23252859231806a239adb5bc"
+          path: ""
+      curations: []
+    - package:
+        id: "NPM:@octokit:endpoint:6.0.12"
+        purl: "pkg:npm/%40octokit/endpoint@6.0.12"
+        declared_licenses:
+        - "MIT"
+        declared_licenses_processed:
+          spdx_expression: "MIT"
+        description: "Turns REST API endpoints into generic request options"
+        homepage_url: "https://github.com/octokit/endpoint.js#readme"
+        binary_artifact:
+          url: ""
+          hash:
+            value: ""
+            algorithm: ""
+        source_artifact:
+          url: "https://registry.npmjs.org/@octokit/endpoint/-/endpoint-6.0.12.tgz"
+          hash:
+            value: "3b4d47a4b0e79b1027fb8d75d4221928b2d05658"
+            algorithm: "SHA-1"
+        vcs:
+          type: "Git"
+          url: "git+https://github.com/octokit/endpoint.js.git"
+          revision: ""
+          path: ""
+        vcs_processed:
+          type: "Git"
+          url: "https://github.com/octokit/endpoint.js.git"
+          revision: ""
+          path: ""
+      curations: []
+    - package:
+        id: "NPM:@octokit:graphql:4.8.0"
+        purl: "pkg:npm/%40octokit/graphql@4.8.0"
+        declared_licenses:
+        - "MIT"
+        declared_licenses_processed:
+          spdx_expression: "MIT"
+        description: "GitHub GraphQL API client for browsers and Node"
+        homepage_url: "https://github.com/octokit/graphql.js#readme"
+        binary_artifact:
+          url: ""
+          hash:
+            value: ""
+            algorithm: ""
+        source_artifact:
+          url: "https://registry.npmjs.org/@octokit/graphql/-/graphql-4.8.0.tgz"
+          hash:
+            value: "664d9b11c0e12112cbf78e10f49a05959aa22cc3"
+            algorithm: "SHA-1"
+        vcs:
+          type: "Git"
+          url: "git+https://github.com/octokit/graphql.js.git"
+          revision: "ffa3428ac03e7b3bb3ba51dcb004c164c2523633"
+          path: ""
+        vcs_processed:
+          type: "Git"
+          url: "https://github.com/octokit/graphql.js.git"
+          revision: "ffa3428ac03e7b3bb3ba51dcb004c164c2523633"
+          path: ""
+      curations: []
+    - package:
+        id: "NPM:@octokit:openapi-types:12.11.0"
+        purl: "pkg:npm/%40octokit/openapi-types@12.11.0"
+        authors:
+        - "Gregor Martynus"
+        declared_licenses:
+        - "MIT"
+        declared_licenses_processed:
+          spdx_expression: "MIT"
+        description: "Generated TypeScript definitions based on GitHub's OpenAPI spec\
+          \ for api.github.com"
+        homepage_url: "https://github.com/octokit/openapi-types.ts#readme"
+        binary_artifact:
+          url: ""
+          hash:
+            value: ""
+            algorithm: ""
+        source_artifact:
+          url: "https://registry.npmjs.org/@octokit/openapi-types/-/openapi-types-12.11.0.tgz"
+          hash:
+            value: "da5638d64f2b919bca89ce6602d059f1b52d3ef0"
+            algorithm: "SHA-1"
+        vcs:
+          type: "Git"
+          url: "git+https://github.com/octokit/openapi-types.ts.git"
+          revision: "a173f4b4fb03f31b16d40fb7b4cad1f838f0330c"
+          path: "packages/openapi-types"
+        vcs_processed:
+          type: "Git"
+          url: "https://github.com/octokit/openapi-types.ts.git"
+          revision: "a173f4b4fb03f31b16d40fb7b4cad1f838f0330c"
+          path: "packages/openapi-types"
+      curations: []
+    - package:
+        id: "NPM:@octokit:plugin-paginate-rest:2.21.3"
+        purl: "pkg:npm/%40octokit/plugin-paginate-rest@2.21.3"
+        declared_licenses:
+        - "MIT"
+        declared_licenses_processed:
+          spdx_expression: "MIT"
+        description: "Octokit plugin to paginate REST API endpoint responses"
+        homepage_url: "https://github.com/octokit/plugin-paginate-rest.js#readme"
+        binary_artifact:
+          url: ""
+          hash:
+            value: ""
+            algorithm: ""
+        source_artifact:
+          url: "https://registry.npmjs.org/@octokit/plugin-paginate-rest/-/plugin-paginate-rest-2.21.3.tgz"
+          hash:
+            value: "7f12532797775640dbb8224da577da7dc210c87e"
+            algorithm: "SHA-1"
+        vcs:
+          type: "Git"
+          url: "git+https://github.com/octokit/plugin-paginate-rest.js.git"
+          revision: "b638bab732f0c31b0b02cb5d7c813b915c015775"
+          path: ""
+        vcs_processed:
+          type: "Git"
+          url: "https://github.com/octokit/plugin-paginate-rest.js.git"
+          revision: "b638bab732f0c31b0b02cb5d7c813b915c015775"
+          path: ""
+      curations: []
+    - package:
+        id: "NPM:@octokit:plugin-rest-endpoint-methods:5.16.2"
+        purl: "pkg:npm/%40octokit/plugin-rest-endpoint-methods@5.16.2"
+        declared_licenses:
+        - "MIT"
+        declared_licenses_processed:
+          spdx_expression: "MIT"
+        description: "Octokit plugin adding one method for all of api.github.com REST\
+          \ API endpoints"
+        homepage_url: "https://github.com/octokit/plugin-rest-endpoint-methods.js#readme"
+        binary_artifact:
+          url: ""
+          hash:
+            value: ""
+            algorithm: ""
+        source_artifact:
+          url: "https://registry.npmjs.org/@octokit/plugin-rest-endpoint-methods/-/plugin-rest-endpoint-methods-5.16.2.tgz"
+          hash:
+            value: "7ee8bf586df97dd6868cf68f641354e908c25342"
+            algorithm: "SHA-1"
+        vcs:
+          type: "Git"
+          url: "git+https://github.com/octokit/plugin-rest-endpoint-methods.js.git"
+          revision: "015cabe80be9f76f98c28367ef56f3e0cb659512"
+          path: ""
+        vcs_processed:
+          type: "Git"
+          url: "https://github.com/octokit/plugin-rest-endpoint-methods.js.git"
+          revision: "015cabe80be9f76f98c28367ef56f3e0cb659512"
+          path: ""
+      curations: []
+    - package:
+        id: "NPM:@octokit:request:5.6.3"
+        purl: "pkg:npm/%40octokit/request@5.6.3"
+        declared_licenses:
+        - "MIT"
+        declared_licenses_processed:
+          spdx_expression: "MIT"
+        description: "Send parameterized requests to GitHub's APIs with sensible defaults\
+          \ in browsers and Node"
+        homepage_url: "https://github.com/octokit/request.js#readme"
+        binary_artifact:
+          url: ""
+          hash:
+            value: ""
+            algorithm: ""
+        source_artifact:
+          url: "https://registry.npmjs.org/@octokit/request/-/request-5.6.3.tgz"
+          hash:
+            value: "19a022515a5bba965ac06c9d1334514eb50c48b0"
+            algorithm: "SHA-1"
+        vcs:
+          type: "Git"
+          url: "git+https://github.com/octokit/request.js.git"
+          revision: "9f82885bd0e80b72a731d831d313cd4c9820d24a"
+          path: ""
+        vcs_processed:
+          type: "Git"
+          url: "https://github.com/octokit/request.js.git"
+          revision: "9f82885bd0e80b72a731d831d313cd4c9820d24a"
+          path: ""
+      curations: []
+    - package:
+        id: "NPM:@octokit:request-error:2.1.0"
+        purl: "pkg:npm/%40octokit/request-error@2.1.0"
+        declared_licenses:
+        - "MIT"
+        declared_licenses_processed:
+          spdx_expression: "MIT"
+        description: "Error class for Octokit request errors"
+        homepage_url: "https://github.com/octokit/request-error.js#readme"
+        binary_artifact:
+          url: ""
+          hash:
+            value: ""
+            algorithm: ""
+        source_artifact:
+          url: "https://registry.npmjs.org/@octokit/request-error/-/request-error-2.1.0.tgz"
+          hash:
+            value: "9e150357831bfc788d13a4fd4b1913d60c74d677"
+            algorithm: "SHA-1"
+        vcs:
+          type: "Git"
+          url: "git+https://github.com/octokit/request-error.js.git"
+          revision: ""
+          path: ""
+        vcs_processed:
+          type: "Git"
+          url: "https://github.com/octokit/request-error.js.git"
+          revision: ""
+          path: ""
+      curations: []
+    - package:
+        id: "NPM:@octokit:types:6.41.0"
+        purl: "pkg:npm/%40octokit/types@6.41.0"
+        declared_licenses:
+        - "MIT"
+        declared_licenses_processed:
+          spdx_expression: "MIT"
+        description: "Shared TypeScript definitions for Octokit projects"
+        homepage_url: "https://github.com/octokit/types.ts#readme"
+        binary_artifact:
+          url: ""
+          hash:
+            value: ""
+            algorithm: ""
+        source_artifact:
+          url: "https://registry.npmjs.org/@octokit/types/-/types-6.41.0.tgz"
+          hash:
+            value: "e58ef78d78596d2fb7df9c6259802464b5f84a04"
+            algorithm: "SHA-1"
+        vcs:
+          type: "Git"
+          url: "git+https://github.com/octokit/types.ts.git"
+          revision: "32db4e6afdeb011a8060d563702ac2ffb35c6dc0"
+          path: ""
+        vcs_processed:
+          type: "Git"
+          url: "https://github.com/octokit/types.ts.git"
+          revision: "32db4e6afdeb011a8060d563702ac2ffb35c6dc0"
+          path: ""
+      curations: []
+    - package:
+        id: "NPM:@vercel:ncc:0.34.0"
+        purl: "pkg:npm/%40vercel/ncc@0.34.0"
+        declared_licenses:
+        - "MIT"
+        declared_licenses_processed:
+          spdx_expression: "MIT"
+        description: "Simple CLI for compiling a Node.js module into a single file,\
+          \ together with all its dependencies, gcc-style."
+        homepage_url: "https://github.com/vercel/ncc#readme"
+        binary_artifact:
+          url: ""
+          hash:
+            value: ""
+            algorithm: ""
+        source_artifact:
+          url: "https://registry.npmjs.org/@vercel/ncc/-/ncc-0.34.0.tgz"
+          hash:
+            value: "d0139528320e46670d949c82967044a8f66db054"
+            algorithm: "SHA-1"
+        vcs:
+          type: "Git"
+          url: "git+https://github.com/vercel/ncc.git"
+          revision: "854b9aee5765ac21c72019739849324e04668457"
+          path: ""
+        vcs_processed:
+          type: "Git"
+          url: "https://github.com/vercel/ncc.git"
+          revision: "854b9aee5765ac21c72019739849324e04668457"
+          path: ""
+      curations: []
+    has_issues: false
+scanner: null
+advisor: null
+evaluator:
+  start_time: "2022-10-07T21:30:26.950476Z"
+  end_time: "2022-10-07T21:30:32.560548Z"
+  violations:
+  - rule: "UNHANDLED_LICENSE"
+    pkg: "NPM::deprecation:2.3.1"
+    license: "ISC"
+    license_source: "DECLARED"
+    severity: "ERROR"
+    message: "The license ISC is currently not covered by policy rules. The license\
+      \ was declared in package NPM::deprecation:2.3.1"
+    how_to_fix: "A text written in MarkDown to help users resolve policy violations\n\
+      which may link to additional resources."
+  - rule: "UNHANDLED_LICENSE"
+    pkg: "NPM::once:1.4.0"
+    license: "ISC"
+    license_source: "DECLARED"
+    severity: "ERROR"
+    message: "The license ISC is currently not covered by policy rules. The license\
+      \ was declared in package NPM::once:1.4.0"
+    how_to_fix: "A text written in MarkDown to help users resolve policy violations\n\
+      which may link to additional resources."
+  - rule: "UNHANDLED_LICENSE"
+    pkg: "NPM::universal-user-agent:6.0.0"
+    license: "ISC"
+    license_source: "DECLARED"
+    severity: "ERROR"
+    message: "The license ISC is currently not covered by policy rules. The license\
+      \ was declared in package NPM::universal-user-agent:6.0.0"
+    how_to_fix: "A text written in MarkDown to help users resolve policy violations\n\
+      which may link to additional resources."
+  - rule: "UNHANDLED_LICENSE"
+    pkg: "NPM::wrappy:1.0.2"
+    license: "ISC"
+    license_source: "DECLARED"
+    severity: "ERROR"
+    message: "The license ISC is currently not covered by policy rules. The license\
+      \ was declared in package NPM::wrappy:1.0.2"
+    how_to_fix: "A text written in MarkDown to help users resolve policy violations\n\
+      which may link to additional resources."
+  - rule: "COPYLEFT_IN_SOURCE"
+    pkg: "NPM::github-actions-test:1.0.0"
+    license: "GPL-3.0-only"
+    license_source: "DECLARED"
+    severity: "ERROR"
+    message: "The package NPM::github-actions-test:1.0.0 has the declared ScanCode\
+      \ copyleft catalogized license GPL-3.0-only."
+    how_to_fix: "A text written in MarkDown to help users resolve policy violations\n\
+      which may link to additional resources."
