@@ -1,7 +1,7 @@
 import { ReturnObject } from "./getdata";
 import YAML from "yaml";
 import fs, { PathLike } from "fs";
-import {write_overview, write_css} from './webapp'
+import {write_html, write_css} from './webapp'
 
 export function post(result: ReturnObject[]): boolean {
     createFairSECODir("./.FairSECO/");
@@ -20,6 +20,7 @@ function createFairSECODir(path: PathLike): void {
     }
 }
 
+// Generate the report of FairSeco
 function createReport(result: ReturnObject[]): void {
     const fd: number = fs.openSync("./.FairSECO/Report.yml", "w+");
     try {
@@ -32,9 +33,10 @@ function createReport(result: ReturnObject[]): void {
     }
 }
 
+// Make a webapp from the report
 async function generateHTML(result: ReturnObject[]): Promise<void> {
     try{
-        await write_overview(result, "./.FairSECO/index.html")
+        await write_html(result, "./.FairSECO/index.html")
         console.log("Successfully wrote HTML to dir");
 
         await write_css("./.FairSECO/style.css");

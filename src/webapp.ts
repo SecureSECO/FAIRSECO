@@ -2,7 +2,8 @@ import * as fs from 'fs'
 import path from 'path'
 import { ReturnObject } from './getdata'
 
-export async function write_overview(
+// Write the data to a html file
+export async function write_html(
     data: ReturnObject[],
     file_path: string
 ): Promise<void> {
@@ -17,10 +18,13 @@ export async function write_overview(
         '{{node inserts the data here}}',
         JSON.stringify(data)
     )
+
     await fs.promises.writeFile(file_path, app, 'utf8')
+
     return
 }
 
+// Write the local css file also to where the HTML file comes.
 export async function write_css(
     file_path: string
 ): Promise<void> {
@@ -31,6 +35,8 @@ export async function write_css(
         'style.css'
     )
     const cssContent = await fs.promises.readFile(css_filename, 'utf8')
+    
     await fs.promises.writeFile(file_path, cssContent, 'utf8')
+    
     return
 }

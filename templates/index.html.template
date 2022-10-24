@@ -1,9 +1,5 @@
 <!DOCTYPE html>
 <html>
-      <!--
-    WARNING! Make sure that you match all Quasar related
-    tags to the same version! (Below it's "@2.0.0-rc.1")
-  -->
 
   <head>
     <link href="style.css" rel="stylesheet" type="text/css">
@@ -14,11 +10,14 @@
         <p>Placeholder</p>
 
         <script>
+            // Initialisation
             var allData = {{node inserts the data here}};
             var tortellini;
             var howFairIs;
             var searchSeco;
-            //console.log(allData);
+            //
+
+            // A generic way of storing the different data in vars
             for(let i = 0; i < allData.length; i++){
                 const element = allData[i];
                 switch(element.ReturnName) {
@@ -35,14 +34,18 @@
                         break;
                 }
             }
+            //
 
+            // Debugging
             console.log("Tortellini:");
             console.log(tortellini);
             console.log("HowFairIs:")
             console.log(howFairIs);
             console.log("SearchSeco:")            
             console.log(searchSeco);
+            //
 
+            // Try to place an element on the page (HowFairIs badge in this case)
             document.getElementById("badge").src=howFairIs[0].badge;
             
         </script>
