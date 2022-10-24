@@ -57,12 +57,11 @@ export async function runTortellini(
 
     const obj = YAML.parse(fileContents);
 
+    const filteredData = filterData(obj);
+
     return {
         ReturnName: "Tortellini",
-        ReturnData: {
-            result: obj.analyzer.result,
-            violations: obj.evaluator.violations,
-        },
+        ReturnData: filteredData,
     };
 }
 
@@ -92,4 +91,43 @@ export async function getFileFromArtifact(
     const buffer = fs.readFileSync(filePath);
 
     return buffer.toString();
+}
+
+export async function filterData(obj: any): Promise<Object> {
+    // Project data:
+    // ID
+    // declared_licenses_processed
+    // description
+    // vcs_processed
+    const project = obj.analyzer.result.projects[0];
+    const projData = {
+        id: project.id,
+        licenses: project.declared_licenses_processed.spdx_expression,
+        description: project.description,
+        vcs: project.vcs_processed,
+    };
+
+    // Package data, for each package:
+    // ID
+    // declared_licenses_processed
+    // description
+    // authors
+    // vcs_processed
+    const packages = obj.result.packages;
+    const packData = [];
+    for (const pack of packages) {
+        const p = {
+            id: pack.id,
+            licenses: pack.declared_licenses_processed.spdx_expression,
+            description: pack.description,
+            authors: pack.authors,
+            vcs: pack.vcs_processed,
+        };
+        packData.push(p);
+    }
+
+    // Violations
+    const viol = obj.evaluator.violations;
+
+    return { projectData: projData, packageData: packData, violations: viol };
 }

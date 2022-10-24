@@ -43,7 +43,7 @@ test("Test if runTortellini returns a correct ReturnObject", async () => {
 
 function createMockArtifact(): tort.Artifact {
     // Create DLArtFunc
-    const downloadArt = function (
+    const downloadArt: tort.DLArtFunc = function (
         name: string,
         path?: string | undefined,
         options?: tort.DownloadOptions
