@@ -11199,11 +11199,7 @@ function getFileFromArtifact(dlResponse, fileName) {
 exports.getFileFromArtifact = getFileFromArtifact;
 function filterData(obj) {
     return __awaiter(this, void 0, void 0, function* () {
-        // Project data:
-        // ID
-        // declared_licenses_processed
-        // description
-        // vcs_processed
+        // Project data
         const project = obj.analyzer.result.projects[0];
         const projData = {
             id: project.id || "-",
@@ -11212,12 +11208,7 @@ function filterData(obj) {
             authors: project.authors || "-",
             vcs: project.vcs_processed || "-",
         };
-        // Package data, for each package:
-        // ID
-        // declared_licenses_processed
-        // description
-        // authors
-        // vcs_processed
+        // Package data
         const packages = obj.analyzer.result.packages;
         const packData = [];
         for (const pack of packages) {
