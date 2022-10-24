@@ -2,7 +2,7 @@ import { runHowfairis } from "../src/resources/howfairis";
 import { ReturnObject } from "../src/getdata";
 import { matchers } from "jest-json-schema";
 expect.extend(matchers);
-jest.setTimeout(10000);
+jest.setTimeout(30000);
 
 test("that output json matches the schema", async () => {
     const schema = {
