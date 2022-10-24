@@ -57,14 +57,11 @@ export async function runTortellini(
 
     const obj = YAML.parse(fileContents);
 
-    // console.log(obj.result);
-    // console.log(obj.result.packages);
-
-    // const filteredData = filterData(obj);
+    const filteredData = filterData(obj);
 
     return {
         ReturnName: "Tortellini",
-        ReturnData: obj.result,
+        ReturnData: filteredData,
     };
 }
 
@@ -116,8 +113,7 @@ export async function filterData(obj: any): Promise<any> {
     // description
     // authors
     // vcs_processed
-    const packages = obj.result.packages;
-    console.log(packages);
+    const packages = obj.analyzer.result.packages;
     const packData = [];
     for (const pack of packages) {
         const p = {
