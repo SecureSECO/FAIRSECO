@@ -1,53 +1,82 @@
-import Ajv, { JSONSchemaType } from "ajv";
-const ajv = new Ajv();
-import * as fs from "fs";
+// Test to check if fairtally works correctly
+// We check if fairtally gives the correct JSON output
+// Using a json schema and the jest-json-schema package we can run the test with jest
+import { runHowfairis } from "../src/resources/howfairis";
+import { ReturnObject } from "../src/getdata";
+import { matchers } from "jest-json-schema";
+expect.extend(matchers);
+jest.setTimeout(30000);
 
-//use interface?
 
-const schema: JSONSchemaType = {
-    type: "object",
-    properties: {
-        badge: { type: "string" },
-        checklist: { type: "bool" },
-        citation: { type: "bool" },
-        count: { type: "integer", minimum: 0, maximum: 5 },
-        license: { type: "bool" },
-        registry: { type: "bool" },
-        repository: { type: "bool" },
-        stderr: { type: "string", nullable: true },
-        stdout: { type: "string", nullable: true },
-        url: { type: "string" },
-    },
-    required: [
-        "badge",
-        "checklist",
-        "citation",
-        "count",
-        "license",
-        "registry",
-        "repository",
-        "stderr",
-        "stdout",
-        "url",
-    ],
-    additionalProperties: false,
-};
+test("that output json matches the schema", async () => {
+    // The schema below defines what our JSON output should look like
+    // (what headers and what the types of the values are)
+    const schema = {
+        definitions: {
+            howfairis: {
+                type: "object",
+                additionalProperties: false,
+                properties: {
+                    badge: {
+                        // Definition that is a URI (URL)
+                        type: "string",
+                        format: "uri",
+                        "qt-uri-protocols": ["https"],
+                    },
+                    checklist: {
+                        type: "boolean",
+                    },
+                    citation: {
+                        type: "boolean",
+                    },
+                    count: {
+                        // The fairness score should be 0 to 5
+                        type: "integer",
+                        minimum: 0,
+                        maximum: 5,
+                    },
+                    license: {
+                        type: "boolean",
+                    },
+                    registry: {
+                        type: "boolean",
+                    },
+                    repository: {
+                        type: "boolean",
+                    },
+                    stderr: {
+                        type: "string",
+                        nullable: "true"
+                    },
+                    stdout: {
+                        type: "string",
+                    },
+                    url: {
+                        type: "string",
+                        format: "uri",
+                        "qt-uri-protocols": ["https"],
+                    },
+                },
+                required: [
+                    // All headers are required for the output (but some values can be null)
+                    "badge",
+                    "checklist",
+                    "citation",
+                    "count",
+                    "license",
+                    "registry",
+                    "repository",
+                    "stderr",
+                    "stdout",
+                    "url",
+                ],
+                title: "howfairis",
+            },
+        },
+    };
 
-// validate is a type guard for MyData - type is inferred from schema type
-const validate = ajv.compile(schema);
-
-// or, if you did not use type annotation for the schema,
-// type parameter can be used to make it type guard:
-// const validate = ajv.compile<MyData>(schema)
-
-const file = fs.readFileSync("./.FairSECO/HowFairIs.JSON");
-const data = JSON.parse(file.toString());
-
-if (validate(data)) {
-    // data is MyData here
-    console.log("HowFairIs test passed");
-} else {
-    console.log(validate.errors);
-}
-
-// source: https://ajv.js.org/guide/typescript.html
+    //Run Howfairis and check if output JSON matches with the predefined schema
+    const outputmodule: ReturnObject = await runHowfairis();
+    console.log(outputmodule.ReturnData);
+    expect(outputmodule).toMatchSchema(schema);
+});
