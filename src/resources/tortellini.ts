@@ -57,6 +57,9 @@ export async function runTortellini(
 
     const obj = YAML.parse(fileContents);
 
+    console.log(obj.result);
+    console.log(obj.result.packages);
+
     const filteredData = filterData(obj);
 
     return {
