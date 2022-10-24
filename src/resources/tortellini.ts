@@ -94,34 +94,26 @@ export async function getFileFromArtifact(
 }
 
 export async function filterData(obj: any): Promise<any> {
-    // Project data:
-    // ID
-    // declared_licenses_processed
-    // description
-    // vcs_processed
+    // Project data
     const project = obj.analyzer.result.projects[0];
     const projData = {
-        id: project.id,
-        licenses: project.declared_licenses,
-        description: project.description,
-        vcs: project.vcs_processed,
+        id: project.id || "-",
+        licenses: project.declared_licenses || "-",
+        description: project.description || "-",
+        authors: project.authors || "-",
+        vcs: project.vcs_processed || "-",
     };
 
-    // Package data, for each package:
-    // ID
-    // declared_licenses_processed
-    // description
-    // authors
-    // vcs_processed
+    // Package data
     const packages = obj.analyzer.result.packages;
     const packData = [];
     for (const pack of packages) {
         const p = {
-            id: pack.package.id,
-            licenses: pack.package.declared_licenses,
-            description: pack.package.description,
-            authors: pack.package.authors,
-            vcs: pack.package.vcs_processed,
+            id: pack.package.id || "-",
+            licenses: pack.package.declared_licenses || "-",
+            description: pack.package.description || "-",
+            authors: pack.package.authors || "-",
+            vcs: pack.package.vcs_processed || "-",
         };
         console.log(p);
         packData.push(p);

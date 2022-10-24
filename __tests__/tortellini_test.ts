@@ -36,9 +36,37 @@ test("Check if a file can be retrieved with the downloadResponse", async () => {
 test("Test if runTortellini returns a correct ReturnObject", async () => {
     const result = await tort.runTortellini(mockArtifact);
 
+    const data: any = result.ReturnData;
+
+    const properties = [
+        "project",
+        "project.id",
+        "project.licenses",
+        "project.description",
+        "project.vcs",
+        "project.vcs.type",
+        "project.vcs.url",
+        "project.vcs.revision",
+        "packages",
+        "packages.id",
+        "packages.licenses",
+        "packages.description",
+        "project.vcs",
+        "project.vcs.type",
+        "project.vcs.url",
+        "project.vcs.revision",
+        "violations",
+        "violations.rule",
+        "violations.pkg",
+        "violations.license",
+        "violations.severity",
+        "violations.message",
+        "violations.how_to_fix",
+    ];
+
     expect(result).not.toBeUndefined();
     expect(result.ReturnName).toBe("Tortellini");
-    expect(result.ReturnData).not.toBeUndefined();
+    expect(data).toHaveProperty(properties);
 });
 
 function createMockArtifact(): tort.Artifact {
