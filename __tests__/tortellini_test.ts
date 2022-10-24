@@ -38,13 +38,11 @@ test("Test if runTortellini returns a correct ReturnObject", async () => {
 
     const data: any = result.ReturnData;
 
-    console.log(data);
-
-    const properties = ["project", "packages", "violations"];
-
     expect(result).not.toBeUndefined();
     expect(result.ReturnName).toBe("Tortellini");
-    expect(data).toHaveProperty(properties);
+    expect(data).toHaveProperty("project");
+    expect(data).toHaveProperty("packages");
+    expect(data).toHaveProperty("violations");
 });
 
 function createMockArtifact(): tort.Artifact {
