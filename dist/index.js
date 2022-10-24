@@ -11167,10 +11167,12 @@ function runTortellini(artifactObject) {
         const downloadResponse = yield getArtifactData("tortellini-result", destination, artifactObject);
         const fileContents = yield getFileFromArtifact(downloadResponse, "evaluation-result.yml");
         const obj = yaml_1.default.parse(fileContents);
-        const filteredData = filterData(obj);
+        // console.log(obj.result);
+        // console.log(obj.result.packages);
+        // const filteredData = filterData(obj);
         return {
             ReturnName: "Tortellini",
-            ReturnData: filteredData,
+            ReturnData: obj.result,
         };
     });
 }
