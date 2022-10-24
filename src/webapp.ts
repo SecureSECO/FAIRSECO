@@ -20,3 +20,17 @@ export async function write_overview(
     await fs.promises.writeFile(file_path, app, 'utf8')
     return
 }
+
+export async function write_css(
+    file_path: string
+): Promise<void> {
+    const css_filename = path.join(
+        __dirname,
+        '..',
+        'templates',
+        'style.css'
+    )
+    const cssContent = await fs.promises.readFile(css_filename, 'utf8')
+    await fs.promises.writeFile(file_path, cssContent, 'utf8')
+    return
+}

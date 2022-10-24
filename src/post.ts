@@ -1,7 +1,7 @@
 import { ReturnObject } from "./getdata";
 import YAML from "yaml";
 import fs, { PathLike } from "fs";
-import {write_overview} from './webapp'
+import {write_overview, write_css} from './webapp'
 
 export function post(result: ReturnObject[]): boolean {
     createFairSECODir("./.FairSECO/");
@@ -35,6 +35,10 @@ function createReport(result: ReturnObject[]): void {
 async function generateHTML(result: ReturnObject[]): Promise<void> {
     try{
         await write_overview(result, "./.FairSECO/index.html")
+        console.log("Successfully wrote HTML to dir");
+
+        await write_css("./.FairSECO/style.css");
+        console.log("Successfully wrote CSS to dir");
     } catch {
         console.error("Error writing HTML file");;
     }

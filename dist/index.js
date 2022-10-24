@@ -10972,6 +10972,9 @@ function generateHTML(result) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             yield (0, webapp_1.write_overview)(result, "./.FairSECO/index.html");
+            console.log("Successfully wrote HTML to dir");
+            yield (0, webapp_1.write_css)("./.FairSECO/style.css");
+            console.log("Successfully wrote CSS to dir");
         }
         catch (_a) {
             console.error("Error writing HTML file");
@@ -11256,7 +11259,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.write_overview = void 0;
+exports.write_css = exports.write_overview = void 0;
 const fs = __importStar(__nccwpck_require__(7147));
 const path_1 = __importDefault(__nccwpck_require__(1017));
 function write_overview(data, file_path) {
@@ -11269,6 +11272,15 @@ function write_overview(data, file_path) {
     });
 }
 exports.write_overview = write_overview;
+function write_css(file_path) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const css_filename = path_1.default.join(__dirname, '..', 'templates', 'style.css');
+        const cssContent = yield fs.promises.readFile(css_filename, 'utf8');
+        yield fs.promises.writeFile(file_path, cssContent, 'utf8');
+        return;
+    });
+}
+exports.write_css = write_css;
 
 
 /***/ }),
