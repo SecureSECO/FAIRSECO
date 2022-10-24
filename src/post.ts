@@ -3,9 +3,11 @@ import YAML from "yaml";
 import fs, { PathLike } from "fs";
 import {WriteHTML, WriteCSS} from './webapp'
 
+
+// Main function
 export async function post(result: ReturnObject[]): Promise<boolean> {
-    createFairSECODir("./.FairSECO/");
-    createReport(result);
+    createFairSECODir("./.FairSECO/"); // Make sure the output dir exists before we place files in it.
+    createReport(result); // Create report.yml file
     await generateHTML(result);
     return true;
 }
