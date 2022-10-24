@@ -11155,7 +11155,9 @@ const path = __importStar(__nccwpck_require__(1017));
 const yaml_1 = __importDefault(__nccwpck_require__(1317));
 function runTortellini(artifactObject) {
     return __awaiter(this, void 0, void 0, function* () {
-        // If no artifact object was passed, use the default github actions artifact
+        // An artifact object is only passed in the unit test. If that is the case,
+        // set the download destination to the unit test output folder.
+        // If not, use the regular Github Action artifact, and the normal output folder
         let destination = "";
         if (artifactObject !== undefined) {
             destination = ".tortellini-unit-test";
@@ -11197,6 +11199,9 @@ function getFileFromArtifact(dlResponse, fileName) {
     });
 }
 exports.getFileFromArtifact = getFileFromArtifact;
+// Only get the data that is relevant for license checking
+// To make sure all properties are always present,
+// replace undefined properties with a dash
 function filterData(obj) {
     return __awaiter(this, void 0, void 0, function* () {
         // Project data

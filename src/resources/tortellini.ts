@@ -4,6 +4,8 @@ import * as fs from "fs";
 import * as path from "path";
 import YAML from "yaml";
 
+// Because the unit tests can't access Github tokens, all artifact-related types are
+// replaced with types that can be replaced with mock objects
 export type Artifact = typeof artifact | TestArtifact;
 export type ArtClient = artifact.ArtifactClient | TestClient;
 export type DownloadResponse = artifact.DownloadResponse | TestResponse;
@@ -35,7 +37,9 @@ export interface TestClient {
 export async function runTortellini(
     artifactObject?: Artifact
 ): Promise<ReturnObject> {
-    // If no artifact object was passed, use the default github actions artifact
+    // An artifact object is only passed in the unit test. If that is the case,
+    // set the download destination to the unit test output folder.
+    // If not, use the regular Github Action artifact, and the normal output folder
     let destination: string = "";
     if (artifactObject !== undefined) {
         destination = ".tortellini-unit-test";
@@ -93,6 +97,9 @@ export async function getFileFromArtifact(
     return buffer.toString();
 }
 
+// Only get the data that is relevant for license checking
+// To make sure all properties are always present,
+// replace undefined properties with a dash
 export async function filterData(obj: any): Promise<any> {
     // Project data
     const project = obj.analyzer.result.projects[0];
