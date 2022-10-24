@@ -2,9 +2,10 @@ import { ReturnObject } from "./getdata";
 import YAML from "yaml";
 import fs, { PathLike } from "fs";
 
+// Main function
 export function post(result: ReturnObject[]): boolean {
-    createFairSECODir("./.FairSECO/");
-    createReport(result);
+    createFairSECODir("./.FairSECO/"); // Make sure the output dir exists before we place files in it.
+    createReport(result); // Create report.yml file
     return true;
 }
 
