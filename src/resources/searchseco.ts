@@ -6,16 +6,23 @@ import { exec, ExecOptions } from "@actions/exec";
 export async function runSearchseco(): Promise<ReturnObject> {
     const gitrepo: string = await getRepoUrl();
 
-    // Real image: searchseco/controller
+    // When the real SearchSECO is back, the run command needs to be slightly edited.
+    // The docker image needs to be replaced with 'searchseco/controller',
+    // and the enrtypoint needs to be inserted at the location indicated below.
     const dockerImage = "jarnohendriksen/mockseco:v1.1";
+    const entrypoint = '--entrypoint="./controller/build/searchseco"';
 
-    console.debug("HowFairIs started");
+    console.debug("SearchSECO started");
+    console.debug(
+        "WARNING: Running a mock of SearchSECO. The output will be incorrect!"
+    );
     const cmd = "docker";
     const args = [
         "run",
         "--rm",
         "--name",
         "searchseco-container",
+        // This is where 'entrypoint' goes
         "-e",
         '"github_token=uirw3tb4rvtwte"',
         "-e",
@@ -31,6 +38,9 @@ export async function runSearchseco(): Promise<ReturnObject> {
     const options: ExecOptions = {
         ignoreReturnCode: true,
     };
+
+    // SearchSECO prints its results in the console. The code below copies the
+    // output to the variables stdout and stderr
     options.listeners = {
         stdout: (data: Buffer) => {
             stdout += data.toString();
@@ -39,6 +49,8 @@ export async function runSearchseco(): Promise<ReturnObject> {
             stderr += data.toString();
         },
     };
+
+    // Executes the docker run command
     const exitCode = await exec(cmd, args, options);
 
     console.debug("Docker running SearchSECO returned " + String(exitCode));
@@ -47,13 +59,15 @@ export async function runSearchseco(): Promise<ReturnObject> {
     console.debug("stderr:");
     console.debug(stderr);
 
+    // ParseInput expects an array of trimmed lines
+    // (i.e. without trailing or leading whitespace)
     const lines = stdout.split("\n");
 
     for (let n = 0; n < lines.length; n++) {
         lines[n] = lines[n].trim();
     }
 
-    const output: Output = ParseInput(lines);
+    const output: Output = parseInput(lines);
 
     return {
         ReturnName: "SearchSeco",
@@ -61,17 +75,17 @@ export async function runSearchseco(): Promise<ReturnObject> {
     };
 }
 
-interface Output {
+export interface Output {
     methods: Method[];
 }
 
-interface Method {
+export interface Method {
     hash: String;
     data: MethodData;
     matches: Match[];
 }
 
-interface MethodData {
+export interface MethodData {
     name: String;
     project?: String;
     file: String;
@@ -79,17 +93,17 @@ interface MethodData {
     authors: String[];
 }
 
-interface Match {
+export interface Match {
     data: MethodData;
     vuln: Vuln;
 }
 
-interface Vuln {
+export interface Vuln {
     code: String;
     url: String;
 }
 
-function ParseInput(input: String[]): Output {
+export function parseInput(input: String[]): Output {
     const hashIndices: number[] = getHashIndices(input);
     const ms: Method[] = [];
 
@@ -105,13 +119,14 @@ function ParseInput(input: String[]): Output {
 
 // Return list of indices of lines that contain a hash
 // (i.e. they point to the start of a new hash)
-function getHashIndices(input: String[]): number[] {
+export function getHashIndices(input: String[]): number[] {
     const indices: number[] = [];
 
     for (let i = 0; i < input.length; i++) {
         if (input[i].search("Hash") !== -1) indices.push(i);
     }
 
+    // Add last line + 1, to let the program know when to stop looping
     indices.push(input.length);
 
     return indices;
@@ -121,7 +136,7 @@ function getHashIndices(input: String[]): number[] {
 // the data from the line.
 // The line always looks like: *Method <methodName> in file <filename> line <lineNumber>,
 // so the data are always the 2nd, 5th, and 7th words (index 1, 4, and 6 resp.)
-function getMethodInfo(
+export function getMethodInfo(
     input: String[],
     start: number,
     end: number
@@ -134,7 +149,7 @@ function getMethodInfo(
     // List of authors always starts two lines below the line with method data,
     // and ends before the line containing DATABASE
     let index = methodDataLine[0] + 2;
-    while (input[index] !== "DATABASE") {
+    while (input[index] !== "DATABASE" && index <= end) {
         if (input[index] !== "") auth.push(input[index]);
         index++;
     }
@@ -148,7 +163,11 @@ function getMethodInfo(
     return data;
 }
 
-function getMatches(input: String[], start: number, end: number): Match[] {
+export function getMatches(
+    input: String[],
+    start: number,
+    end: number
+): Match[] {
     const matchList: Match[] = [];
     const methodDataLine = getMatchIndicesOfHash(input, start, end);
     for (let i = 1; i < methodDataLine.length; i++) {
@@ -190,7 +209,7 @@ function getMatches(input: String[], start: number, end: number): Match[] {
     return matchList;
 }
 
-function getMatchIndicesOfHash(
+export function getMatchIndicesOfHash(
     input: String[],
     start: number,
     end: number

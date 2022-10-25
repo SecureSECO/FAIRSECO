@@ -4272,21 +4272,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.runSearchseco = void 0;
+exports.getMatchIndicesOfHash = exports.getMatches = exports.getMethodInfo = exports.getHashIndices = exports.parseInput = exports.runSearchseco = void 0;
 const git_1 = __nccwpck_require__(4827);
 const exec_1 = __nccwpck_require__(9710);
 function runSearchseco() {
     return __awaiter(this, void 0, void 0, function* () {
         const gitrepo = yield (0, git_1.getRepoUrl)();
-        // Real image: searchseco/controller
+        // When the real SearchSECO is back, the run command needs to be slightly edited.
+        // The docker image needs to be replaced with 'searchseco/controller',
+        // and the enrtypoint needs to be inserted at the location indicated below.
         const dockerImage = "jarnohendriksen/mockseco:v1.1";
-        console.debug("HowFairIs started");
+        const entrypoint = '--entrypoint="./controller/build/searchseco"';
+        console.debug("SearchSECO started");
+        console.debug("WARNING: Running a mock of SearchSECO. The output will be incorrect!");
         const cmd = "docker";
         const args = [
             "run",
             "--rm",
             "--name",
             "searchseco-container",
+            // This is where 'entrypoint' goes
             "-e",
             '"github_token=uirw3tb4rvtwte"',
             "-e",
@@ -4300,6 +4305,8 @@ function runSearchseco() {
         const options = {
             ignoreReturnCode: true,
         };
+        // SearchSECO prints its results in the console. The code below copies the
+        // output to the variables stdout and stderr
         options.listeners = {
             stdout: (data) => {
                 stdout += data.toString();
@@ -4308,17 +4315,20 @@ function runSearchseco() {
                 stderr += data.toString();
             },
         };
+        // Executes the docker run command
         const exitCode = yield (0, exec_1.exec)(cmd, args, options);
         console.debug("Docker running SearchSECO returned " + String(exitCode));
         console.debug("stdout:");
         console.debug(stdout);
         console.debug("stderr:");
         console.debug(stderr);
+        // ParseInput expects an array of trimmed lines
+        // (i.e. without trailing or leading whitespace)
         const lines = stdout.split("\n");
         for (let n = 0; n < lines.length; n++) {
             lines[n] = lines[n].trim();
         }
-        const output = ParseInput(lines);
+        const output = parseInput(lines);
         return {
             ReturnName: "SearchSeco",
             ReturnData: output,
@@ -4326,7 +4336,7 @@ function runSearchseco() {
     });
 }
 exports.runSearchseco = runSearchseco;
-function ParseInput(input) {
+function parseInput(input) {
     const hashIndices = getHashIndices(input);
     const ms = [];
     for (let i = 0; i < hashIndices.length - 1; i++) {
@@ -4337,6 +4347,7 @@ function ParseInput(input) {
     }
     return { methods: ms };
 }
+exports.parseInput = parseInput;
 // Return list of indices of lines that contain a hash
 // (i.e. they point to the start of a new hash)
 function getHashIndices(input) {
@@ -4345,9 +4356,11 @@ function getHashIndices(input) {
         if (input[i].search("Hash") !== -1)
             indices.push(i);
     }
+    // Add last line + 1, to let the program know when to stop looping
     indices.push(input.length);
     return indices;
 }
+exports.getHashIndices = getHashIndices;
 // Looks for the first line within a hash that contains '*Method', and extracts
 // the data from the line.
 // The line always looks like: *Method <methodName> in file <filename> line <lineNumber>,
@@ -4360,7 +4373,7 @@ function getMethodInfo(input, start, end) {
     // List of authors always starts two lines below the line with method data,
     // and ends before the line containing DATABASE
     let index = methodDataLine[0] + 2;
-    while (input[index] !== "DATABASE") {
+    while (input[index] !== "DATABASE" && index <= end) {
         if (input[index] !== "")
             auth.push(input[index]);
         index++;
@@ -4373,6 +4386,7 @@ function getMethodInfo(input, start, end) {
     };
     return data;
 }
+exports.getMethodInfo = getMethodInfo;
 function getMatches(input, start, end) {
     const matchList = [];
     const methodDataLine = getMatchIndicesOfHash(input, start, end);
@@ -4405,6 +4419,7 @@ function getMatches(input, start, end) {
     }
     return matchList;
 }
+exports.getMatches = getMatches;
 function getMatchIndicesOfHash(input, start, end) {
     const indices = [];
     for (let i = start; i < end; i++) {
@@ -4413,6 +4428,7 @@ function getMatchIndicesOfHash(input, start, end) {
     }
     return indices;
 }
+exports.getMatchIndicesOfHash = getMatchIndicesOfHash;
 
 
 /***/ }),

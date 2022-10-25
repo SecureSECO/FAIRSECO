@@ -6,6 +6,7 @@ export interface ReturnObject {
     ReturnName: string;
     ReturnData: object;
 }
+
 export async function data(): Promise<ReturnObject[]> {
     const output: ReturnObject[] = [];
 
