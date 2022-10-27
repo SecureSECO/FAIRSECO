@@ -10,11 +10,11 @@ jobs:
         steps:
             - uses: actions/checkout@v3
             
-            - uses: tortellini-tools/action@main
-            - uses: actions/upload-artifact@v3
-              with:
-                  name: tortellini-result
-                  path: .tortellini/out
+            #- uses: tortellini-tools/action@main
+            #- uses: actions/upload-artifact@v3
+            #  with:
+             #     name: tortellini-result
+              #    path: .tortellini/out
 
             - uses: anchore/sbom-action@v0
               with:
