@@ -15,6 +15,9 @@ jobs:
               with:
                   name: tortellini-result
                   path: .tortellini/out
+
+            - uses: anchore/sbom-action@v0
+
             - uses: ./
             - uses: actions/upload-artifact@v3
               with:
