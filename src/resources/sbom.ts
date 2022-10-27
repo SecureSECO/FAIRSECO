@@ -1,5 +1,5 @@
 import { ReturnObject } from "../getdata";
-import { Artifact, getArtifactData, getFileFromArtifact } from "./tortellini";
+import { Artifact, getArtifactData, getFileFromArtifact } from "./helperfunctions/artifact";
 import * as artifact from "@actions/artifact";
 import YAML from "yaml";
 
