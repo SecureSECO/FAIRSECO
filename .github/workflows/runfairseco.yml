@@ -18,7 +18,7 @@ jobs:
 
             - uses: anchore/sbom-action@v0
               with:
-                  artifact-name: sbom.spdx
+                  artifact-name: SBOM.spdx
 
             - uses: ./
             - uses: actions/upload-artifact@v3

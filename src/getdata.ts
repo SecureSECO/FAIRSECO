@@ -1,6 +1,7 @@
 import { runTortellini } from "./resources/tortellini";
 import { runHowfairis } from "./resources/howfairis";
 import { runSearchseco } from "./resources/searchseco";
+import { runSBOM } from "./resources/sbom";
 
 export interface ReturnObject {
     ReturnName: string;
@@ -30,6 +31,14 @@ export async function data(): Promise<ReturnObject[]> {
         output.push(searchsecoResult);
     } catch (error) {
         console.error("Searchseco threw an error:");
+        console.error(error);
+    }
+
+    try {
+        const SBOMResult = await runSBOM();
+        output.push(SBOMResult);
+    } catch (error) {
+        console.error("SBOM threw an error:");
         console.error(error);
     }
 
