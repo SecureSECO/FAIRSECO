@@ -36,9 +36,14 @@
             }
             //
 
+            
+
+
             // Debugging
             console.log("Tortellini:");
             console.log(tortellini);
+            console.log(tortellini.violations);
+            console.log(tortellini[0]);
             console.log("HowFairIs:")
             console.log(howFairIs);
             console.log("SearchSeco:")            
