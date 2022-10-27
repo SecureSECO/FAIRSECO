@@ -17,6 +17,8 @@ jobs:
                   path: .tortellini/out
 
             - uses: anchore/sbom-action@v0
+              with:
+                  artifact-name: sbom.spdx
 
             - uses: ./
             - uses: actions/upload-artifact@v3
