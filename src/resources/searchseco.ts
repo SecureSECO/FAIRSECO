@@ -99,7 +99,7 @@ export interface Match {
 }
 
 export interface Vuln {
-    code: String;
+    code: number;
     url: String;
 }
 
@@ -123,7 +123,7 @@ export function getHashIndices(input: String[]): number[] {
     const indices: number[] = [];
 
     for (let i = 0; i < input.length; i++) {
-        if (input[i].search("Hash") !== -1) indices.push(i);
+        if (input[i].includes("Hash")) indices.push(i);
     }
 
     // Add last line + 1, to let the program know when to stop looping
@@ -143,15 +143,17 @@ export function getMethodInfo(
 ): MethodData {
     const methodDataLine = getMatchIndicesOfHash(input, start, end);
     const words = input[methodDataLine[0]].split(" ").filter((x) => x);
-    // console.log(words);
+    if (words.length < 7) throw new Error();
     const auth: String[] = [];
 
     // List of authors always starts two lines below the line with method data,
     // and ends before the line containing DATABASE
     let index = methodDataLine[0] + 2;
-    while (input[index] !== "DATABASE" && index <= end) {
-        if (input[index] !== "") auth.push(input[index]);
-        index++;
+    if (input[index - 1].includes("Authors of local function:")) {
+        while (index < end) {
+            if (input[index] === "DATABASE") break;
+            auth.push(input[index++]);
+        }
     }
 
     const data: MethodData = {
@@ -174,23 +176,51 @@ export function getMatches(
         const words = input[methodDataLine[i]].split(" ");
         const auth: String[] = [];
 
-        const vulnLine = input[methodDataLine[i] + 2].split(" ")[6].split("(");
-        // console.log(vulnLine + '|' + methodDataLine[i] + '|' + start + ',' + end);
-        const vCode = vulnLine[0];
-        const vUrl = vulnLine[1].substring(0, vulnLine[1].length - 1);
+        let v: Vuln;
+        const vulnLineNumber = methodDataLine[i] + 2;
+        let firstAuthorLine: number;
+        if (vulnLineNumber < end) {
+            if (
+                !input[vulnLineNumber].includes("Method marked as vulnerable")
+            ) {
+                v = { code: -1, url: "-" };
+                firstAuthorLine = methodDataLine[i] + 3;
+            } else {
+                const vulnLine = input[methodDataLine[i] + 2]
+                    .split(" ")[6]
+                    .split("(");
+                const vCode = vulnLine[0];
+                const vUrl = vulnLine[1].substring(0, vulnLine[1].length - 1);
 
-        const v: Vuln = { code: vCode, url: vUrl };
+                v = { code: parseInt(vCode), url: vUrl };
+                firstAuthorLine = methodDataLine[i] + 4;
+            }
+        } else {
+            v = { code: -1, url: "-" };
+            firstAuthorLine = end;
+        }
 
-        // List of authors always starts two lines below the line with method data,
-        // and ends before the next *Method or the next Hash header (a string of dashes)
-        let index = methodDataLine[i] + 4;
-        while (
-            input[index].search(/\*Method/) == -1 &&
-            input[index].search(/[-]+/) == -1 &&
-            input[index] !== "" &&
-            index < end - 1
-        ) {
-            auth.push(input[index++]);
+        // List of authors always starts two lines below the line
+        // with method data, and ends before the next *Method or
+        // the next Hash header (a string of dashes)
+        console.log(input[0]);
+        let index = firstAuthorLine;
+        if (index < end) {
+            if (
+                input[index - 1].includes(
+                    "Authors of function found in database:"
+                )
+            ) {
+                while (
+                    index < end &&
+                    input[index].search(/\*Method/) === -1 &&
+                    input[index].search(/[-]+/) === -1 &&
+                    input[index] !== ""
+                ) {
+                    auth.push(input[index++]);
+                    console.log(input[index]);
+                }
+            }
         }
 
         const d: MethodData = {
@@ -216,7 +246,7 @@ export function getMatchIndicesOfHash(
 ): number[] {
     const indices: number[] = [];
     for (let i = start; i < end; i++) {
-        if (input[i].search(/\*Method/) !== -1) indices.push(i);
+        if (input[i].includes("*Method")) indices.push(i);
     }
 
     return indices;
