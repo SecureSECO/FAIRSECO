@@ -152,7 +152,8 @@ export function getMethodInfo(
     if (input[index - 1].includes("Authors of local function:")) {
         while (index < end) {
             if (input[index] === "DATABASE") break;
-            auth.push(input[index++]);
+            if (input[index] !== "") auth.push(input[index]);
+            index++;
         }
     }
 
@@ -214,11 +215,11 @@ export function getMatches(
                 while (
                     index < end &&
                     input[index].search(/\*Method/) === -1 &&
-                    input[index].search(/[-]+/) === -1 &&
-                    input[index] !== ""
+                    input[index].search(/[-]+/) === -1
                 ) {
-                    auth.push(input[index++]);
+                    if (input[index] !== "") auth.push(input[index]);
                     console.log(input[index]);
+                    index++;
                 }
             }
         }

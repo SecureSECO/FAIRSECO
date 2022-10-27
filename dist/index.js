@@ -4378,7 +4378,9 @@ function getMethodInfo(input, start, end) {
         while (index < end) {
             if (input[index] === "DATABASE")
                 break;
-            auth.push(input[index++]);
+            if (input[index] !== "")
+                auth.push(input[index]);
+            index++;
         }
     }
     const data = {
@@ -4427,10 +4429,11 @@ function getMatches(input, start, end) {
             if (input[index - 1].includes("Authors of function found in database:")) {
                 while (index < end &&
                     input[index].search(/\*Method/) === -1 &&
-                    input[index].search(/[-]+/) === -1 &&
-                    input[index] !== "") {
-                    auth.push(input[index++]);
+                    input[index].search(/[-]+/) === -1) {
+                    if (input[index] !== "")
+                        auth.push(input[index]);
                     console.log(input[index]);
+                    index++;
                 }
             }
         }
