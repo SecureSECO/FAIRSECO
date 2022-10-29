@@ -4432,11 +4432,12 @@ function getMatches(input, start, end) {
                     input[index].search(/[-]+/) === -1) {
                     if (input[index] !== "")
                         auth.push(input[index]);
-                    console.log(input[index]);
+                    // console.log(input[index]);
                     index++;
                 }
             }
         }
+        console.log(auth);
         const d = {
             name: words[1],
             file: words[7],

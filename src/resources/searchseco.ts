@@ -218,11 +218,13 @@ export function getMatches(
                     input[index].search(/[-]+/) === -1
                 ) {
                     if (input[index] !== "") auth.push(input[index]);
-                    console.log(input[index]);
+                    // console.log(input[index]);
                     index++;
                 }
             }
         }
+
+        console.log(auth);
 
         const d: MethodData = {
             name: words[1],
