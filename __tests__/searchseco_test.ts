@@ -175,9 +175,77 @@ describe("Test getMatchIndicesOfHash", () => {
 });
 
 describe("Test getMatches", () => {
-    test("Complete Input", () => {
+    test("Full Input", () => {
         const input = [
-            "*Method completeInput", // This is needed, because the function skips the first occurrence of *Method
+            "-----------------------------------------------------------------------------------------------------",
+            'Matched the project at "https://github.com/user/project" against the database.',
+            "-----------------------------------------------------------------------------------------------------",
+            "Summary:",
+            "Methods in checked project: 4",
+            "Matches: 2 (50%)",
+            "Projects found in database:",
+            "Local authors present in matches:",
+            "Authors present in database matches:",
+            "--------------------------------------------------------------------------------------------------------------------------------",
+            "Details of matches found",
+            "--------------------------------------------------------------------------------------------------------------------------------",
+            "---------------",
+            "Hash 1234567890",
+            "---------------",
+            "*Method methodName in file Test.cpp line 24",
+            "Authors of local function:",
+            "Valia Bykova",
+            "DATABASE",
+            "*Method functionName in project projName1 in file file.cpp line 33",
+            "URL: https://github.com/user/project",
+            "Method marked as vulnerable with code: 123(https://www.url-of-vulnerability.com)",
+            "Authors of function found in database:",
+            "Tjibbe Bolhuis",
+            "Rowin Schouten",
+            "*Method functionName in project projName2 in file file.cpp line 39",
+            "URL: https://github.com/user/project",
+            "Method marked as vulnerable with code: 123(https://www.url-of-vulnerability.com)",
+            "Authors of function found in database:",
+            "Quinn Donkers",
+            "Jarno Hendriksen",
+            "---------------",
+            "Hash 9876544322",
+            "---------------",
+            "*Method otherMethod in file OtherFile.cpp line 180",
+            "Authors of local function:",
+            "Bram Lankhorst",
+            "DATABASE",
+            "*Method otherMethod in project projName1 in file file.cpp line 88",
+            "URL: https://github.com/user/project",
+            "Method marked as vulnerable with code: 123(https://www.url-of-vulnerability.com)",
+            "Authors of function found in database:",
+            "Bart Hageman",
+            "Alina Aydin",
+        ];
+
+        const hashlines = ss.getHashIndices(input);
+
+        const hash1matches = ss.getMatches(input, hashlines[0], hashlines[1]);
+        const hash2matches = ss.getMatches(input, hashlines[1], hashlines[2]);
+
+        expect(hash1matches[0].data.authors).toEqual([
+            "Tjibbe Bolhuis",
+            "Rowin Schouten",
+        ]);
+        expect(hash1matches[1].data.authors).toEqual([
+            "Quinn Donkers",
+            "Jarno Hendriksen",
+        ]);
+
+        expect(hash2matches[0].data.authors).toEqual([
+            "Bart Hageman",
+            "Alina Aydin",
+        ]);
+    });
+
+    test("Two Matches, All lines", () => {
+        const input = [
+            "*Method twoMatches", // This is needed, because the function skips the first occurrence of *Method
             "*Method unitTest10 in project SearchSECOController in file print.cpp line 188",
             "URL: https://github.com/secureSECO/SearchSECOController",
             "Method marked as vulnerable with code: 123(https://www.url-of-vulnerability.com)",
