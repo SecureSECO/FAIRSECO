@@ -2982,14 +2982,63 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getCitationFile = void 0;
+const yaml_1 = __importDefault(__nccwpck_require__(1317));
 const fs = __importStar(__nccwpck_require__(7147));
 function getCitationFile() {
     return __awaiter(this, void 0, void 0, function* () {
-        const file = fs.readFileSync("./CITATION.cff");
-        console.log(file.toString());
-        return { ReturnName: "Citation", ReturnData: {} };
+        let file;
+        try {
+            file = fs.readFileSync("./CITATION.cff");
+        }
+        catch (_a) {
+            console.log("WARNING: No citation.cff file found");
+            return {
+                ReturnName: "Citation",
+                ReturnData: { status: "missing_file" },
+            };
+        }
+        let result;
+        try {
+            result = yaml_1.default.parse(file.toString());
+        }
+        catch (_b) {
+            console.log("WARNING: Incorrect format");
+            return {
+                ReturnName: "Citation",
+                ReturnData: { status: "incorrect_format" },
+            };
+        }
+        const required = ["authors", "cff-version", "message", "title"];
+        const missing = [];
+        for (const x of required) {
+            if (result[x] === undefined) {
+                missing.push(x);
+            }
+        }
+        if (missing.length > 0) {
+            return {
+                ReturnName: "Citation",
+                ReturnData: {
+                    status: "missing_attributes",
+                    citation: result,
+                    missing_attributes: missing,
+                },
+            };
+        }
+        else {
+            return {
+                ReturnName: "Citation",
+                ReturnData: {
+                    status: "correct",
+                    citation: result,
+                },
+            };
+        }
     });
 }
 exports.getCitationFile = getCitationFile;
