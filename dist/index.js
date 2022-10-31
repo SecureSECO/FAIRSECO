@@ -4283,7 +4283,7 @@ function getCitationFile() {
             };
         }
         const cmd = "docker";
-        const absPath = path.resolve("CITATION.cff");
+        const absPath = path.resolve(".");
         const args = [
             "run",
             "--rm",
