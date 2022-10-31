@@ -2,6 +2,7 @@ import { ReturnObject } from "../getdata";
 import { getRepoUrl } from "../git";
 
 import { exec, ExecOptions } from "@actions/exec";
+import core from "@actions/core";
 
 export async function runSearchseco(): Promise<ReturnObject> {
     const gitrepo: string = await getRepoUrl();
@@ -11,6 +12,8 @@ export async function runSearchseco(): Promise<ReturnObject> {
     // and the enrtypoint needs to be inserted at the location indicated below.
     const dockerImage = "jarnohendriksen/mockseco:v1";
     const entrypoint = '--entrypoint="./controller/build/searchseco"';
+
+    const ghToken = ""; // core.getInput("GITHUB_TOKEN");
 
     console.debug("SearchSECO started");
     console.debug(
@@ -24,7 +27,7 @@ export async function runSearchseco(): Promise<ReturnObject> {
         "searchseco-container",
         // This is where 'entrypoint' goes
         "-e",
-        '"github_token=uirw3tb4rvtwte"',
+        '"github_token=' + ghToken + '"',
         "-e",
         '"worker_name=test"',
         dockerImage,
