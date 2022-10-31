@@ -4279,7 +4279,7 @@ function getCitationFile() {
             console.log("WARNING: Incorrect format");
             return {
                 ReturnName: "Citation",
-                ReturnData: { status: "incorrect_format" },
+                ReturnData: { status: "incorrect_yaml" },
             };
         }
         const cmd = "docker";
@@ -4314,9 +4314,9 @@ function getCitationFile() {
         return {
             ReturnName: "Citation",
             ReturnData: {
-                status: "exists",
+                status: exitCode === 0 ? "valid" : "validation_error",
                 citation: result,
-                validation_info: stdout.split("\n")[0],
+                validation_error: stdout.split("\n")[0],
             },
         };
     });

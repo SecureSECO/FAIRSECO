@@ -26,7 +26,7 @@ export async function getCitationFile(): Promise<ReturnObject> {
         console.log("WARNING: Incorrect format");
         return {
             ReturnName: "Citation",
-            ReturnData: { status: "incorrect_format" },
+            ReturnData: { status: "incorrect_yaml" },
         };
     }
 
@@ -66,9 +66,9 @@ export async function getCitationFile(): Promise<ReturnObject> {
     return {
         ReturnName: "Citation",
         ReturnData: {
-            status: "exists",
+            status: exitCode === 0 ? "valid" : "validation_error",
             citation: result,
-            validation_info: stdout.split("\n")[0],
+            validation_error: stdout.split("\n")[0],
         },
     };
 }
