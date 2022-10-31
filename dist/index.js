@@ -11243,7 +11243,7 @@ function runSBOM(artifactObject) {
     return __awaiter(this, void 0, void 0, function* () {
         let destination = "";
         if (artifactObject !== undefined) {
-            destination = ".tortellini-unit-test";
+            destination = ".SBOM-unit-test";
         }
         else {
             artifactObject = artifact;

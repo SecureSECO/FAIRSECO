@@ -8,7 +8,7 @@ export async function runSBOM(
     ): Promise<ReturnObject> {
     let destination: string = "";
     if (artifactObject !== undefined) {
-        destination = ".tortellini-unit-test";
+        destination = ".SBOM-unit-test";
     } else {
         artifactObject = artifact;
         destination = ".SBOM-artifact";
