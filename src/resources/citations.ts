@@ -2,6 +2,7 @@ import { ReturnObject } from "../getdata";
 import YAML from "yaml";
 
 import * as fs from "fs";
+import { exec, ExecOptions } from "@actions/exec";
 
 export async function getCitationFile(): Promise<ReturnObject> {
     let file: Buffer;
@@ -28,31 +29,48 @@ export async function getCitationFile(): Promise<ReturnObject> {
         };
     }
 
-    const required: string[] = ["authors", "cff-version", "message", "title"];
-    const missing: string[] = [];
+    const cmd = "docker";
+    const args = [
+        "run",
+        "--rm",
+        "-v",
+        "${PWD}:/app",
+        "citationcff/cffconvert",
+        "--validate"
+    ];
 
-    for (const x of required) {
-        if (result[x] === undefined) {
-            missing.push(x);
-        }
-    }
 
-    if (missing.length > 0) {
-        return {
-            ReturnName: "Citation",
-            ReturnData: {
-                status: "missing_attributes",
-                citation: result,
-                missing_attributes: missing,
-            },
-        };
-    } else {
-        return {
-            ReturnName: "Citation",
-            ReturnData: {
-                status: "correct",
-                citation: result,
-            },
-        };
-    }
+    let stdout = "";
+    let stderr = "";
+
+    const options: ExecOptions = {
+
+        ignoreReturnCode: true,
+    };
+    options.listeners = {
+        stdout: (data: Buffer) => {
+            stdout += data.toString();
+        },
+        stderr: (data: Buffer) => {
+            stderr += data.toString();
+        },
+
+    };
+    const exitCode = await exec(cmd, args, options);
+
+    console.debug("Docker running cffconvert returned " + String(exitCode));
+    console.debug("stdout:");
+    console.debug(stdout);
+    console.debug("stderr:");
+    console.debug(stderr);
+
+    
+    return {
+        ReturnName: "Citation",
+        ReturnData: {
+            status: "exists",
+            citation: result,
+            validation_info: stdout.split('\n')[0]
+        },
+    };
 }
