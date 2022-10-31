@@ -68,7 +68,7 @@ export async function getCitationFile(): Promise<ReturnObject> {
         ReturnData: {
             status: exitCode === 0 ? "valid" : "validation_error",
             citation: result,
-            validation_error: stdout.split("\n")[0],
+            validation_error: stdout.split("\n")[1],
         },
     };
 }
