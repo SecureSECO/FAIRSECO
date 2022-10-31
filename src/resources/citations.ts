@@ -1,5 +1,6 @@
 import { ReturnObject } from "../getdata";
 import YAML from "yaml";
+import * as path from "path";
 
 import * as fs from "fs";
 import { exec, ExecOptions } from "@actions/exec";
@@ -30,21 +31,20 @@ export async function getCitationFile(): Promise<ReturnObject> {
     }
 
     const cmd = "docker";
+    const absPath = path.resolve(".");
     const args = [
         "run",
         "--rm",
         "-v",
-        "${PWD}:/app",
+        absPath + ":/app",
         "citationcff/cffconvert",
-        "--validate"
+        "--validate",
     ];
-
 
     let stdout = "";
     let stderr = "";
 
     const options: ExecOptions = {
-
         ignoreReturnCode: true,
     };
     options.listeners = {
@@ -54,7 +54,6 @@ export async function getCitationFile(): Promise<ReturnObject> {
         stderr: (data: Buffer) => {
             stderr += data.toString();
         },
-
     };
     const exitCode = await exec(cmd, args, options);
 
@@ -64,13 +63,12 @@ export async function getCitationFile(): Promise<ReturnObject> {
     console.debug("stderr:");
     console.debug(stderr);
 
-    
     return {
         ReturnName: "Citation",
         ReturnData: {
             status: "exists",
             citation: result,
-            validation_info: stdout.split('\n')[0]
+            validation_info: stdout.split("\n")[0],
         },
     };
 }

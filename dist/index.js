@@ -4255,6 +4255,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getCitationFile = void 0;
 const yaml_1 = __importDefault(__nccwpck_require__(1317));
+const path = __importStar(__nccwpck_require__(1017));
 const fs = __importStar(__nccwpck_require__(7147));
 const exec_1 = __nccwpck_require__(9710);
 function getCitationFile() {
@@ -4282,13 +4283,14 @@ function getCitationFile() {
             };
         }
         const cmd = "docker";
+        const absPath = path.resolve("CITATION.cff");
         const args = [
             "run",
             "--rm",
             "-v",
-            "${PWD}:/app",
+            absPath + ":/app",
             "citationcff/cffconvert",
-            "--validate"
+            "--validate",
         ];
         let stdout = "";
         let stderr = "";
@@ -4314,7 +4316,7 @@ function getCitationFile() {
             ReturnData: {
                 status: "exists",
                 citation: result,
-                validation_info: stdout.split('\n')[0]
+                validation_info: stdout.split("\n")[0],
             },
         };
     });
