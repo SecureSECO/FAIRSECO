@@ -4281,7 +4281,7 @@ function runSearchseco() {
         // When the real SearchSECO is back, the run command needs to be slightly edited.
         // The docker image needs to be replaced with 'searchseco/controller',
         // and the enrtypoint needs to be inserted at the location indicated below.
-        const dockerImage = "jarnohendriksen/mockseco:v1.1";
+        const dockerImage = "jarnohendriksen/mockseco:v1";
         const entrypoint = '--entrypoint="./controller/build/searchseco"';
         console.debug("SearchSECO started");
         console.debug("WARNING: Running a mock of SearchSECO. The output will be incorrect!");
@@ -4325,10 +4325,11 @@ function runSearchseco() {
         // ParseInput expects an array of trimmed lines
         // (i.e. without trailing or leading whitespace)
         const lines = stdout.split("\n");
-        for (let n = 0; n < lines.length; n++) {
-            lines[n] = lines[n].trim();
+        const filteredlines = lines.filter((x) => x !== "");
+        for (let n = 0; n < filteredlines.length; n++) {
+            filteredlines[n] = filteredlines[n].trim();
         }
-        const output = parseInput(lines);
+        const output = parseInput(filteredlines);
         return {
             ReturnName: "SearchSeco",
             ReturnData: output,
@@ -4361,10 +4362,9 @@ function getHashIndices(input) {
     return indices;
 }
 exports.getHashIndices = getHashIndices;
-// Looks for the first line within a hash that contains '*Method', and extracts
-// the data from the line.
-// The line always looks like: *Method <methodName> in file <filename> line <lineNumber>,
-// so the data are always the 2nd, 5th, and 7th words (index 1, 4, and 6 resp.)
+// This function looks for the first line within a hash that contains '*Method', and extracts
+// the data from the line. This only succeeds if the line has the structure:
+// *Method <methodName> in file <fileName> line <lineNumber>
 function getMethodInfo(input, start, end) {
     const methodDataLine = getMatchIndicesOfHash(input, start, end);
     const words = input[methodDataLine[0]].split(" ").filter((x) => x);
@@ -4423,7 +4423,6 @@ function getMatches(input, start, end) {
         // List of authors always starts two lines below the line
         // with method data, and ends before the next *Method or
         // the next Hash header (a string of dashes)
-        console.log(input[0]);
         let index = firstAuthorLine;
         if (index < end) {
             if (input[index - 1].includes("Authors of function found in database:")) {
@@ -4432,12 +4431,10 @@ function getMatches(input, start, end) {
                     input[index].search(/[-]+/) === -1) {
                     if (input[index] !== "")
                         auth.push(input[index]);
-                    // console.log(input[index]);
                     index++;
                 }
             }
         }
-        console.log(auth);
         const d = {
             name: words[1],
             file: words[7],

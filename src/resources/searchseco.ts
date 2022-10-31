@@ -9,7 +9,7 @@ export async function runSearchseco(): Promise<ReturnObject> {
     // When the real SearchSECO is back, the run command needs to be slightly edited.
     // The docker image needs to be replaced with 'searchseco/controller',
     // and the enrtypoint needs to be inserted at the location indicated below.
-    const dockerImage = "jarnohendriksen/mockseco:v1.1";
+    const dockerImage = "jarnohendriksen/mockseco:v1";
     const entrypoint = '--entrypoint="./controller/build/searchseco"';
 
     console.debug("SearchSECO started");
@@ -62,12 +62,13 @@ export async function runSearchseco(): Promise<ReturnObject> {
     // ParseInput expects an array of trimmed lines
     // (i.e. without trailing or leading whitespace)
     const lines = stdout.split("\n");
+    const filteredlines = lines.filter((x) => x !== "");
 
-    for (let n = 0; n < lines.length; n++) {
-        lines[n] = lines[n].trim();
+    for (let n = 0; n < filteredlines.length; n++) {
+        filteredlines[n] = filteredlines[n].trim();
     }
 
-    const output: Output = parseInput(lines);
+    const output: Output = parseInput(filteredlines);
 
     return {
         ReturnName: "SearchSeco",
@@ -132,10 +133,9 @@ export function getHashIndices(input: String[]): number[] {
     return indices;
 }
 
-// Looks for the first line within a hash that contains '*Method', and extracts
-// the data from the line.
-// The line always looks like: *Method <methodName> in file <filename> line <lineNumber>,
-// so the data are always the 2nd, 5th, and 7th words (index 1, 4, and 6 resp.)
+// This function looks for the first line within a hash that contains '*Method', and extracts
+// the data from the line. This only succeeds if the line has the structure:
+// *Method <methodName> in file <fileName> line <lineNumber>
 export function getMethodInfo(
     input: String[],
     start: number,
@@ -204,7 +204,6 @@ export function getMatches(
         // List of authors always starts two lines below the line
         // with method data, and ends before the next *Method or
         // the next Hash header (a string of dashes)
-        console.log(input[0]);
         let index = firstAuthorLine;
         if (index < end) {
             if (
@@ -218,13 +217,10 @@ export function getMatches(
                     input[index].search(/[-]+/) === -1
                 ) {
                     if (input[index] !== "") auth.push(input[index]);
-                    // console.log(input[index]);
                     index++;
                 }
             }
         }
-
-        console.log(auth);
 
         const d: MethodData = {
             name: words[1],

@@ -1,4 +1,5 @@
 import * as ss from "../src/resources/searchseco";
+import YAML from "yaml";
 
 describe("Test getHashIndices", () => {
     test("Single Hash", () => {
@@ -196,13 +197,13 @@ describe("Test getMatches", () => {
             "Authors of local function:",
             "Valia Bykova",
             "DATABASE",
-            "*Method functionName in project projName1 in file file.cpp line 33",
+            "*Method functionName1 in project projName1 in file file.ts line 33",
             "URL: https://github.com/user/project",
             "Method marked as vulnerable with code: 123(https://www.url-of-vulnerability.com)",
             "Authors of function found in database:",
             "Tjibbe Bolhuis",
             "Rowin Schouten",
-            "*Method functionName in project projName2 in file file.cpp line 39",
+            "*Method functionName2 in project projName2 in file file.cpp line 39",
             "URL: https://github.com/user/project",
             "Method marked as vulnerable with code: 123(https://www.url-of-vulnerability.com)",
             "Authors of function found in database:",
@@ -228,19 +229,47 @@ describe("Test getMatches", () => {
         const hash1matches = ss.getMatches(input, hashlines[0], hashlines[1]);
         const hash2matches = ss.getMatches(input, hashlines[1], hashlines[2]);
 
+        expect(hash1matches[0].data.name).toBe("functionName1");
+        expect(hash1matches[0].data.file).toBe("file.ts");
+        expect(hash1matches[0].data.project).toBe("projName1");
+        expect(hash1matches[0].data.line).toBe(33);
         expect(hash1matches[0].data.authors).toEqual([
             "Tjibbe Bolhuis",
             "Rowin Schouten",
         ]);
+
+        expect(hash1matches[0].vuln.code).toBe(123);
+        expect(hash1matches[0].vuln.url).toBe(
+            "https://www.url-of-vulnerability.com"
+        );
+
+        expect(hash1matches[1].data.name).toBe("functionName2");
+        expect(hash1matches[1].data.file).toBe("file.cpp");
+        expect(hash1matches[1].data.project).toBe("projName2");
+        expect(hash1matches[1].data.line).toBe(39);
         expect(hash1matches[1].data.authors).toEqual([
             "Quinn Donkers",
             "Jarno Hendriksen",
         ]);
 
+        expect(hash1matches[1].vuln.code).toBe(123);
+        expect(hash1matches[1].vuln.url).toBe(
+            "https://www.url-of-vulnerability.com"
+        );
+
+        expect(hash2matches[0].data.name).toBe("otherMethod");
+        expect(hash2matches[0].data.file).toBe("file.cpp");
+        expect(hash2matches[0].data.project).toBe("projName1");
+        expect(hash2matches[0].data.line).toBe(88);
         expect(hash2matches[0].data.authors).toEqual([
             "Bart Hageman",
             "Alina Aydin",
         ]);
+
+        expect(hash2matches[0].vuln.code).toBe(123);
+        expect(hash2matches[0].vuln.url).toBe(
+            "https://www.url-of-vulnerability.com"
+        );
     });
 
     test("Two Matches, All lines", () => {
@@ -396,4 +425,129 @@ describe("Test getMatches", () => {
         expect(res1.vuln.code).toBe(-1);
         expect(res1.vuln.url).toBe("-");
     });
+});
+
+describe("Test parseInput", () => {
+    test("Full Input", () => {
+        const input = [
+            "-----------------------------------------------------------------------------------------------------",
+            'Matched the project at "https://github.com/user/project" against the database.',
+            "-----------------------------------------------------------------------------------------------------",
+            "Summary:",
+            "Methods in checked project: 4",
+            "Matches: 2 (50%)",
+            "Projects found in database:",
+            "Local authors present in matches:",
+            "Authors present in database matches:",
+            "--------------------------------------------------------------------------------------------------------------------------------",
+            "Details of matches found",
+            "--------------------------------------------------------------------------------------------------------------------------------",
+            "---------------",
+            "Hash 1234567890",
+            "---------------",
+            "*Method methodName in file Test.cpp line 24",
+            "Authors of local function:",
+            "Valia Bykova",
+            "DATABASE",
+            "*Method functionName in project projName1 in file file.cpp line 33",
+            "URL: https://github.com/user/project",
+            "Method marked as vulnerable with code: 123(https://www.url-of-vulnerability.com)",
+            "Authors of function found in database:",
+            "Tjibbe Bolhuis",
+            "Rowin Schouten",
+            "*Method functionName in project projName2 in file file.cpp line 39",
+            "URL: https://github.com/user/project",
+            "Method marked as vulnerable with code: 123(https://www.url-of-vulnerability.com)",
+            "Authors of function found in database:",
+            "Quinn Donkers",
+            "Jarno Hendriksen",
+            "---------------",
+            "Hash 9876544322",
+            "---------------",
+            "*Method otherMethod in file OtherFile.cpp line 180",
+            "Authors of local function:",
+            "Bram Lankhorst",
+            "DATABASE",
+            "*Method otherMethod in project projName1 in file file.cpp line 88",
+            "URL: https://github.com/user/project",
+            "Method marked as vulnerable with code: 123(https://www.url-of-vulnerability.com)",
+            "Authors of function found in database:",
+            "Bart Hageman",
+            "Alina Aydin",
+        ];
+
+        const result = ss.parseInput(input);
+
+        expect(result.methods[0].hash).toBe("1234567890");
+        expect(result.methods[0].data.name).toBe("methodName");
+        expect(result.methods[0].data.file).toBe("Test.cpp");
+        expect(result.methods[0].data.line).toBe(24);
+        expect(result.methods[0].data.authors).toEqual(["Valia Bykova"]);
+
+        expect(result.methods[1].hash).toBe("9876544322");
+        expect(result.methods[1].data.name).toBe("otherMethod");
+        expect(result.methods[1].data.file).toBe("OtherFile.cpp");
+        expect(result.methods[1].data.line).toBe(180);
+        expect(result.methods[1].data.authors).toEqual(["Bram Lankhorst"]);
+
+        const hash1matches = result.methods[0].matches;
+        const hash2matches = result.methods[1].matches;
+
+        expect(hash1matches[0].data.name).toBe("functionName1");
+        expect(hash1matches[0].data.file).toBe("file.ts");
+        expect(hash1matches[0].data.project).toBe("projName1");
+        expect(hash1matches[0].data.line).toBe(33);
+        expect(hash1matches[0].data.authors).toEqual([
+            "Tjibbe Bolhuis",
+            "Rowin Schouten",
+        ]);
+
+        expect(hash1matches[0].vuln.code).toBe(123);
+        expect(hash1matches[0].vuln.url).toBe(
+            "https://www.url-of-vulnerability.com"
+        );
+
+        expect(hash1matches[1].data.name).toBe("functionName2");
+        expect(hash1matches[1].data.file).toBe("file.cpp");
+        expect(hash1matches[1].data.project).toBe("projName2");
+        expect(hash1matches[1].data.line).toBe(39);
+        expect(hash1matches[1].data.authors).toEqual([
+            "Quinn Donkers",
+            "Jarno Hendriksen",
+        ]);
+
+        expect(hash1matches[1].vuln.code).toBe(123);
+        expect(hash1matches[1].vuln.url).toBe(
+            "https://www.url-of-vulnerability.com"
+        );
+
+        expect(hash2matches[0].data.name).toBe("otherMethod");
+        expect(hash2matches[0].data.file).toBe("file.cpp");
+        expect(hash2matches[0].data.project).toBe("projName1");
+        expect(hash2matches[0].data.line).toBe(88);
+        expect(hash2matches[0].data.authors).toEqual([
+            "Bart Hageman",
+            "Alina Aydin",
+        ]);
+
+        expect(hash2matches[0].vuln.code).toBe(123);
+        expect(hash2matches[0].vuln.url).toBe(
+            "https://www.url-of-vulnerability.com"
+        );
+    });
+});
+
+test("Test runSearchSECO", async () => {
+    jest.setTimeout(15000);
+    const result = await ss.runSearchseco();
+
+    const ssData: any = result.ReturnData;
+
+    // Since the previous tests already check if the data is processed correctly,
+    // we only need to check if SearchSECO gets executed at all, and if it can
+    // create some kind of output. If the output is a non-empty object,
+    // we know that it has succeeded.
+    expect(result.ReturnName).toBe("SearchSeco");
+    expect(result.ReturnData).toBeTruthy();
+    expect(result.ReturnData).not.toEqual({});
 });
