@@ -4059,7 +4059,7 @@ function data() {
         //     console.error(error);
         // }
         try {
-            const cffResult = yield (0, citations_1.getCitationFile)("./__tests__/citation_files/CITATION-no-cff-version.cff");
+            const cffResult = yield (0, citations_1.getCitationFile)("./CITATION.cff");
             output.push(cffResult);
         }
         catch (error) {
@@ -4255,12 +4255,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getError = exports.getCitationFile = void 0;
 const yaml_1 = __importDefault(__nccwpck_require__(1317));
-const path = __importStar(__nccwpck_require__(1017));
+const path_ = __importStar(__nccwpck_require__(1017));
 const fs = __importStar(__nccwpck_require__(7147));
 const exec_1 = __nccwpck_require__(9710);
-function getCitationFile(filePath = "./CITATION.cff") {
+function getCitationFile(path) {
     return __awaiter(this, void 0, void 0, function* () {
         let file;
+        let filePath;
+        if (path === undefined)
+            filePath = "./CITATION.cff";
+        else
+            filePath = path;
         try {
             file = fs.readFileSync(filePath);
         }
@@ -4285,7 +4290,7 @@ function getCitationFile(filePath = "./CITATION.cff") {
             };
         }
         const cmd = "docker";
-        const absPath = path.resolve(".");
+        const absPath = path_.resolve(filePath);
         const args = [
             "run",
             "--rm",

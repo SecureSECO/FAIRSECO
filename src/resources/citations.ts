@@ -1,6 +1,6 @@
 import { ReturnObject } from "../getdata";
 import YAML from "yaml";
-import * as path from "path";
+import * as path_ from "path";
 
 import * as fs from "fs";
 import { exec, ExecOptions } from "@actions/exec";
@@ -31,10 +31,12 @@ export interface ValidationErrorCFFObject {
     validation_message: string;
 }
 
-export async function getCitationFile(
-    filePath: string = "./CITATION.cff"
-): Promise<ReturnObject> {
+export async function getCitationFile(path?: string): Promise<ReturnObject> {
     let file: Buffer;
+
+    let filePath;
+    if (path === undefined) filePath = "./CITATION.cff";
+    else filePath = path;
 
     try {
         file = fs.readFileSync(filePath);
@@ -61,7 +63,7 @@ export async function getCitationFile(
     }
 
     const cmd = "docker";
-    const absPath = path.resolve(".");
+    const absPath = path_.resolve(filePath);
     const args = [
         "run",
         "--rm",

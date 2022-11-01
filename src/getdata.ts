@@ -35,9 +35,7 @@ export async function data(): Promise<ReturnObject[]> {
     // }
 
     try {
-        const cffResult = await getCitationFile(
-            "./__tests__/citation_files/CITATION-no-cff-version.cff"
-        );
+        const cffResult = await getCitationFile("./CITATION.cff");
         output.push(cffResult);
     } catch (error) {
         console.error("Getting CITATION.cff caused an error:");

@@ -1,6 +1,7 @@
 import * as cff from "../src/resources/citations";
 
 describe("Test getCitationFile", () => {
+    jest.setTimeout(60000);
     test("Correct", async () => {
         const result = await cff.getCitationFile(
             "./__tests__/citation_files/CITATION-correct.cff"
@@ -96,9 +97,9 @@ describe("Test getCitationFile", () => {
 
         console.log(cffData);
 
-        expect(cffData.status).toBe("valid");
+        expect(cffData.status).toBe("validation_error");
 
-        if (cffData.status == "valid") {
+        if (cffData.status == "validation_error") {
             expect(cffData.citation["cff-version"]).not.toBeUndefined();
             expect(cffData.citation).toHaveProperty("title");
             expect(cffData.citation).toHaveProperty("authors");
@@ -124,6 +125,27 @@ describe("Test getCitationFile", () => {
             expect(cffData.citation).toHaveProperty("title");
             expect(cffData.citation).toHaveProperty("authors");
             expect(cffData.citation).toHaveProperty("message");
+        }
+    });
+
+    test("No message", async () => {
+        const result = await cff.getCitationFile(
+            "./__tests__/citation_files/CITATION-no-message.cff"
+        );
+
+        const cffData: cff.CFFObject = result.ReturnData as cff.CFFObject;
+
+        console.log(result);
+
+        console.log(cffData);
+
+        expect(cffData.status).toBe("validation_error");
+
+        if (cffData.status == "validation_error") {
+            expect(cffData.citation["cff-version"]).toBeUndefined();
+            expect(cffData.citation).toHaveProperty("title");
+            expect(cffData.citation).toHaveProperty("authors");
+            expect(cffData.citation).not.toHaveProperty("message");
         }
     });
 
