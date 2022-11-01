@@ -19,9 +19,6 @@ jobs:
               with:
                   artifact-name: SBOM.spdx
             - uses: ./
-            - uses: christian-korneck/delete-run-artifacts-action@v1
-              env:
-               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             - uses: actions/upload-artifact@v3
               with:
                   name: FairSECO Result
