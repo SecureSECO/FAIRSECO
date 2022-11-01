@@ -8,8 +8,6 @@ jobs:
     RunFairSECO:
         runs-on: ubuntu-latest
         steps:
-            - name: Delete workflow runs
-              uses: Mattraks/delete-workflow-runs@v2
             - uses: actions/checkout@v3
             - uses: tortellini-tools/action@main
             - uses: Mattraks/delete-workflow-runs@v2.0.3
