@@ -1,7 +1,7 @@
 import { runTortellini } from "./resources/tortellini";
 import { runHowfairis } from "./resources/howfairis";
 import { runSearchseco } from "./resources/searchseco";
-import { getCitationFile } from "./resources/citations";
+import { getCitationFile } from "./resources/citation_cff";
 
 export interface ReturnObject {
     ReturnName: string;
