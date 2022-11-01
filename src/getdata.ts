@@ -35,10 +35,12 @@ export async function data(): Promise<ReturnObject[]> {
     // }
 
     try {
-        const tortelliniResult = await getCitationFile();
-        output.push(tortelliniResult);
+        const cffResult = await getCitationFile(
+            "./__tests__/citation_files/CITATION-no-cff-version.cff"
+        );
+        output.push(cffResult);
     } catch (error) {
-        console.error("Tortellini threw an error:");
+        console.error("Getting CITATION.cff caused an error:");
         console.error(error);
     }
 

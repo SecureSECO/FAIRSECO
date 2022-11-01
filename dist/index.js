@@ -4059,11 +4059,11 @@ function data() {
         //     console.error(error);
         // }
         try {
-            const tortelliniResult = yield (0, citations_1.getCitationFile)();
-            output.push(tortelliniResult);
+            const cffResult = yield (0, citations_1.getCitationFile)("./__tests__/citation_files/CITATION-no-cff-version.cff");
+            output.push(cffResult);
         }
         catch (error) {
-            console.error("Tortellini threw an error:");
+            console.error("Getting CITATION.cff caused an error:");
             console.error(error);
         }
         return output;
@@ -4253,22 +4253,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getCitationFile = void 0;
+exports.getError = exports.getCitationFile = void 0;
 const yaml_1 = __importDefault(__nccwpck_require__(1317));
 const path = __importStar(__nccwpck_require__(1017));
 const fs = __importStar(__nccwpck_require__(7147));
 const exec_1 = __nccwpck_require__(9710);
-function getCitationFile() {
+function getCitationFile(filePath = "./CITATION.cff") {
     return __awaiter(this, void 0, void 0, function* () {
         let file;
         try {
-            file = fs.readFileSync("./CITATION.cff");
+            file = fs.readFileSync(filePath);
         }
         catch (_a) {
             console.log("WARNING: No citation.cff file found");
+            const returnData = { status: "missing_file" };
             return {
                 ReturnName: "Citation",
-                ReturnData: { status: "missing_file" },
+                ReturnData: returnData,
             };
         }
         let result;
@@ -4277,9 +4278,10 @@ function getCitationFile() {
         }
         catch (_b) {
             console.log("WARNING: Incorrect format");
+            const returnData = { status: "incorrect_yaml" };
             return {
                 ReturnName: "Citation",
-                ReturnData: { status: "incorrect_yaml" },
+                ReturnData: returnData,
             };
         }
         const cmd = "docker";
@@ -4311,17 +4313,41 @@ function getCitationFile() {
         console.debug(stdout);
         console.debug("stderr:");
         console.debug(stderr);
-        return {
-            ReturnName: "Citation",
-            ReturnData: {
-                status: exitCode === 0 ? "valid" : "validation_error",
+        if (exitCode === 0) {
+            const returnData = {
+                status: "valid",
                 citation: result,
-                validation_error: stdout.split("\n")[1],
-            },
-        };
+                validation_message: stdout,
+            };
+            return {
+                ReturnName: "Citation",
+                ReturnData: returnData,
+            };
+        }
+        else {
+            const returnData = {
+                status: "validation_error",
+                citation: result,
+                validation_message: getError(stderr),
+            };
+            return {
+                ReturnName: "Citation",
+                ReturnData: returnData,
+            };
+        }
     });
 }
 exports.getCitationFile = getCitationFile;
+function getError(stderr) {
+    const lines = stderr.split("\n");
+    for (const x of lines) {
+        const first = x.split(" ")[0];
+        if (first === null || first === void 0 ? void 0 : first.includes("Error:"))
+            return x;
+    }
+    return "Unknown error";
+}
+exports.getError = getError;
 
 
 /***/ }),
