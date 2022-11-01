@@ -21,7 +21,6 @@ jobs:
             - uses: anchore/sbom-action@v0
               with:
                   artifact-name: SBOM.spdx
-
             - uses: ./
             - uses: actions/upload-artifact@v3
               with:
