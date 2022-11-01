@@ -10,7 +10,6 @@ jobs:
         steps:
             - uses: actions/checkout@v3
             - uses: tortellini-tools/action@main
-            - uses: Mattraks/delete-workflow-runs@v2.0.3
             - uses: actions/upload-artifact@v3
               with:
                   name: tortellini-result
