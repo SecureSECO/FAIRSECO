@@ -3,6 +3,7 @@ import { Artifact, getArtifactData, getFileFromArtifact } from "./helperfunction
 import * as artifact from "@actions/artifact";
 import YAML from "yaml";
 
+// Get the SBOM info from the file
 export async function runSBOM(
     artifactObject?: Artifact
     ): Promise<ReturnObject> {
@@ -14,6 +15,7 @@ export async function runSBOM(
         destination = ".SBOM-artifact";
     }
 
+    // Get the SBOM file
     const downloadResponse = await getArtifactData(
         "SBOM.spdx",
         destination,

@@ -2,7 +2,7 @@ import * as tort from "../src/resources/tortellini";
 import * as art from "../src/resources/helperfunctions/artifact"
 import { expect, test } from "@jest/globals";
 
-const mockArtifact = createMockArtifact();
+const mockArtifact = art.createMockArtifact();
 
 test("Check if a correct downloadResponse is generated", async () => {
     const dlResponse = await art.getArtifactData(
@@ -68,27 +68,3 @@ test("Test if runTortellini returns a correct ReturnObject", async () => {
     expect(viol).toHaveProperty("message");
     expect(viol).toHaveProperty("how_to_fix");
 });
-
-function createMockArtifact(): art.Artifact {
-    // Create DLArtFunc
-    const downloadArt: art.DLArtFunc = function (
-        name: string,
-        path?: string | undefined,
-        options?: art.DownloadOptions
-    ) {
-        return { artifactName: name, downloadPath: path };
-    };
-
-    // Create TestClient
-    const client: art.TestClient = { downloadArtifact: downloadArt };
-
-    // Create create function
-    const create_ = function () {
-        return client;
-    };
-
-    const testArt: art.TestArtifact = { create: create_ };
-
-    // Create TestArtifact
-    return testArt;
-}

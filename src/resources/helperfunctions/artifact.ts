@@ -59,3 +59,28 @@ export async function getFileFromArtifact(
 
     return buffer.toString();
 }
+
+export function createMockArtifact(): Artifact {
+    // Create DLArtFunc
+    const downloadArt: DLArtFunc = function (
+        name: string,
+        path?: string | undefined,
+        options?: DownloadOptions
+    ) {
+        return { artifactName: name, downloadPath: path };
+    };
+
+    // Create TestClient
+    const client: TestClient = { downloadArtifact: downloadArt };
+
+    // Create create function
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    const create_ = function () {
+        return client;
+    };
+
+    const testArt: TestArtifact = { create: create_ };
+
+    // Create TestArtifact
+    return testArt;
+}
