@@ -40,7 +40,23 @@
             }
             //
 
-            
+            let violations = tortellini.violations;
+
+
+            // Violations object
+            // .how_to_fix
+            // .license
+            // .license_source
+            // .message
+            // .pkg
+            // .rule
+            // .severity
+            for (let i = 0; i < violations.length; i++){
+                let violation = violations[i];
+                
+                // Add them to the webapp
+                
+            }
 
 
             // Debugging
