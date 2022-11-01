@@ -103,18 +103,26 @@ export async function getGithubInfo(): Promise<GithubInfo> {
         Contributors: [],
     };
     const ghtoken = core.getInput("myToken");
-    ghinfo.Repo  = core.getInput("repository").split('/')[1];
-    ghinfo.Owner = core.getInput("repository").split('/')[0];
+    ghinfo.Repo = core.getInput("repository").split("/")[1];
+    ghinfo.Owner = core.getInput("repository").split("/")[0];
     ghinfo.GithubToken = ghtoken;
     ghinfo.FullURL = await getRepoUrl();
-    const ghstats: RepoStats = await getRepoStats(owner, repo, ghtoken);
+    const ghstats: RepoStats = await getRepoStats(
+        ghinfo.Owner,
+        ghinfo.Repo,
+        ghtoken
+    );
     ghinfo.Stars = ghstats.stars;
     ghinfo.Forks = ghstats.forks;
     ghinfo.Watched = ghstats.forks;
     ghinfo.Visibility = ghstats.visibility;
-    ghinfo.Readme = await getRepoReadme(owner, repo, ghtoken);
+    ghinfo.Readme = await getRepoReadme(ghinfo.Owner, ghinfo.Repo, ghtoken);
     ghinfo.Badges = filterBadgeURLS(ghinfo.Readme);
-    ghinfo.Contributors = await getContributors(owner, repo, ghtoken);
+    ghinfo.Contributors = await getContributors(
+        ghinfo.Owner,
+        ghinfo.Repo,
+        ghtoken
+    );
     return ghinfo;
 }
 
