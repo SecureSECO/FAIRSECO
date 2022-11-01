@@ -15,6 +15,7 @@
             var tortellini;
             var howFairIs;
             var searchSeco;
+            var SBOM;
             //
 
             // A generic way of storing the different data in vars
@@ -30,11 +31,17 @@
                     case "SearchSeco":
                         searchSeco = element.ReturnData;
                         break;
+                    case "SBOM":
+                        SBOM = element.ReturnData;
+                        break;
                     default:
                         break;
                 }
             }
             //
+
+            
+
 
             // Debugging
             console.log("Tortellini:");
@@ -43,6 +50,8 @@
             console.log(howFairIs);
             console.log("SearchSeco:")            
             console.log(searchSeco);
+            console.log("SBOM:")            
+            console.log(SBOM);
             //
 
             // Try to place an element on the page (HowFairIs badge in this case)
