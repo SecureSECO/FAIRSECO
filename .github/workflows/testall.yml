@@ -5,7 +5,7 @@ name: Test all
 
 on:
     push:
-        branches: ["main", "SBOM"]
+        branches: ["main"]
     pull_request:
         branches: ["main"]
 
