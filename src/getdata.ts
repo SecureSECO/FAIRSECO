@@ -1,6 +1,7 @@
 import { runTortellini } from "./resources/tortellini";
 import { runHowfairis } from "./resources/howfairis";
 import { runSearchseco } from "./resources/searchseco";
+import { runScholarly } from "./resources/scholarly";
 
 export interface ReturnObject {
     ReturnName: string;
@@ -8,7 +9,7 @@ export interface ReturnObject {
 }
 export async function data(): Promise<ReturnObject[]> {
     const output: ReturnObject[] = [];
-    
+    /*
     try {
         const tortelliniResult = await runTortellini();
         output.push(tortelliniResult);
@@ -32,6 +33,15 @@ export async function data(): Promise<ReturnObject[]> {
         console.error("Searchseco threw an error:");
         console.error(error);
     }
+    */
 
+    try {
+        const scholarlyResult = await runScholarly("Autocalibration of accelerometer data for free-living physical activity assessment using local gravity and temperature: an evaluation on four continents");
+        output.push(scholarlyResult);
+    } catch (error) {
+        console.error("Scholarly threw an error:");
+        console.error(error);
+    }
+    
     return output;
 }
