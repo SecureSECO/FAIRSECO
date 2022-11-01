@@ -4059,7 +4059,7 @@ function data() {
         //     console.error(error);
         // }
         try {
-            const cffResult = yield (0, citations_1.getCitationFile)("./CITATION.cff");
+            const cffResult = yield (0, citations_1.getCitationFile)(".");
             output.push(cffResult);
         }
         catch (error) {
@@ -4263,11 +4263,11 @@ function getCitationFile(path) {
         let file;
         let filePath;
         if (path === undefined)
-            filePath = "./CITATION.cff";
+            filePath = ".";
         else
             filePath = path;
         try {
-            file = fs.readFileSync(filePath);
+            file = fs.readFileSync(filePath + "/CITATION.cff");
         }
         catch (_a) {
             console.log("WARNING: No citation.cff file found");

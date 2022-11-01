@@ -35,11 +35,11 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
     let file: Buffer;
 
     let filePath;
-    if (path === undefined) filePath = "./CITATION.cff";
+    if (path === undefined) filePath = ".";
     else filePath = path;
 
     try {
-        file = fs.readFileSync(filePath);
+        file = fs.readFileSync(filePath + "/CITATION.cff");
     } catch {
         console.log("WARNING: No citation.cff file found");
         const returnData: MissingCFFObject = { status: "missing_file" };
