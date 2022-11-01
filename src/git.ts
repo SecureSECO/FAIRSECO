@@ -88,13 +88,10 @@ export async function getRepoStats(
 }
 
 // Create github info object with all data collected from Octokit API
-export async function getGithubInfo(
-    owner: string,
-    repo: string
-): Promise<GithubInfo> {
+export async function getGithubInfo(): Promise<GithubInfo> {
     const ghinfo: GithubInfo = {
-        Owner: owner,
-        Repo: repo,
+        Owner: "",
+        Repo: "",
         GithubToken: "",
         FullURL: "",
         Stars: 0,
@@ -106,6 +103,8 @@ export async function getGithubInfo(
         Contributors: [],
     };
     const ghtoken = core.getInput("myToken");
+    ghinfo.Repo  = core.getInput("repository").split('/')[1];
+    ghinfo.Owner = core.getInput("repository").split('/')[0];
     ghinfo.GithubToken = ghtoken;
     ghinfo.FullURL = await getRepoUrl();
     const ghstats: RepoStats = await getRepoStats(owner, repo, ghtoken);
