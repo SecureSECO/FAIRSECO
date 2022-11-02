@@ -516,9 +516,8 @@ body {
                 
                 // Add them to the webapp
                 violationsEntryClone = violationsEntryClone.cloneNode(true);
-                console.log(violationsEntryClone.childNodes.length());
                 console.log(violationsEntryClone.childNodes.length);
-                console.log(violationsEntryClone.childNodes[1].childNodes[0].nodeValue)
+                console.log(violationsEntryClone.childNodes);
                 //violationsEntryClone.childNodes[1].nodeValue = violation.pkg;
                 //violationsEntryClone.childNodes[2].nodeValue = violation.rule;
                 violationsEntryClone.childNodes[3].nodeValue = violation.message;
