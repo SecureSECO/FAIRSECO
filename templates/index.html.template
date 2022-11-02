@@ -1063,13 +1063,23 @@ body {
                 badgeImg.setAttribute("alt", "howfairis badge");
                 //let badge = createRow("Badge", badgeImg);
                 let check = createRow("Checklist", document.createTextNode(howFairIs[0].checklist));
+
+                let badge = document.createElement("tr");
+                let label_ = document.createElement("td");
+                let value_ = document.createElement("td");
+                label_.appendChild(document.createTextNode("Badge"));
+                value_.appendChild(document.createTextNode(badgeImg));
+                badge.appendChild(label_);
+                badge.appendChild(value_);
+
+
                 let citation = createRow("Citation", document.createTextNode(howFairIs[0].citation));
                 let license = createRow("License", document.createTextNode(howFairIs[0].license));
                 let registry = createRow("Registry", document.createTextNode(howFairIs[0].registry));
                 let repository = createRow("Repository", document.createTextNode(howFairIs[0].repository));
 
                 fairnessTable.appendChild(fairScore);
-                //fairnessTable.appendChild(badge);
+                fairnessTable.appendChild(badge);
                 fairnessTable.appendChild(check);
                 fairnessTable.appendChild(citation);
                 fairnessTable.appendChild(license);
@@ -1083,9 +1093,7 @@ body {
                 let value_ = document.createElement("td");
                 console.log(5);
                 label_.appendChild(document.createTextNode(label));
-                console.log("val");
-                console.log(value);
-                value_.appendChild(value.node);
+                value_.appendChild(document.createTextNode(howFairIs[0].checklist));
                 row.appendChild(label_);
                 row.appendChild(value_);
 
