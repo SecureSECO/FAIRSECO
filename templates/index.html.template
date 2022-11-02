@@ -499,20 +499,6 @@ body {
             let violations = tortellini.violations;
             //console.log(document.getElementById("licensesContent").childNodes)
             let violationsTable = document.getElementById("licensesContent").childNodes[1];
-            let violationsEntry = violationsTable.childNodes[1];
-            let violationsEntryClone = violationsEntry.cloneNode(true);
-            console.log(document.getElementById("licensesContent"));
-            console.log(violationsTable);
-            console.log(violationsEntry);
-            console.log(1);
-            console.log(violationsTable.childNodes);
-            console.log(violationsTable.childNodes[0]);
-            console.log(violationsTable.childNodes[1]);
-            console.log(violationsEntryClone.childNodes);
-
-            violationsTable.removeChild(violationsEntry);
-            console.log(violationsEntry.childNodes);
-            console.log(violationsEntryClone.childNodes);
             // Violations object
             // .how_to_fix
             // .license
@@ -523,14 +509,27 @@ body {
             // .severity
             for (let i = 0; i < violations.length; i++){
                 let violation = violations[i];
-                
+                let tr = document.createElement("tr");
+                let td1 = document.createElement("td");
+                let btn = document.createElement("button");
+                btn.setAttribute("class","emergency")
+                let textNode1 = document.createTextNode("!");
+                btn.appendChild(textNode1);
+                td1.appendChild(btn);
+                let td2 = document.createElement("td");
+                let textNode2 = document.createTextNode(violation.pkg);
+                td2.appendChild(textNode2);
+                let td3 = document.createElement("td");
+                let textNode3 = document.createTextNode(violation.rule);
+                td3.appendChild(textNode3);
+                let td4 = document.createElement("td");
+                let textNode4 = document.createTextNode(violation.message);
+                td4.appendChild(textNode4);
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                tr.appendChild(td3);
+                tr.appendChild(td4);
                 // Add them to the webapp
-                violationsEntryClone = violationsEntryClone.cloneNode(true);
-                console.log(violationsEntryClone);
-                console.log(violationsEntryClone.childNodes[3].textContent);
-                violationsEntryClone.childNodes[3].firstChild.textContent = violation.pkg;
-                violationsEntryClone.childNodes[5].firstChild.textContent = violation.rule;
-                violationsEntryClone.childNodes[7].firstChild.textContent = violation.message;
                 violationsTable.appendChild(violationsEntryClone);
             }
 
