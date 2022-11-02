@@ -394,7 +394,7 @@ body {
                 <div id="Overview" class="tabcontent">
                     <h3>Overview</h3>
                     <p>
-                        <table class="table_content">
+                        <table class="table_content" id="licensesContent">
                             <tr>
                               <th></th> 
                               <th>Package</th>
@@ -497,7 +497,11 @@ body {
             //
 
             let violations = tortellini.violations;
+            let violationsTable = document.getElementById("licensesContent");
+            let violationsEntry = violationsTable.childNodes.item(1);
+            let violationsEntryClone = violationsEntry.cloneNode(true);
 
+            violationsTable.removeChild(violationsEntry);
 
             // Violations object
             // .how_to_fix
