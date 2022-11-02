@@ -774,10 +774,7 @@ body {
                     <h3>FAIRness</h3>
                     <p>
                         <table class="table_content" id="fairnessTable">
-                            <tr>
-                                <td>Fairness Score</td>
-                                <td></td>
-                            </tr>
+                            
                         </table>
                     </p>
                 </div>
@@ -1010,7 +1007,7 @@ body {
             let violations = tortellini.violations;
             //console.log(document.getElementById("licensesContent").childNodes)
             let violationsTable = document.getElementById("licensesContent").childNodes[1];
-            let fairnessTable = document.getElementById("fairnessTable");
+            let fairnessTable = document.getElementById("fairnessTable").childNodes[0];
             // Violations object
             // .how_to_fix
             // .license
