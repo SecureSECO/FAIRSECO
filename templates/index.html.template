@@ -974,7 +974,13 @@ body {
             document.getElementById("defaultOpen").click();
             //
 
-            // Initialisation
+            // If you wanna work on this outside the github acton environment:
+            // Comment out 'var allData = {{node inserts the data here}};', It's the first code in function fairSeco.
+            // Comment out the function call fairSeco, directly under this sentence:
+            fairSeco();
+
+            function fairSeco(){
+                          // Initialisation
             var allData = {{node inserts the data here}};
             var tortellini;
             var howFairIs;
@@ -1005,10 +1011,8 @@ body {
             //
 
             let violations = tortellini.violations;
-            //console.log(document.getElementById("licensesContent").childNodes)
             let violationsTable = document.getElementById("licensesContent").childNodes[1];
             let fairnessTable = document.getElementById("fairnessTable");
-            console.log(fairnessTable);
             createFairnessTable();
             // Violations object
             // .how_to_fix
@@ -1018,6 +1022,8 @@ body {
             // .pkg
             // .rule
             // .severity
+
+            // Create the content for the licenses page.
             for (let i = 0; i < violations.length; i++){
                 let violation = violations[i];
                 let tr = document.createElement("tr");
@@ -1056,12 +1062,12 @@ body {
             console.log(SBOM);
             //
 
+            // Create the content for the fairness page.
             function createFairnessTable(){
                 let fairScore = createRow("Fairness Score", howFairIs[0].count);
                 let badgeImg = document.createElement("img");
                 badgeImg.setAttribute("src", howFairIs[0].badge);
                 badgeImg.setAttribute("alt", "howfairis badge");
-                //let badge = createRow("Badge", badgeImg);
                 let check = createRow("Checklist",howFairIs[0].checklist);
 
                 let badge = document.createElement("tr");
@@ -1098,6 +1104,8 @@ body {
 
                 return row;
             }
+            }
+
             
         </script>
     </body>
