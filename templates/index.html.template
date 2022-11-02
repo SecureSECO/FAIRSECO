@@ -757,8 +757,8 @@ body {
             </header>
             <section class="content">
                 <div class="buttoncontent">
-                <button class="tablink" onclick="openPage('Overview', this, '#dce6f8')">Overview</button>
-                <button class="tablink" onclick="openPage('Citations', this, '#dce6f8')" id="defaultOpen">Citations</button>
+                <button class="tablink" onclick="openPage('Overview', this, '#dce6f8')" id="defaultOpen">Overview</button>
+                <button class="tablink" onclick="openPage('Citations', this, '#dce6f8')">Citations</button>
                 <button class="tablink" onclick="openPage('FAIRness', this, '#dce6f8')">FAIRness</button>
                 <button class="tablink" onclick="openPage('Licenses', this, '#dce6f8')">Licenses</button>
                 </div>
