@@ -1008,6 +1008,8 @@ body {
             //console.log(document.getElementById("licensesContent").childNodes)
             let violationsTable = document.getElementById("licensesContent").childNodes[1];
             let fairnessTable = document.getElementById("fairnessTable").childNodes[0];
+
+            createFairnessTable();
             // Violations object
             // .how_to_fix
             // .license
