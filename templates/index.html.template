@@ -1008,7 +1008,7 @@ body {
             //console.log(document.getElementById("licensesContent").childNodes)
             let violationsTable = document.getElementById("licensesContent").childNodes[1];
             let fairnessTable = document.getElementById("fairnessTable").childNodes[0];
-
+            consolel.log(fairnessTable);
             createFairnessTable();
             // Violations object
             // .how_to_fix
