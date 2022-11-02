@@ -503,7 +503,11 @@ body {
             let violationsEntryClone = violationsEntry.cloneNode(true);
             console.log(document.getElementById("licensesContent"));
             console.log(violationsTable);
-            console.log(violationsEntry.childNodes);
+            console.log(violationsEntry);
+            consolel.log(1);
+            console.log(violationsTable.childNodes);
+            console.log(violationsTable.childNodes[0]);
+            console.log(violationsTable.childNodes[1]);
             console.log(violationsEntryClone.childNodes);
 
             violationsTable.removeChild(violationsEntry);
