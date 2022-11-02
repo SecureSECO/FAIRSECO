@@ -514,14 +514,15 @@ body {
             // .pkg
             // .rule
             // .severity
-            for (let i = 0; i < 1; i++){
+            for (let i = 0; i < violations.length; i++){
                 let violation = violations[i];
                 
                 // Add them to the webapp
                 violationsEntryClone = violationsEntryClone.cloneNode(true);
-                violationsEntryClone.childNodes[1].firstChild.nodeValue = violation.pkg;
-                violationsEntryClone.childNodes[2].firstChild.nodeValue = violation.rule;
-                violationsEntryClone.childNodes[3].firstChild.nodeValue = violation.message;
+                console.log(violationsEntryClone.childNodes[3].firstChild.nodeValue);
+                violationsEntryClone.childNodes[3].firstChild.nodeValue = violation.pkg;
+                violationsEntryClone.childNodes[5].firstChild.nodeValue = violation.rule;
+                violationsEntryClone.childNodes[7].firstChild.nodeValue = violation.message;
                 violationsTable.appendChild(violationsEntryClone);
             }
 
