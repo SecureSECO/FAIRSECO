@@ -520,10 +520,10 @@ body {
                 // Add them to the webapp
                 violationsEntryClone = violationsEntryClone.cloneNode(true);
                 console.log(violationsEntryClone.childNodes[3]);
-                console.log(violationsEntryClone.childNodes[3]);
-                violationsEntryClone.childNodes[3].firstChild.nodeValue = violation.pkg;
-                violationsEntryClone.childNodes[5].firstChild.nodeValue = violation.rule;
-                violationsEntryClone.childNodes[7].firstChild.nodeValue = violation.message;
+                console.log(violationsEntryClone.childNodes[3].textContent);
+                violationsEntryClone.childNodes[3].firstChild.textContent = violation.pkg;
+                violationsEntryClone.childNodes[5].firstChild.textContent = violation.rule;
+                violationsEntryClone.childNodes[7].firstChild.textContent = violation.message;
                 violationsTable.appendChild(violationsEntryClone);
             }
 
