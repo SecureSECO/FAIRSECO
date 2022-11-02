@@ -501,11 +501,12 @@ body {
             let violationsTable = document.getElementById("licensesContent").childNodes[1];
             let violationsEntry = violationsTable.childNodes[1];
             let violationsEntryClone = violationsEntry.cloneNode(true);
-            console.log(violationsEntry);
-            console.log(violationsEntryClone);
+            console.log(violationsEntry.childNodes);
+            console.log(violationsEntryClone.childNodes);
 
             violationsTable.removeChild(violationsEntry);
-
+            console.log(violationsEntry.childNodes);
+            console.log(violationsEntryClone.childNodes);
             // Violations object
             // .how_to_fix
             // .license
