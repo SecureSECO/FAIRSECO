@@ -1034,7 +1034,7 @@ body {
                 tr.appendChild(td3);
                 tr.appendChild(td4);
                 // Add them to the webapp
-                violationsTable.appendChild(violationsEntryClone);
+                violationsTable.appendChild(tr);
             }
 
 
