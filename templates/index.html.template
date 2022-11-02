@@ -1081,6 +1081,7 @@ body {
                 let row = document.createElement("tr");
                 let label_ = document.createElement("td");
                 let value_ = document.createElement("td");
+                console.log(5);
                 label_.appendChild(document.createTextNode(label));
                 value_.appendChild(value);
                 row.appendChild(label_);
