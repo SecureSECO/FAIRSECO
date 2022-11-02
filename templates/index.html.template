@@ -1061,7 +1061,7 @@ body {
                 let badgeImg = document.createElement("img");
                 badgeImg.setAttribute("src", howFairIs[0].badge);
                 badgeImg.setAttribute("alt", "howfairis badge");
-                let badge = createRow("Badge", badgeImg);
+                //let badge = createRow("Badge", badgeImg);
                 let check = createRow("Checklist", document.createTextNode(howFairIs[0].checklist));
                 let citation = createRow("Citation", document.createTextNode(howFairIs[0].citation));
                 let license = createRow("License", document.createTextNode(howFairIs[0].license));
@@ -1069,7 +1069,7 @@ body {
                 let repository = createRow("Repository", document.createTextNode(howFairIs[0].repository));
 
                 fairnessTable.appendChild(fairScore);
-                fairnessTable.appendChild(badge);
+                //fairnessTable.appendChild(badge);
                 fairnessTable.appendChild(check);
                 fairnessTable.appendChild(citation);
                 fairnessTable.appendChild(license);
