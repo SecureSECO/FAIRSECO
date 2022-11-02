@@ -1062,13 +1062,13 @@ body {
                 badgeImg.setAttribute("src", howFairIs[0].badge);
                 badgeImg.setAttribute("alt", "howfairis badge");
                 //let badge = createRow("Badge", badgeImg);
-                let check = createRow("Checklist", document.createTextNode(howFairIs[0].checklist));
+                let check = createRow("Checklist",howFairIs[0].checklist);
 
                 let badge = document.createElement("tr");
                 let label_ = document.createElement("td");
                 let value_ = document.createElement("td");
                 label_.appendChild(document.createTextNode("Badge"));
-                value_.appendChild(document.createTextNode(badgeImg));
+                value_.appendChild(badgeImg);
                 badge.appendChild(label_);
                 badge.appendChild(value_);
 
@@ -1091,7 +1091,6 @@ body {
                 let row = document.createElement("tr");
                 let label_ = document.createElement("td");
                 let value_ = document.createElement("td");
-                console.log(5);
                 label_.appendChild(document.createTextNode(label));
                 value_.appendChild(document.createTextNode(value));
                 row.appendChild(label_);
