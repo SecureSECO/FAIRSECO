@@ -1073,10 +1073,10 @@ body {
                 badge.appendChild(value_);
 
 
-                let citation = createRow("Citation", document.createTextNode(howFairIs[0].citation));
-                let license = createRow("License", document.createTextNode(howFairIs[0].license));
-                let registry = createRow("Registry", document.createTextNode(howFairIs[0].registry));
-                let repository = createRow("Repository", document.createTextNode(howFairIs[0].repository));
+                let citation = createRow("Citation", howFairIs[0].citation);
+                let license = createRow("License", howFairIs[0].license);
+                let registry = createRow("Registry", howFairIs[0].registry);
+                let repository = createRow("Repository", howFairIs[0].repository);
 
                 fairnessTable.appendChild(fairScore);
                 fairnessTable.appendChild(badge);
@@ -1093,7 +1093,7 @@ body {
                 let value_ = document.createElement("td");
                 console.log(5);
                 label_.appendChild(document.createTextNode(label));
-                value_.appendChild(document.createTextNode(howFairIs[0].checklist));
+                value_.appendChild(document.createTextNode(value));
                 row.appendChild(label_);
                 row.appendChild(value_);
 
