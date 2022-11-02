@@ -497,8 +497,10 @@ body {
             //
 
             let violations = tortellini.violations;
-            let violationsTable = document.getElementById("licensesContent");
-            let violationsEntry = violationsTable.childNodes[1].childNodes[2];
+            console.log(document.getElementById("licensesContent").childNodes)
+            let violationsTable = document.getElementById("licensesContent").childNodes[0];
+            console.log(violationsTable.childNodes);
+            let violationsEntry = violationsTable.childNodes[1];
             let violationsEntryClone = violationsEntry.cloneNode(true);
 
             violationsTable.removeChild(violationsEntry);
