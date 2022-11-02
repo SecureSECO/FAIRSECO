@@ -1063,9 +1063,8 @@ body {
               console.log("SBOM:")            
               console.log(SBOM);
               //
-            }
 
-            // Create the content for the fairness page.
+              // Create the content for the fairness page.
             function createFairnessTable(){
                 let fairScore = createRow("Fairness Score", howFairIs[0].count);
                 let badgeImg = document.createElement("img");
@@ -1107,6 +1106,9 @@ body {
 
                 return row;
             }
+            }
+
+            
 
             
         </script>
