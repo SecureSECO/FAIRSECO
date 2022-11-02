@@ -516,6 +516,9 @@ body {
                 
                 // Add them to the webapp
                 violationsEntryClone = violationsEntryClone.cloneNode(true);
+                violationsEntryClone.childNodes.item(1).childNodes.item(0).nodeValue = violation.pkg;
+                violationsEntryClone.childNodes.item(2).childNodes.item(0).nodeValue = violation.rule;
+                violationsEntryClone.childNodes.item(3).childNodes.item(0).nodeValue = violation.message;
                 violationsTable.appendChild(violationsEntryClone);
             }
 
@@ -530,9 +533,6 @@ body {
             console.log("SBOM:")            
             console.log(SBOM);
             //
-
-            // Try to place an element on the page (HowFairIs badge in this case)
-            document.getElementById("badge").src=howFairIs[0].badge;
             
         </script>
     </body>
