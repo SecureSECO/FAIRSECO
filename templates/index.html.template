@@ -772,7 +772,14 @@ body {
                 </div>
                 <div id="FAIRness" class="tabcontent">
                     <h3>FAIRness</h3>
-                    <p></p>
+                    <p>
+                        <table class="table_content" id="fairnessTable">
+                            <tr>
+                                <td>Fairness Score</td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </p>
                 </div>
                 <div id="Licenses" class="tabcontent">
                     <h3>Licenses</h3>
@@ -1003,6 +1010,7 @@ body {
             let violations = tortellini.violations;
             //console.log(document.getElementById("licensesContent").childNodes)
             let violationsTable = document.getElementById("licensesContent").childNodes[1];
+            let fairnessTable = document.getElementById("fairnessTable");
             // Violations object
             // .how_to_fix
             // .license
@@ -1048,6 +1056,36 @@ body {
             console.log("SBOM:")            
             console.log(SBOM);
             //
+
+            function createFairnessTable(){
+                let fairScore = createRow("Fairness Score", howFairIs.count);
+                let badge = createRow("Badge", howFairIs.badge);
+                let check = createRow("Checklist", howFairIs.checklist);
+                let citation = createRow("Citation", howFairIs.citation);
+                let license = createRow("License", howFairIs.license);
+                let registry = createRow("Registry", howFairIs.registry);
+                let repository = createRow("Repository", howFairIs.repository);
+
+                fairnessTable.appendChild(fairScore);
+                fairnessTable.appendChild(badge);
+                fairnessTable.appendChild(check);
+                fairnessTable.appendChild(citation);
+                fairnessTable.appendChild(license);
+                fairnessTable.appendChild(registry);
+                fairnessTable.appendChild(repository);
+            }
+
+            function createRow(label, value){
+                let row = document.createElement("tr");
+                let label_ = document.createElement("td");
+                let value_ = document.createElement("td");
+                label_.appendChild(document.createTextNode(label));
+                value_.appendChild(document.createTextNode(value));
+                row.appendChild(label_);
+                row.appendChild(value_);
+
+                return row;
+            }
             
         </script>
     </body>
