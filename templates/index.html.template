@@ -1007,7 +1007,7 @@ body {
             let violations = tortellini.violations;
             //console.log(document.getElementById("licensesContent").childNodes)
             let violationsTable = document.getElementById("licensesContent").childNodes[1];
-            let fairnessTable = document.getElementById("fairnessTable").childNodes[0];
+            let fairnessTable = document.getElementById("fairnessTable");
             console.log(fairnessTable);
             createFairnessTable();
             // Violations object
