@@ -518,9 +518,9 @@ body {
                 violationsEntryClone = violationsEntryClone.cloneNode(true);
                 console.log(violationsEntryClone.childNodes.length);
                 console.log(violationsEntryClone.childNodes);
-                violationsEntryClone.childNodes[1].nodeValue = violation.pkg;
-                violationsEntryClone.childNodes[2].nodeValue = violation.rule;
-                violationsEntryClone.childNodes[3].nodeValue = violation.message;
+                violationsEntryClone.childNodes[1].firstChild.nodeValue = violation.pkg;
+                violationsEntryClone.childNodes[2].firstChild.nodeValue = violation.rule;
+                violationsEntryClone.childNodes[3].firstChild.nodeValue = violation.message;
                 violationsTable.appendChild(violationsEntryClone);
             }
 
