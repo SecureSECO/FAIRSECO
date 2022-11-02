@@ -975,13 +975,15 @@ body {
             //
 
             // If you wanna work on this outside the github acton environment:
-            // Comment out 'var allData = {{node inserts the data here}};', It's the first code in function fairSeco.
-            // Comment out the function call fairSeco, directly under this sentence:
+            // Comment out the two lines below:
             fairSeco();
+            var allData = {{node inserts the data here}};
+            //
+
 
             function fairSeco(){
                           // Initialisation
-            var allData = {{node inserts the data here}};
+            
             var tortellini;
             var howFairIs;
             var searchSeco;
