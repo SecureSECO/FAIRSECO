@@ -511,7 +511,7 @@ body {
             // .pkg
             // .rule
             // .severity
-            for (let i = 0; i < 2; i++){
+            for (let i = 0; i < 1; i++){
                 let violation = violations[i];
                 
                 // Add them to the webapp
