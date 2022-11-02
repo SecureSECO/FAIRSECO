@@ -978,11 +978,10 @@ body {
             // Comment out the two lines below:
             var allData = {{node inserts the data here}};
             fairSeco();
-            
-              //
+            //
 
 
-              function fairSeco() {
+            function fairSeco() {
               // Initialisation
               
               var tortellini;
