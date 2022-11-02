@@ -515,7 +515,8 @@ body {
                 let violation = violations[i];
                 
                 // Add them to the webapp
-                
+                violationsEntryClone = violationsEntryClone.cloneNode(true);
+                violationsTable.appendChild(violationsEntryClone);
             }
 
 
