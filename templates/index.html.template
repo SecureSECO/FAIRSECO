@@ -977,6 +977,7 @@ body {
             // If you wanna work on this outside the github acton environment:
             // Comment out the two lines below:
             var allData = {{node inserts the data here}};
+
             fairSeco();
             //
 
@@ -1094,7 +1095,7 @@ body {
                 fairnessTable.appendChild(registry);
                 fairnessTable.appendChild(repository);
             }
-
+            
             function createRow(label, value){
                 let row = document.createElement("tr");
                 let label_ = document.createElement("td");
@@ -1107,8 +1108,6 @@ body {
                 return row;
             }
             }
-
-            
 
             
         </script>
