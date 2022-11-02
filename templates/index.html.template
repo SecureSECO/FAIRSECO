@@ -498,7 +498,7 @@ body {
 
             let violations = tortellini.violations;
             let violationsTable = document.getElementById("licensesContent");
-            let violationsEntry = violationsTable.childNodes.item(1);
+            let violationsEntry = violationsTable.childNodes[1];
             let violationsEntryClone = violationsEntry.cloneNode(true);
 
             violationsTable.removeChild(violationsEntry);
@@ -511,14 +511,14 @@ body {
             // .pkg
             // .rule
             // .severity
-            for (let i = 0; i < violations.length; i++){
+            for (let i = 0; i < 2; i++){
                 let violation = violations[i];
                 
                 // Add them to the webapp
                 violationsEntryClone = violationsEntryClone.cloneNode(true);
-                violationsEntryClone.childNodes.item(1).nodeValue = violation.pkg;
-                violationsEntryClone.childNodes.item(2).nodeValue = violation.rule;
-                violationsEntryClone.childNodes.item(3).nodeValue = violation.message;
+                violationsEntryClone.childNodes[1].nodeValue = violation.pkg;
+                violationsEntryClone.childNodes[2].nodeValue = violation.rule;
+                violationsEntryClone.childNodes[3].nodeValue = violation.message;
                 violationsTable.appendChild(violationsEntryClone);
             }
 
