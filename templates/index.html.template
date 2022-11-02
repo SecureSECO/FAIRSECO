@@ -498,7 +498,7 @@ body {
 
             let violations = tortellini.violations;
             let violationsTable = document.getElementById("licensesContent");
-            let violationsEntry = violationsTable.childNodes[1];
+            let violationsEntry = violationsTable.childNodes[1].childNodes[2];
             let violationsEntryClone = violationsEntry.cloneNode(true);
 
             violationsTable.removeChild(violationsEntry);
@@ -518,8 +518,8 @@ body {
                 violationsEntryClone = violationsEntryClone.cloneNode(true);
                 console.log(violationsEntryClone.childNodes.length);
                 console.log(violationsEntryClone.childNodes);
-                //violationsEntryClone.childNodes[1].nodeValue = violation.pkg;
-                //violationsEntryClone.childNodes[2].nodeValue = violation.rule;
+                violationsEntryClone.childNodes[1].nodeValue = violation.pkg;
+                violationsEntryClone.childNodes[2].nodeValue = violation.rule;
                 violationsEntryClone.childNodes[3].nodeValue = violation.message;
                 violationsTable.appendChild(violationsEntryClone);
             }
