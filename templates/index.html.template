@@ -1083,6 +1083,8 @@ body {
                 let value_ = document.createElement("td");
                 console.log(5);
                 label_.appendChild(document.createTextNode(label));
+                console.log("val");
+                console.log(value);
                 value_.appendChild(value.node);
                 row.appendChild(label_);
                 row.appendChild(value_);
