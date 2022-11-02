@@ -764,6 +764,18 @@ body {
                 </div>
                 <div id="Overview" class="tabcontent">
                     <h3>Overview</h3>
+                    <p></p>
+                </div>
+                <div id="Citations" class="tabcontent">
+                    <h3>Citations</h3>
+                    <p></p> 
+                </div>
+                <div id="FAIRness" class="tabcontent">
+                    <h3>FAIRness</h3>
+                    <p></p>
+                </div>
+                <div id="Licenses" class="tabcontent">
+                    <h3>Licenses</h3>
                     <p>
                         <table class="table_content" id="licensesContent">
                             <tr>
@@ -780,18 +792,6 @@ body {
                             </tr>
                         </table>
                     </p>
-                </div>
-                <div id="Citations" class="tabcontent">
-                    <h3>Citations</h3>
-                    <p></p> 
-                </div>
-                <div id="FAIRness" class="tabcontent">
-                    <h3>FAIRness</h3>
-                    <p></p>
-                </div>
-                <div id="Licenses" class="tabcontent">
-                    <h3>Licenses</h3>
-                    <p></p>
                 </div>
             </section>
             <footer>
