@@ -1057,13 +1057,13 @@ body {
             //
 
             function createFairnessTable(){
-                let fairScore = createRow("Fairness Score", howFairIs.count);
-                let badge = createRow("Badge", howFairIs.badge);
-                let check = createRow("Checklist", howFairIs.checklist);
-                let citation = createRow("Citation", howFairIs.citation);
-                let license = createRow("License", howFairIs.license);
-                let registry = createRow("Registry", howFairIs.registry);
-                let repository = createRow("Repository", howFairIs.repository);
+                let fairScore = createRow("Fairness Score", howFairIs[0].count);
+                let badge = createRow("Badge", howFairIs[0].badge);
+                let check = createRow("Checklist", howFairIs[0].checklist);
+                let citation = createRow("Citation", howFairIs[0].citation);
+                let license = createRow("License", howFairIs[0].license);
+                let registry = createRow("Registry", howFairIs[0].registry);
+                let repository = createRow("Repository", howFairIs[0].repository);
 
                 fairnessTable.appendChild(fairScore);
                 fairnessTable.appendChild(badge);
