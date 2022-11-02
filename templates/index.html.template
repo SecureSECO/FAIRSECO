@@ -415,7 +415,7 @@ body {
 
     <body>
         <div class="wrapper">
-            <header class="header">
+            <header class="header" style="background-color:#ffffff">
                 <div class="header_body">
                     <a href="home.html" class="header_logo">
                         <!--<img class="logo" src="1.jpg">-->
