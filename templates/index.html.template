@@ -501,6 +501,8 @@ body {
             let violationsTable = document.getElementById("licensesContent").childNodes[1];
             let violationsEntry = violationsTable.childNodes[1];
             let violationsEntryClone = violationsEntry.cloneNode(true);
+            console.log(document.getElementById("licensesContent"));
+            console.log(violationsTable);
             console.log(violationsEntry.childNodes);
             console.log(violationsEntryClone.childNodes);
 
