@@ -976,8 +976,9 @@ body {
 
             // If you wanna work on this outside the github acton environment:
             // Comment out the two lines below:
-            fairSeco();
             var allData = {{node inserts the data here}};
+            fairSeco();
+            
               //
 
 
