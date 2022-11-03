@@ -4,28 +4,27 @@ import * as path_ from "path";
 
 import * as fs from "fs";
 import { exec, ExecOptions } from "@actions/exec";
-import { getSystemErrorMap } from "util";
 
-export type CFFObject =
-    | MissingCFFObject
-    | IncorrectYamlCFFObject
-    | ValidCFFObject
-    | ValidationErrorCFFObject;
+export type CffObject =
+    | MissingCffObject
+    | IncorrectYamlCffObject
+    | ValidCffObject
+    | ValidationErrorCffObject;
 
-export interface MissingCFFObject {
+export interface MissingCffObject {
     status: "missing_file";
 }
 
-export interface IncorrectYamlCFFObject {
+export interface IncorrectYamlCffObject {
     status: "incorrect_yaml";
 }
-export interface ValidCFFObject {
+export interface ValidCffObject {
     status: "valid";
     citation: any;
     validation_message: string;
 }
 
-export interface ValidationErrorCFFObject {
+export interface ValidationErrorCffObject {
     status: "validation_error";
     citation: any;
     validation_message: string;
@@ -34,15 +33,18 @@ export interface ValidationErrorCFFObject {
 export async function getCitationFile(path?: string): Promise<ReturnObject> {
     let file: Buffer;
 
-    let filePath;
-    if (path === undefined) filePath = ".";
-    else filePath = path;
+    // Use current directory if none is specified
+    let filePath = path === undefined ? "." : path;
 
+    // Read the citation.cff file
     try {
         file = fs.readFileSync(filePath + "/CITATION.cff");
     } catch {
+        // Reading file failed
         console.log("WARNING: No citation.cff file found");
-        const returnData: MissingCFFObject = { status: "missing_file" };
+
+        // Return MissingCFFObject indicating missing citation.cff file
+        const returnData: MissingCffObject = { status: "missing_file" };
         return {
             ReturnName: "Citation",
             ReturnData: returnData,
@@ -51,11 +53,15 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
 
     let result: any;
 
+    // Parse the citation.cff file (YAML format)
     try {
         result = YAML.parse(file.toString());
     } catch {
+        // Parsing failed, incorrect YAML
         console.log("WARNING: Incorrect format");
-        const returnData: IncorrectYamlCFFObject = { status: "incorrect_yaml" };
+
+        // Return IncorrectYamlCFFObject to indicate incorrect yaml
+        const returnData: IncorrectYamlCffObject = { status: "incorrect_yaml" };
         return {
             ReturnName: "Citation",
             ReturnData: returnData,
@@ -87,16 +93,13 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
             stderr += data.toString();
         },
     };
+    // Run cffconvert in docker to validate the citation.cff file
     const exitCode = await exec(cmd, args, options);
 
-    console.debug("Docker running cffconvert returned " + String(exitCode));
-    console.debug("stdout:");
-    console.debug(stdout);
-    console.debug("stderr:");
-    console.debug(stderr);
-
+    // Check the exit code for success
     if (exitCode === 0) {
-        const returnData: ValidCFFObject = {
+        // Citation.cff file is valid, return ValidCFFObject with data and validation message
+        const returnData: ValidCffObject = {
             status: "valid",
             citation: result,
             validation_message: stdout,
@@ -106,7 +109,8 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
             ReturnData: returnData,
         };
     } else {
-        const returnData: ValidationErrorCFFObject = {
+        // Citation.cff file is invalid, return ValidationErrorCFFObject with data and error message
+        const returnData: ValidationErrorCffObject = {
             status: "validation_error",
             citation: result,
             validation_message: getError(stderr),
@@ -118,12 +122,17 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
     }
 }
 
+// Finds the error in the docker stderr output,
+// when trying to run cffconvert in docker yields a non-zero exit code
 export function getError(stderr: string): string {
+    // An error given by cffconvert appears as a line which looks like *Error: *
+    // Find the first line that includes Error: in the first word and return it
     const lines = stderr.split("\n");
     for (const x of lines) {
         const first = x.split(" ")[0];
         if (first?.includes("Error:")) return x;
     }
 
+    // No cffconvert error message was found, so the error is unknown.
     return "Unknown error";
 }

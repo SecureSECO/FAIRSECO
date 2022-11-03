@@ -11121,16 +11121,16 @@ const exec_1 = __nccwpck_require__(9710);
 function getCitationFile(path) {
     return __awaiter(this, void 0, void 0, function* () {
         let file;
-        let filePath;
-        if (path === undefined)
-            filePath = ".";
-        else
-            filePath = path;
+        // Use current directory if none is specified
+        let filePath = path === undefined ? "." : path;
+        // Read the citation.cff file
         try {
             file = fs.readFileSync(filePath + "/CITATION.cff");
         }
         catch (_a) {
+            // Reading file failed
             console.log("WARNING: No citation.cff file found");
+            // Return MissingCFFObject indicating missing citation.cff file
             const returnData = { status: "missing_file" };
             return {
                 ReturnName: "Citation",
@@ -11138,11 +11138,14 @@ function getCitationFile(path) {
             };
         }
         let result;
+        // Parse the citation.cff file (YAML format)
         try {
             result = yaml_1.default.parse(file.toString());
         }
         catch (_b) {
+            // Parsing failed, incorrect YAML
             console.log("WARNING: Incorrect format");
+            // Return IncorrectYamlCFFObject to indicate incorrect yaml
             const returnData = { status: "incorrect_yaml" };
             return {
                 ReturnName: "Citation",
@@ -11172,13 +11175,11 @@ function getCitationFile(path) {
                 stderr += data.toString();
             },
         };
+        // Run cffconvert in docker to validate the citation.cff file
         const exitCode = yield (0, exec_1.exec)(cmd, args, options);
-        console.debug("Docker running cffconvert returned " + String(exitCode));
-        console.debug("stdout:");
-        console.debug(stdout);
-        console.debug("stderr:");
-        console.debug(stderr);
+        // Check the exit code for success
         if (exitCode === 0) {
+            // Citation.cff file is valid, return ValidCFFObject with data and validation message
             const returnData = {
                 status: "valid",
                 citation: result,
@@ -11190,6 +11191,7 @@ function getCitationFile(path) {
             };
         }
         else {
+            // Citation.cff file is invalid, return ValidationErrorCFFObject with data and error message
             const returnData = {
                 status: "validation_error",
                 citation: result,
@@ -11203,13 +11205,18 @@ function getCitationFile(path) {
     });
 }
 exports.getCitationFile = getCitationFile;
+// Finds the error in the docker stderr output,
+// when trying to run cffconvert in docker yields a non-zero exit code
 function getError(stderr) {
+    // An error given by cffconvert appears as a line which looks like *Error: *
+    // Find the first line that includes Error: in the first word and return it
     const lines = stderr.split("\n");
     for (const x of lines) {
         const first = x.split(" ")[0];
         if (first === null || first === void 0 ? void 0 : first.includes("Error:"))
             return x;
     }
+    // No cffconvert error message was found, so the error is unknown.
     return "Unknown error";
 }
 exports.getError = getError;
@@ -11348,11 +11355,11 @@ function runHowfairis() {
             },
         };
         const exitCode = yield (0, exec_1.exec)(cmd, args, options);
-        console.debug("Docker running fairtally returned " + String(exitCode));
-        console.debug("stdout:");
-        console.debug(stdout);
-        console.debug("stderr:");
-        console.debug(stderr);
+        // console.debug("Docker running fairtally returned " + String(exitCode));
+        // console.debug("stdout:");
+        // console.debug(stdout);
+        // console.debug("stderr:");
+        // console.debug(stderr);
         return {
             ReturnName: "HowFairIs",
             ReturnData: JSON.parse(stdout)
@@ -11790,7 +11797,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.WriteCSS = exports.WriteHTML = void 0;
 const fs = __importStar(__nccwpck_require__(7147));
 const path_1 = __importDefault(__nccwpck_require__(1017));
-// Write the data to a html file
+// Write the data to a html file and return
 function WriteHTML(data, filePath) {
     return __awaiter(this, void 0, void 0, function* () {
         const templateFilename = path_1.default.join(__dirname, '..', 'templates', 'index.html.template');

@@ -7,7 +7,7 @@ describe("Test getCitationFile", () => {
             "./__tests__/citation_files/correct"
         );
 
-        const cffData: cff.CFFObject = result.ReturnData as cff.CFFObject;
+        const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
 
         console.log(result);
 
@@ -28,7 +28,7 @@ describe("Test getCitationFile", () => {
             "./__tests__/citation_files/extra-key"
         );
 
-        const cffData: cff.CFFObject = result.ReturnData as cff.CFFObject;
+        const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
 
         console.log(result);
 
@@ -49,7 +49,7 @@ describe("Test getCitationFile", () => {
             "./__tests__/citation_files/incorrect-doi"
         );
 
-        const cffData: cff.CFFObject = result.ReturnData as cff.CFFObject;
+        const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
 
         console.log(result);
 
@@ -70,7 +70,7 @@ describe("Test getCitationFile", () => {
             "./__tests__/citation_files/incorrect-version"
         );
 
-        const cffData: cff.CFFObject = result.ReturnData as cff.CFFObject;
+        const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
 
         console.log(result);
 
@@ -91,7 +91,7 @@ describe("Test getCitationFile", () => {
             "./__tests__/citation_files/no-authors"
         );
 
-        const cffData: cff.CFFObject = result.ReturnData as cff.CFFObject;
+        const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
 
         console.log(result);
 
@@ -112,7 +112,7 @@ describe("Test getCitationFile", () => {
             "./__tests__/citation_files/no-cff-version"
         );
 
-        const cffData: cff.CFFObject = result.ReturnData as cff.CFFObject;
+        const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
 
         console.log(result);
 
@@ -133,7 +133,7 @@ describe("Test getCitationFile", () => {
             "./__tests__/citation_files/no-message"
         );
 
-        const cffData: cff.CFFObject = result.ReturnData as cff.CFFObject;
+        const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
 
         console.log(result);
 
@@ -154,7 +154,7 @@ describe("Test getCitationFile", () => {
             "./__tests__/citation_files/missing-file"
         );
 
-        const cffData: cff.CFFObject = result.ReturnData as cff.CFFObject;
+        const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
 
         console.log(result);
 
@@ -168,7 +168,7 @@ describe("Test getCitationFile", () => {
             "./__tests__/citation_files/incorrect-yaml"
         );
 
-        const cffData: cff.CFFObject = result.ReturnData as cff.CFFObject;
+        const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
 
         console.log(result);
 
