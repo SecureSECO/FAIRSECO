@@ -1067,8 +1067,8 @@ body {
 
 
               //  Create the content for the citations page
-              for (let i = 0; i < scholarly.length; i++){
-                  let citation = scholarly[i];
+              for (let i = 0; i < citingPapers.length; i++){
+                  let citation = citingPapers[i];
                   let tr = document.createElement("tr");
                   let td1 = document.createElement("td");
                   let textNode1 = document.createTextNode("!");
