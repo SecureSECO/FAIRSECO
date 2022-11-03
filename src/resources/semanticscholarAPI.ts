@@ -54,7 +54,7 @@ export async function semanticScholarCitations(title: string): Promise<Journal[]
     }      
 }
 
-async function getSemanticScholarPaperId(title: string): Promise<string> {
+export async function getSemanticScholarPaperId(title: string): Promise<string> {
     const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/paper/";
     const searchQuery = "search?query=";
     try {

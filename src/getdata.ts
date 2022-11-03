@@ -34,7 +34,7 @@ export async function data(): Promise<ReturnObject[]> {
     }
 
     try {
-        const scholarlyResult = await runCitingPapers("Autocalibration of accelerometer data for free-living physical activity assessment using local gravity and temperature: an evaluation on four continents");
+        const scholarlyResult = await runCitingPapers("ss-TEA: Entropy based identification of receptor specific ligand binding residues from a multiple sequence alignment of class A GPCRs");
         output.push(scholarlyResult);
     } catch (error) {
         console.error("Scholarly threw an error:");

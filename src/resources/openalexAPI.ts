@@ -21,7 +21,6 @@ export async function openAlexCitations(title: string): Promise<Journal[]> {
         const amount = firstResponseJSON.meta.count;
         const pages = Math.ceil(amount / 200);
         for (let i = 1; i <= pages; i++) {
-            console.log(apiURL + query + paperId + filter + "&page=" + String(i) + "&per-page=200");
             const response = await fetch(apiURL + query + paperId + filter + "&page=" + String(i) + "&per-page=200", {
                 method: 'GET',
                 headers: {},
@@ -72,7 +71,7 @@ export async function openAlexCitations(title: string): Promise<Journal[]> {
     }      
 }
 
-async function getOpenAlexPaperId(title: string): Promise<string> {
+export async function getOpenAlexPaperId(title: string): Promise<string> {
     const apiURL = "https://api.openalex.org/";
     const searchQuery = "works?search=";
     try {
