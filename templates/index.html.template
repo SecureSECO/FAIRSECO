@@ -998,7 +998,7 @@ body {
               var howFairIs;
               var searchSeco;
               var SBOM;
-              var scholarly;
+              var citingPapers;
               // Site functionality - END
 
               // A generic way of storing the different data in vars
@@ -1017,8 +1017,8 @@ body {
                       case "SBOM":
                           SBOM = element.ReturnData;
                           break;
-                      case 'Scholarly':
-                          scholarly = element.ReturnData;
+                      case 'citingPapers':
+                          citingPapers = element.ReturnData;
                       default:
                           break;
                   }
