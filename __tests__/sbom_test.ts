@@ -11,7 +11,7 @@ test("Check if sbom file exists", async () => {
     let fileExists: Boolean = false;
 
     runSBOM(mockArtifact).then(() => {
-        fileExists = fs.existsSync("./.SBOM-unit-test/SBOM.spdx");
+        fileExists = fs.existsSync("./__tests__/.SBOM-unit-test/SBOM.spdx");
         expect(fileExists).toBe(true);
     }).catch(() => {
         expect(fileExists).toBe(true);

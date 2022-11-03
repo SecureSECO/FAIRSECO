@@ -37,7 +37,7 @@ export async function runHowfairis(): Promise<ReturnObject> {
     };
     const exitCode = await exec(cmd, args, options);
 
-    console.debug("Docker running fairtally returned " + String(exitCode));
+    // console.debug("Docker running fairtally returned " + String(exitCode));
     console.debug("stdout:");
     console.debug(stdout);
     console.debug("stderr:");

@@ -1,4 +1,4 @@
-import * as cff from "../src/resources/citations";
+import * as cff from "../src/resources/citation_cff";
 
 describe("Test getCitationFile", () => {
     jest.setTimeout(60000);

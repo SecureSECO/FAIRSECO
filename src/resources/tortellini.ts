@@ -12,7 +12,7 @@ export async function runTortellini(
     // If not, use the regular Github Action artifact, and the normal output folder
     let destination: string = "";
     if (artifactObject !== undefined) {
-        destination = ".tortellini-unit-test";
+        destination = "__tests__/.tortellini-unit-test";
     } else {
         artifactObject = artifact;
         destination = ".tortellini-artifact";

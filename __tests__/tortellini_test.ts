@@ -7,20 +7,20 @@ const mockArtifact = art.createMockArtifact();
 test("Check if a correct downloadResponse is generated", async () => {
     const dlResponse = await art.getArtifactData(
         "tortellini-result",
-        ".tortellini-unit-test",
+        "__tests__/.tortellini-unit-test",
         mockArtifact
     );
 
     expect(dlResponse).toEqual({
         artifactName: "tortellini-result",
-        downloadPath: ".tortellini-unit-test",
+        downloadPath: "__tests__/.tortellini-unit-test",
     });
 });
 
 test("Check if a file can be retrieved with the downloadResponse", async () => {
     const dlResponse = await art.getArtifactData(
         "tortellini-result",
-        ".tortellini-unit-test",
+        "__tests__/.tortellini-unit-test",
         mockArtifact
     );
 
