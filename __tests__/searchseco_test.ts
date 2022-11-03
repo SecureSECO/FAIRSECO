@@ -1,6 +1,8 @@
 import * as ss from "../src/resources/searchseco";
 import YAML from "yaml";
 
+jest.setTimeout(20000);
+
 describe("Test getHashIndices", () => {
     test("Single Hash", () => {
         const result = ss.getHashIndices(["Hash 123"]);
