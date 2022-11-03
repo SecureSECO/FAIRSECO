@@ -7008,7 +7008,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.data = void 0;
-const scholarly_1 = __nccwpck_require__(3522);
+const citingPapers_1 = __nccwpck_require__(6695);
 function data() {
     return __awaiter(this, void 0, void 0, function* () {
         const output = [];
@@ -7038,7 +7038,7 @@ function data() {
         }
         */
         try {
-            const scholarlyResult = yield (0, scholarly_1.runScholarly)("Autocalibration of accelerometer data for free-living physical activity assessment using local gravity and temperature: an evaluation on four continents");
+            const scholarlyResult = yield (0, citingPapers_1.runCitingPapers)("Autocalibration of accelerometer data for free-living physical activity assessment using local gravity and temperature: an evaluation on four continents");
             output.push(scholarlyResult);
         }
         catch (error) {
@@ -7049,90 +7049,6 @@ function data() {
     });
 }
 exports.data = data;
-
-
-/***/ }),
-
-/***/ 9977:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.openAlexCitations = void 0;
-const node_fetch_1 = __importDefault(__nccwpck_require__(8429));
-function openAlexCitations(title) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const apiURL = "https://api.openalex.org/";
-        const query = "works?filter=cites:";
-        const filter = ",type:journal-article";
-        // get paper id
-        const paperId = yield getOpenAlexPaperId(title);
-        const paperIdSliced = paperId.replace("https://openalex.org/", "");
-        try {
-            // get meta data for amount of results
-            let outputText = "";
-            const firstResponse = yield (0, node_fetch_1.default)(apiURL + query + paperIdSliced + filter + "&per-page=1", {
-                method: 'GET',
-                headers: {},
-            });
-            const firstResponseText = yield firstResponse.text();
-            const firstResponseJSON = JSON.parse(firstResponseText);
-            const amount = firstResponseJSON.meta.count;
-            const pages = Math.ceil(amount / 200);
-            for (let i = 1; i <= pages; i++) {
-                const response = yield (0, node_fetch_1.default)(apiURL + query + paperIdSliced + filter + "&per-page=200", {
-                    method: 'GET',
-                    headers: {},
-                });
-                const responseText = yield response.text();
-                const responseJSON = JSON.parse(responseText);
-                outputText += JSON.stringify(responseJSON.results).slice(1, -1) + ",";
-            }
-            outputText = "[" + outputText.slice(0, -1) + "]";
-            return JSON.parse(outputText);
-        }
-        catch (error) {
-            console.log("Failed to find openAlex citations");
-            return JSON.parse("");
-        }
-    });
-}
-exports.openAlexCitations = openAlexCitations;
-function getOpenAlexPaperId(title) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const apiURL = "https://api.openalex.org/";
-        const searchQuery = "works?search=";
-        try {
-            const response = yield (0, node_fetch_1.default)(apiURL + searchQuery + title, {
-                method: 'GET',
-                headers: {},
-            });
-            const output = yield response.text();
-            const outputJSON = JSON.parse(output);
-            const paperid = outputJSON.results[0].id;
-            ;
-            return paperid;
-        }
-        catch (error) {
-            console.log("Error while fetching paperID");
-            const output = JSON.parse("");
-            return output;
-        }
-    });
-}
 
 
 /***/ }),
@@ -7275,7 +7191,7 @@ exports.pre = pre;
 
 /***/ }),
 
-/***/ 3522:
+/***/ 6695:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -7290,47 +7206,176 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.runScholarly = void 0;
-const semanticscholarAPI_1 = __nccwpck_require__(6988);
-const openalexAPI_1 = __nccwpck_require__(9977);
-function runScholarly(title) {
+exports.runCitingPapers = void 0;
+const semanticscholarAPI_1 = __nccwpck_require__(5273);
+const openalexAPI_1 = __nccwpck_require__(5532);
+function runCitingPapers(title) {
     return __awaiter(this, void 0, void 0, function* () {
         const outData1 = yield (0, semanticscholarAPI_1.semanticScholarCitations)(title);
         const outData2 = yield (0, openalexAPI_1.openAlexCitations)(title);
-        const objString = JSON.stringify(outData1);
-        const obj1 = JSON.parse(objString);
-        const objString2 = JSON.stringify(outData2);
-        const obj2 = JSON.parse(objString2);
-        let uniques = [];
-        obj1.forEach((e1) => {
-            let duplicate = false;
-            obj2.forEach((e2) => {
-                if (e1.title === e2.title) {
-                    duplicate = true;
-                }
-            });
-            if (!duplicate) {
-                uniques = uniques.concat([e1.title]);
-            }
-        });
-        obj2.forEach((element) => {
-            uniques = uniques.concat([element.title]);
-        });
-        console.log(uniques);
-        console.log("-------------------------------------------------------");
-        console.log(uniques.length);
+        let output = outData1.concat(outData2);
+        output = output.filter((value, index, self) => index === self.findIndex((t) => t.doi === value.doi && t.doi !== "" || t.mag === value.mag && t.mag !== "" || t.pmid === value.pmid && t.pmid !== "" || t.pmcid === value.pmcid && t.pmcid !== ""));
+        console.log(outData1.length);
+        console.log(outData2.length);
+        console.log(output.length);
         return {
             ReturnName: "Scholarly",
-            ReturnData: outData2,
+            ReturnData: output,
         };
     });
 }
-exports.runScholarly = runScholarly;
+exports.runCitingPapers = runCitingPapers;
 
 
 /***/ }),
 
-/***/ 6988:
+/***/ 5451:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Journal = void 0;
+class Journal {
+    constructor(titleConst, doiConst, magConst, pmidConst, pmcid, yearConst, databaseConst) {
+        this.title = titleConst;
+        this.year = yearConst;
+        this.doi = doiConst;
+        this.mag = magConst;
+        this.pmid = pmidConst;
+        this.pmcid = pmidConst;
+        this.database = databaseConst;
+    }
+}
+exports.Journal = Journal;
+
+
+/***/ }),
+
+/***/ 5532:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.openAlexCitations = void 0;
+const node_fetch_1 = __importDefault(__nccwpck_require__(8429));
+const journal_1 = __nccwpck_require__(5451);
+function openAlexCitations(title) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const apiURL = "https://api.openalex.org/";
+        const query = "works?filter=cites:";
+        const filter = ",type:journal-article";
+        let output = [];
+        // get paper id
+        const paperId = yield getOpenAlexPaperId(title);
+        const paperIdSliced = paperId.replace("https://openalex.org/", "");
+        try {
+            // get meta data for amount of results
+            let outputText = "";
+            const firstResponse = yield (0, node_fetch_1.default)(apiURL + query + paperIdSliced + filter + "&per-page=1", {
+                method: 'GET',
+                headers: {},
+            });
+            const firstResponseText = yield firstResponse.text();
+            const firstResponseJSON = JSON.parse(firstResponseText);
+            const amount = firstResponseJSON.meta.count;
+            const pages = Math.ceil(amount / 200);
+            for (let i = 1; i <= pages; i++) {
+                console.log(apiURL + query + paperIdSliced + filter + "&page=" + String(i) + "&per-page=200");
+                const response = yield (0, node_fetch_1.default)(apiURL + query + paperIdSliced + filter + "&page=" + String(i) + "&per-page=200", {
+                    method: 'GET',
+                    headers: {},
+                });
+                const responseText = yield response.text();
+                const responseJSON = JSON.parse(responseText);
+                outputText += JSON.stringify(responseJSON.results).slice(1, -1) + ",";
+            }
+            outputText = "[" + outputText.slice(0, -1) + "]";
+            const outputJSON = JSON.parse(outputText);
+            outputJSON.forEach((element) => {
+                const title = element.title;
+                const year = element.publication_year;
+                let DOI = "";
+                let mag = "";
+                let pmid = "";
+                let pmcid = "";
+                if (element.ids !== undefined) {
+                    for (const [key, value] of Object.entries(element.ids)) {
+                        switch (key) {
+                            case ("doi"):
+                                DOI = String(value);
+                                break;
+                            case ("mag"):
+                                mag = String(value);
+                                break;
+                            case ("pmid"):
+                                pmid = String(value);
+                                break;
+                            case ("pmcid"):
+                                pmcid = String(value);
+                                break;
+                        }
+                    }
+                    DOI = DOI.slice(16);
+                    pmid = pmid.slice(32);
+                    pmcid = pmcid.slice(32);
+                    const tempJournal = new journal_1.Journal(title, DOI, mag, pmid, pmcid, year, "OpenAlex");
+                    output = output.concat([tempJournal]);
+                }
+                else {
+                    const tempJournal = new journal_1.Journal(title, DOI, mag, pmid, pmcid, year, "OpenAlex");
+                    output = output.concat([tempJournal]);
+                }
+            });
+            return output;
+        }
+        catch (error) {
+            console.log("error while searching openAlex with openAlex ID of: " + title);
+            return output;
+        }
+    });
+}
+exports.openAlexCitations = openAlexCitations;
+function getOpenAlexPaperId(title) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const apiURL = "https://api.openalex.org/";
+        const searchQuery = "works?search=";
+        try {
+            const response = yield (0, node_fetch_1.default)(apiURL + searchQuery + title, {
+                method: 'GET',
+                headers: {},
+            });
+            const output = yield response.text();
+            const outputJSON = JSON.parse(output);
+            const paperid = outputJSON.results[0].id;
+            ;
+            return paperid;
+        }
+        catch (error) {
+            console.log("Error while fetching paperID from openAlex of: " + title);
+            const output = JSON.parse("");
+            return output;
+        }
+    });
+}
+
+
+/***/ }),
+
+/***/ 5273:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -7350,23 +7395,58 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.semanticScholarCitations = void 0;
 const node_fetch_1 = __importDefault(__nccwpck_require__(8429));
+const journal_1 = __nccwpck_require__(5451);
 function semanticScholarCitations(title) {
     return __awaiter(this, void 0, void 0, function* () {
         const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/paper/";
-        const fieldsQuery = "?fields=";
+        const fieldsQuery = "/citations?fields=title,externalIds,year&limit=1000";
         // get paper id
         const paperId = yield getSemanticScholarPaperId(title);
+        let output = [];
         try {
-            const response = yield (0, node_fetch_1.default)(semanticScholarApiURL + paperId + fieldsQuery + "citationCount,citations", {
+            const response = yield (0, node_fetch_1.default)(semanticScholarApiURL + paperId + fieldsQuery, {
                 method: 'GET',
                 headers: {},
             });
-            const output = yield response.text();
-            const outputJSON = JSON.parse(output);
-            return outputJSON.citations;
+            const outputText = yield response.text();
+            const outputJSON = JSON.parse(outputText);
+            outputJSON.data.forEach((element) => {
+                const title = element.citingPaper.title;
+                const year = element.citingPaper.year;
+                let DOI = "";
+                let mag = "";
+                let pmid = "";
+                let pmcid = "";
+                if (element.citingPaper.externalIds !== undefined) {
+                    for (const [key, value] of Object.entries(element.citingPaper.externalIds)) {
+                        switch (key) {
+                            case ("DOI"):
+                                DOI = String(value);
+                                break;
+                            case ("MAG"):
+                                mag = String(value);
+                                break;
+                            case ("PubMed"):
+                                pmid = String(value);
+                                break;
+                            case ("PubMedCentral"):
+                                pmcid = String(value);
+                                break;
+                        }
+                    }
+                    DOI = DOI.toLowerCase();
+                    const tempJournal = new journal_1.Journal(title, DOI, mag, pmid, pmcid, year, "SemanticScholar");
+                    output = output.concat([tempJournal]);
+                }
+                else {
+                    const tempJournal = new journal_1.Journal(title, DOI, mag, pmid, pmcid, year, "SemanticScholar");
+                    output = output.concat([tempJournal]);
+                }
+            });
+            return output;
         }
         catch (error) {
-            console.log(error.message);
+            console.log("error while searching semantic scholar with semantic scholar ID of: " + title);
             const output = JSON.parse("");
             return output;
         }
@@ -7388,7 +7468,7 @@ function getSemanticScholarPaperId(title) {
             return paperid;
         }
         catch (error) {
-            console.log("Error while fetching paperID");
+            console.log("Error while fetching paperID from semantic scholar of: " + title);
             const output = JSON.parse("");
             return output;
         }
