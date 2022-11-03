@@ -2,7 +2,7 @@ import * as fs from 'fs'
 import path from 'path'
 import { ReturnObject } from './getdata'
 
-// Write the data to a html file
+// Write the data to a html file and return
 export async function WriteHTML(
     data: ReturnObject[],
     filePath: string
