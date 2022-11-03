@@ -77,6 +77,5 @@ test("that output json matches the schema", async () => {
 
     //Run Howfairis and check if output JSON matches with the predefined schema
     const outputmodule: ReturnObject = await runHowfairis();
-    console.log(outputmodule.ReturnData);
     expect(outputmodule).toMatchSchema(schema);
 });

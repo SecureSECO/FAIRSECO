@@ -9,14 +9,14 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
-            #- uses: actions/setup-python@v4
-            #  with:
-            #    python-version: '3.10'
-            #- uses: tortellini-tools/action@main
-            #- uses: actions/upload-artifact@v3
-            #  with:
-            #      name: tortellini-result
-            #      path: .tortellini/out
+            - uses: tortellini-tools/action@main
+            - uses: actions/upload-artifact@v3
+              with:
+                  name: tortellini-result
+                  path: .tortellini/out
+            - uses: anchore/sbom-action@v0
+              with:
+                  artifact-name: SBOM.spdx
             - uses: ./
             - uses: actions/upload-artifact@v3
               with:
