@@ -415,7 +415,7 @@ body {
 
     <body>
         <div class="wrapper">
-            <header class="header" style="background-color:#ffffff">
+            <header class="header">
                 <div class="header_body">
                     <a href="home.html" class="header_logo">
                         <!--<img class="logo" src="1.jpg">-->
@@ -768,7 +768,16 @@ body {
                 </div>
                 <div id="Citations" class="tabcontent">
                     <h3>Citations</h3>
-                    <p></p> 
+                    <p>
+                      <table class="table_content" id="citationsContent">
+                        <tr>
+                          <th></th> 
+                          <th>Title</th>
+                          <th>Year</th>
+                          <th>DOI</th>
+                        </tr>
+                      </table>
+                    </p> 
                 </div>
                 <div id="FAIRness" class="tabcontent">
                     <h3>FAIRness</h3>
@@ -989,6 +998,7 @@ body {
               var howFairIs;
               var searchSeco;
               var SBOM;
+              var scholarly;
               // Site functionality - END
 
               // A generic way of storing the different data in vars
@@ -1007,15 +1017,17 @@ body {
                       case "SBOM":
                           SBOM = element.ReturnData;
                           break;
+                      case 'Scholarly':
+                          scholarly = element.ReturnData;
                       default:
                           break;
                   }
               }
-              //
 
               let violations = tortellini.violations;
               let violationsTable = document.getElementById("licensesContent").childNodes[1];
               let fairnessTable = document.getElementById("fairnessTable");
+              let scholarlyTable = document.getElementById("citationsContent").childNodes[1];
               createFairnessTable();
               // Violations object
               // .how_to_fix
@@ -1051,6 +1063,30 @@ body {
                   tr.appendChild(td4);
                   // Add them to the webapp
                   violationsTable.appendChild(tr);
+              }
+
+
+              //  Create the content for the citations page
+              for (let i = 0; i < scholarly.length; i++){
+                  let citation = scholarly[i];
+                  let tr = document.createElement("tr");
+                  let td1 = document.createElement("td");
+                  let textNode1 = document.createTextNode("!");
+                  let td2 = document.createElement("td");
+                  let textNode2 = document.createTextNode(citation.title);
+                  td2.appendChild(textNode2);
+                  let td3 = document.createElement("td");
+                  let textNode3 = document.createTextNode(citation.year);
+                  td3.appendChild(textNode3);
+                  let td4 = document.createElement("td");
+                  let textNode4 = document.createTextNode(citation.doi);
+                  td4.appendChild(textNode4);
+                  tr.appendChild(td1);
+                  tr.appendChild(td2);
+                  tr.appendChild(td3);
+                  tr.appendChild(td4);
+                  // Add them to the webapp
+                  scholarlyTable.appendChild(tr);
               }
 
 
