@@ -7,18 +7,17 @@ export async function runCitingPapers(title: string): Promise<ReturnObject> {
     const outData1: Journal[] = await semanticScholarCitations(title);
     const outData2: Journal[] = await openAlexCitations(title);
     let output: Journal[] = outData1.concat(outData2);
+    const starttime = performance.now();
     output = output.filter((value, index, self) => 
         index === self.findIndex((t) => 
             t.doi === value.doi && t.doi !== "" || t.mag === value.mag && t.mag !== "" || t.pmid === value.pmid && t.pmid !== "" || t.pmcid === value.pmcid && t.pmcid !== ""
         )
     )
-    
+    const endtime = performance.now();
+    const runtime = endtime - starttime;
+    console.log("Filtering out duplicates took ", runtime, " miliseconds")
     return {
         ReturnName: "citingPapers",
         ReturnData: output,
     };
 } 
-
-
-
-
