@@ -1084,6 +1084,7 @@ body {
                   td4.appendChild(a);
                   a.appendChild(textNode4)
                   a.href = "http://www.doi.org/" + citation.doi;
+                  a.target = "_blank";
                   //tr.appendChild(td1);
                   tr.appendChild(td2);
                   tr.appendChild(td3);
