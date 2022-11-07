@@ -1081,7 +1081,8 @@ body {
                   let td4 = document.createElement("td");
                   let textNode4 = document.createTextNode("doi.org" + citation.doi);
                   let a = document.createElement("a");
-                  td4.appendChild(textNode4);
+                  td4.appendChild(a);
+                  a.appendChild(textNode4)
                   a.href = "doi.org" + citation.doi;
                   //tr.appendChild(td1);
                   tr.appendChild(td2);
