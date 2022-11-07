@@ -1079,8 +1079,10 @@ body {
                   let textNode3 = document.createTextNode(citation.year);
                   td3.appendChild(textNode3);
                   let td4 = document.createElement("td");
-                  let textNode4 = document.createTextNode(citation.doi);
+                  let textNode4 = document.createTextNode("doi.org" + citation.doi);
+                  let a = document.createElement("a");
                   td4.appendChild(textNode4);
+                  a.href = "doi.org" + citation.doi;
                   //tr.appendChild(td1);
                   tr.appendChild(td2);
                   tr.appendChild(td3);
