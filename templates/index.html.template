@@ -422,7 +422,7 @@ body {
                         <!--<img class="logo" src="1.jpg">-->
                         <?xml version="1.0" encoding="UTF-8" standalone="no"?>
                         <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-                        <svg class="logo" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 722 134" enable-background="new 0 0 722 134" xml:space="preserve">  <image id="image0" width="722" height="134" x="0" y="0"
+                        <svg class="logo" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 722 134" enable-background="new 0 0 722 134" xml:space="preserve">  <image id="image0" width="500" height="134" x="0" y="0"
                             href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAtIAAACGCAYAAADw6m1iAAAMY2lDQ1BpY2MAAEiJlVcHWFPJFp5b
                         kpCQ0AIRkBJ6E0R6kRJCCyAgVbARkkBCiSEhqNiRRQXXiohixYrYVldA1oLYy6LY+2JBQVkXC4qi
                         8iYkoOu+8r3zfXPvn3/O/OfMuTO5dwDQ7OVKJDmoFgC54nxpXFgQc1xKKpP0DBCAIUCAMWByeTIJ
@@ -809,7 +809,7 @@ body {
             </section>
             <footer>
                 <div class="footer_logo">
-                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="318px" height="284px" viewBox="0 0 318 284" enable-background="new 0 0 318 284" xml:space="preserve">  <image id="image0" width="318" height="284" x="0" y="0"
+                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="318px" height="284px" viewBox="0 0 318 284" enable-background="new 0 0 318 284" xml:space="preserve">  <image id="image0" width="278" height="284" x="0" y="0"
                         href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAT4AAAEcCAMAAABpgig/AAAMY2lDQ1BpY2MAAEiJlVcHWFPJFp5b
                     kpCQ0AIRkBJ6E0R6kRJCCyAgVbARkkBCiSEhqNiRRQXXiohixYrYVldA1oLYy6LY+2JBQVkXC4qi
                     8iYkoOu+8r3zfXPvn3/O/OfMuTO5dwDQ7OVKJDmoFgC54nxpXFgQc1xKKpP0DBCAIUCAMWByeTIJ
