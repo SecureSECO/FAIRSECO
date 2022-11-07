@@ -34,15 +34,12 @@ export async function openAlexCitations(title: string): Promise<Journal[]> {
         outputJSON.forEach((element: any) => {
             const title = element.title;
             const year = element.publication_year;
-            let DOI = ""; let mag = ""; let pmid = ""; let pmcid = "";
+            let DOI = ""; let pmid = ""; let pmcid = "";
             if (element.ids !== undefined) {
                 for (const [key, value] of Object.entries(element.ids)) {
                     switch (key) {
                         case ("doi"):
                             DOI = String(value);
-                            break;
-                        case ("mag"):
-                            mag = String(value);
                             break;
                         case ("pmid"):
                             pmid = String(value);
@@ -55,11 +52,11 @@ export async function openAlexCitations(title: string): Promise<Journal[]> {
                 DOI = DOI.slice(16);
                 pmid = pmid.slice(32);
                 pmcid = pmcid.slice(32);
-                const tempJournal = new Journal(title, DOI, mag, pmid, pmcid, year, "OpenAlex");
+                const tempJournal = new Journal(title, DOI, pmid, pmcid, year, "OpenAlex");
                 output = output.concat([tempJournal]);
             }
             else {
-                const tempJournal = new Journal(title, DOI, mag, pmid, pmcid, year, "OpenAlex");
+                const tempJournal = new Journal(title, DOI, pmid, pmcid, year, "OpenAlex");
                 output = output.concat([tempJournal]);
             }
         });
