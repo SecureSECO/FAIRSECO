@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "build": "ncc build ./src/main.ts"
+    "build": "ncc build ./src/main.ts",
+    "builddocs": "typedoc"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
     "jest-json-schema": "^6.1.0",
     "prettier": "^2.7.1",
     "ts-jest": "^29.0.3",
+    "typedoc": "^0.23.20",
     "typescript": "^4.8.4"
   },
   "bugs": {
@@ -36,10 +38,10 @@
   "homepage": "https://github.com/QDUNI/FairSECO#readme",
   "dependencies": {
     "@actions/artifact": "^1.1.0",
-    "path": "^0.12.7",
     "@actions/core": "^1.10.0",
     "@actions/exec": "^1.1.1",
     "@vercel/ncc": "^0.34.0",
+    "path": "^0.12.7",
     "yaml": "^2.1.3"
   }
 }
