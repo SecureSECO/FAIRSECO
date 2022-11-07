@@ -772,7 +772,6 @@ body {
                     <p>
                       <table class="table_content" id="citationsContent">
                         <tr>
-                          <th></th> 
                           <th>Title</th>
                           <th>Year</th>
                           <th>DOI</th>
@@ -1082,7 +1081,7 @@ body {
                   let td4 = document.createElement("td");
                   let textNode4 = document.createTextNode(citation.doi);
                   td4.appendChild(textNode4);
-                  tr.appendChild(td1);
+                  //tr.appendChild(td1);
                   tr.appendChild(td2);
                   tr.appendChild(td3);
                   tr.appendChild(td4);
