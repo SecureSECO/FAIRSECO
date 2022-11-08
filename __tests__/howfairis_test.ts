@@ -7,7 +7,6 @@ import { matchers } from "jest-json-schema";
 expect.extend(matchers);
 jest.setTimeout(30000);
 
-
 test("that output json matches the schema", async () => {
     // The schema below defines what our JSON output should look like
     // (what headers and what the types of the values are)
