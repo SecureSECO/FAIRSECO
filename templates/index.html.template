@@ -26,6 +26,7 @@ html,body {overflow-x: hidden; background-color:#ffffff;}
 
 .content{
   padding-top: 89px;
+ 
 }
 
 .header{
@@ -432,7 +433,7 @@ body {
     color:white;
   }
 
-  .footer{
+  footer{
     background-color: #212121;!important
   }
 
@@ -458,10 +459,23 @@ body {
 
   .content{
     border: 0px;
-    background-color:none;
+    background-color:#212121
+  }
+
+  .table_content{
+    border: 0px solid;
   }
 
   #Citations{
+    background-color:#000;
+  }
+  #Licenses{
+    background-color:#000;
+  }
+  #FAIRness{
+    background-color:#000;
+  }
+  #Overview{
     background-color:#000;
   }
 }
