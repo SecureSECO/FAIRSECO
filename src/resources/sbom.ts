@@ -1,12 +1,15 @@
 import { ReturnObject } from "../getdata";
-import { Artifact, getArtifactData, getFileFromArtifact } from "./helperfunctions/artifact";
+import {
+    Artifact,
+    getArtifactData,
+    getFileFromArtifact,
+} from "./helperfunctions/artifact";
 import * as artifact from "@actions/artifact";
-import YAML from "yaml";
 
 // Get the SBOM info from the file
 export async function runSBOM(
     artifactObject?: Artifact
-    ): Promise<ReturnObject> {
+): Promise<ReturnObject> {
     let destination: string = "";
     if (artifactObject !== undefined) {
         destination = "__tests__/.SBOM-unit-test";
@@ -27,11 +30,10 @@ export async function runSBOM(
         "SBOM.spdx"
     );
 
-    const obj = YAML.parse(fileContents);
+    const obj = JSON.parse(fileContents);
 
     return {
         ReturnName: "SBOM",
         ReturnData: obj,
     };
 }
-

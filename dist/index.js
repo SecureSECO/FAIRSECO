@@ -11408,14 +11408,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.runSBOM = void 0;
 const artifact_1 = __nccwpck_require__(2949);
 const artifact = __importStar(__nccwpck_require__(9151));
-const yaml_1 = __importDefault(__nccwpck_require__(1317));
 // Get the SBOM info from the file
 function runSBOM(artifactObject) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -11430,7 +11426,7 @@ function runSBOM(artifactObject) {
         // Get the SBOM file
         const downloadResponse = yield (0, artifact_1.getArtifactData)("SBOM.spdx", destination, artifactObject);
         const fileContents = yield (0, artifact_1.getFileFromArtifact)(downloadResponse, "SBOM.spdx");
-        const obj = yaml_1.default.parse(fileContents);
+        const obj = JSON.parse(fileContents);
         return {
             ReturnName: "SBOM",
             ReturnData: obj,

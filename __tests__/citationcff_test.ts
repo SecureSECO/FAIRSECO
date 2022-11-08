@@ -141,3 +141,45 @@ describe("Test getCitationFile", () => {
         expect(cffData.status).toBe("incorrect_yaml");
     });
 });
+
+describe("Test GetError", () => {
+    test("One Line", () => {
+        const input = "Error: Unit Test 1";
+
+        const result = cff.getError(input);
+
+        expect(result).toBe(input);
+    });
+
+    test("Error not at the start", () => {
+        const input = "Apple Error: Unit Test 2";
+
+        const result = cff.getError(input);
+
+        expect(result).toBe(cff.unknownErrorMsg);
+    });
+
+    test("Two Lines", () => {
+        const input = "Error: Unit Test 3\n Second line";
+
+        const result = cff.getError(input);
+
+        expect(result).toBe(input.split("\n")[0]);
+    });
+
+    test("Garbage", () => {
+        const input = "dyy ywy rtyrtywb  sheb";
+
+        const result = cff.getError(input);
+
+        expect(result).toBe(cff.unknownErrorMsg);
+    });
+
+    test("Empty String", () => {
+        const input = "";
+
+        const result = cff.getError(input);
+
+        expect(result).toBe(cff.unknownErrorMsg);
+    });
+});

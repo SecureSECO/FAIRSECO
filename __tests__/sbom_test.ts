@@ -6,8 +6,6 @@ import * as art from "../src/resources/helperfunctions/artifact";
 const mockArtifact = art.createMockArtifact();
 
 test("Check if sbom file exists", async () => {
-    const outputmodule: ReturnObject = await runSBOM(mockArtifact);
-
     let fileExists: Boolean = false;
 
     runSBOM(mockArtifact)
@@ -19,7 +17,11 @@ test("Check if sbom file exists", async () => {
             expect(fileExists).toBe(true);
         });
 
-    let result;
+    let result: ReturnObject = { ReturnName: "", ReturnData: {} };
 
     expect(async () => (result = await runSBOM(mockArtifact))).not.toThrow();
+
+    result = await runSBOM(mockArtifact);
+
+    expect(result.ReturnData).toHaveProperty("SPDXID");
 });

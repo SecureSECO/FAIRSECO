@@ -122,6 +122,8 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
     }
 }
 
+export const unknownErrorMsg = "Unknown Error";
+
 // Finds the error in the docker stderr output,
 // when trying to run cffconvert in docker yields a non-zero exit code
 export function getError(stderr: string): string {
@@ -134,5 +136,5 @@ export function getError(stderr: string): string {
     }
 
     // No cffconvert error message was found, so the error is unknown.
-    return "Unknown error";
+    return unknownErrorMsg;
 }
