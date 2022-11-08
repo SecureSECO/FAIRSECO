@@ -10995,12 +10995,11 @@ function generateHTML(result) {
         try {
             yield (0, webapp_1.WriteHTML)(result, "./.FairSECO/index.html");
             console.log("Successfully wrote HTML to dir");
-            //await WriteCSS("./.FairSECO/style.css");
-            //console.log("Successfully wrote CSS to dir");
+            // await WriteCSS("./.FairSECO/style.css");
+            // console.log("Successfully wrote CSS to dir");
         }
         catch (_a) {
             console.error("Error writing HTML file");
-            ;
         }
     });
 }
@@ -11113,7 +11112,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getError = exports.getCitationFile = void 0;
+exports.getError = exports.unknownErrorMsg = exports.getCitationFile = void 0;
 const yaml_1 = __importDefault(__nccwpck_require__(1317));
 const path_ = __importStar(__nccwpck_require__(1017));
 const fs = __importStar(__nccwpck_require__(7147));
@@ -11205,6 +11204,7 @@ function getCitationFile(path) {
     });
 }
 exports.getCitationFile = getCitationFile;
+exports.unknownErrorMsg = "Unknown Error";
 // Finds the error in the docker stderr output,
 // when trying to run cffconvert in docker yields a non-zero exit code
 function getError(stderr) {
@@ -11217,7 +11217,7 @@ function getError(stderr) {
             return x;
     }
     // No cffconvert error message was found, so the error is unknown.
-    return "Unknown error";
+    return exports.unknownErrorMsg;
 }
 exports.getError = getError;
 
@@ -11355,14 +11355,9 @@ function runHowfairis() {
             },
         };
         const exitCode = yield (0, exec_1.exec)(cmd, args, options);
-        // console.debug("Docker running fairtally returned " + String(exitCode));
-        // console.debug("stdout:");
-        // console.debug(stdout);
-        // console.debug("stderr:");
-        // console.debug(stderr);
         return {
             ReturnName: "HowFairIs",
-            ReturnData: JSON.parse(stdout)
+            ReturnData: JSON.parse(stdout),
         };
     });
 }
@@ -11535,8 +11530,9 @@ exports.parseInput = parseInput;
 // (i.e. they point to the start of a new hash)
 function getHashIndices(input) {
     const indices = [];
-    for (let i = 0; i < input.length; i++) {
-        if (input[i].includes("Hash"))
+    for (let i = 1; i < input.length; i++) {
+        // Check if the previous line consists of dashes to make sure an author named Hash isn't included
+        if (input[i - 1].match(/(-)+/) !== null && input[i].startsWith("Hash "))
             indices.push(i);
     }
     // Add last line + 1, to let the program know when to stop looping
@@ -11633,7 +11629,7 @@ exports.getMatches = getMatches;
 function getMatchIndicesOfHash(input, start, end) {
     const indices = [];
     for (let i = start; i < end; i++) {
-        if (input[i].includes("*Method"))
+        if (input[i].startsWith("*Method"))
             indices.push(i);
     }
     return indices;

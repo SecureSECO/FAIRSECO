@@ -18,12 +18,10 @@ export async function runHowfairis(): Promise<ReturnObject> {
         gitrepo,
     ];
 
-
     let stdout = "";
     let stderr = "";
 
     const options: ExecOptions = {
-
         ignoreReturnCode: true,
     };
     options.listeners = {
@@ -33,19 +31,11 @@ export async function runHowfairis(): Promise<ReturnObject> {
         stderr: (data: Buffer) => {
             stderr += data.toString();
         },
-
     };
     const exitCode = await exec(cmd, args, options);
 
-    // console.debug("Docker running fairtally returned " + String(exitCode));
-    // console.debug("stdout:");
-    // console.debug(stdout);
-    // console.debug("stderr:");
-    // console.debug(stderr);
-
     return {
         ReturnName: "HowFairIs",
-        ReturnData: JSON.parse(stdout)
-
+        ReturnData: JSON.parse(stdout),
     };
 }

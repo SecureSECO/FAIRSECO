@@ -126,8 +126,10 @@ export function parseInput(input: String[]): Output {
 export function getHashIndices(input: String[]): number[] {
     const indices: number[] = [];
 
-    for (let i = 0; i < input.length; i++) {
-        if (input[i].includes("Hash")) indices.push(i);
+    for (let i = 1; i < input.length; i++) {
+        // Check if the previous line consists of dashes to make sure an author named Hash isn't included
+        if (input[i - 1].match(/(-)+/) !== null && input[i].startsWith("Hash "))
+            indices.push(i);
     }
 
     // Add last line + 1, to let the program know when to stop looping
@@ -248,7 +250,7 @@ export function getMatchIndicesOfHash(
 ): number[] {
     const indices: number[] = [];
     for (let i = start; i < end; i++) {
-        if (input[i].includes("*Method")) indices.push(i);
+        if (input[i].startsWith("*Method")) indices.push(i);
     }
 
     return indices;
