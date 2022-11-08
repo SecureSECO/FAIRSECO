@@ -17,15 +17,12 @@ export async function semanticScholarCitations(title: string): Promise<Journal[]
         outputJSON.data.forEach((element: any) => {
             const title = element.citingPaper.title;
             const year = element.citingPaper.year;
-            let DOI = ""; let mag = ""; let pmid = ""; let pmcid = "";
+            let DOI = ""; let pmid = ""; let pmcid = "";
             if (element.citingPaper.externalIds !== undefined) {
                 for (const [key, value] of Object.entries(element.citingPaper.externalIds)) {
                     switch (key) {
                         case ("DOI"):
                             DOI = String(value);
-                            break;
-                        case ("MAG"):
-                            mag = String(value);
                             break;
                         case ("PubMed"):
                             pmid = String(value);
@@ -38,11 +35,13 @@ export async function semanticScholarCitations(title: string): Promise<Journal[]
                 DOI = DOI.toLowerCase();
                 pmid = pmid.toLowerCase();
                 pmcid = pmcid.toLowerCase();
-                const tempJournal = new Journal(title, DOI, mag, pmid, pmcid, year, "SemanticScholar");
+
+                const tempJournal = new Journal(title, DOI, pmid, pmcid, year, "SemanticScholar");
                 output = output.concat([tempJournal]);
             }
             else {
-                const tempJournal = new Journal(title, DOI, mag, pmid, pmcid, year, "SemanticScholar");
+                const tempJournal = new Journal(title, DOI, pmid, pmcid, year, "SemanticScholar");
+
                 output = output.concat([tempJournal]);
             }
         });
