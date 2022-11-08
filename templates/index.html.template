@@ -220,6 +220,7 @@ ul {
   color: #4B5762;
   display: none;
   padding: 0px 20px;
+  padding-bottom: 20px;
   height: 100%;
   border-radius: 10px 10px 10px 10px;
 }
@@ -242,14 +243,21 @@ ul {
 /*body-table*/
 .table_content{
   border-spacing: 5px;
-  border-radius: 7px;
 }
+
+tr:first-child td:first-child { border-top-left-radius: 7px; }
+tr:first-child td:last-child { border-top-right-radius: 7px; }
+
+tr:last-child td:first-child { border-bottom-left-radius: 7px; }
+tr:last-child td:last-child { border-bottom-right-radius: 7px; }
+
+tr:first-child td { border-top-style: solid; }
+tr td:first-child { border-left-style: solid; }
 
 .table_content, th,td{
   background-color: #EFF2F8;
   border: 1px solid #EFF2F8;
   border-collapse: collapse;
-  
   width: 100%;
 }
 th,td{
