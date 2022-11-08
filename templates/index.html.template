@@ -196,7 +196,7 @@ ul {
 
 .buttoncontent{
   padding-top: 0px;
-  padding-bottom: 60px;
+  padding-bottom: 48px;
 }
 
 .tablink{
@@ -219,7 +219,7 @@ ul {
 .tabcontent{
   color: #4B5762;
   display: none;
-  padding: 100px 20px;
+  padding: 0px 20px;
   height: 100%;
   border-radius: 10px 10px 10px 10px;
 }
@@ -242,13 +242,15 @@ ul {
 /*body-table*/
 .table_content{
   border-spacing: 5px;
+  border-radius: 7px;
 }
 
 .table_content, th,td{
   background-color: #EFF2F8;
   border: 1px solid #EFF2F8;
   border-collapse: collapse;
-  border-radius: 7px;
+  
+  width: 100%;
 }
 th,td{
   background-color: #e3e9f6;
@@ -768,7 +770,6 @@ body {
                     <p></p>
                 </div>
                 <div id="Citations" class="tabcontent">
-                    <h3>Citations</h3>
                     <p>
                       <table class="table_content" id="citationsContent">
                         <tr>
