@@ -45,6 +45,7 @@ html,body {overflow-x: hidden; background-color:#ffffff;}
   align-items: center;
   position: relative;
   padding: 0px 32px 0px 18px; 
+  background-color:darkgray;
 }
 
 .header_logo{
@@ -425,14 +426,14 @@ body {
   }
 
   .header_body{
-    background-color: #414141
+    background-color: #414141;
   }
   .header_li{
     color:white;
   }
 
   .footer{
-    background-color:#212121
+    background-color: #212121;!important
   }
 
   .header_list form{
@@ -440,6 +441,29 @@ body {
     border: 0px solid;
   }
 
+  .tablink{
+   background-color: #616161;
+    color: white;
+  }
+
+  th{
+    background-color: #000000;
+    color: white;   
+  }
+
+  td{
+    background-color: #212121;
+    color: white;   
+  }
+
+  .content{
+    border: 0px;
+    background-color:none;
+  }
+
+  #Citations{
+    background-color:#000;
+  }
 }
 
     </style>
@@ -454,7 +478,7 @@ body {
                         <?xml version="1.0" encoding="UTF-8" standalone="no"?>
                         <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
                         <svg   width="380px"
-   height="62px"
+   height="35px"
    viewBox="0 0 380 62" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>FAIRSECO</title>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
