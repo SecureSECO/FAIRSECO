@@ -35,6 +35,7 @@ html,body {overflow-x: hidden; background-color:#ffffff;}
   left: 0;
   z-index: 50;
   border-bottom: 1px solid #8C9EAE;
+  background-color:#ffffff;
 }
 
 .header_body{
@@ -415,13 +416,13 @@ body {
 
     <body>
         <div class="wrapper">
-            <header class="header" style="background-color:#ffffff">
+            <header class="header">
                 <div class="header_body">
                     <a href="home.html" class="header_logo">
                         <!--<img class="logo" src="1.jpg">-->
                         <?xml version="1.0" encoding="UTF-8" standalone="no"?>
                         <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-                        <svg class="logo" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 722 134" enable-background="new 0 0 722 134" xml:space="preserve">  <image id="image0" width="722" height="134" x="0" y="0"
+                        <svg class="logo" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 722 134" enable-background="new 0 0 722 134" xml:space="preserve">  <image id="image0" width="500" height="134" x="0" y="0"
                             href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAtIAAACGCAYAAADw6m1iAAAMY2lDQ1BpY2MAAEiJlVcHWFPJFp5b
                         kpCQ0AIRkBJ6E0R6kRJCCyAgVbARkkBCiSEhqNiRRQXXiohixYrYVldA1oLYy6LY+2JBQVkXC4qi
                         8iYkoOu+8r3zfXPvn3/O/OfMuTO5dwDQ7OVKJDmoFgC54nxpXFgQc1xKKpP0DBCAIUCAMWByeTIJ
@@ -768,7 +769,15 @@ body {
                 </div>
                 <div id="Citations" class="tabcontent">
                     <h3>Citations</h3>
-                    <p></p> 
+                    <p>
+                      <table class="table_content" id="citationsContent">
+                        <tr>
+                          <th>Title</th>
+                          <th>Year</th>
+                          <th>DOI</th>
+                        </tr>
+                      </table>
+                    </p> 
                 </div>
                 <div id="FAIRness" class="tabcontent">
                     <h3>FAIRness</h3>
@@ -800,7 +809,7 @@ body {
             </section>
             <footer>
                 <div class="footer_logo">
-                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="318px" height="284px" viewBox="0 0 318 284" enable-background="new 0 0 318 284" xml:space="preserve">  <image id="image0" width="318" height="284" x="0" y="0"
+                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="318px" height="284px" viewBox="0 0 318 284" enable-background="new 0 0 318 284" xml:space="preserve">  <image id="image0" width="278" height="284" x="0" y="0"
                         href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAT4AAAEcCAMAAABpgig/AAAMY2lDQ1BpY2MAAEiJlVcHWFPJFp5b
                     kpCQ0AIRkBJ6E0R6kRJCCyAgVbARkkBCiSEhqNiRRQXXiohixYrYVldA1oLYy6LY+2JBQVkXC4qi
                     8iYkoOu+8r3zfXPvn3/O/OfMuTO5dwDQ7OVKJDmoFgC54nxpXFgQc1xKKpP0DBCAIUCAMWByeTIJ
@@ -989,6 +998,7 @@ body {
               var howFairIs;
               var searchSeco;
               var SBOM;
+              var citingPapers;
               // Site functionality - END
 
               // A generic way of storing the different data in vars
@@ -1007,15 +1017,17 @@ body {
                       case "SBOM":
                           SBOM = element.ReturnData;
                           break;
+                      case 'citingPapers':
+                          citingPapers = element.ReturnData;
                       default:
                           break;
                   }
               }
-              //
 
               let violations = tortellini.violations;
               let violationsTable = document.getElementById("licensesContent").childNodes[1];
               let fairnessTable = document.getElementById("fairnessTable");
+              let scholarlyTable = document.getElementById("citationsContent").childNodes[1];
               createFairnessTable();
               // Violations object
               // .how_to_fix
@@ -1051,6 +1063,34 @@ body {
                   tr.appendChild(td4);
                   // Add them to the webapp
                   violationsTable.appendChild(tr);
+              }
+
+
+              //  Create the content for the citations page
+              for (let i = 0; i < citingPapers.length; i++){
+                  let citation = citingPapers[i];
+                  let tr = document.createElement("tr");
+                  let td1 = document.createElement("td");
+                  let textNode1 = document.createTextNode("!");
+                  let td2 = document.createElement("td");
+                  let textNode2 = document.createTextNode(citation.title);
+                  td2.appendChild(textNode2);
+                  let td3 = document.createElement("td");
+                  let textNode3 = document.createTextNode(citation.year);
+                  td3.appendChild(textNode3);
+                  let td4 = document.createElement("td");
+                  let textNode4 = document.createTextNode(citation.doi);
+                  let a = document.createElement("a");
+                  td4.appendChild(a);
+                  a.appendChild(textNode4)
+                  a.href = "http://www.doi.org/" + citation.doi;
+                  a.target = "_blank";
+                  //tr.appendChild(td1);
+                  tr.appendChild(td2);
+                  tr.appendChild(td3);
+                  tr.appendChild(td4);
+                  // Add them to the webapp
+                  scholarlyTable.appendChild(tr);
               }
 
 

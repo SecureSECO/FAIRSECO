@@ -35,11 +35,13 @@ export async function semanticScholarCitations(title: string): Promise<Journal[]
                 DOI = DOI.toLowerCase();
                 pmid = pmid.toLowerCase();
                 pmcid = pmcid.toLowerCase();
+
                 const tempJournal = new Journal(title, DOI, pmid, pmcid, year, "SemanticScholar");
                 output = output.concat([tempJournal]);
             }
             else {
                 const tempJournal = new Journal(title, DOI, pmid, pmcid, year, "SemanticScholar");
+
                 output = output.concat([tempJournal]);
             }
         });

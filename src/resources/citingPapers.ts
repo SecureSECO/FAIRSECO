@@ -6,7 +6,9 @@ import { Journal } from "./journal";
 export async function runCitingPapers(title: string): Promise<ReturnObject> {
     const outData1: Journal[] = await semanticScholarCitations(title);
     const outData2: Journal[] = await openAlexCitations(title);
+
     const output: Journal[] = deleteDuplicates(outData1, outData2);
+
     return {
         ReturnName: "citingPapers",
         ReturnData: output,
@@ -22,7 +24,4 @@ export function deleteDuplicates(array1: Journal[], array2: Journal[]): Journal[
     )
     return output;
 }
-
-
-
 
