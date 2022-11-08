@@ -245,15 +245,6 @@ ul {
   border-spacing: 5px;
 }
 
-tr:first-child td:first-child { border-top-left-radius: 7px; }
-tr:first-child td:last-child { border-top-right-radius: 7px; }
-
-tr:last-child td:first-child { border-bottom-left-radius: 7px; }
-tr:last-child td:last-child { border-bottom-right-radius: 7px; }
-
-tr:first-child td { border-top-style: solid; }
-tr td:first-child { border-left-style: solid; }
-
 .table_content, th,td{
   background-color: #EFF2F8;
   border: 1px solid #EFF2F8;
@@ -263,6 +254,7 @@ tr td:first-child { border-left-style: solid; }
 th,td{
   background-color: #e3e9f6;
   padding: 15px;
+  width: 0px;
 }
 
 th{
@@ -774,7 +766,7 @@ body {
                 <button class="tablink" onclick="openPage('Licenses', this, '#dce6f8')">Licenses</button>
                 </div>
                 <div id="Overview" class="tabcontent">
-                    <h3>Overview</h3>
+            
                     <p></p>
                 </div>
                 <div id="Citations" class="tabcontent">
@@ -789,7 +781,7 @@ body {
                     </p> 
                 </div>
                 <div id="FAIRness" class="tabcontent">
-                    <h3>FAIRness</h3>
+           
                     <p>
                         <table class="table_content" id="fairnessTable">
                             
@@ -797,7 +789,7 @@ body {
                     </p>
                 </div>
                 <div id="Licenses" class="tabcontent">
-                    <h3>Licenses</h3>
+             
                     <p>
                         <table class="table_content" id="licensesContent">
                             <tr>
