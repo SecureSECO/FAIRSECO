@@ -1,10 +1,10 @@
-import * as tort from "../src/resources/tortellini";
-import * as art from "../src/resources/helperfunctions/artifact"
+import * as tort from "../../src/resources/tortellini";
+import * as art from "../../src/resources/helperfunctions/artifact"
 import * as artifact from "@actions/artifact";
 import { expect, test } from "@jest/globals";
 
 import YAML from "yaml";
-import { ReturnObject } from "../src/getdata";
+import { ReturnObject } from "../../src/getdata";
 
 const mockArtifact = art.createMockArtifact();
 
