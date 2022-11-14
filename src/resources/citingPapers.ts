@@ -2,8 +2,10 @@ import { ReturnObject } from "../getdata";
 import { semanticScholarCitations } from "./semanticscholarAPI";
 import { openAlexCitations } from "./openalexAPI";
 import { Journal } from "./journal";
+import { ValidCffObject } from "./citation_cff";
 
-export async function runCitingPapers(title: string): Promise<ReturnObject> {
+export async function runCitingPapers(cfffile: ValidCffObject): Promise<ReturnObject> {
+    const title = cfffile.citation.title;
     const outData1: Journal[] = await semanticScholarCitations(title);
     const outData2: Journal[] = await openAlexCitations(title);
 

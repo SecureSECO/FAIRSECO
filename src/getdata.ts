@@ -2,7 +2,7 @@ import { runTortellini } from "./resources/tortellini";
 import { runHowfairis } from "./resources/howfairis";
 import { runSearchseco } from "./resources/searchseco";
 import { runCitingPapers } from "./resources/citingPapers";
-import { getCitationFile } from "./resources/citation_cff";
+import { getCitationFile, CffObject } from "./resources/citation_cff";
 import { runSBOM } from "./resources/sbom";
 
 
@@ -37,21 +37,27 @@ export async function data(): Promise<ReturnObject[]> {
         console.error("Searchseco threw an error:");
         console.error(error);
     }
-
-    try {
-
-        const scholarlyResult = await runCitingPapers("ss-TEA: Entropy based identification of receptor specific ligand binding residues from a multiple sequence alignment of class A GPCRs");
-        output.push(scholarlyResult);
-    } catch (error) {
-        console.error("Scholarly threw an error:");
-        console.error(error);
-    }
     
     try {
         const cffResult = await getCitationFile(".");
         output.push(cffResult);
     } catch (error) {
         console.error("Getting CITATION.cff caused an error:");
+    }
+
+    try {
+        const cffFile = output[3].ReturnData as CffObject;
+        if (cffFile.status === "valid") {
+            const citingPapersResult = await runCitingPapers(cffFile);
+            output.push(citingPapersResult);
+        }
+        else {
+            throw new Error("Invalid cff File");
+        }
+
+    } catch (error) {
+        console.error("Scholarly threw an error:");
+        console.error(error);
     }
     
     try {
