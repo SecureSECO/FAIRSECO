@@ -1,27 +1,15 @@
 import { ReturnObject } from "../getdata";
-import * as artifact from "@actions/artifact";
 
 import YAML from "yaml";
 import { Artifact, getArtifactData, getFileFromArtifact } from "./helperfunctions/artifact";
 
-export async function runTortellini(
-    artifactObject?: Artifact
-): Promise<ReturnObject> {
-    // An artifact object is only passed in the unit test. If that is the case,
-    // set the download destination to the unit test output folder.
-    // If not, use the regular Github Action artifact, and the normal output folder
-    let destination: string = "";
-    if (artifactObject !== undefined) {
-        destination = "__tests__/.tortellini-unit-test";
-    } else {
-        artifactObject = artifact;
-        destination = ".tortellini-artifact";
-    }
+import * as input from "./tortellini-input";
 
+export async function runTortellini(): Promise<ReturnObject> {
     const downloadResponse = await getArtifactData(
         "tortellini-result",
-        destination,
-        artifactObject
+        input.destination,
+        input.artifactObject
     );
 
     const fileContents = await getFileFromArtifact(

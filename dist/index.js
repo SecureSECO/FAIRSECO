@@ -58,7 +58,7 @@ exports.DefaultArtifactClient = void 0;
 const core = __importStar(__nccwpck_require__(3722));
 const upload_specification_1 = __nccwpck_require__(4181);
 const upload_http_client_1 = __nccwpck_require__(9643);
-const utils_1 = __nccwpck_require__(1732);
+const utils_1 = __nccwpck_require__(9586);
 const path_and_artifact_name_validation_1 = __nccwpck_require__(4696);
 const download_http_client_1 = __nccwpck_require__(315);
 const download_specification_1 = __nccwpck_require__(4104);
@@ -632,7 +632,7 @@ exports.DownloadHttpClient = void 0;
 const fs = __importStar(__nccwpck_require__(7147));
 const core = __importStar(__nccwpck_require__(3722));
 const zlib = __importStar(__nccwpck_require__(9796));
-const utils_1 = __nccwpck_require__(1732);
+const utils_1 = __nccwpck_require__(9586);
 const url_1 = __nccwpck_require__(7310);
 const status_reporter_1 = __nccwpck_require__(4991);
 const perf_hooks_1 = __nccwpck_require__(4074);
@@ -974,7 +974,7 @@ exports.getDownloadSpecification = getDownloadSpecification;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.HttpManager = void 0;
-const utils_1 = __nccwpck_require__(1732);
+const utils_1 = __nccwpck_require__(9586);
 /**
  * Used for managing http clients during either upload or download
  */
@@ -1115,7 +1115,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.retryHttpClientRequest = exports.retry = void 0;
-const utils_1 = __nccwpck_require__(1732);
+const utils_1 = __nccwpck_require__(9586);
 const core = __importStar(__nccwpck_require__(3722));
 const config_variables_1 = __nccwpck_require__(1869);
 function retry(name, operation, customErrorMessages, maxAttempts) {
@@ -1401,7 +1401,7 @@ const fs = __importStar(__nccwpck_require__(7147));
 const core = __importStar(__nccwpck_require__(3722));
 const tmp = __importStar(__nccwpck_require__(3421));
 const stream = __importStar(__nccwpck_require__(2781));
-const utils_1 = __nccwpck_require__(1732);
+const utils_1 = __nccwpck_require__(9586);
 const config_variables_1 = __nccwpck_require__(1869);
 const util_1 = __nccwpck_require__(3837);
 const url_1 = __nccwpck_require__(7310);
@@ -1886,7 +1886,7 @@ exports.getUploadSpecification = getUploadSpecification;
 
 /***/ }),
 
-/***/ 1732:
+/***/ 9586:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -11262,7 +11262,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createMockArtifact = exports.getFileFromArtifact = exports.getArtifactData = void 0;
+exports.getFileFromArtifact = exports.getArtifactData = void 0;
 const fs = __importStar(__nccwpck_require__(7147));
 const path = __importStar(__nccwpck_require__(1017));
 // Download the artifact that was uploaded by Tortellini
@@ -11277,33 +11277,12 @@ exports.getArtifactData = getArtifactData;
 // Get a file from the artifact as a string
 function getFileFromArtifact(dlResponse, fileName) {
     return __awaiter(this, void 0, void 0, function* () {
-        let filePath = "";
-        if (dlResponse.downloadPath === undefined)
-            filePath = fileName;
-        else
-            filePath = path.join(dlResponse.downloadPath, fileName);
+        const filePath = path.join(dlResponse.downloadPath, fileName);
         const buffer = fs.readFileSync(filePath);
         return buffer.toString();
     });
 }
 exports.getFileFromArtifact = getFileFromArtifact;
-function createMockArtifact() {
-    // Create DLArtFunc
-    const downloadArt = function (name, path, options) {
-        return { artifactName: name, downloadPath: path };
-    };
-    // Create TestClient
-    const client = { downloadArtifact: downloadArt };
-    // Create create function
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    const create_ = function () {
-        return client;
-    };
-    const testArt = { create: create_ };
-    // Create TestArtifact
-    return testArt;
-}
-exports.createMockArtifact = createMockArtifact;
 
 
 /***/ }),
@@ -11639,6 +11618,43 @@ exports.getMatchIndicesOfHash = getMatchIndicesOfHash;
 
 /***/ }),
 
+/***/ 9478:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.destination = exports.artifactObject = void 0;
+const artifact = __importStar(__nccwpck_require__(9151));
+exports.artifactObject = artifact;
+exports.destination = ".tortellini-artifact";
+
+
+/***/ }),
+
 /***/ 5234:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -11681,23 +11697,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.filterData = exports.runTortellini = void 0;
-const artifact = __importStar(__nccwpck_require__(9151));
 const yaml_1 = __importDefault(__nccwpck_require__(1317));
 const artifact_1 = __nccwpck_require__(2949);
-function runTortellini(artifactObject) {
+const input = __importStar(__nccwpck_require__(9478));
+function runTortellini() {
     return __awaiter(this, void 0, void 0, function* () {
-        // An artifact object is only passed in the unit test. If that is the case,
-        // set the download destination to the unit test output folder.
-        // If not, use the regular Github Action artifact, and the normal output folder
-        let destination = "";
-        if (artifactObject !== undefined) {
-            destination = "__tests__/.tortellini-unit-test";
-        }
-        else {
-            artifactObject = artifact;
-            destination = ".tortellini-artifact";
-        }
-        const downloadResponse = yield (0, artifact_1.getArtifactData)("tortellini-result", destination, artifactObject);
+        const downloadResponse = yield (0, artifact_1.getArtifactData)("tortellini-result", input.destination, input.artifactObject);
         const fileContents = yield (0, artifact_1.getFileFromArtifact)(downloadResponse, "evaluation-result.yml");
         const obj = yaml_1.default.parse(fileContents);
         const filteredData = yield filterData(obj);
@@ -18333,7 +18338,7 @@ exports.binary = binary;
 
 /***/ }),
 
-/***/ 7778:
+/***/ 1732:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
@@ -18696,7 +18701,7 @@ var _null = __nccwpck_require__(2845);
 var seq = __nccwpck_require__(8185);
 var string = __nccwpck_require__(82);
 var binary = __nccwpck_require__(8275);
-var bool = __nccwpck_require__(7778);
+var bool = __nccwpck_require__(1732);
 var float = __nccwpck_require__(5658);
 var int = __nccwpck_require__(5596);
 var omap = __nccwpck_require__(7963);

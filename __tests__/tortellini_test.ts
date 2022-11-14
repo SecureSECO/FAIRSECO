@@ -1,27 +1,48 @@
 import * as tort from "../src/resources/tortellini";
+import * as input from "../src/resources/tortellini-input";
 import * as art from "../src/resources/helperfunctions/artifact"
 import { expect, test } from "@jest/globals";
 
-const mockArtifact = art.createMockArtifact();
+// Mock the tortellini-input module to replace used artifact object and file path for unit tests
+jest.mock("../src/resources/tortellini-input", () => {
+    const actualModule = jest.requireActual("../src/resources/tortellini-input");
+
+    return {
+        __esModule: true,
+        ...actualModule,
+        artifactObject: {
+            create: () => {
+                const client: art.ArtifactClient = {
+                    downloadArtifact: async (name: string, path: string, options?: art.DownloadOptions | undefined) => {
+                        return { artifactName: name, downloadPath: path}
+                    }
+                };
+        
+                return client;
+            }
+        },
+        destination: "__tests__/.tortellini-unit-test",
+    }
+});
 
 test("Check if a correct downloadResponse is generated", async () => {
     const dlResponse = await art.getArtifactData(
         "tortellini-result",
-        "__tests__/.tortellini-unit-test",
-        mockArtifact
+        input.destination,
+        input.artifactObject,
     );
 
     expect(dlResponse).toEqual({
         artifactName: "tortellini-result",
-        downloadPath: "__tests__/.tortellini-unit-test",
+        downloadPath: input.destination,
     });
 });
 
 test("Check if a file can be retrieved with the downloadResponse", async () => {
     const dlResponse = await art.getArtifactData(
         "tortellini-result",
-        "__tests__/.tortellini-unit-test",
-        mockArtifact
+        input.destination,
+        input.artifactObject,
     );
 
     const result = await art.getFileFromArtifact(
@@ -35,7 +56,7 @@ test("Check if a file can be retrieved with the downloadResponse", async () => {
 });
 
 test("Test if runTortellini returns a correct ReturnObject", async () => {
-    const result = await tort.runTortellini(mockArtifact);
+    const result = await tort.runTortellini();
 
     const data: any = result.ReturnData;
 
