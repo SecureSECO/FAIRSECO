@@ -11265,7 +11265,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getFileFromArtifact = exports.getArtifactData = void 0;
 const fs = __importStar(__nccwpck_require__(7147));
 const path = __importStar(__nccwpck_require__(1017));
-// Download the artifact that was uploaded by Tortellini
+// Download the artifact
 function getArtifactData(artifactName, destination, artifactObject) {
     return __awaiter(this, void 0, void 0, function* () {
         const artifactClient = artifactObject.create();
@@ -11700,10 +11700,12 @@ exports.filterData = exports.runTortellini = void 0;
 const yaml_1 = __importDefault(__nccwpck_require__(1317));
 const artifact_1 = __nccwpck_require__(2949);
 const input = __importStar(__nccwpck_require__(9478));
-function runTortellini() {
+function runTortellini(fileName = "evaluation-result.yml") {
     return __awaiter(this, void 0, void 0, function* () {
         const downloadResponse = yield (0, artifact_1.getArtifactData)("tortellini-result", input.destination, input.artifactObject);
-        const fileContents = yield (0, artifact_1.getFileFromArtifact)(downloadResponse, "evaluation-result.yml");
+        const fileContents = yield (0, artifact_1.getFileFromArtifact)(downloadResponse, fileName);
+        if (fileContents === "")
+            return { ReturnName: "Tortellini", ReturnData: {} };
         const obj = yaml_1.default.parse(fileContents);
         const filteredData = yield filterData(obj);
         return {
@@ -11719,7 +11721,8 @@ exports.runTortellini = runTortellini;
 function filterData(obj) {
     return __awaiter(this, void 0, void 0, function* () {
         // Project data
-        const project = obj.analyzer.result.projects[0];
+        const projects = obj.analyzer.result.projects || [];
+        const project = projects[0] || {};
         const projData = {
             id: project.id || "-",
             licenses: project.declared_licenses || "-",
@@ -11728,7 +11731,7 @@ function filterData(obj) {
             vcs: project.vcs_processed || "-",
         };
         // Package data
-        const packages = obj.analyzer.result.packages;
+        const packages = obj.analyzer.result.packages || [];
         const packData = [];
         for (const pack of packages) {
             const p = {

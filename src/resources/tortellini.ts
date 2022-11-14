@@ -1,21 +1,26 @@
 import { ReturnObject } from "../getdata";
 
 import YAML from "yaml";
-import { Artifact, getArtifactData, getFileFromArtifact } from "./helperfunctions/artifact";
+import {
+    Artifact,
+    getArtifactData,
+    getFileFromArtifact,
+} from "./helperfunctions/artifact";
 
 import * as input from "./tortellini-input";
-
-export async function runTortellini(): Promise<ReturnObject> {
+export async function runTortellini(
+    fileName: string = "evaluation-result.yml"
+): Promise<ReturnObject> {
     const downloadResponse = await getArtifactData(
         "tortellini-result",
         input.destination,
         input.artifactObject
     );
 
-    const fileContents = await getFileFromArtifact(
-        downloadResponse,
-        "evaluation-result.yml"
-    );
+    const fileContents = await getFileFromArtifact(downloadResponse, fileName);
+
+    if (fileContents === "")
+        return { ReturnName: "Tortellini", ReturnData: {} };
 
     const obj = YAML.parse(fileContents);
 
@@ -32,7 +37,9 @@ export async function runTortellini(): Promise<ReturnObject> {
 // replace undefined properties with a dash
 export async function filterData(obj: any): Promise<any> {
     // Project data
-    const project = obj.analyzer.result.projects[0];
+    const projects: any[] = obj.analyzer.result.projects || [];
+    const project = projects[0] || {};
+
     const projData = {
         id: project.id || "-",
         licenses: project.declared_licenses || "-",
@@ -42,7 +49,7 @@ export async function filterData(obj: any): Promise<any> {
     };
 
     // Package data
-    const packages = obj.analyzer.result.packages;
+    const packages: any[] = obj.analyzer.result.packages || [];
     const packData = [];
     for (const pack of packages) {
         const p = {
