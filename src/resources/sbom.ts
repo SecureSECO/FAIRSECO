@@ -8,16 +8,9 @@ import * as artifact from "@actions/artifact";
 
 // Get the SBOM info from the file
 export async function runSBOM(
-    artifactObject?: Artifact
+    artifactObject: Artifact = artifact,
+    destination: string = ".SBOM-artifact"
 ): Promise<ReturnObject> {
-    let destination: string = "";
-    if (artifactObject !== undefined) {
-        destination = "__tests__/.SBOM-unit-test";
-    } else {
-        artifactObject = artifact;
-        destination = ".SBOM-artifact";
-    }
-
     // Get the SBOM file
     const downloadResponse = await getArtifactData(
         "SBOM.spdx",

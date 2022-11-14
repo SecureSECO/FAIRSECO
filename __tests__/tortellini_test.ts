@@ -9,24 +9,13 @@ jest.mock("../src/resources/tortellini-input", () => {
         "../src/resources/tortellini-input"
     );
 
+    // This code runs before modules are loaded so load the artifact module here
+    const art = require("../src/resources/helperfunctions/artifact");
+
     return {
         __esModule: true,
         ...actualModule,
-        artifactObject: {
-            create: () => {
-                const client: art.ArtifactClient = {
-                    downloadArtifact: async (
-                        name: string,
-                        path: string,
-                        options?: art.DownloadOptions | undefined
-                    ) => {
-                        return { artifactName: name, downloadPath: path };
-                    },
-                };
-
-                return client;
-            },
-        },
+        artifactObject: art.testArtifactObject, // Unit testing artifact object
         destination: "__tests__/.tortellini-unit-test",
     };
 });

@@ -2,7 +2,6 @@ import { ReturnObject } from "../getdata";
 
 import YAML from "yaml";
 import {
-    Artifact,
     getArtifactData,
     getFileFromArtifact,
 } from "./helperfunctions/artifact";

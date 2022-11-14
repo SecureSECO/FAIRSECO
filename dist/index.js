@@ -11262,7 +11262,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getFileFromArtifact = exports.getArtifactData = void 0;
+exports.testArtifactObject = exports.getFileFromArtifact = exports.getArtifactData = void 0;
 const fs = __importStar(__nccwpck_require__(7147));
 const path = __importStar(__nccwpck_require__(1017));
 // Download the artifact
@@ -11283,6 +11283,19 @@ function getFileFromArtifact(dlResponse, fileName) {
     });
 }
 exports.getFileFromArtifact = getFileFromArtifact;
+// An Artifact that can be used for unit tests.
+// it does not actually download anything, when downloadArtifact is called,
+// it does return a correct download response as if a file was downloaded.
+exports.testArtifactObject = {
+    create: () => {
+        const client = {
+            downloadArtifact: (name, path, options) => __awaiter(void 0, void 0, void 0, function* () {
+                return { artifactName: name, downloadPath: path };
+            }),
+        };
+        return client;
+    },
+};
 
 
 /***/ }),
@@ -11387,16 +11400,8 @@ exports.runSBOM = void 0;
 const artifact_1 = __nccwpck_require__(2949);
 const artifact = __importStar(__nccwpck_require__(9151));
 // Get the SBOM info from the file
-function runSBOM(artifactObject) {
+function runSBOM(artifactObject = artifact, destination = ".SBOM-artifact") {
     return __awaiter(this, void 0, void 0, function* () {
-        let destination = "";
-        if (artifactObject !== undefined) {
-            destination = "__tests__/.SBOM-unit-test";
-        }
-        else {
-            artifactObject = artifact;
-            destination = ".SBOM-artifact";
-        }
         // Get the SBOM file
         const downloadResponse = yield (0, artifact_1.getArtifactData)("SBOM.spdx", destination, artifactObject);
         const fileContents = yield (0, artifact_1.getFileFromArtifact)(downloadResponse, "SBOM.spdx");
