@@ -1,14 +1,34 @@
 import { ReturnObject } from "../getdata";
 import { semanticScholarCitations } from "./semanticscholarAPI";
 import { openAlexCitations } from "./openalexAPI";
-import { Journal } from "./journal";
+import { Author, Journal } from "./journal";
 import { ValidCffObject } from "./citation_cff";
 
-export async function runCitingPapers(cfffile: ValidCffObject): Promise<ReturnObject> {
-    const title = cfffile.citation.title;
-    const outData1: Journal[] = await semanticScholarCitations(title);
-    const outData2: Journal[] = await openAlexCitations(title);
-
+export async function runCitingPapers(cffFile: ValidCffObject): Promise<ReturnObject> {
+    let authors: Author[] = [];
+    const title: string = cffFile.citation.title;
+    cffFile.citation.authors.forEach((element: any) => {
+        let familyName = "";
+        let givenNames = "";
+        let orchidId = "";
+        for (const [key, value] of Object.entries(element)) {
+            switch (key) {
+                case ("family-names"):
+                    familyName = String(value);
+                    break;
+                case ("given-names"):
+                    givenNames = String(value);
+                    break;
+                case ("orcid"):
+                    orchidId = String(value);
+                    break;
+            }
+        }
+        authors = authors.concat([new Author(givenNames, familyName, orchidId)]);
+    });
+    console.log(authors);
+    const outData1: Journal[] = await semanticScholarCitations(authors, title);
+    const outData2: Journal[] = await openAlexCitations(authors, title);
     const output: Journal[] = deleteDuplicates(outData1, outData2);
 
     return {

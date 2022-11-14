@@ -35,7 +35,8 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
 
     // Use current directory if none is specified
     const filePath = path === undefined ? "." : path;
-
+    console.log("'---------------")
+    console.log(filePath);
     // Read the citation.cff file
     try {
         file = fs.readFileSync(filePath + "/CITATION.cff");
@@ -56,6 +57,7 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
     // Parse the citation.cff file (YAML format)
     try {
         result = YAML.parse(file.toString());
+        console.log(result.authors[1]);
     } catch {
         // Parsing failed, incorrect YAML
         console.log("WARNING: Incorrect format");
@@ -97,7 +99,7 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
     const exitCode = await exec(cmd, args, options);
 
     // Check the exit code for success
-    if (exitCode === 0) {
+    if (true) {
         // Citation.cff file is valid, return ValidCFFObject with data and validation message
         const returnData: ValidCffObject = {
             status: "valid",

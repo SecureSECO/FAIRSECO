@@ -1,7 +1,7 @@
 import fetch from "node-fetch";
-import { Journal } from "./journal";
+import { Author, Journal } from "./journal";
 
-export async function semanticScholarCitations(title: string): Promise<Journal[]> {
+export async function semanticScholarCitations(authors: Author[], title: string): Promise<Journal[]> {
     const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/paper/";
     const fieldsQuery = "/citations?fields=title,externalIds,year&limit=1000";
     // get paper id
@@ -36,11 +36,11 @@ export async function semanticScholarCitations(title: string): Promise<Journal[]
                 pmid = pmid.toLowerCase();
                 pmcid = pmcid.toLowerCase();
 
-                const tempJournal = new Journal(title, DOI, pmid, pmcid, year, "SemanticScholar");
+                const tempJournal = new Journal(title, DOI, pmid, pmcid, year, "SemanticScholar", []);
                 output = output.concat([tempJournal]);
             }
             else {
-                const tempJournal = new Journal(title, DOI, pmid, pmcid, year, "SemanticScholar");
+                const tempJournal = new Journal(title, DOI, pmid, pmcid, year, "SemanticScholar", []);
 
                 output = output.concat([tempJournal]);
             }

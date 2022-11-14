@@ -13,7 +13,7 @@ export interface ReturnObject {
 
 export async function data(): Promise<ReturnObject[]> {
     const output: ReturnObject[] = [];
-
+    /*
     try {
         const tortelliniResult = await runTortellini();
         output.push(tortelliniResult);
@@ -37,16 +37,16 @@ export async function data(): Promise<ReturnObject[]> {
         console.error("Searchseco threw an error:");
         console.error(error);
     }
-    
+    */
     try {
-        const cffResult = await getCitationFile(".");
+        const cffResult = await getCitationFile("./src/resources");
         output.push(cffResult);
     } catch (error) {
         console.error("Getting CITATION.cff caused an error:");
     }
 
     try {
-        const cffFile = output[3].ReturnData as CffObject;
+        const cffFile = output[0].ReturnData as CffObject;
         if (cffFile.status === "valid") {
             const citingPapersResult = await runCitingPapers(cffFile);
             output.push(citingPapersResult);
@@ -59,7 +59,7 @@ export async function data(): Promise<ReturnObject[]> {
         console.error("Scholarly threw an error:");
         console.error(error);
     }
-    
+    /*
     try {
         const SBOMResult = await runSBOM();
         output.push(SBOMResult);
@@ -68,6 +68,6 @@ export async function data(): Promise<ReturnObject[]> {
 
         console.error(error);
     }
-
+    */
     return output;
 }

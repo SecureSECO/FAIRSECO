@@ -1,7 +1,7 @@
 import fetch from "node-fetch";
-import { Journal } from "./journal";
+import { Author, Journal } from "./journal";
 
-export async function openAlexCitations(title: string): Promise<Journal[]> {
+export async function openAlexCitations(authors: Author[], title: string): Promise<Journal[]> {
     const apiURL = "https://api.openalex.org/";
     const query = "works?filter=cites:";
     const filter = ",type:journal-article";
@@ -52,11 +52,11 @@ export async function openAlexCitations(title: string): Promise<Journal[]> {
                 DOI = DOI.slice(16);
                 pmid = pmid.slice(32);
                 pmcid = pmcid.slice(32);
-                const tempJournal = new Journal(title, DOI, pmid, pmcid, year, "OpenAlex");
+                const tempJournal = new Journal(title, DOI, pmid, pmcid, year, "OpenAlex", []);
                 output = output.concat([tempJournal]);
             }
             else {
-                const tempJournal = new Journal(title, DOI, pmid, pmcid, year, "OpenAlex");
+                const tempJournal = new Journal(title, DOI, pmid, pmcid, year, "OpenAlex", []);
                 output = output.concat([tempJournal]);
             }
         });
