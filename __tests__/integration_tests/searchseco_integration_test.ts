@@ -1,13 +1,13 @@
 import { getHashIndices, getMatches, getMatchIndicesOfHash, getMethodInfo, Method, MethodData, parseInput } from "../../src/resources/searchseco";
 
 
-test("Check if getMatches is working on the correct Indices", correctIndicesMethod)
+test("Check if getMatches is working on the correct Indices", correctIndicesMethod);
 
-test("Authors presence", authorsPresence)
+test("Authors presence", authorsPresence);
 
-test("Parse the input with HashIndices", parseHashIndices)
+test("Parse the input with HashIndices", parseInputIntegration);
 
-async function parseHashIndices(): Promise<void>{
+async function parseInputIntegration(): Promise<void>{
     const databaseMock : String[] = ["Hash 1234567890", "*Method methodName in file Test.cpp line 24", "Authors of local function:", "AuthorName", "DATABASE", "*Method functionName in project projName1 in file file.cpp line 33", "URL: https://github.com/user/project", "Method marked as vulnerable with code: 123(https://www.url-of-vulnerability.com)", "Authors of function fuond in database:", "Rowin1", "Rowin2"];
     const hashIndices: number[] = getHashIndices(databaseMock);
 
@@ -21,7 +21,8 @@ async function parseHashIndices(): Promise<void>{
         localMS.push({ hash: h, data: d, matches: m });
     }
 
-    return expect(localMS).toEqual(parseInputMS);
+
+    expect(localMS).toMatchObject(parseInputMS);
 }
 
 async function authorsPresence(): Promise<void>{
@@ -44,7 +45,7 @@ async function authorsPresence(): Promise<void>{
 
     const methInfo : MethodData = getMethodInfo(databaseMock, start, end);
 
-    return expect(authMock).toEqual(methInfo.authors);
+    expect(authMock).toEqual(methInfo.authors);
 }
 
 async function correctIndicesMethod(): Promise<void>{
@@ -52,5 +53,5 @@ async function correctIndicesMethod(): Promise<void>{
     const numberOfIndices : number = getMatchIndicesOfHash(matchesMock, 0, 3).length;
     const lengthOfMatchedList : number = getMatches(matchesMock, 0, 3).length + 1;
 
-    return expect(numberOfIndices).toEqual(lengthOfMatchedList);
+    expect(numberOfIndices).toEqual(lengthOfMatchedList);
 }
