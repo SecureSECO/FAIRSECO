@@ -1,4 +1,6 @@
-import { getHashIndices, getMatches, getMatchIndicesOfHash, getMethodInfo, Method, MethodData, parseInput } from "../../src/resources/searchseco";
+import { exec, ExecOptions } from "@actions/exec";
+import { getRepoUrl } from "../../src/git";
+import { getHashIndices, getMatches, getMatchIndicesOfHash, getMethodInfo, Method, MethodData, Output, parseInput, runSearchseco } from "../../src/resources/searchseco";
 
 
 test("Check if getMatches is working on the correct Indices", correctIndicesMethod);
@@ -6,6 +8,82 @@ test("Check if getMatches is working on the correct Indices", correctIndicesMeth
 test("Authors presence", authorsPresence);
 
 test("Parse the input with HashIndices", parseInputIntegration);
+
+test("Integration between SearchSeco and Parse input", localRunSearchSeco);
+
+async function localRunSearchSeco(): Promise<void>{
+    const gitrepo: string = await getRepoUrl();
+
+    // When the real SearchSECO is back, the run command needs to be slightly edited.
+    // The docker image needs to be replaced with 'searchseco/controller',
+    // and the enrtypoint needs to be inserted at the location indicated below.
+    const dockerImage = "jarnohendriksen/mockseco:v1";
+    const entrypoint = '--entrypoint="./controller/build/searchseco"';
+
+    const ghToken = ""; // core.getInput("GITHUB_TOKEN");
+
+    console.debug("SearchSECO started");
+    console.debug(
+        "WARNING: Running a mock of SearchSECO. The output will be incorrect!"
+    );
+    const cmd = "docker";
+    const args = [
+        "run",
+        "--rm",
+        "--name",
+        "searchseco-container",
+        // This is where 'entrypoint' goes
+        "-e",
+        '"github_token=' + ghToken + '"',
+        "-e",
+        '"worker_name=test"',
+        dockerImage,
+        "check",
+        gitrepo,
+    ];
+
+    let stdout = "";
+    let stderr = "";
+
+    const options: ExecOptions = {
+        ignoreReturnCode: true,
+    };
+
+    // SearchSECO prints its results in the console. The code below copies the
+    // output to the variables stdout and stderr
+    options.listeners = {
+        stdout: (data: Buffer) => {
+            stdout += data.toString();
+        },
+        stderr: (data: Buffer) => {
+            stderr += data.toString();
+        },
+    };
+
+    // Executes the docker run command
+    const exitCode = await exec(cmd, args, options);
+
+    console.debug("Docker running SearchSECO returned " + String(exitCode));
+    console.debug("stdout:");
+    console.debug(stdout);
+    console.debug("stderr:");
+    console.debug(stderr);
+
+    // ParseInput expects an array of trimmed lines
+    // (i.e. without trailing or leading whitespace)
+    const lines = stdout.split("\n");
+    const filteredlines = lines.filter((x) => x !== "");
+
+    for (let n = 0; n < filteredlines.length; n++) {
+        filteredlines[n] = filteredlines[n].trim();
+    }
+
+    const output: Output = parseInput(filteredlines);
+
+    const realOutput = (await runSearchseco()).ReturnData
+
+    expect(output).toEqual(realOutput);
+}
 
 async function parseInputIntegration(): Promise<void>{
     const databaseMock : String[] = ["Hash 1234567890", "*Method methodName in file Test.cpp line 24", "Authors of local function:", "AuthorName", "DATABASE", "*Method functionName in project projName1 in file file.cpp line 33", "URL: https://github.com/user/project", "Method marked as vulnerable with code: 123(https://www.url-of-vulnerability.com)", "Authors of function fuond in database:", "Rowin1", "Rowin2"];
