@@ -1,17 +1,17 @@
 import { ReturnObject } from "../getdata";
 import { semanticScholarCitations } from "./semanticscholarAPI";
-import { openAlexCitations } from "./openalexAPI";
+// import { openAlexCitations } from "./openalexAPI";
 import { Author, Journal } from "./journal";
 import { ValidCffObject } from "./citation_cff";
 
 export async function runCitingPapers(cffFile: ValidCffObject): Promise<ReturnObject> {
-    let authors: Author[] = [];
+    const authors: Author[] = [];
     const title: string = cffFile.citation.title;
-    let refTitle: string = "";
+    const refTitles: string[] = [];
     if (cffFile.citation.references !== undefined) {
         cffFile.citation.references.forEach((element: any) => {
             if (element.type === "article")
-                refTitle = element.title;
+                refTitles.push(element.title);
         });
     }
     cffFile.citation.authors.forEach((element: any) => {
@@ -31,9 +31,9 @@ export async function runCitingPapers(cffFile: ValidCffObject): Promise<ReturnOb
                     break;
             }
         }
-        authors = authors.concat([new Author(givenNames, familyName, orchidId)]);
+        authors.push(new Author(givenNames, familyName, orchidId));
     });
-    const outData1: Journal[] = await semanticScholarCitations(authors, title, refTitle);
+    const outData1: Journal[] = await semanticScholarCitations(authors, title, refTitles);
     // const outData2: Journal[] = await openAlexCitations(authors, title);
     // const output: Journal[] = deleteDuplicates(outData1);
 

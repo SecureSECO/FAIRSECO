@@ -23,12 +23,14 @@ export class MetaDataJournal {
     contributors: number;
     citationCount: number;
     journal: string;
+    probability: number;
 
-    constructor(title: string, contributors: number, citationCount: number, journal: string) {
+    constructor(title: string, contributors: number, citationCount: number, journal: string, probabilty: number) {
         this.title = title;
         this.contributors = contributors;
         this.citationCount = citationCount;
         this.journal = journal;
+        this.probability = probabilty;
     }
 }
 

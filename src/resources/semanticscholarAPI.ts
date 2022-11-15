@@ -1,16 +1,15 @@
 import fetch from "node-fetch";
 import { Author, Journal, MetaDataJournal } from "./journal";
-import { calculateProbabiltyOfReference } from "../probability";
+import { calculateProbabiltyOfReference } from "./probability";
 
-export async function semanticScholarCitations(authors: Author[], title: string, refTitle: string): Promise<Journal[]> {
-    // find reference title
-    if (refTitle === "")
-        refTitle = await getRefTitle(authors, title);
-    refTitle = "Kernel Tuner: A search-optimizing GPU code auto-tuner";
+export async function semanticScholarCitations(authors: Author[], title: string, refTitles: string[]): Promise<Journal[]> {
+    // find reference titles
+    const extraRefTitles: string[] = await getRefTitles(authors, title);
+    refTitles.concat(extraRefTitles);
     const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/paper/";
     const fieldsQuery = "/citations?fields=title,externalIds,year&limit=1000";
     // get paper id
-    const paperId = await getSemanticScholarPaperId(refTitle);
+    const paperId = await getSemanticScholarPaperId(refTitles[0]);
     let output: Journal[] = [];
     try {
         const response = await fetch(semanticScholarApiURL + paperId + fieldsQuery, {
@@ -57,7 +56,8 @@ export async function semanticScholarCitations(authors: Author[], title: string,
     }      
 }
 
-export async function getRefTitle(authors: Author[], title: string): Promise<string> {
+export async function getRefTitles(authors: Author[], title: string): Promise<string[]> {
+    const output: string[] = [];
     const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/author/";
     const searchQuery = "search?query=";
     const fieldsQuery = "&fields=papers.title,papers.citationCount,papers.venue";
@@ -88,9 +88,8 @@ export async function getRefTitle(authors: Author[], title: string): Promise<str
         });
         papersPerAuthor.set(author, papersFiltered);
     }
-    console.log(papersPerAuthor);
     const uniquePapers: Map<string, MetaDataJournal> = new Map();
-    papersPerAuthor.forEach((papers, author) => {
+    papersPerAuthor.forEach(papers => {
         papers.forEach(paper => {
             let paperData: MetaDataJournal;
             if (uniquePapers.has(paper.paperId)) {
@@ -99,13 +98,18 @@ export async function getRefTitle(authors: Author[], title: string): Promise<str
                 uniquePapers.set(paper.paperId, paperData);
             }
             else {
-                uniquePapers.set(paper.paperId, new MetaDataJournal(paper.title, 1, paper.citationCount, paper.venue));
+                uniquePapers.set(paper.paperId, new MetaDataJournal(paper.title, 1, paper.citationCount, paper.venue, 1));
             }
         });
     });
-    console.log(uniquePapers);
     const probScores: number[] = calculateProbabiltyOfReference(uniquePapers);
-    return "";
+    let i = 0;
+    uniquePapers.forEach((value, key) => {
+        if (probScores[i] > 0.6)
+            output.push(key);
+        i++;
+    })
+    return output;
 }
 
 export async function getSemanticScholarPaperId(title: string): Promise<string> {
