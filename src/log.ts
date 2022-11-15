@@ -44,7 +44,11 @@ export function LogMessage(content: string | Error, level: ErrorLevel): void {
         // TODO: Check for the verbose flag here and print stack trace if necessary.
     }
 
-    console.log(message);
+    if (level <= 1) {
+        console.log(message);
+    } else {
+        console.error(message);
+    }
     const fd: number = fs.openSync("./.FairSECO/program.log", "a+");
     try {
         fs.writeSync(fd, message);
