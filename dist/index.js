@@ -8158,8 +8158,6 @@ function getCitationFile(path) {
         let file;
         // Use current directory if none is specified
         const filePath = path === undefined ? "." : path;
-        console.log("'---------------");
-        console.log(filePath);
         // Read the citation.cff file
         try {
             file = fs.readFileSync(filePath + "/CITATION.cff");
@@ -8178,7 +8176,6 @@ function getCitationFile(path) {
         // Parse the citation.cff file (YAML format)
         try {
             result = yaml_1.default.parse(file.toString());
-            console.log(result.authors[1]);
         }
         catch (_b) {
             // Parsing failed, incorrect YAML
@@ -8268,12 +8265,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.deleteDuplicates = exports.runCitingPapers = void 0;
 const semanticscholarAPI_1 = __nccwpck_require__(5273);
-const openalexAPI_1 = __nccwpck_require__(5532);
 const journal_1 = __nccwpck_require__(5451);
 function runCitingPapers(cffFile) {
     return __awaiter(this, void 0, void 0, function* () {
         let authors = [];
         const title = cffFile.citation.title;
+        let refTitle = "";
+        if (cffFile.citation.references !== undefined) {
+            cffFile.citation.references.forEach((element) => {
+                if (element.type === "article")
+                    refTitle = element.title;
+            });
+        }
         cffFile.citation.authors.forEach((element) => {
             let familyName = "";
             let givenNames = "";
@@ -8293,13 +8296,12 @@ function runCitingPapers(cffFile) {
             }
             authors = authors.concat([new journal_1.Author(givenNames, familyName, orchidId)]);
         });
-        console.log(authors);
-        const outData1 = yield (0, semanticscholarAPI_1.semanticScholarCitations)(authors, title);
-        const outData2 = yield (0, openalexAPI_1.openAlexCitations)(authors, title);
-        const output = deleteDuplicates(outData1, outData2);
+        const outData1 = yield (0, semanticscholarAPI_1.semanticScholarCitations)(authors, title, refTitle);
+        // const outData2: Journal[] = await openAlexCitations(authors, title);
+        // const output: Journal[] = deleteDuplicates(outData1);
         return {
             ReturnName: "citingPapers",
-            ReturnData: output,
+            ReturnData: outData1,
         };
     });
 }
@@ -8345,125 +8347,6 @@ exports.Author = Author;
 
 /***/ }),
 
-/***/ 5532:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getOpenAlexPaperId = exports.openAlexCitations = void 0;
-const node_fetch_1 = __importDefault(__nccwpck_require__(2504));
-const journal_1 = __nccwpck_require__(5451);
-function openAlexCitations(authors, title) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const apiURL = "https://api.openalex.org/";
-        const query = "works?filter=cites:";
-        const filter = ",type:journal-article";
-        let output = [];
-        // get paper id
-        let paperId = yield getOpenAlexPaperId(title);
-        paperId = paperId.replace("https://openalex.org/", "");
-        try {
-            // get meta data for amount of results
-            let outputText = "";
-            const firstResponse = yield (0, node_fetch_1.default)(apiURL + query + paperId + filter + "&per-page=1", {
-                method: 'GET',
-                headers: {},
-            });
-            const firstResponseText = yield firstResponse.text();
-            const firstResponseJSON = JSON.parse(firstResponseText);
-            const amount = firstResponseJSON.meta.count;
-            const pages = Math.ceil(amount / 200);
-            for (let i = 1; i <= pages; i++) {
-                const response = yield (0, node_fetch_1.default)(apiURL + query + paperId + filter + "&page=" + String(i) + "&per-page=200", {
-                    method: 'GET',
-                    headers: {},
-                });
-                const responseText = yield response.text();
-                const responseJSON = JSON.parse(responseText);
-                outputText += JSON.stringify(responseJSON.results).slice(1, -1) + ",";
-            }
-            outputText = "[" + outputText.slice(0, -1) + "]";
-            const outputJSON = JSON.parse(outputText);
-            outputJSON.forEach((element) => {
-                const title = element.title;
-                const year = element.publication_year;
-                let DOI = "";
-                let pmid = "";
-                let pmcid = "";
-                if (element.ids !== undefined) {
-                    for (const [key, value] of Object.entries(element.ids)) {
-                        switch (key) {
-                            case ("doi"):
-                                DOI = String(value);
-                                break;
-                            case ("pmid"):
-                                pmid = String(value);
-                                break;
-                            case ("pmcid"):
-                                pmcid = String(value);
-                                break;
-                        }
-                    }
-                    DOI = DOI.slice(16);
-                    pmid = pmid.slice(32);
-                    pmcid = pmcid.slice(32);
-                    const tempJournal = new journal_1.Journal(title, DOI, pmid, pmcid, year, "OpenAlex", []);
-                    output = output.concat([tempJournal]);
-                }
-                else {
-                    const tempJournal = new journal_1.Journal(title, DOI, pmid, pmcid, year, "OpenAlex", []);
-                    output = output.concat([tempJournal]);
-                }
-            });
-            return output;
-        }
-        catch (error) {
-            console.log("error while searching openAlex with openAlex ID of: " + title);
-            return output;
-        }
-    });
-}
-exports.openAlexCitations = openAlexCitations;
-function getOpenAlexPaperId(title) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const apiURL = "https://api.openalex.org/";
-        const searchQuery = "works?search=";
-        try {
-            const response = yield (0, node_fetch_1.default)(apiURL + searchQuery + title, {
-                method: 'GET',
-                headers: {},
-            });
-            const output = yield response.text();
-            const outputJSON = JSON.parse(output);
-            const paperid = outputJSON.results[0].id;
-            ;
-            return paperid;
-        }
-        catch (error) {
-            console.log("Error while fetching paperID from openAlex of: " + title);
-            const output = JSON.parse("");
-            return output;
-        }
-    });
-}
-exports.getOpenAlexPaperId = getOpenAlexPaperId;
-
-
-/***/ }),
-
 /***/ 5273:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -8482,23 +8365,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getSemanticScholarPaperId = exports.semanticScholarCitations = void 0;
+exports.getSemanticScholarPaperId = exports.getRefTitle = exports.semanticScholarCitations = void 0;
 const node_fetch_1 = __importDefault(__nccwpck_require__(2504));
 const journal_1 = __nccwpck_require__(5451);
-function semanticScholarCitations(authors, title) {
+function semanticScholarCitations(authors, title, refTitle) {
     return __awaiter(this, void 0, void 0, function* () {
+        // find reference title
+        if (refTitle === "")
+            refTitle = yield getRefTitle(authors, title);
+        refTitle = "Kernel Tuner: A search-optimizing GPU code auto-tuner";
         const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/paper/";
         const fieldsQuery = "/citations?fields=title,externalIds,year&limit=1000";
         // get paper id
-        const paperId = yield getSemanticScholarPaperId(title);
+        const paperId = yield getSemanticScholarPaperId(refTitle);
         let output = [];
         try {
             const response = yield (0, node_fetch_1.default)(semanticScholarApiURL + paperId + fieldsQuery, {
                 method: 'GET',
                 headers: {},
             });
-            const outputText = yield response.text();
-            const outputJSON = JSON.parse(outputText);
+            const outputJSON = yield response.json();
             outputJSON.data.forEach((element) => {
                 const title = element.citingPaper.title;
                 const year = element.citingPaper.year;
@@ -8539,6 +8425,57 @@ function semanticScholarCitations(authors, title) {
     });
 }
 exports.semanticScholarCitations = semanticScholarCitations;
+function getRefTitle(authors, title) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/author/";
+        const searchQuery = "search?query=";
+        const fieldsQuery = "&fields=papers.title,papers.citationCount";
+        const papersPerAuthor = new Map();
+        for (const author of authors) {
+            let papers = [];
+            let papersFiltered = [];
+            try {
+                const response = yield (0, node_fetch_1.default)(semanticScholarApiURL + searchQuery + author.givenNames + " " + author.familyName + fieldsQuery, {
+                    method: 'GET',
+                    headers: {},
+                });
+                const outputJSON = yield response.json();
+                outputJSON.data.forEach((element) => {
+                    for (const [key, value] of Object.entries(element)) {
+                        if (key === "papers")
+                            papers = papers.concat(value);
+                    }
+                });
+            }
+            catch (error) {
+                console.log("Error while searching for author " + author.givenNames + " " + author.familyName + " on semantics scholar");
+            }
+            papers.forEach((element) => {
+                // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+                if (element.title.toLowerCase().includes(title.toLowerCase()))
+                    papersFiltered = papersFiltered.concat([element]);
+            });
+            papersPerAuthor.set(author, papersFiltered);
+        }
+        const uniquePapers = new Map();
+        papersPerAuthor.forEach((papers, author) => {
+            papers.forEach(paper => {
+                let counts = [];
+                if (uniquePapers.has(paper.paperId)) {
+                    counts = uniquePapers.get(paper.paperId);
+                    counts[0] = counts[0] + 1;
+                    uniquePapers.set(paper.paperId, counts);
+                }
+                else {
+                    uniquePapers.set(paper.paperId, [1, paper.citationCount]);
+                }
+            });
+        });
+        console.log(uniquePapers);
+        return "";
+    });
+}
+exports.getRefTitle = getRefTitle;
 function getSemanticScholarPaperId(title) {
     return __awaiter(this, void 0, void 0, function* () {
         const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/paper/";

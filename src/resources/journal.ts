@@ -18,12 +18,28 @@ export class Journal {
     }
 }
 
+export class MetaDataJournal {
+    title: string;
+    contributors: number;
+    citationCount: number;
+    field: string;
+    journal: string;
+
+    constructor(title: string, contributors: number, citationCount: number, field: string, journal: string) {
+        this.title = title;
+        this.contributors = contributors;
+        this.citationCount = citationCount;
+        this.field = field;
+        this.journal = journal;
+    }
+}
+
 export class Author {
-    givenNames: String;
-    familyName: String;
-    orchidId: String;
+    givenNames: string;
+    familyName: string;
+    orchidId: string;
         
-    constructor(givenNames: String, familyName: String, orchidId: String) {
+    constructor(givenNames: string, familyName: string, orchidId: string) {
         this.familyName = familyName;
         this.givenNames = givenNames;
         this.orchidId = orchidId;
