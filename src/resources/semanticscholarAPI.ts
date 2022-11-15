@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import { Author, Journal, MetaDataJournal } from "./journal";
+import { calculateProbabiltyOfReference } from "../probability";
 
 export async function semanticScholarCitations(authors: Author[], title: string, refTitle: string): Promise<Journal[]> {
     // find reference title
@@ -59,7 +60,7 @@ export async function semanticScholarCitations(authors: Author[], title: string,
 export async function getRefTitle(authors: Author[], title: string): Promise<string> {
     const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/author/";
     const searchQuery = "search?query=";
-    const fieldsQuery = "&fields=papers.title,papers.citationCount,papers.fieldsOfStudy,papers.venue";
+    const fieldsQuery = "&fields=papers.title,papers.citationCount,papers.venue";
     const papersPerAuthor: Map<Author, any[]> = new Map();
     for (const author of authors) {
         let papers: any[] = [];
@@ -87,21 +88,22 @@ export async function getRefTitle(authors: Author[], title: string): Promise<str
         });
         papersPerAuthor.set(author, papersFiltered);
     }
-
-    const uniquePapers: Map<string, MetaDataJournal[]> = new Map();
+    console.log(papersPerAuthor);
+    const uniquePapers: Map<string, MetaDataJournal> = new Map();
     papersPerAuthor.forEach((papers, author) => {
         papers.forEach(paper => {
             let paperData: MetaDataJournal;
             if (uniquePapers.has(paper.paperId)) {
-                paperData = uniquePapers.get(paper.paperId) as number[];
-                counts[0] = counts[0] + 1;
-                uniquePapers.set(paper.paperId, counts);
+                paperData = uniquePapers.get(paper.paperId) as MetaDataJournal;
+                paperData.contributors = paperData.contributors + 1;
+                uniquePapers.set(paper.paperId, paperData);
             }
             else {
-                uniquePapers.set(paper.paperId, [1, paper.citationCount]);
+                uniquePapers.set(paper.paperId, new MetaDataJournal(paper.title, 1, paper.citationCount, paper.venue));
             }
         });
     });
+    console.log(uniquePapers);
     const probScores: number[] = calculateProbabiltyOfReference(uniquePapers);
     return "";
 }

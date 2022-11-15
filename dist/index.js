@@ -8107,6 +8107,21 @@ exports.pre = pre;
 
 /***/ }),
 
+/***/ 1805:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.calculateProbabiltyOfReference = void 0;
+function calculateProbabiltyOfReference(uniquePapers) {
+    return [];
+}
+exports.calculateProbabiltyOfReference = calculateProbabiltyOfReference;
+
+
+/***/ }),
+
 /***/ 3223:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -8322,7 +8337,7 @@ exports.deleteDuplicates = deleteDuplicates;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Author = exports.Journal = void 0;
+exports.Author = exports.MetaDataJournal = exports.Journal = void 0;
 class Journal {
     constructor(title, doi, pmid, pmcid, year, database, authors) {
         this.title = title;
@@ -8335,6 +8350,16 @@ class Journal {
     }
 }
 exports.Journal = Journal;
+class MetaDataJournal {
+    constructor(title, contributors, citationCount, field, journal) {
+        this.title = title;
+        this.contributors = contributors;
+        this.citationCount = citationCount;
+        this.field = field;
+        this.journal = journal;
+    }
+}
+exports.MetaDataJournal = MetaDataJournal;
 class Author {
     constructor(givenNames, familyName, orchidId) {
         this.familyName = familyName;
@@ -8368,6 +8393,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getSemanticScholarPaperId = exports.getRefTitle = exports.semanticScholarCitations = void 0;
 const node_fetch_1 = __importDefault(__nccwpck_require__(2504));
 const journal_1 = __nccwpck_require__(5451);
+const probability_1 = __nccwpck_require__(1805);
 function semanticScholarCitations(authors, title, refTitle) {
     return __awaiter(this, void 0, void 0, function* () {
         // find reference title
@@ -8429,7 +8455,7 @@ function getRefTitle(authors, title) {
     return __awaiter(this, void 0, void 0, function* () {
         const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/author/";
         const searchQuery = "search?query=";
-        const fieldsQuery = "&fields=papers.title,papers.citationCount";
+        const fieldsQuery = "&fields=papers.title,papers.citationCount,papers.fieldsOfStudy,papers.venue";
         const papersPerAuthor = new Map();
         for (const author of authors) {
             let papers = [];
@@ -8457,21 +8483,25 @@ function getRefTitle(authors, title) {
             });
             papersPerAuthor.set(author, papersFiltered);
         }
+        console.log(papersPerAuthor);
         const uniquePapers = new Map();
         papersPerAuthor.forEach((papers, author) => {
             papers.forEach(paper => {
-                let counts = [];
+                let paperData;
                 if (uniquePapers.has(paper.paperId)) {
-                    counts = uniquePapers.get(paper.paperId);
-                    counts[0] = counts[0] + 1;
-                    uniquePapers.set(paper.paperId, counts);
+                    paperData = uniquePapers.get(paper.paperId);
+                    paperData.contributors = paperData.contributors + 1;
+                    uniquePapers.set(paper.paperId, paperData);
                 }
                 else {
-                    uniquePapers.set(paper.paperId, [1, paper.citationCount]);
+                    if (paper.fieldsOfStudy === null)
+                        paper.fieldsOfStudy = [];
+                    uniquePapers.set(paper.paperId, new journal_1.MetaDataJournal(paper.title, 1, paper.citationCount, paper.fieldsOfStudy[0], paper.venue));
                 }
             });
         });
         console.log(uniquePapers);
+        const probScores = (0, probability_1.calculateProbabiltyOfReference)(uniquePapers);
         return "";
     });
 }
