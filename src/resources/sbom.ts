@@ -9,21 +9,25 @@ import * as artifact from "@actions/artifact";
 // Get the SBOM info from the file
 export async function runSBOM(
     artifactObject: Artifact = artifact,
-    destination: string = ".SBOM-artifact"
+    destination: string = ".SBOM-artifact",
+    fileName: string = "SBOM.spdx"
 ): Promise<ReturnObject> {
     // Get the SBOM file
     const downloadResponse = await getArtifactData(
-        "SBOM.spdx",
+        fileName,
         destination,
         artifactObject
     );
 
-    const fileContents = await getFileFromArtifact(
-        downloadResponse,
-        "SBOM.spdx"
-    );
+    const fileContents = await getFileFromArtifact(downloadResponse, fileName);
 
-    const obj = JSON.parse(fileContents);
+    let obj;
+
+    if (fileContents !== "") {
+        obj = JSON.parse(fileContents);
+    } else {
+        obj = {};
+    }
 
     return {
         ReturnName: "SBOM",

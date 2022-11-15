@@ -11400,12 +11400,18 @@ exports.runSBOM = void 0;
 const artifact_1 = __nccwpck_require__(2949);
 const artifact = __importStar(__nccwpck_require__(9151));
 // Get the SBOM info from the file
-function runSBOM(artifactObject = artifact, destination = ".SBOM-artifact") {
+function runSBOM(artifactObject = artifact, destination = ".SBOM-artifact", fileName = "SBOM.spdx") {
     return __awaiter(this, void 0, void 0, function* () {
         // Get the SBOM file
-        const downloadResponse = yield (0, artifact_1.getArtifactData)("SBOM.spdx", destination, artifactObject);
-        const fileContents = yield (0, artifact_1.getFileFromArtifact)(downloadResponse, "SBOM.spdx");
-        const obj = JSON.parse(fileContents);
+        const downloadResponse = yield (0, artifact_1.getArtifactData)(fileName, destination, artifactObject);
+        const fileContents = yield (0, artifact_1.getFileFromArtifact)(downloadResponse, fileName);
+        let obj;
+        if (fileContents != "") {
+            obj = JSON.parse(fileContents);
+        }
+        else {
+            obj = {};
+        }
         return {
             ReturnName: "SBOM",
             ReturnData: obj,
