@@ -7,6 +7,13 @@ import {
 } from "./helperfunctions/artifact";
 
 import * as input from "./tortellini-input";
+
+/**
+ * Downloads the artifact that was uploaded by Tortellini, and parses the YAML file.
+ *
+ * @param fileName Name of the file that should be retrieved from the artifact
+ * @returns A {@link action.ReturnObject} containing the relevant data from the YAML file given by Tortellini
+ */
 export async function runTortellini(
     fileName: string = "evaluation-result.yml"
 ): Promise<ReturnObject> {
@@ -31,9 +38,19 @@ export async function runTortellini(
     };
 }
 
-// Only get the data that is relevant for license checking
-// To make sure all properties are always present,
-// replace undefined properties with a dash
+/**
+ *
+ * Filters the data from the YAML file.
+ *
+ * The YAML file contains a lot of information that is not interesting for this project,
+ * like information about the analysis itself (start and end time, environment info, etc.), and
+ * a massive dependency tree.
+ *
+ * We only need a list of dependencies with their license data, and a list of license violations.
+ *
+ * @param obj The object that contains the data from the YAML file
+ * @returns An object containing only the data that is relevant for FAIRSECO
+ */
 export async function filterData(obj: any): Promise<any> {
     // Project data
     const projects: any[] = obj.analyzer.result.projects || [];

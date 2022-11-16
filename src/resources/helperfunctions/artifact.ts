@@ -18,6 +18,14 @@ export interface ArtifactClient {
 }
 
 // Download the artifact
+/**
+ * Downloads an artifact that was uploaded by another action in a previous step or job in the workflow.
+ *
+ * @param artifactName The name of the artifact given by the action that created it
+ * @param destination Folder in which the artifact files should be downloaded
+ * @param artifactObject The artifact module that is used. During normal operation of the program, this should simply be @actions/artifact, but for the unit tests a mock is passed instead.
+ * @returns Object containing the download path and the artifact name
+ */
 export async function getArtifactData(
     artifactName: string,
     destination: string,
@@ -32,7 +40,13 @@ export async function getArtifactData(
     return downloadResponse;
 }
 
-// Get a file from the artifact as a string
+/**
+ * Get a file from the artifact as a string.
+ *
+ * @param dlResponse The DownloadResponse object that was returned by getArtifactData.
+ * @param fileName The name of the file that should be read.
+ * @returns The content of the file.
+ */
 export async function getFileFromArtifact(
     dlResponse: DownloadResponse,
     fileName: string

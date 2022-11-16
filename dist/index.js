@@ -11406,7 +11406,7 @@ function runSBOM(artifactObject = artifact, destination = ".SBOM-artifact", file
         const downloadResponse = yield (0, artifact_1.getArtifactData)(fileName, destination, artifactObject);
         const fileContents = yield (0, artifact_1.getFileFromArtifact)(downloadResponse, fileName);
         let obj;
-        if (fileContents != "") {
+        if (fileContents !== "") {
             obj = JSON.parse(fileContents);
         }
         else {

@@ -4,15 +4,45 @@ import { getRepoUrl } from "../git";
 import { exec, ExecOptions } from "@actions/exec";
 import core from "@actions/core";
 
+/**
+ * This function first runs the searchSECO docker and listens to stdout for its output.
+ * Then, it tries to parse whatever SearchSECO returned into an {@link Output} object.
+ * 
+ * **Because the real SearchSECO is currently not available, [a mock](https://hub.docker.com/r/jarnohendriksen/mockseco) was used instead**
+ * 
+ * The mock simply returns a hard-coded output, that has no relation to the repo it is run on.
+ * Calling the docker image works slightly differently then the real SearchSECO. For instance, the mock can't have a custom entrypoint, but SearchSECO requires it.
+ * To solve this, the line `const entrypoint = '--entrypoint="./controller/build/searchseco"';` is included in the code. This entrypoint must be added to the args that are passed to docker:
+ * ```ts
+ * const args = [
+        "run",
+        "--rm",
+        "--name",
+        "searchseco-container",
+        // This is where 'entrypoint' goes
+        "-e",
+        '"github_token=' + ghToken + '"',
+        "-e",
+        '"worker_name=test"',
+        dockerImage,
+        "check",
+        gitrepo,
+    ];
+    ```
+ *
+ * @returns A {@link action.ReturnObject} containing the name of the module and the object constructed from SearchSECO's output.
+ *
+ */
 export async function runSearchseco(): Promise<ReturnObject> {
     const gitrepo: string = await getRepoUrl();
 
-    // When the real SearchSECO is back, the run command needs to be slightly edited.
-    // The docker image needs to be replaced with 'searchseco/controller',
-    // and the enrtypoint needs to be inserted at the location indicated below.
+    // Once the real SearchSECO is fully functional again, this should be replaced with 'searchseco/controller'
     const dockerImage = "jarnohendriksen/mockseco:v1";
+
+    // This needs to be added to the docker command (const args) on the line indicated below
     const entrypoint = '--entrypoint="./controller/build/searchseco"';
 
+    // This needs to contain a working Github token, since the real SearchSECO needs it
     const ghToken = ""; // core.getInput("GITHUB_TOKEN");
 
     console.debug("SearchSECO started");
@@ -79,34 +109,67 @@ export async function runSearchseco(): Promise<ReturnObject> {
     };
 }
 
+/**
+ * Top-level object that contains a list of methods for which a match has been found
+ */
 export interface Output {
     methods: Method[];
 }
 
+/**
+ * A method for which a match has been found.
+ */
 export interface Method {
+    /** The hash of the abstract tree of this method, that was used to compare it with other methods in the database. */
     hash: String;
+
+    /** An object containing the data associated with this method in this project */
     data: MethodData;
+
+    /** List of matches */
     matches: Match[];
 }
 
+/** Object containing the data associated with this method */
 export interface MethodData {
+    /** The name of the method */
     name: String;
+
+    /** Only used in the matches, to indicate from which project the match originates */
     project?: String;
+
+    /** The path to the file in which the method was found */
     file: String;
+
+    /** The line on which the method starts in the file */
     line: number;
+
+    /** A list of authors associated with the project */
     authors: String[];
 }
 
+/** Object containing data about a match */
 export interface Match {
+    /** An object containing the data of the reused method */
     data: MethodData;
+
+    /** An object containing vulnerabilities detected by SearchSECO */
     vuln: Vuln;
 }
 
 export interface Vuln {
+    /** Vulnerability code */
     code: number;
+
+    /** The url where information about this vulnerability can be found */
     url: String;
 }
 
+/**
+ *
+ * @param input The string returned by SearchSECO, split on newlines. Each line is also trimmed to remove leading and trailing whitespace
+ * @returns An {@link Output} object with data parsed from the output of SearchSECO
+ */
 export function parseInput(input: String[]): Output {
     const hashIndices: number[] = getHashIndices(input);
     const ms: Method[] = [];
@@ -121,8 +184,13 @@ export function parseInput(input: String[]): Output {
     return { methods: ms };
 }
 
-// Return list of indices of lines that contain a hash
-// (i.e. they point to the start of a new hash)
+/**
+ * This function gives the lines that contain a hash, and the total number of lines. The array is used
+ * to indicate where data for a particular method begins and ends.
+ *
+ * @param input The string returned by SearchSECO, split on newlines. Each line is also trimmed to remove leading and trailing whitespace
+ * @returns An array containing the indices of lines that contain a hash
+ */
 export function getHashIndices(input: String[]): number[] {
     const indices: number[] = [];
 
@@ -138,9 +206,17 @@ export function getHashIndices(input: String[]): number[] {
     return indices;
 }
 
-// This function looks for the first line within a hash that contains '*Method', and extracts
-// the data from the line. This only succeeds if the line has the structure:
-// *Method <methodName> in file <fileName> line <lineNumber>
+/**
+ * This function looks for the first line within a hash that contains `*Method`, and extracts
+ * the data from the line. This only succeeds if the line has the structure:
+ *
+ * `*Method <methodName> in file <fileName> line <lineNumber>`
+ *
+ * @param input The string returned by SearchSECO, split on newlines. Each line is also trimmed to remove leading and trailing whitespace
+ * @param start The index of the first line that belongs to this method
+ * @param end The index of the first line that belongs to the next method (or that indicates the end of the input array)
+ * @returns A {@link MethodData} object containing the data belonging to this method in this project
+ */
 export function getMethodInfo(
     input: String[],
     start: number,
@@ -171,6 +247,14 @@ export function getMethodInfo(
     return data;
 }
 
+/**
+ *
+ *
+ * @param input The string returned by SearchSECO, split on newlines. Each line is also trimmed to remove leading and trailing whitespace
+ * @param start The index of the first line that belongs to this method
+ * @param end The index of the first line that belongs to the next method (or that indicates the end of the input array)
+ * @returns An array containing {@link Match} objects. These objects contain data of the methods that were found in other projects
+ */
 export function getMatches(
     input: String[],
     start: number,
@@ -243,6 +327,14 @@ export function getMatches(
     return matchList;
 }
 
+/**
+ * Gives the lines within one method block that contain `*Method`
+ *
+ * @param input The string returned by SearchSECO, split on newlines. Each line is also trimmed to remove leading and trailing whitespace
+ * @param start The index of the first line that belongs to this method
+ * @param end The index of the first line that belongs to the next method (or that indicates the end of the input array)
+ * @returns Array containing the indices of lines containing `*Method`
+ */
 export function getMatchIndicesOfHash(
     input: String[],
     start: number,
