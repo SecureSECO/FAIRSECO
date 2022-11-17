@@ -5,33 +5,50 @@ jest.setTimeout(20000);
 
 describe("Test getHashIndices", () => {
     test("Single Hash", () => {
-        const result = ss.getHashIndices(["Hash 123"]);
+        const result = ss.getHashIndices(["--------", "Hash 123"]);
 
         // The input only has a hash on line 0, and the length is 1, so it
         // should return [0, 1]
-        expect(result).toEqual([0, 1]);
+        expect(result).toEqual([1, 2]);
     });
 
     test("Multiple consecutive Hashes", () => {
-        const input = ["Hash 1", "Hash 2", "Hash 3", "Hash 4"];
+        const input = [
+            "--------",
+            "Hash 1",
+            "--------",
+            "Hash 2",
+            "--------",
+            "Hash 3",
+            "--------",
+            "Hash 4",
+            "--------",
+        ];
         const result = ss.getHashIndices(input);
 
-        expect(result).toEqual([0, 1, 2, 3, 4]);
+        expect(result).toEqual([1, 3, 5, 7, 9]);
     });
 
     test("Multiple Hashes with Other Stuff", () => {
         const input = [
+            "--------",
             "Hash 1",
+            "--------",
             "jhhfg",
+            "--------",
             "Hash 2",
+            "--------",
             "iwuy4t87rf",
+            "--------",
             "Hash 3",
-            "Hash4",
+            "--------",
+            "Hash 4",
+            "--------",
         ];
 
         const result = ss.getHashIndices(input);
 
-        expect(result).toEqual([0, 2, 4, 5, 6]);
+        expect(result).toEqual([1, 5, 9, 11, 13]);
     });
 
     test("Multiple Lines of Other Stuff", () => {
@@ -542,8 +559,6 @@ describe("Test parseInput", () => {
 test("Test runSearchSECO", async () => {
     jest.setTimeout(15000);
     const result = await ss.runSearchseco();
-
-    const ssData: any = result.ReturnData;
 
     // Since the previous tests already check if the data is processed correctly,
     // we only need to check if SearchSECO gets executed at all, and if it can

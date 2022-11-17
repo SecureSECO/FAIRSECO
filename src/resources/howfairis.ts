@@ -3,6 +3,12 @@ import { getRepoUrl } from "../git";
 
 import { exec, ExecOptions } from "@actions/exec";
 
+/**
+ * This function runs the fairtally docker image on the current repo,
+ * and gives the checklist of FAIRness criteria.
+ *
+ * @returns A {@link action.ReturnObject} containing the result from fairtally
+ */
 export async function runHowfairis(): Promise<ReturnObject> {
     const gitrepo: string = await getRepoUrl();
     console.debug("HowFairIs started");
@@ -18,12 +24,10 @@ export async function runHowfairis(): Promise<ReturnObject> {
         gitrepo,
     ];
 
-
     let stdout = "";
     let stderr = "";
 
     const options: ExecOptions = {
-
         ignoreReturnCode: true,
     };
     options.listeners = {
@@ -33,19 +37,11 @@ export async function runHowfairis(): Promise<ReturnObject> {
         stderr: (data: Buffer) => {
             stderr += data.toString();
         },
-
     };
     const exitCode = await exec(cmd, args, options);
 
-    // console.debug("Docker running fairtally returned " + String(exitCode));
-    // console.debug("stdout:");
-    // console.debug(stdout);
-    // console.debug("stderr:");
-    // console.debug(stderr);
-
     return {
         ReturnName: "HowFairIs",
-        ReturnData: JSON.parse(stdout)
-
+        ReturnData: JSON.parse(stdout),
     };
 }
