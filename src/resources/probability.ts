@@ -22,7 +22,13 @@ export function calculateProbabiltyOfReference(uniquePapers: Map<string, MetaDat
     const meanContributors = lowestContributors + ((highestContributors - lowestContributors) / 2);
     const meanCitations = lowestCitations + ((highestCitations - lowestCitations) / 2);
     let i: number = 0;
-    const wordsMainPaper: string[] = uniquePapers.get(mainPaperId)?.title.toLowerCase().split(" ") as string[];
+    const title = uniquePapers.get(mainPaperId)?.title
+    if(title === undefined){
+        console.log("Paper has no title")
+    }
+    else{
+    //const wordsMainPaper: string[] = uniquePapers.get(mainPaperId)?.title.toLowerCase().split(" ") as string[];
+    const wordsMainPaper: string[] = title.toLowerCase().split(" ") as string[];
     uniquePapers.forEach((paper, key) => {
         if (key === mainPaperId)
             output[i] = 1;
@@ -43,5 +49,7 @@ export function calculateProbabiltyOfReference(uniquePapers: Map<string, MetaDat
         }
         i++;
     });
+    }
+    //console.log(output)
     return output;
 }
