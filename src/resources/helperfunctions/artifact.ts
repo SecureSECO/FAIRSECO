@@ -2,13 +2,23 @@ import * as artifact from "@actions/artifact";
 import * as fs from "fs";
 import * as path from "path";
 
+/** Contains the information returned by {@link ArtifactClient.downloadArtifact}. */
 export type DownloadResponse = artifact.DownloadResponse;
+/** Contains the download options that can be passed to {@link ArtifactClient.downloadArtifact}. */
 export type DownloadOptions = artifact.DownloadOptions;
 
+/**
+ * An interface for providing an {@link ArtifactClient | artifact client},
+ * which can be used to download a github artifact.
+ * 
+ * Normally the artifact client is provided by @actions/artifact,
+ * but a different artifact client provider can be used for unit testing.
+ */
 export interface Artifact {
     create: () => ArtifactClient;
 }
 
+/** An interface for downloading a github artifact. */
 export interface ArtifactClient {
     downloadArtifact: (
         name: string,
@@ -17,14 +27,13 @@ export interface ArtifactClient {
     ) => Promise<DownloadResponse>;
 }
 
-// Download the artifact
 /**
  * Downloads an artifact that was uploaded by another action in a previous step or job in the workflow.
  *
- * @param artifactName The name of the artifact given by the action that created it
- * @param destination Folder in which the artifact files should be downloaded
- * @param artifactObject The artifact module that is used. During normal operation of the program, this should simply be @actions/artifact, but for the unit tests a mock is passed instead.
- * @returns Object containing the download path and the artifact name
+ * @param artifactName The name of the artifact given by the action that created it.
+ * @param destination The directory in which the artifact files should be downloaded.
+ * @param artifactObject The {@link Artifact} module that is used. During normal operation of the program, this should simply be \@actions/artifact, but for the unit tests a mock is passed instead.
+ * @returns a {@link DownloadResponse} object containing the download path and the artifact name.
  */
 export async function getArtifactData(
     artifactName: string,
@@ -43,9 +52,9 @@ export async function getArtifactData(
 /**
  * Get a file from the artifact as a string.
  *
- * @param dlResponse The DownloadResponse object that was returned by getArtifactData.
+ * @param dlResponse The {@link DownloadResponse} object that was returned by {@link getArtifactData}.
  * @param fileName The name of the file that should be read.
- * @returns The content of the file.
+ * @returns The contents of the file.
  */
 export async function getFileFromArtifact(
     dlResponse: DownloadResponse,
@@ -57,9 +66,12 @@ export async function getFileFromArtifact(
     return buffer.toString();
 }
 
-// An Artifact that can be used for unit tests.
-// it does not actually download anything, when downloadArtifact is called,
-// it does return a correct download response as if a file was downloaded.
+/**
+ * An {@link Artifact} object that can be used for unit testing.
+ * the {@link ArtifactClient} provided by create() does not download anything
+ * when downloadArtifact is called, but it returns a download response
+ * as if a file was correctly downloaded.
+ */
 export const testArtifactObject: Artifact = {
     create: () => {
         const client: ArtifactClient = {

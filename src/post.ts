@@ -3,7 +3,10 @@ import YAML from "yaml";
 import fs, { PathLike } from "fs";
 import { WriteHTML, WriteCSS } from "./webapp";
 
-// Main function
+/**
+ * Creates reports showing the gathered data in .yml and .html format.
+ * @param result The data gathered by FairSECO.
+ */
 export async function post(result: ReturnObject[]): Promise<boolean> {
     createFairSECODir("./.FairSECO/"); // Make sure the output dir exists before we place files in it.
     createReport(result); // Create report.yml file
@@ -16,8 +19,9 @@ function createFairSECODir(path: PathLike): void {
     console.log("Creating FairSECO directory.");
     try {
         fs.mkdirSync(path);
+        console.log("Directory created.");
     } catch {
-        console.log("Folder already exists, skipping");
+        console.log("Directory already exists, skipping.");
     }
 }
 

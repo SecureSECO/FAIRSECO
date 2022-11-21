@@ -2,7 +2,11 @@ import * as fs from 'fs'
 import path from 'path'
 import { ReturnObject } from './getdata'
 
-// Write the data to a html file and return
+/**
+ * Creates a webapp that reports the data gathered by FairSECO.
+ * @param data The gathered data.
+ * @param filePath The path to which the HTML file will be written.
+ */
 export async function WriteHTML(
     data: ReturnObject[],
     filePath: string
@@ -23,7 +27,10 @@ export async function WriteHTML(
     await fs.promises.writeFile(filePath, app, 'utf8')
 }
 
-// Write the local css file also to where the HTML file comes.
+/**
+ * Includes the local CSS file for the webapp.
+ * @param filePath The path to the HTML file of the webapp.
+ */
 export async function WriteCSS(
     filePath: string
 ): Promise<void> {

@@ -4,7 +4,11 @@ import { runSearchseco } from "./resources/searchseco";
 import { getCitationFile } from "./resources/citation_cff";
 import { runSBOM } from "./resources/sbom";
 
-
+/**
+ * An object that contains data gathered by FairSECO.
+ * ReturnName describes the name of the data
+ * and ReturnData contains the data.
+ */
 export interface ReturnObject {
     ReturnName: string;
     ReturnData: object;
@@ -41,7 +45,7 @@ export async function data(): Promise<ReturnObject[]> {
         const cffResult = await getCitationFile(".");
         output.push(cffResult);
     } catch (error) {
-        console.error("Getting CITATION.cff caused an error:");
+        console.error("Getting CITATION.cff threw an error:");
     }
     
     try {
