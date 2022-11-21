@@ -39,6 +39,7 @@ export async function data(): Promise<ReturnObject[]> {
         console.error("Searchseco threw an error:");
         console.error(error);
     }
+    
     try {
         const cffResult = await getCitationFile("./src/resources");
         output.push(cffResult);
