@@ -3,11 +3,7 @@ import { data } from "./getdata";
 import { post } from "./post";
 import * as core from "@actions/core";
 
-/**
- * Entrypoint of the program
- *
- * @returns nothing
- */
+/** The entrypoint of the program. */
 export async function main(): Promise<void> {
     try {
         const check = await pre();
