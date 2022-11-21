@@ -35,7 +35,7 @@ function randomTestJournal() {
     const pmid = randomNumberString(8);
     const pmcid = randomNumberString(8);
     const database = randomString(randomNumber(8, 16));
-    return new Journal(title, doi, pmid, pmcid, year, database);
+    return new Journal(title, doi, pmid, pmcid, year, database, []);
 }
 
 function randomDOI() {

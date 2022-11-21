@@ -6,17 +6,21 @@ export async function semanticScholarCitations(authors: Author[], title: string,
     // find reference titles
     const extraRefTitles: string[] = await getRefTitles(authors, title);
     refTitles.concat(extraRefTitles);
+    // prepare query strings
     const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/paper/";
     const fieldsQuery = "/citations?fields=title,externalIds,year&limit=1000";
-    // get paper id
+    // get the unique id semantic scholar gives it's papers
     const paperId = await getSemanticScholarPaperId(refTitles[0]);
+    // instanciate output array
     let output: Journal[] = [];
     try {
+        // API call and save output in Json object
         const response = await fetch(semanticScholarApiURL + paperId + fieldsQuery, {
             method: 'GET',
             headers: {},
         });
         const outputJSON = await response.json();
+        // save outputted metadata in Journal object and append to output array
         outputJSON.data.forEach((element: any) => {
             const title = element.citingPaper.title;
             const year = element.citingPaper.year;
@@ -44,7 +48,6 @@ export async function semanticScholarCitations(authors: Author[], title: string,
             }
             else {
                 const tempJournal = new Journal(title, DOI, pmid, pmcid, year, "SemanticScholar", []);
-
                 output = output.concat([tempJournal]);
             }
         });
@@ -56,12 +59,17 @@ export async function semanticScholarCitations(authors: Author[], title: string,
     }      
 }
 
+// function that searches semantic scholar for possible reference titles
 export async function getRefTitles(authors: Author[], title: string): Promise<string[]> {
+    // instanciate output array and maps
     const output: string[] = [];
+    const papersPerAuthor: Map<Author, any[]> = new Map();
+    const uniquePapers: Map<string, MetaDataJournal> = new Map();
+    // prepare API strings
     const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/author/";
     const searchQuery = "search?query=";
     const fieldsQuery = "&fields=papers.title,papers.citationCount,papers.venue";
-    const papersPerAuthor: Map<Author, any[]> = new Map();
+    // find of every author their papers with the title of the software mentioned in the paper
     for (const author of authors) {
         let papers: any[] = [];
         let papersFiltered: any[] = [];
@@ -88,7 +96,7 @@ export async function getRefTitles(authors: Author[], title: string): Promise<st
         });
         papersPerAuthor.set(author, papersFiltered);
     }
-    const uniquePapers: Map<string, MetaDataJournal> = new Map();
+    // find all the unique papers, and keep count of how many authors it shares
     papersPerAuthor.forEach(papers => {
         papers.forEach(paper => {
             let paperData: MetaDataJournal;
@@ -102,6 +110,7 @@ export async function getRefTitles(authors: Author[], title: string): Promise<st
             }
         });
     });
+    // calculate the probability of each paper being a reference paper
     const probScores: number[] = calculateProbabiltyOfReference(uniquePapers);
     let i = 0;
     uniquePapers.forEach((value, key) => {
@@ -112,16 +121,18 @@ export async function getRefTitles(authors: Author[], title: string): Promise<st
     return output;
 }
 
+// function that gets unique id of the paper from the semantic scholar API
 export async function getSemanticScholarPaperId(title: string): Promise<string> {
+    // prepare query strings
     const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/paper/";
     const searchQuery = "search?query=";
     try {
+        // API call and save it in JSON, then extract the paperID
         const response = await fetch(semanticScholarApiURL + searchQuery + "\"" + title + "\"" , {
             method: 'GET',
             headers: {},
         });
-        const output = await response.text();
-        const outputJSON = JSON.parse(output);
+        const outputJSON = await response.json();
         const paperid = outputJSON.data[0].paperId;
         return paperid;
     }
