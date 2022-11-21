@@ -3,23 +3,22 @@ import { ReturnObject } from "../src/getdata";
 import { WriteHTML, WriteCSS } from "../src/webapp";
 import validator from "html-validator";
 
-test("Validate HTML file", async () => {
+test("Check if html file exists", async () => {
     let fileExists: Boolean = false;
-    let mockResult: ReturnObject[] = [];
+    let mockResult: ReturnObject[] = []
     let mockSingleResult: ReturnObject = {
         ReturnName: "test",
-        ReturnData: {},
-    };
+        ReturnData: {}
+    }
     mockResult[0] = mockSingleResult;
 
-    const result = await WriteHTML(mockResult, "./.FairSECO/index.html");
-
-    // Check if html file exists
-    fileExists = fs.existsSync("./.FairSECO/index.html");
-    expect(fileExists).toBe(true);
-
-    fileExists = fs.existsSync("./.FairSECO/index.html");
-    expect(fileExists).toBe(true);
+    WriteHTML(mockResult, "./.FairSECO/index.html").then(() => {
+        fileExists = fs.existsSync("./.FairSECO/index.html");
+        expect(fileExists).toBe(true);
+    }).catch(() => {
+        expect(fileExists).toBe(true);
+    })
+});
 
     // let options: validator.OptionsForHtmlFileAsValidationTargetAndObjectAsResult;
     // options = {
@@ -42,4 +41,3 @@ test("Validate HTML file", async () => {
     //         throw "HTML validation errors:\n" + validatorResult2;
     //     }
     // }
-});
