@@ -86,7 +86,6 @@ export async function getRefTitles(authors: Author[], title: string): Promise<st
             });
             const outputText = await response.text();
             const outputJSON = JSON.parse(outputText);
-            //const outputJSON = await response.json();
             outputJSON.data.forEach((element: any) => {
                 for (const [key, value] of Object.entries(element)) {
                     if (key === "papers")
