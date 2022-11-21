@@ -2,37 +2,30 @@ import * as artifact from "@actions/artifact";
 import * as fs from "fs";
 import * as path from "path";
 
-// Because the unit tests can't access Github tokens, all artifact-related types are
-// replaced with types that can be replaced with mock objects
-export type Artifact = typeof artifact | TestArtifact;
-export type ArtClient = artifact.ArtifactClient | TestClient;
-export type DownloadResponse = artifact.DownloadResponse | TestResponse;
-export type DownloadOptions = artifact.DownloadOptions | undefined;
+export type DownloadResponse = artifact.DownloadResponse;
+export type DownloadOptions = artifact.DownloadOptions;
 
-export interface TestArtifact {
-    create: () => TestClient;
+export interface Artifact {
+    create: () => ArtifactClient;
 }
 
-export interface TestClient {
+export interface ArtifactClient {
     downloadArtifact: (
         name: string,
-        path?: string,
-        options?: DownloadOptions
-    ) => TestResponse;
+        path: string,
+        options?: DownloadOptions | undefined
+    ) => Promise<DownloadResponse>;
 }
 
-export interface TestResponse {
-    artifactName: string;
-    downloadPath: string | undefined;
-}
-
-export type DLArtFunc = (
-    name: string,
-    path?: string | undefined,
-    options?: DownloadOptions
-) => TestResponse;
-
-// Download the artifact that was uploaded by Tortellini
+// Download the artifact
+/**
+ * Downloads an artifact that was uploaded by another action in a previous step or job in the workflow.
+ *
+ * @param artifactName The name of the artifact given by the action that created it
+ * @param destination Folder in which the artifact files should be downloaded
+ * @param artifactObject The artifact module that is used. During normal operation of the program, this should simply be @actions/artifact, but for the unit tests a mock is passed instead.
+ * @returns Object containing the download path and the artifact name
+ */
 export async function getArtifactData(
     artifactName: string,
     destination: string,
@@ -47,40 +40,38 @@ export async function getArtifactData(
     return downloadResponse;
 }
 
-// Get a file from the artifact as a string
+/**
+ * Get a file from the artifact as a string.
+ *
+ * @param dlResponse The DownloadResponse object that was returned by getArtifactData.
+ * @param fileName The name of the file that should be read.
+ * @returns The content of the file.
+ */
 export async function getFileFromArtifact(
     dlResponse: DownloadResponse,
     fileName: string
 ): Promise<string> {
-    let filePath: string = "";
-    if (dlResponse.downloadPath === undefined) filePath = fileName;
-    else filePath = path.join(dlResponse.downloadPath, fileName);
+    const filePath: string = path.join(dlResponse.downloadPath, fileName);
     const buffer = fs.readFileSync(filePath);
 
     return buffer.toString();
 }
 
-export function createMockArtifact(): Artifact {
-    // Create DLArtFunc
-    const downloadArt: DLArtFunc = function (
-        name: string,
-        path?: string | undefined,
-        options?: DownloadOptions
-    ) {
-        return { artifactName: name, downloadPath: path };
-    };
+// An Artifact that can be used for unit tests.
+// it does not actually download anything, when downloadArtifact is called,
+// it does return a correct download response as if a file was downloaded.
+export const testArtifactObject: Artifact = {
+    create: () => {
+        const client: ArtifactClient = {
+            downloadArtifact: async (
+                name: string,
+                path: string,
+                options?: DownloadOptions | undefined
+            ) => {
+                return { artifactName: name, downloadPath: path };
+            },
+        };
 
-    // Create TestClient
-    const client: TestClient = { downloadArtifact: downloadArt };
-
-    // Create create function
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    const create_ = function () {
         return client;
-    };
-
-    const testArt: TestArtifact = { create: create_ };
-
-    // Create TestArtifact
-    return testArt;
-}
+    },
+};

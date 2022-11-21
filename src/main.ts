@@ -1,3 +1,3 @@
-import {main} from './action'
+import { main } from "./action";
 
-main()
+main();
