@@ -3,7 +3,7 @@ import { runHowfairis } from "./resources/howfairis";
 import { runSearchseco } from "./resources/searchseco";
 import { getCitationFile } from "./resources/citation_cff";
 import { runSBOM } from "./resources/sbom";
-import { ErrorLevel, LogMessage, createLogFile } from "./log";
+import { ErrorLevel, LogMessage } from "./log";
 
 export interface ReturnObject {
     ReturnName: string;
@@ -11,9 +11,7 @@ export interface ReturnObject {
 }
 
 export async function data(): Promise<ReturnObject[]> {
-    createLogFile();
     const output: ReturnObject[] = [];
-
     try {
         const tortelliniResult = await runTortellini();
         output.push(tortelliniResult);
