@@ -2,6 +2,12 @@ import fetch from "node-fetch";
 import { Author, Journal, MetaDataJournal } from "./journal";
 import { calculateProbabiltyOfReference } from "./probability";
 
+
+interface semScholarResponse{
+    offset: number
+    data: object[]
+}
+
 export async function semanticScholarCitations(authors: Author[], title: string, refTitles: string[]): Promise<Journal[]> {
     // find reference titles
     const extraRefTitles: string[] = await getRefTitles(authors, title);
@@ -15,11 +21,11 @@ export async function semanticScholarCitations(authors: Author[], title: string,
     let output: Journal[] = [];
     try {
         // API call and save output in Json object
-        const response = await fetch(semanticScholarApiURL + paperId + fieldsQuery, {
+        const response : any = await fetch(semanticScholarApiURL + paperId + fieldsQuery, {
             method: 'GET',
             headers: {},
         });
-        const outputJSON = await response.json();
+        const outputJSON : semScholarResponse = await response.json();
         // save outputted metadata in Journal object and append to output array
         outputJSON.data.forEach((element: any) => {
             const title = element.citingPaper.title;
@@ -134,11 +140,12 @@ export async function getSemanticScholarPaperId(title: string): Promise<string> 
     const searchQuery = "search?query=";
     try {
         // API call and save it in JSON, then extract the paperID
-        const response = await fetch(semanticScholarApiURL + searchQuery + "\"" + title + "\"" , {
+        // TODO: remove ANYs 
+        const response : any = await fetch(semanticScholarApiURL + searchQuery + "\"" + title + "\"" , {
             method: 'GET',
             headers: {},
         });
-        const outputJSON = await response.json();
+        const outputJSON : any = await response.json();
         const paperid = outputJSON.data[0].paperId;
         return paperid;
     }
