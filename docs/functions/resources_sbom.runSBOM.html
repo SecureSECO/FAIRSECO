@@ -21,20 +21,20 @@
 <li class="tsd-signature tsd-anchor-link" id="runSBOM">runSBOM<span class="tsd-signature-symbol">(</span>artifactObject<span class="tsd-signature-symbol">?: </span><a href="../interfaces/resources_helperfunctions_artifact.Artifact.html" class="tsd-signature-type" data-tsd-kind="Interface">Artifact</a>, destination<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span>, fileName<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/getdata.ReturnObject.html" class="tsd-signature-type" data-tsd-kind="Interface">ReturnObject</a><span class="tsd-signature-symbol">&gt;</span><a href="#runSBOM" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" id="icon-anchor-a"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" id="icon-anchor-b"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" id="icon-anchor-c"></path></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>This function downloads the artifact created by the SBOM action,
-and parses the JSON to an object</p>
+and parses the JSON to an object.</p>
 
-<h3>Returns</h3><p>A action.ReturnObject containing the data from the spdx file</p>
+<h3>Returns</h3><p>A action.ReturnObject containing the data from the spdx file.</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
 <h5>artifactObject: <a href="../interfaces/resources_helperfunctions_artifact.Artifact.html" class="tsd-signature-type" data-tsd-kind="Interface">Artifact</a><span class="tsd-signature-symbol"> = artifact</span></h5>
-<div class="tsd-comment tsd-typography"><p>The artifact module that is used. During normal operation of the program, this should simply be @actions/artifact, but for the unit tests a mock is passed instead.</p>
+<div class="tsd-comment tsd-typography"><p>The Artifact object that is used. During normal operation of the program, this should simply be @actions/artifact, but for the unit tests a mock is passed instead.</p>
 </div></li>
 <li>
 <h5>destination: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;.SBOM-artifact&quot;</span></h5>
-<div class="tsd-comment tsd-typography"><p>Folder in which the artifact files should be downloaded</p>
+<div class="tsd-comment tsd-typography"><p>The path to the directory in which the artifact file should be downloaded.</p>
 </div></li>
 <li>
 <h5>fileName: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;SBOM.spdx&quot;</span></h5>
@@ -42,7 +42,7 @@ and parses the JSON to an object</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/getdata.ReturnObject.html" class="tsd-signature-type" data-tsd-kind="Interface">ReturnObject</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/QDUNI/FairSECO/blob/98cc28c/src/resources/sbom.ts#L18">resources/sbom.ts:18</a></li></ul></aside></li></ul></section></div>
+<li>Defined in <a href="https://github.com/QDUNI/FairSECO/blob/c451a49/src/resources/sbom.ts#L18">resources/sbom.ts:18</a></li></ul></aside></li></ul></section></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
 <details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
