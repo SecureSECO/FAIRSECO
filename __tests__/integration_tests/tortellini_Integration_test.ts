@@ -5,44 +5,53 @@ import { expect, test } from "@jest/globals";
 
 import YAML from "yaml";
 import { ReturnObject } from "../../src/getdata";
-
-const mockArtifact = art.createMockArtifact();
+import * as input from "../../src/resources/tortellini-input";
 
 test("Data is filtered and correctly used in RunTortellini", correctData)
 
+jest.mock("../../src/resources/tortellini-input", () => {
+    const actualModule = jest.requireActual(
+        "../../src/resources/tortellini-input"
+    );
+
+    // This code runs before modules are loaded so load the artifact module here
+    const art = require("../../src/resources/helperfunctions/artifact");
+
+    return {
+        __esModule: true,
+        ...actualModule,
+        artifactObject: art.testArtifactObject, // Unit testing artifact object
+        destination: "__tests__/.tortellini-unit-test",
+    };
+});
+
 async function correctData(): Promise<void>{
-    const TortResultDirect = await (await tort.runTortellini(mockArtifact)).ReturnData;
-    const TortResultWithoutFiltering = await (await runTortelliniWithoutFiltering(mockArtifact)).ReturnData;
+    const TortResultDirect = await (await tort.runTortellini("correct.yml")).ReturnData;
+    const TortResultWithoutFiltering = await (await runTortelliniWithoutFiltering()).ReturnData;
 
     const TortResulWithFiltering = tort.filterData(TortResultWithoutFiltering);
     return expect(TortResultDirect).toMatchObject(await TortResulWithFiltering);
 }
 
-// runTortellini function without filtering the data after
-export async function runTortelliniWithoutFiltering(
-    artifactObject?: art.Artifact
+/**
+ * Downloads the artifact that was uploaded by Tortellini, and parses the YAML file.
+ *
+ * @param fileName Name of the file that should be retrieved from the artifact
+ * @returns A {@link action.ReturnObject} containing the relevant data from the YAML file given by Tortellini
+ */
+ async function runTortelliniWithoutFiltering(
+    fileName: string = "correct.yml"
 ): Promise<ReturnObject> {
-    // An artifact object is only passed in the test. If that is the case,
-    // set the download destination to the unit test output folder.
-    // If not, use the regular Github Action artifact, and the normal output folder
-    let destination: string = "";
-    if (artifactObject !== undefined) {
-        destination = "__tests__/.tortellini-unit-test";
-    } else {
-        artifactObject = artifact;
-        destination = ".tortellini-artifact";
-    }
-
     const downloadResponse = await art.getArtifactData(
         "tortellini-result",
-        destination,
-        artifactObject
+        input.destination,
+        input.artifactObject
     );
 
-    const fileContents = await art.getFileFromArtifact(
-        downloadResponse,
-        "evaluation-result.yml"
-    );
+    const fileContents = await art.getFileFromArtifact(downloadResponse, fileName);
+
+    if (fileContents === "")
+        return { ReturnName: "Tortellini", ReturnData: {} };
 
     const obj = YAML.parse(fileContents);
 

@@ -30,8 +30,8 @@
         "jest-json-schema": "^6.1.0",
         "prettier": "^2.7.1",
         "ts-jest": "^29.0.3",
-        "typescript": "^4.8.4",
-        "typedoc": "^0.23.21"
+        "typedoc": "^0.23.21",
+        "typescript": "^4.8.4"
     },
     "bugs": {
         "url": "https://github.com/QDUNI/FairSECO/issues"
@@ -42,9 +42,9 @@
         "@actions/core": "^1.10.0",
         "@actions/exec": "^1.1.1",
         "@vercel/ncc": "^0.34.0",
+        "ci": "^2.2.0",
         "html-validator": "^6.0.1",
         "path": "^0.12.7",
         "yaml": "^2.1.3"
     }
-
 }
