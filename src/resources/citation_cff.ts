@@ -39,8 +39,7 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
     let file: Buffer;
 
     // Use current directory if none is specified
-    let filePath = path === undefined ? "." : path;
-
+    const filePath = path === undefined ? "." : path;
     // Read the citation.cff file
     try {
         file = fs.readFileSync(filePath + "/CITATION.cff");

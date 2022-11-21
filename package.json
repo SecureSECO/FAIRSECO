@@ -20,6 +20,7 @@
         "@types/jest-json-schema": "^6.1.1",
         "@types/node": "^18.11.0",
         "@typescript-eslint/eslint-plugin": "^5.38.1",
+        "@types/node-fetch": "^2.6.2",
         "eslint": "^8.24.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-config-standard-with-typescript": "^23.0.0",
@@ -45,6 +46,7 @@
         "ci": "^2.2.0",
         "html-validator": "^6.0.1",
         "path": "^0.12.7",
+        "node-fetch": "^2.6.7",
         "yaml": "^2.1.3"
     }
-}
+  }
