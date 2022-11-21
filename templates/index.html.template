@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+    <script src="https://kit.fontawesome.com/db5b01b4db.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <title>FAIRSECO</title>
+
+    <style>
+        
+/*header*/
+*,*:before,*:after {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	box-sizing: border-box;
+}
+
+html,body {overflow-x: hidden; background-color:#ffffff;}
+
+.content{
+  padding-top: 89px;
+ 
+}
+
+.header{
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  border-bottom: 1px solid #8C9EAE;
+  background-color:#ffffff;
+}
+
+.header_body{
+  display: flex;
+  justify-content: space-between;
+  height: 89px;
+  align-items: center;
+  position: relative;
+  padding: 0px 32px 0px 18px; 
+  background-color:darkgray;
+}
+
+.header_logo{
+  height: 100%;
+  width: 35%;
+  display: flex;
+    align-items: center;
+}
+
+.logo {
+    height: 50%;
+}
+
+@media (max-width: 1200px){
+    .logo{
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (max-width: 460px){
+    .logo{
+        display: none;
+    }
+}
+
+a {
+  text-decoration: none;
+}
+
+li {
+  list-style: none;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.header_list {
+  display: flex;
+  position: relative;
+  z-index: 3;
+}
+
+.header_list li{
+  margin: 14px 0px 0px 20px;
+  font-weight: normal;
+  font-family: 'Lato', sans-serif;
+}
+
+.header_search{
+  margin-top:20px;
+}
+
+.header_list i{
+  color: #8C9EAE;
+  position: absolute;
+  left: 6%;
+  padding: 10px;
+}
+
+.header_list form{
+  position: relative;
+  top: 20%;
+  left: 50%;
+  transform: translate(-60%, -50%);
+  transition: all 1s;
+  width: 40px;
+  height: 40px;
+  background: #F4F5F7;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 1px solid #8C9EAE;
+  padding: 5px;
+}
+
+.header_list input{
+  position: absolute;
+  top: 1;
+  left: 0;
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  outline: 0;
+  border: 0;
+  display: contents;
+  font-size: 1em;
+  border-radius: 10px;
+  padding: 0 20px;
+  background: #F4F5F7;
+}
+
+.header_list .fa{
+  box-sizing: border-box;
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-radius: 50%;
+  color: #8C9EAE;
+  text-align: center;
+  font-size: 1 .2em;
+  transition: all 1s;
+}
+
+.header_list form:hover{
+  width: 200px;
+  cursor: pointer;
+}
+
+.header_list form:hover input{
+  display: block;
+}
+
+.header_list form:hover .fa{
+  display: none;
+}
+
+.header_li{
+  color: #244A6F;
+  font-size: 22px;
+  line-height: 12, 2px;
+}
+
+.header_li:hover{
+  color: #3B4683;
+  text-shadow: 1px 1px 2px grey;
+  font-weight: bold ;
+}
+
+.top_link{
+  background-color: #ffffff;
+}
+
+
+
+/*body-content*/
+.content{
+  background-color: #EFF2F8;
+  border-radius: 10px;
+  border: 1px solid #8C9EAE;
+  padding-top: 40px;
+  padding-bottom: 60px;
+  font-family: 'Lato', sans-serif;
+  height: 2000px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  margin-left: 25px;
+  margin-right: 30px;
+}
+
+.buttoncontent{
+  padding-top: 0px;
+  padding-bottom: 48px;
+}
+
+.tablink{
+  background-color: #EFF2F8;
+  color: #4B5762;
+  float: left;
+  border-radius: 10px 10px 0px 0px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-size: 17px;
+  width: 25%;
+}
+
+.tablink:hover{
+  background-color: #dce6f8;
+}
+
+.tabcontent{
+  color: #4B5762;
+  display: none;
+  padding: 0px 20px;
+  padding-bottom: 20px;
+  height: 100%;
+  border-radius: 10px 10px 10px 10px;
+}
+
+#Overview{
+  background-color: #EFF2F8;
+}
+
+#Citations{
+  background-color: #EFF2F8;
+}
+
+#FAIRness{
+  background-color: #EFF2F8;
+}
+
+#Licenses{
+  background-color: #EFF2F8;
+}
+/*body-table*/
+.table_content{
+  border-spacing: 5px;
+}
+
+.table_content, th,td{
+  background-color: #EFF2F8;
+  border: 1px solid #EFF2F8;
+  border-collapse: collapse;
+  width: 100%;
+}
+th,td{
+  background-color: #e3e9f6;
+  padding: 15px;
+  width: 0px;
+}
+
+th{
+  text-align: left;
+  background-color: #d7e0f3;
+}
+
+.emergency{
+  color: red;
+  font-size: 20px;
+  font-weight: bolder;
+}
+
+/*footer*/
+.ffline{
+  display: flex;
+  border-top: 1px solid #8C9EAE;
+}
+
+footer{
+  background-color: #ffffff;
+  color: #5F7080;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  height: 120px;
+  border-top: 1px solid #8C9EAE;
+;
+}
+
+.footer_logo{
+    width: 25%;
+    height: 100%;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer_logo svg {
+    max-height: 150px;
+    min-height: 50px;
+    height: 100%;
+    margin-left: -50px;
+    margin-right: 20px;
+}
+
+.footer_logo div{
+    width: 65%;
+}
+
+.footer_darkmode{
+    width: 15%;
+    display: flex;
+    align-items: center;
+}
+
+.footer_center{
+    width: 50%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.footer_links{
+    width: 75%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.foot_logo{
+    width: 100px;
+}
+
+.foot_text{
+    width: 1200px;
+}
+
+.logo_foot{
+  width: 6%;
+}
+
+
+
+@media (max-width: 1200px){
+  .logo_foot{
+      flex-direction: column;
+      align-items: center;
+  }
+  .logo_foot{
+      padding-bottom: 20px;
+  }
+}
+
+@media (max-width: 460px){
+  .logo_foot{
+      display: none;
+  }
+}
+
+.foot_img{
+  text-align: center;
+  padding: 10px;
+}
+
+footer ul{
+  display: inline;
+  position: absolute;
+  padding-top: 25px;
+}
+
+footer li{
+  display: inline;
+}
+
+footer a{
+  margin: 10px 0px 0px 10px;
+  padding: 5px;
+  font-weight: normal;
+  font-family: 'Lato', sans-serif;
+  font-size: 18px;
+  text-decoration: none;
+  color: #22A6FC;
+}
+
+.inc{
+  margin-right:90px;
+  color: #5F7080;
+  font-family: 'Lato', sans-serif;
+  font-size: 18px;
+}
+
+.mode{
+  color: #9E9E9E;
+  background-color: #EFF2F8;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 1px solid #8C9EAE;
+  padding: 5px;
+}
+
+.mode:hover{
+  color: #22A6FC;
+  background-color: #e8f3fa;
+}
+.content {
+    height: 100%;
+    padding: 0;
+}
+body {
+    padding-top: 89px;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+.wrapper {
+    flex: 1;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    color: #eee;
+    background: #212121;
+  }
+
+  .header_body{
+    background-color: #414141;
+  }
+  .header_li{
+    color:white;
+  }
+
+  footer{
+    background-color: #212121;!important
+  }
+
+  .header_list form{
+    background-color:none;
+    border: 0px solid;
+  }
+
+  .tablink{
+   background-color: #616161;
+    color: white;
+  }
+
+  th{
+    background-color: #000000;
+    color: white;   
+  }
+
+  td{
+    background-color: #212121;
+    color: white;   
+  }
+
+  .content{
+    border: 0px;
+    background-color:#212121
+  }
+
+  .table_content{
+    border: 0px solid;
+  }
+
+  #Citations{
+    background-color:#000;
+  }
+  #Licenses{
+    background-color:#000;
+  }
+  #FAIRness{
+    background-color:#000;
+  }
+  #Overview{
+    background-color:#000;
+  }
+}
+
+    </style>
+  </head>
+
+    <body>
+        <div class="wrapper">
+            <header class="header">
+                <div class="header_body">
+                    <a href="home.html" class="header_logo">
+                        <!--<img class="logo" src="1.jpg">-->
+                        <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+                        <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+                        <svg   width="380px"
+   height="35px"
+   viewBox="0 0 380 62" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>FAIRSECO</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group" transform="translate(-45.000000, -201.000000)">
+            <g id="FAIRSECO" transform="translate(45.000000, 201.000000)">
+                <g id="C" transform="translate(273.836408, 0.914298)" fill="#FFFFFF">
+                    <path d="M3.13860496,44.3942569 C4.19640724,44.3942569 4.91097031,44.5789124 5.92306405,44.3942569 C15.2105185,42.6997705 22.6298186,33.2542117 22.6298186,22.2023118 C22.6298186,11.2230301 15.2754071,1.79100648 6.07780039,0.0103665755 C5.00803434,-0.196738184 3.97696678,2.76797308 2.85538378,2.76797308 C-2.77174098,2.76797308 0.808853017,6.96466664 5.92306405,8.33234602 C11.0940158,9.7151994 15.2045944,16.3528664 15.2045944,22.2023118 C15.2045944,27.7639677 13.3179539,30.4904797 9.17159967,34.3156592 C8.60363563,34.533335 7.08215735,35.4759771 5.92306405,36.0722775 C4.60847884,36.7485714 3.65303442,37.2001421 3.13860496,37.7241787 C0.626115919,40.2835893 -0.352755008,44.3942569 3.13860496,44.3942569 Z" id="Oval" transform="translate(11.314909, 22.238163) scale(-1, 1) translate(-11.314909, -22.238163) "></path>
+                    <rect id="Rectangle" x="16.7067546" y="36.0722775" width="29.700897" height="8.32197944"></rect>
+                    <rect id="Rectangle" x="16.7067546" y="0.0103665755" width="29.700897" height="8.32197944"></rect>
+                </g>
+                <g id="E" transform="translate(227.428757, 0.924664)" fill="#FFFFFF">
+                    <rect id="Rectangle" x="0" y="0" width="40.8387334" height="8.32197944"></rect>
+                    <rect id="Rectangle" x="0" y="0" width="8.35337729" height="44.3838904"></rect>
+                    <rect id="Rectangle" x="0.928153033" y="36.0619109" width="39.9105804" height="8.32197944"></rect>
+                    <rect id="Rectangle" x="12.9941425" y="18.4932876" width="25.9882849" height="7.39731506"></rect>
+                </g>
+                <g id="O" transform="translate(324.884825, 0.914298)" fill="#FFFFFF">
+                    <path d="M3.13860496,44.3942569 C4.19640724,44.3942569 4.91097031,44.5789124 5.92306405,44.3942569 C15.2105185,42.6997705 22.6298186,33.2542117 22.6298186,22.2023118 C22.6298186,11.2230301 15.2754071,1.79100648 6.07780039,0.0103665755 C5.00803434,-0.196738184 3.97696678,2.76797308 2.85538378,2.76797308 C-2.77174098,2.76797308 0.808853017,6.96466664 5.92306405,8.33234602 C11.0940158,9.7151994 15.2045944,16.3528664 15.2045944,22.2023118 C15.2045944,27.7639677 13.3179539,30.4904797 9.17159967,34.3156592 C8.60363563,34.533335 7.08215735,35.4759771 5.92306405,36.0722775 C4.60847884,36.7485714 3.65303442,37.2001421 3.13860496,37.7241787 C0.626115919,40.2835893 -0.352755008,44.3942569 3.13860496,44.3942569 Z" id="Oval" transform="translate(11.314909, 22.238163) scale(-1, 1) translate(-11.314909, -22.238163) "></path>
+                    <rect id="Rectangle" x="16.7067546" y="0.0103665755" width="22.2756728" height="8.32197944"></rect>
+                    <rect id="Rectangle" x="16.7067546" y="36.0722775" width="22.2756728" height="8.32197944"></rect>
+                    <path d="M35.6239611,44.3942569 C36.6817634,44.3942569 37.3963265,44.5789124 38.4084202,44.3942569 C47.6958747,42.6997705 55.1151748,33.2542117 55.1151748,22.2023118 C55.1151748,11.2230301 47.7607632,1.79100648 38.5631565,0.0103665755 C37.4933905,-0.196738184 36.4623229,2.76797308 35.3407399,2.76797308 C29.7136152,2.76797308 33.2942092,6.96466664 38.4084202,8.33234602 C43.5793719,9.7151994 47.6899505,16.3528664 47.6899505,22.2023118 C47.6899505,27.7639677 45.80331,30.4904797 41.6569558,34.3156592 C41.0889918,34.533335 39.5675135,35.4759771 38.4084202,36.0722775 C37.093835,36.7485714 36.1383906,37.2001421 35.6239611,37.7241787 C33.1114721,40.2835893 32.1326011,44.3942569 35.6239611,44.3942569 Z" id="Oval"></path>
+                </g>
+                <g id="S" transform="translate(171.739575, 0.924664)" fill="#FFFFFF">
+                    <rect id="Rectangle" x="12.8085118" y="0" width="34.5272928" height="8.32197944"></rect>
+                    <rect id="Rectangle" x="12.0659894" y="18.4932876" width="25.5242084" height="7.39731506"></rect>
+                    <rect id="Rectangle" x="0.928153033" y="36.0619109" width="36.4764142" height="8.32197944"></rect>
+                    <path d="M12.9941425,0 L12.9941425,8.32197944 L12.9941425,8.32197944 C10.8570669,8.77704677 9.28153033,10.9326209 9.28153033,13.4076335 C9.28153033,15.8578465 10.8889792,18.011017 12.9941425,18.4932876 L12.9941425,25.8906027 C12.6824497,25.8906027 12.3721904,25.9121051 12.0659894,25.8906027 C5.3221666,25.4170304 0,19.7842727 0,12.9453014 C0,5.79580883 5.81767574,0 12.9941425,0 L12.9941425,0 Z" id="Combined-Shape"></path>
+                    <path d="M50.1205413,18.4932876 L50.1205413,26.8152671 L50.1205413,26.8152671 C48.0042897,27.2881859 46.4079292,29.4420917 46.4079292,31.9009212 C46.4079292,34.3595107 48.0045985,36.5133946 50.1205413,36.9865753 L50.1205413,44.3838904 C42.9440746,44.3838904 37.1263989,38.5880815 37.1263989,31.438589 C37.1263989,24.2890965 42.9440746,18.4932876 50.1205413,18.4932876 L50.1205413,18.4932876 Z" id="Combined-Shape" transform="translate(43.623470, 31.438589) scale(-1, -1) translate(-43.623470, -31.438589) "></path>
+                </g>
+                <g id="R" transform="translate(116.050393, 0.924664)" fill="#1F9B8D">
+                    <path d="M35.7338918,32.3632534 C43.1666609,32.3632534 49.1921107,25.1184923 49.1921107,16.1816267 C49.1921107,7.24476104 43.1666609,0 35.7338918,0 C31.543041,0 33.6117756,4.77030069 36.1979683,8.32197944 C38.1985705,11.0694532 40.4229322,12.0196345 40.8387334,16.1816267 C41.2546837,20.3451113 38.3438552,22.218098 36.1979683,24.9659383 C33.4257286,28.5158326 31.5442035,32.3632534 35.7338918,32.3632534 Z" id="Oval"></path>
+                    <rect id="Rectangle" x="0" y="0" width="8.35337729" height="44.3838904"></rect>
+                    <rect id="Rectangle" x="0" y="0" width="36.1979683" height="8.32197944"></rect>
+                    <rect id="Rectangle" x="12.9941425" y="24.9659383" width="27.844591" height="7.39731506"></rect>
+                    <polygon id="Rectangle" points="30.6793647 32.3632534 41.093358 32.3632534 52.9047229 44.3838904 41.093358 44.3838904"></polygon>
+                </g>
+                <g id="I" transform="translate(99.343638, 0.924664)" fill="#1F9B8D">
+                    <rect id="i" x="0" y="0" width="9.28153033" height="44.3838904"></rect>
+                </g>
+                <g id="A" transform="translate(35.301079, 0.000000)" fill="#1F9B8D">
+                    <polygon id="Rectangle" points="25.1663429 27.7399315 44.5513456 27.7399315 44.5513456 34.2125822 21.3475197 34.2125822"></polygon>
+                    <polygon id="Rectangle" points="27.0460947 0.924664382 29.5616741 11.2118456 8.35337729 45.3085547 0 45.3085547"></polygon>
+                    <rect id="Rectangle" x="26.9164379" y="5.54798629" width="5.5689182" height="6.47265068"></rect>
+                    <polygon id="Rectangle" transform="translate(44.427478, 23.581332) scale(-1, 1) translate(-44.427478, -23.581332) " points="56.0964916 1.8541085 59.2932815 11.2118456 37.9150514 45.3085547 29.5616741 45.3085547"></polygon>
+                    <ellipse id="Oval" cx="29.5616741" cy="4.16098972" rx="3.85183509" ry="4.16098972"></ellipse>
+                </g>
+                <rect id="Rectangle" fill="#1F9B8D" x="0.0312638172" y="53.6305342" width="379.61459" height="8.32197944" rx="4.16098972"></rect>
+                <g id="F" transform="translate(0.000000, 0.924664)" fill="#1F9B8D">
+                    <polygon id="Rectangle" transform="translate(4.176689, 30.561497) rotate(90.000000) translate(-4.176689, -30.561497) " points="-26.3371509 26.3848085 34.6905281 26.3848085 34.6905281 34.7381858 -26.3371509 34.7381858"></polygon>
+                    <rect id="Rectangle" x="13.0254063" y="19.417952" width="24.1319788" height="7.39731506"></rect>
+                    <rect id="Rectangle" x="0.0312638172" y="0" width="38.9824274" height="8.32197944"></rect>
+                    <rect id="Rectangle" x="0.0312638172" y="0" width="38.9824274" height="8.32197944"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
+                    </a>
+                    <div class="header_burger">
+                        <span></span>
+                    </div>
+                    <nav class="header_menu">
+                        <ul class="header_list">
+                            <li class="header_li" onclick="openPage('Overview', this, '#ffffff')">Overview</li>
+                            <li class="header_li" onclick="openPage('Citations', this, '#ffffff')">Citations</li>
+                            <li class="header_li" onclick="openPage('FAIRness', this, '#ffffff')">FAIRness</li>
+                            <li class="header_li" onclick="openPage('Licenses', this, '#ffffff')">Licenses</li>
+                            <li class="header_search">
+                                <form action="">
+                                    <input type="search">
+                                    <i class="fa fa-search"></i>
+                                </form>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="fline"></div>
+            </header>
+            <section class="content">
+                <div class="buttoncontent">
+                <button class="tablink" onclick="openPage('Overview', this, '#dce6f8')" id="defaultOpen">Overview</button>
+                <button class="tablink" onclick="openPage('Citations', this, '#dce6f8')">Citations</button>
+                <button class="tablink" onclick="openPage('FAIRness', this, '#dce6f8')">FAIRness</button>
+                <button class="tablink" onclick="openPage('Licenses', this, '#dce6f8')">Licenses</button>
+                </div>
+                <div id="Overview" class="tabcontent">
+            
+                    <p></p>
+                </div>
+                <div id="Citations" class="tabcontent">
+                    <p>
+                      <table class="table_content" id="citationsContent">
+                        <tr>
+                          <th>Title</th>
+                          <th>Year</th>
+                          <th>DOI</th>
+                        </tr>
+                      </table>
+                    </p> 
+                </div>
+                <div id="FAIRness" class="tabcontent">
+           
+                    <p>
+                        <table class="table_content" id="fairnessTable">
+                            
+                        </table>
+                    </p>
+                </div>
+                <div id="Licenses" class="tabcontent">
+             
+                    <p>
+                        <table class="table_content" id="licensesContent">
+                            <tr>
+                              <th></th> 
+                              <th>Package</th>
+                              <th>Rule</th>
+                              <th>Message</th>
+                            </tr>
+                            <tr>
+                              <td><button class="emergency">!</button></td> 
+                              <td>NPM:fairseco:1.0.0</td>
+                              <td>UNHANDDLED_LICENSE</td>
+                              <td>The licence ISC is currently not coverd by policy rules. The licence was declared in package NPM:fairseco:1.0.0</td>
+                            </tr>
+                        </table>
+                    </p>
+                </div>
+            </section>
+            <footer>
+                <div class="footer_logo">
+                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="318px" height="284px" viewBox="0 0 318 284" enable-background="new 0 0 318 284" xml:space="preserve">  <image id="image0" width="278" height="284" x="0" y="0"
+                        href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAT4AAAEcCAMAAABpgig/AAAMY2lDQ1BpY2MAAEiJlVcHWFPJFp5b
+                    kpCQ0AIRkBJ6E0R6kRJCCyAgVbARkkBCiSEhqNiRRQXXiohixYrYVldA1oLYy6LY+2JBQVkXC4qi
+                    8iYkoOu+8r3zfXPvn3/O/OfMuTO5dwDQ7OVKJDmoFgC54nxpXFgQc1xKKpP0DBCAIUCAMWByeTIJ
+                    KzY2CkAbvP/d3t+EntCuOSq0/tn/X02HL5DxAEAmQJzOl/FyIW4CAF/Hk0jzASAqeIup+RIFngux
+                    rhQmCHG5Amcq8U4FTlfiIwM+CXFsiK8AoEblcqWZAGjchzyzgJcJdTQ+Q+ws5ovEAGiOgNifJ+Ty
+                    IVbkPiI3d4oCV0JsC/0lEMN8gFf6d5qZf9NPH9LncjOHsHJeA6YWLJJJcrjT/8/S/G/LzZEPxrCG
+                    jSqUhscp5g9reDt7SqQCUyHuEqdHxyhqDXGviK+sOwAoRSgPT1T6o0Y8GRvWDzAgduZzgyMhNoI4
+                    VJwTHaXi0zNEoRyI4WpBp4nyOQkQ60O8UCALiVf5bJJOiVPFQusypGyWij/HlQ7EVcR6KM9OZKn0
+                    3wgFHJU+plEoTEiGmAKxZYEoKRpiDYidZNnxkSqf0YVCdvSgj1Qep8jfEuI4gTgsSKmPFWRIQ+NU
+                    /qW5ssH5YpuEIk60Ch/IFyaEK+uDneJxB/KHc8GuCMSsxEEdgWxc1OBc+ILgEOXcsQ6BODFepdMr
+                    yQ+KU47FKZKcWJU/bi7ICVPw5hC7yQriVWPxpHy4OJX6eIYkPzZBmSdemMWNiFXmgy8DUYANggET
+                    yGFLB1NAFhC1dNV3wV/KnlDABVKQCQTAUcUMjkge6BHDazwoBH9CJACyoXFBA70CUAD5L0Os8uoI
+                    MgZ6CwZGZINnEOeCSJADf8sHRomHoiWBp5AR/SM6FzYezDcHNkX/v+cH2W8MCzJRKkY+GJGpOehJ
+                    DCEGE8OJoUQ73BD3x33xKHgNhM0F98K9B+fxzZ/wjNBKeEy4QWgj3JksKpL+kOUY0Ab1Q1W1SP++
+                    Frg11HTHg3A/qA6VcQZuCBxxNxiHhQfAyO6QZavyVlSF+YP232bw3dNQ+ZGdySh5GDmQbPvjSA17
+                    DfchFUWtv6+PMtf0oXqzh3p+jM/+rvp8eI/80RNbiB3EzmInsPPYEaweMLHjWAN2CTuqwEOr6+nA
+                    6hqMFjeQTzbUEf0j3uCTVVRS5lzr3On8WdmXL5iWr9h47CmS6VJRpjCfyYJvBwGTI+Y5jWC6OLu4
+                    AKB41yj/vt4yBt4hCOPCNy7HEwCPl3DvVX/j+P4AHMYA0K75xllz4daCe+7YY55cWqDkcMWFAP8l
+                    NOFOMwAmwALYwvm4AA/gCwJBCIgAMSABpIBJMHshXOdSMBXMBPNACSgDy8AqsBZsBFvATrAHHAD1
+                    4Ag4Ac6Ai+AKuAHuwdXTDl6CbvAe9CEIQkJoCB0xQEwRK8QBcUG8EH8kBIlC4pAUJA3JRMSIHJmJ
+                    zEfKkBXIWmQzUoP8ghxGTiDnkVbkDvII6UTeIJ9QDKWiuqgxao2ORL1QFhqJJqAT0Uw0Dy1Ei9El
+                    aCVaje5G69AT6EX0BtqGvkR7MICpYwzMDHPEvDA2FoOlYhmYFJuNlWIVWDW2F2uEz/ka1oZ1YR9x
+                    Ik7HmbgjXMHheCLOw/Pw2fhifC2+E6/DT+HX8Ed4N/6VQCMYERwIPgQOYRwhkzCVUEKoIGwnHCKc
+                    hnupnfCeSCQyiDZET7gXU4hZxBnExcT1xH3EJmIr8Qmxh0QiGZAcSH6kGBKXlE8qIa0h7SYdJ10l
+                    tZN61dTVTNVc1ELVUtXEakVqFWq71I6pXVV7rtZH1iJbkX3IMWQ+eTp5KXkruZF8mdxO7qNoU2wo
+                    fpQEShZlHqWSspdymnKf8lZdXd1c3Vt9rLpIfa56pfp+9XPqj9Q/UnWo9lQ2dQJVTl1C3UFtot6h
+                    vqXRaNa0QFoqLZ+2hFZDO0l7SOvVoGs4aXA0+BpzNKo06jSuarzSJGtaabI0J2kWalZoHtS8rNml
+                    Rday1mJrcbVma1VpHda6pdWjTdcepR2jnau9WHuX9nntDh2SjrVOiA5fp1hni85JnSd0jG5BZ9N5
+                    9Pn0rfTT9HZdoq6NLkc3S7dMd49ui263no6em16S3jS9Kr2jem0MjGHN4DByGEsZBxg3GZ+GGQ9j
+                    DRMMWzRs77Crwz7oD9cP1Bfol+rv07+h/8mAaRBikG2w3KDe4IEhbmhvONZwquEGw9OGXcN1h/sO
+                    5w0vHX5g+F0j1MjeKM5ohtEWo0tGPcYmxmHGEuM1xieNu0wYJoEmWSblJsdMOk3ppv6mItNy0+Om
+                    L5h6TBYzh1nJPMXsNjMyCzeTm202azHrM7cxTzQvMt9n/sCCYuFlkWFRbtFs0W1pajnGcqZlreVd
+                    K7KVl5XQarXVWasP1jbWydYLrOutO2z0bTg2hTa1NvdtabYBtnm21bbX7Yh2XnbZduvtrtij9u72
+                    Qvsq+8sOqIOHg8hhvUPrCMII7xHiEdUjbjlSHVmOBY61jo+cGE5RTkVO9U6vRlqOTB25fOTZkV+d
+                    3Z1znLc63xulMypiVNGoxlFvXOxdeC5VLtddaa6hrnNcG1xfuzm4Cdw2uN12p7uPcV/g3uz+xcPT
+                    Q+qx16PT09IzzXOd5y0vXa9Yr8Ve57wJ3kHec7yPeH/08fDJ9zng85evo2+27y7fjtE2owWjt45+
+                    4mfux/Xb7Nfmz/RP89/k3xZgFsANqA54HGgRyA/cHvicZcfKYu1mvQpyDpIGHQr6wPZhz2I3BWPB
+                    YcGlwS0hOiGJIWtDHoaah2aG1oZ2h7mHzQhrCieER4YvD7/FMebwODWc7gjPiFkRpyKpkfGRayMf
+                    R9lHSaMax6BjIsasHHM/2ipaHF0fA2I4MStjHsTaxObF/jaWODZ2bNXYZ3Gj4mbGnY2nx0+O3xX/
+                    PiEoYWnCvUTbRHlic5Jm0oSkmqQPycHJK5Lbxo0cN2vcxRTDFFFKQyopNSl1e2rP+JDxq8a3T3Cf
+                    UDLh5kSbidMmnp9kOCln0tHJmpO5kw+mEdKS03alfebGcKu5Pemc9HXp3Tw2bzXvJT+QX87vFPgJ
+                    VgieZ/hlrMjoyPTLXJnZKQwQVgi7RGzRWtHrrPCsjVkfsmOyd2T35yTn7MtVy03LPSzWEWeLT00x
+                    mTJtSqvEQVIiacvzyVuV1y2NlG6XIbKJsoZ8XfhRf0luK/9J/qjAv6CqoHdq0tSD07Sniaddmm4/
+                    fdH054Whhdtm4DN4M5pnms2cN/PRLNaszbOR2emzm+dYzCme0z43bO7OeZR52fN+L3IuWlH0bn7y
+                    /MZi4+K5xU9+CvuptkSjRFpya4Hvgo0L8YWihS2LXBetWfS1lF96ocy5rKLs82Le4gs/j/q58uf+
+                    JRlLWpZ6LN2wjLhMvOzm8oDlO1doryhc8WTlmJV15czy0vJ3qyavOl/hVrFxNWW1fHVbZVRlwxrL
+                    NcvWfF4rXHujKqhq3zqjdYvWfVjPX391Q+CGvRuNN5Zt/LRJtOn25rDNddXW1RVbiFsKtjzbmrT1
+                    7DavbTXbDbeXbf+yQ7yjbWfczlM1njU1u4x2La1Fa+W1nbsn7L6yJ3hPw17HvZv3MfaV7Qf75ftf
+                    /JL2y80DkQeaD3od3Pur1a/rDtEPldYhddPruuuF9W0NKQ2thyMONzf6Nh76zem3HUfMjlQd1Tu6
+                    9BjlWPGx/uOFx3uaJE1dJzJPPGme3Hzv5LiT10+NPdVyOvL0uTOhZ06eZZ09fs7v3JHzPucPX/C6
+                    UH/R42LdJfdLh353//1Qi0dL3WXPyw1XvK80to5uPXY14OqJa8HXzlznXL94I/pG683Em7dvTbjV
+                    dpt/u+NOzp3Xdwvu9t2be59wv/SB1oOKh0YPq/+w+2Nfm0fb0UfBjy49jn987wnvycunsqef24uf
+                    0Z5VPDd9XtPh0nGkM7TzyovxL9pfSl72dZX8qf3nule2r379K/CvS93juttfS1/3v1n81uDtjndu
+                    75p7Ynsevs993/ehtNegd+dHr49nPyV/et439TPpc+UXuy+NXyO/3u/P7e+XcKXcgU8B+LUA0IwM
+                    AN7sAICWAgAdntso45VnwQFDlOfXAQT+E1aeFwfMA4BtgQAkNAEQMxeADbBZw6YJOcUnfEIgQF1d
+                    h5rKZBmuLkotKjwJEXr7+98aA0BqBOCLtL+/b31//5etMNk7ADTlKc+gCiPCM8MmbwW64UYpBj+Y
+                    8nz63Rx/vANFBm7gx/u/ANPTi7sLfMI7AAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAA
+                    ADqYAAAXcJy6UTwAAAEaUExURf///+jr7dzh5NHX28XM0rnCyfT19pajroqapXOGk1txgU9neERd
+                    b2d7iqGut3+PnHOFk9DX2624v4mZpaGuuK24wPP19rnCypakrq64wH6PnNzg5FBneH2PnHKFk2Z7
+                    ipajrZakrTZxeC58fjR0eiuAgCCLhjZweCeEghCbjR2Ph0JhcTpsdiWHhIqapN3h5CCLhS58fz5l
+                    cxqTiRiTiRSXiz5lciOHhCqAgD9kcztodDlsdiuAgTB4fTxodDtodSmDgjB4fDtpdDltdh2PiHOG
+                    kieDgltxgJTCwHDAuKbExrfGy3W5tDSNi0N6gXOFkpekrVZ5hbPKzdbp6OLy8Tptdqq8wn6Qm2d7
+                    iX+Pm3+Qm3KFksXN0omZpPFiZRMAAAABYktHRACIBR1IAAAACXBIWXMAABYlAAAWJQFJUiTwAAAA
+                    B3RJTUUH5gsCDBgGs3JvrQAADVhJREFUeNrtnftj27YRx0XJpGK9XMmuO3tZpsZ2YtWrmvmVbl7W
+                    bmvs7mntaa/u/v9/Y6ZIEJBE8g7SgXgQ359ah6KIjw53hwMINBpeXl5eXl5eXl5eXl5eXl5eXl5e
+                    XkoVBM1Wayucq9VqNYNI9xPZoGArbL/Y7nR7Oer0t18Mwlag+xmNVBC2dzo9lPo7Aw+RK9pqf9LF
+                    kePqbg9avkNHYRtpc7l22K4zwmG7vz46pu1RU3c7NCgavpDusEXq7LZ0N6daEbJjBGtjg8M2MbuU
+                    YFiDcByNPlHBLtHOlu7mqVWwp8Tw6mGCQ4WGx7XrJsBq4DkKsDp4sbbdymSqheeYBVYPzyGAgRZ4
+                    jgCM9nTB68VpjO7mb6hQcZ4HArTZAPX1Wy57e7DqIQZOlvbgJkExj0Y2GuCnuqEJss4ATfB6otr7
+                    uonI6DMjvJ4oi0Jw9BPdsPJ0oBsLUoExMWNRu1Z04KFxHZfJhg6sc5AG8jO+mL+rG1G59nTzKVVk
+                    qNuzg1+wwYKLqnRobABpWkDP3ABibsi1gd9nurFYzc8eeibys4neM7+f6uZlM71e76VR/GyjZ1b/
+                    tY+eSfyaulFYzS+wJN9b4WfE+MOGkVq++gbws5der7erG16jYXyNpUza6y9GTmvgpXkCxOTaMkpa
+                    02c7UxZROtMXm8MG07Y+fFaHDaa2LnrWO75EmqbftnS3m0gvtbg/FxxfIi3u72e6W00nDdmfSev3
+                    Nlbl2Z+tZZZ8VV58MWz546aqOHtxquvGqvQlOHeiLlO/SnyGr6NaRxVG31B3WxWowuTZua4b67Aq
+                    eo6MdZdVUfRwK+Xjqmjs5mDcSFTJu0eB7lYq08sqxh7OGl+vN1BPr6W7jQpVgfm90t1GlVJufi4b
+                    XwXm57TxKTc/t41Pufk5HHYTKTU/d3M+ppfe+DaSwqGH+8andOTrYp1vReoKL07W+ZalrO7nyqqM
+                    cinLXWoQOGIpyl3qEDhiKZp0q0XgiKUmePxcd7Oq0tj33U2kZOTxuYonfX10rBtWjlT0XjDpO3lT
+                    rrerHzmdTCZfnBXd8Cz9YEL4F6U3/5LyZ5jS0/sK/NJ3k3KtNvB4/vdfFt3wPP3gkXBxsS7oACro
+                    vQMF+C7nf7+6JsE3mby57hGJvvfCcVca3xFrNhG+yQUVvzE1PUTclcV3nf3L2/wbSuMj49ehxofI
+                    mWXxveetzo8e8viK7iStr4jxHZLjE3F8TYVv8iUNPurVfohlQSm+X+Ee8PpSbPWv0fiO8m93zn68
+                    GxJ8xEVTzAybHL7fLBhNbvSQwZcFoi9I8BFXrUbU+NK4cXGcGuGHjfExfjTmR5u6YGbHpfBdMn94
+                    k/zHVY7Pl8TXO5lfcEKCj7boh1kRKYMvZXHRywJwTvSQxXd2xe65uUidHzxik8PH4sZ5DOmqqNPJ
+                    4ku7Lwk+0nEbqlIqge80uTQZ7X4o8vnS+H5Lh48080PNcuDxsbhxtvDBleghje+cEB/ldDmq0IzH
+                    l8WNRN+k0WN5xLWe9V3R4BsT4kN9oYDvclXf8gvT3nqa/eEof8Qgje+4MIWUF+GEESpyiPgmq+Kt
+                    SuPGxXn2l7PL3Oghje8dXeJCGTtw8+NYfGnc+J3w0ZtFZ7gmvuSKtz0a0b2khZvmQOJ7zVM+rvdi
+                    KF4TX2rVRDUXwg02cCtykfiElI8ryXiXokchvt//IUevL5c86oaiK7rgZnhx+NIwseyhPix38TJ8
+                    ZaWxc/A5kaKbL8J9n4DvZlXfJBeJKd+1OFU2WY0e6+AjMz660IucIEflfWncmKd8lznNF6PHGvgu
+                    yIyPrmCPXE6PwXcs2Eh++ViIHmvge01Gr9ejKvkh1wYh8KUJ3lVsI9eX+QR44Vka3xXpkgWqzAWe
+                    4sXiOxIs7LSAAY8ehfi+freg7JN0PTcWVcUUuboFxsfiRoJyRWn4yEoH2LzvhDk+smnyuaiKBohZ
+                    Nhy+75IrioyEJX8seqDT5vdK+FElfsj32EB8YtzIVZr8scIzGt/Zdyr4UdXrkesiIXyrpYKiW9xI
+                    4uudXyrgR5U3I99HgPCJKV+B0sL9G1l8WcWfkh8VPuTXAfiuoa4b60iMHjIlg5sJOb+PRuHLLRUs
+                    iyWGZ7L4mN8k5Ec0atsnwXcspHwlSq3oVhpfttzNtGVW2DXhpfhY3ADvcsKjh2S975SYn1Z8d9NB
+                    KOj7P871J/b/aSr+MVzWn5ML/8L+86+3t8lA9uZ2rr9NR2G+Dk5uUyUmfj9bvXI0xb+XpxHf/RC4
+                    aVqGgKPbYnPLThlffM5p0ZC1hQWoDV8HgrcuvnGEfM7SJ0CO4Xua8GG20V8HX7f8VxGesx+VXok8
+                    TFMPvi6m0rMGPuhX4c8J0MNuHqoHH2qoLY8P/FWy5wTpPdsfYskY0UyvJL6/o24qjw/0p+w5l6y0
+                    OXqxs729M9hagIooAesJHf9gnxs+P3Wh+gv4wuIL2d15/SMK2zslt1zgHO0J3XRXLIDCRUw9+P6Z
+                    fgy1RWeKD46FvC17XdQt5/p06dpdbpj7YPelmiuSw/cvGehofKzdEbhdOScUra6r6/C1A+B3Us1U
+                    roUPs5gcjy8zKfCAGm58+efMZ3k3aH5UFRfkVq+L+HC5KRYf81rwuWbc+ArWdGanI0BfSoVPrlyq
+                    wvqYG4I9Am9zUWzNTkeAKklU5VK5Yn2KD3bNEvhY2IUXCWd9szgzzmI4MIczJsKHnGn79/Fc/wF+
+                    /XXwtXD20hNWdBd/ffbGEJC7UE0VTXH4UmVvRASzaY4eHgvw/Tfv6tRA0jvCyzT5SKHEtJgjBX5g
+                    qnlebIUiFbSuMAh5vxLw5U7qJy1kKQSc6nLXV3LROL0EWHNMtcoAFwUywQWX/YwDDh+DAnuRDF8Z
+                    GhYTgEBE9WaH7NZffbjkcrAWPni+PouWZavC2O0AV0q1wgq3sF4QouB3oBhfmWX9gLiGcGk9dqpN
+                    0B4I8JUEPub74Bj2EfPMY5RZ0L3Ysc4JE9ujrVaOmovmIeAb5V3eXjAEmSpJiaWy2Fa+7PMHJBxY
+                    lJt/HTKX8moJX5kCTHvnyhxW8S2zvK88JI7ReCDJJX6AWF4YSuBLC9iIkQyiIpD5x/JATvdeh2Tm
+                    AihNCAIJfAw5nIHy15iLruVxrfzHoHsdn3bTUmYgEvhYn0SYH083CrxfZlUh9kabao3QWyL2/DL4
+                    2PgT/iH5SDW/aMD/vTwNotyCk3TH4UD4TbD4MnePv/KZX07I49OAwJiDLvCiay4osZ+/JYOPG80W
+                    9FOKp3Uu3/e+yf8NyMEp9xGiix3dg4V7ovEJR+iGT+VXij4/mAre8l6soUD1NMqNXGSO6cAWaTu4
+                    i5mx9UVXHgQ5o5qCed4fZ0+Pd3eP09HCn8F1BpTbCMnEDiS+EHlx1kzwCF2+ygDRdGjKiXbzZolx
+                    Bw5f+uvLrHHZw+JD8AOr/rTbl0psm4v64qiDvVjoZAA/cYUVULGA50zoxhyxJHYMx+AL+uiLRR9V
+                    zm9hfV8ZP3iqnXIng1gSzg8mEvF1FpLLI0upLCZyxSWzISKLpd63Hn/A2GFQrrDdxV8cLEfI3VYj
+                    KrhyKT3o7DbnIVpU1IhC1KH01Ds3S04X2S7qnYddP6BtScT01qs4Wyuq5S1cpCVT00V/2litei9t
+                    2hILt+THDdH33Vr1XhUnBdao99L33Tr1XhV9V9FpOyZKzSmfdem9qo4JrMlJYwpOKpqrJuNeVUek
+                    1iN4kJ8Uk6kWqZ+646HrEDw6qs6XbcgUTa2VqsBRE/NTMeLI5Pzx2iqNrwa5i1Ljcz53UWt8zpuf
+                    qpS5HuanptZSG/NT6/lcNz/Vni+WxHIX26Te+BoO535VGJ/DQ49KjM/ZkS/tuYrFwm4rZJfU1fmW
+                    5WTyoq7Ot6x9B6NHNXEjkYPRo6K4kci56FFV3EgUODb2qC5uJDrY/JFNUqVdN5ZT3bfarhvLpe5b
+                    ddeNRfuKuU6hdkomlzMrrqpLmEW5kjyPtdBzxf114E2yFcmFyqkex5fIAfenx/Glsj77qz7jE2V7
+                    +HjQSs/28KEvbDDZXLvCnMuiWvYWD7rNzVu/uawt3dNu97C2LE1fKLdZ2kjwvh4GSm/KYjs/g+g1
+                    9q174cgkevbxM4uebfxMo9ewyv8ZSM8ifkbSsyZ/1lqisp1fFz69VZvMH/92jBjnFgl5dKs2IY4S
+                    0Src0a269D/t9T1I+wa/M21oyF2UqQGka0iBChL68PRKZbrb4woMnIAbG+/2BJnWgW3puExmReB7
+                    azou0745JfyuMWV5GZkSQewzvVQmeEA7TS+Rfg84tSngrirUCrBvcHkFp0BfCLG53woA9YyCuwO7
+                    +60A8GlzGrKa2hpv89SqGKBT8KoG6By8WBX5QHd83ipA5WmMu/BiReGjSnj31ud5oJqqTNBtwxMU
+                    PtCzm7lveFwBdNCkHLvpsCaGxxWFU5KXGu5m9WOXqjXYzAi79yMXUzwJRc8I17LC7sOoTu6uTM1w
+                    JsPw7mEW1tzqVhW1RrOnx1KK3cfpLGzW1dWhFDVbP44Gs+n0ielhOh0MwrAVeG5eXl5eXl5eXl5e
+                    Xl5eXl5eXl5eXl5eXkv6PzjyzCn8DEjkAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIyLTExLTAyVDEx
+                    OjI0OjA2KzAxOjAw3ZtCGAAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMi0xMS0wMlQxMToyNDowNisw
+                    MTowMKzG+qQAAAAodEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IEFwcGxlIEluYy4sIDIwMjLk
+                    tL+cAAAAF3RFWHRpY2M6ZGVzY3JpcHRpb24ARGlzcGxheRcblbgAAAAASUVORK5CYII=" />
+                    </svg>
+                    <div class="footer_copyright">
+                        &copy; 2022 Utrecht University
+                    </div>
+                </div>
+                <div class="footer_center">
+                    <div class="footer_links">
+                        <a href="#" onclick="openPage('Overview', this, '#ffffff')">Overview</a>
+                        <a href="#" onclick="openPage('Citations', this, '#ffffff')">Citations</a>
+                        <a href="#" onclick="openPage('FAIRness', this, '#ffffff')">FAIRness</a>
+                        <a href="#" onclick="openPage('Licenses', this, '#ffffff')">Licenses</a>
+                    </div>
+                </div>
+                <div class="footer_darkmode">
+                    <a href="dark_home.html" class="mode">Dark mode</a>
+                </div>
+            </footer>
+        </div>
+
+        <script>
+            // Site functionality - START
+            function openPage(pageName, elmnt, color) {
+            // Hide all elements with class="tabcontent" by default */
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+            }
+  
+            // Remove the background color of all tablinks/buttons
+            tablinks = document.getElementsByClassName("tablink");
+            for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].style.backgroundColor = "";
+            }
+  
+            // Show the specific tab content
+            document.getElementById(pageName).style.display = "block";
+  
+            // Add the specific color to the button used to open the tab content
+            elmnt.style.backgroundColor = color;
+            }
+  
+            // Get the element with id="defaultOpen" and click on it
+            document.getElementById("defaultOpen").click();
+            //
+
+            // If you wanna work on this outside the github acton environment:
+            // Comment out the two lines below:
+            var allData = {{node inserts the data here}};
+
+            fairSeco();
+            //
+
+
+            function fairSeco() {
+              // Initialisation
+              
+              var tortellini;
+              var howFairIs;
+              var searchSeco;
+              var SBOM;
+              var citingPapers;
+              // Site functionality - END
+
+              // A generic way of storing the different data in vars
+              for(let i = 0; i < allData.length; i++){
+                  const element = allData[i];
+                  switch(element.ReturnName) {
+                      case "Tortellini":
+                          tortellini = element.ReturnData;
+                          break;
+                      case "HowFairIs":
+                          howFairIs = element.ReturnData;
+                          break;
+                      case "SearchSeco":
+                          searchSeco = element.ReturnData;
+                          break;
+                      case "SBOM":
+                          SBOM = element.ReturnData;
+                          break;
+                      case 'citingPapers':
+                          citingPapers = element.ReturnData;
+                      default:
+                          break;
+                  }
+              }
+
+              let violations = tortellini.violations;
+              let violationsTable = document.getElementById("licensesContent").childNodes[1];
+              let fairnessTable = document.getElementById("fairnessTable");
+              let scholarlyTable = document.getElementById("citationsContent").childNodes[1];
+              createFairnessTable();
+              // Violations object
+              // .how_to_fix
+              // .license
+              // .license_source
+              // .message
+              // .pkg
+              // .rule
+              // .severity
+
+              // Create the content for the licenses page.
+              for (let i = 0; i < violations.length; i++){
+                  let violation = violations[i];
+                  let tr = document.createElement("tr");
+                  let td1 = document.createElement("td");
+                  let btn = document.createElement("button");
+                  btn.setAttribute("class","emergency")
+                  let textNode1 = document.createTextNode("!");
+                  btn.appendChild(textNode1);
+                  td1.appendChild(btn);
+                  let td2 = document.createElement("td");
+                  let textNode2 = document.createTextNode(violation.pkg);
+                  td2.appendChild(textNode2);
+                  let td3 = document.createElement("td");
+                  let textNode3 = document.createTextNode(violation.rule);
+                  td3.appendChild(textNode3);
+                  let td4 = document.createElement("td");
+                  let textNode4 = document.createTextNode(violation.message);
+                  td4.appendChild(textNode4);
+                  tr.appendChild(td1);
+                  tr.appendChild(td2);
+                  tr.appendChild(td3);
+                  tr.appendChild(td4);
+                  // Add them to the webapp
+                  violationsTable.appendChild(tr);
+              }
+
+
+              //  Create the content for the citations page
+              for (let i = 0; i < citingPapers.length; i++){
+                  let citation = citingPapers[i];
+                  let tr = document.createElement("tr");
+                  let td1 = document.createElement("td");
+                  let textNode1 = document.createTextNode("!");
+                  let td2 = document.createElement("td");
+                  let textNode2 = document.createTextNode(citation.title);
+                  td2.appendChild(textNode2);
+                  let td3 = document.createElement("td");
+                  let textNode3 = document.createTextNode(citation.year);
+                  td3.appendChild(textNode3);
+                  let td4 = document.createElement("td");
+                  let textNode4 = document.createTextNode(citation.doi);
+                  let a = document.createElement("a");
+                  td4.appendChild(a);
+                  a.appendChild(textNode4)
+                  a.href = "http://www.doi.org/" + citation.doi;
+                  a.target = "_blank";
+                  //tr.appendChild(td1);
+                  tr.appendChild(td2);
+                  tr.appendChild(td3);
+                  tr.appendChild(td4);
+                  // Add them to the webapp
+                  scholarlyTable.appendChild(tr);
+              }
+
+
+              // Debugging
+              console.log("Tortellini:");
+              console.log(tortellini);
+              console.log("HowFairIs:")
+              console.log(howFairIs);
+              console.log("SearchSeco:")            
+              console.log(searchSeco);
+              console.log("SBOM:")            
+              console.log(SBOM);
+              //
+
+              // Create the content for the fairness page.
+            function createFairnessTable(){
+                let fairScore = createRow("Fairness Score", howFairIs[0].count);
+                let badgeImg = document.createElement("img");
+                badgeImg.setAttribute("src", howFairIs[0].badge);
+                badgeImg.setAttribute("alt", "howfairis badge");
+                let check = createRow("Checklist",howFairIs[0].checklist);
+
+                let badge = document.createElement("tr");
+                let label_ = document.createElement("td");
+                let value_ = document.createElement("td");
+                label_.appendChild(document.createTextNode("Badge"));
+                value_.appendChild(badgeImg);
+                badge.appendChild(label_);
+                badge.appendChild(value_);
+
+
+                let citation = createRow("Citation", howFairIs[0].citation);
+                let license = createRow("License", howFairIs[0].license);
+                let registry = createRow("Registry", howFairIs[0].registry);
+                let repository = createRow("Repository", howFairIs[0].repository);
+
+                fairnessTable.appendChild(fairScore);
+                fairnessTable.appendChild(badge);
+                fairnessTable.appendChild(check);
+                fairnessTable.appendChild(citation);
+                fairnessTable.appendChild(license);
+                fairnessTable.appendChild(registry);
+                fairnessTable.appendChild(repository);
+            }
+            
+            function createRow(label, value){
+                let row = document.createElement("tr");
+                let label_ = document.createElement("td");
+                let value_ = document.createElement("td");
+                label_.appendChild(document.createTextNode(label));
+                value_.appendChild(document.createTextNode(value));
+                row.appendChild(label_);
+                row.appendChild(value_);
+
+                return row;
+            }
+            }
+
+            
+        </script>
+    </body>
+</html>

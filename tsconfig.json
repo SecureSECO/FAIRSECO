@@ -11,10 +11,16 @@
         "allowSyntheticDefaultImports": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": false,
+        "useUnknownInCatchVariables": false,
         "outDir": "./dist",
         "rootDir": "./src",
         "noImplicitAny": true,
         "typeRoots": ["node_modules/@types"]
+    },
+    "typedocOptions": {
+        "entryPoints": ["src/"],
+        "out": "docs",
+        "entryPointStrategy": "expand"
     },
     "exclude": ["node_modules", "__tests__"]
 }
