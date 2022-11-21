@@ -4,6 +4,8 @@
 import { openAlexCitations } from "../src/resources/openalexAPI";
 import { semanticScholarCitations } from "../src/resources/semanticscholarAPI";
 import { matchers } from "jest-json-schema";
+import { Author} from "../src/resources/journal";
+
 expect.extend(matchers);
 jest.setTimeout(30000);
 
@@ -19,7 +21,7 @@ test("Check that openAlexCitations and semanticScholarCitations output json matc
                         "type": "string"
                     },
                     year: {
-                        "type": "integer"
+                        "type": "number"
                     },
                     doi: {
                         "type": "string"
@@ -32,26 +34,33 @@ test("Check that openAlexCitations and semanticScholarCitations output json matc
                     },
                     database: {
                         "type" : "string"
+                    },
+                    authors:{
+                        "type" : "array"
                     }
                 },
                 required: [
-                    // Should have title, year, reference to database it is from
+                    // Should have title, year, authors and reference to database it is from
                     // The id's are not required since some papers don't have these ID's
                     "database",
                     "title",
-                    "year"
+                    "year",
+                    "authors"
                 ],
                 title: "citingPapers",
             },
         },
+
     };
 
-    // We use a predefined title example
-    const title = "ss-TEA: Entropy based identification of receptor specific ligand binding residues from a multiple sequence alignment of class A GPCRs"
+    // We use a citation.cff example for the title and authors
+    const title = "Parcels";
+    const authors: Author[] = [ new Author("Van Sebille", "Erik", "https://orcid.org/0000-0003-2041-0704"), new Author("Kehl", "Christian", "https://orcid.org/0000-0003-4200-1450"), new Author("Lange","Michael","https://orcid.org/0000-0002-3232-0127"), new Author("Delandmeter","Philippe", "https://orcid.org/0000-0003-0100-5834")];
+    const refTitles: string[] = [];
     //Run openAlexCitations and check if output JSON matches with the predefined schema
-    const openAlex_output = await openAlexCitations(title);
+    const openAlex_output = await openAlexCitations(authors, title, refTitles);
     expect(openAlex_output).toMatchSchema(schema);
     //Run semanticScholarCitations and check if output JSON matches with the predefined schema
-    const semanticScholar_output = await semanticScholarCitations(title);
+    const semanticScholar_output = await semanticScholarCitations(authors, title, refTitles);
     expect(semanticScholar_output).toMatchSchema(schema);
 });

@@ -13,7 +13,6 @@ export interface ReturnObject {
 
 export async function data(): Promise<ReturnObject[]> {
     const output: ReturnObject[] = [];
-    /*
     try {
         const tortelliniResult = await runTortellini();
         output.push(tortelliniResult);
@@ -37,7 +36,6 @@ export async function data(): Promise<ReturnObject[]> {
         console.error("Searchseco threw an error:");
         console.error(error);
     }
-    */
     try {
         const cffResult = await getCitationFile("./src/resources");
         output.push(cffResult);
@@ -59,7 +57,6 @@ export async function data(): Promise<ReturnObject[]> {
         console.error("Scholarly threw an error:");
         console.error(error);
     }
-    /*
     try {
         const SBOMResult = await runSBOM();
         output.push(SBOMResult);
@@ -68,6 +65,5 @@ export async function data(): Promise<ReturnObject[]> {
 
         console.error(error);
     }
-    */
     return output;
 }
