@@ -5,9 +5,12 @@ import { runCitingPapers } from "./resources/citingPapers";
 import { getCitationFile, CffObject } from "./resources/citation_cff";
 import { runSBOM } from "./resources/sbom";
 
-
+/** An object that contains data gathered by FairSECO. */
 export interface ReturnObject {
+    /** Describes the name of the gathered data. */
     ReturnName: string;
+
+    /** The gathered data. */
     ReturnData: object;
 }
 

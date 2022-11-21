@@ -1,33 +1,32 @@
 import { ReturnObject } from "../getdata";
-import * as artifact from "@actions/artifact";
 
 import YAML from "yaml";
-import { Artifact, getArtifactData, getFileFromArtifact } from "./helperfunctions/artifact";
+import {
+    getArtifactData,
+    getFileFromArtifact,
+} from "./helperfunctions/artifact";
 
+import * as input from "./tortellini-input";
+
+/**
+ * Downloads the artifact that was uploaded by Tortellini, and parses the YAML file.
+ *
+ * @param fileName Name of the file that should be retrieved from the artifact.
+ * @returns A {@link action.ReturnObject} containing the relevant data from the YAML file given by Tortellini.
+ */
 export async function runTortellini(
-    artifactObject?: Artifact
+    fileName: string = "evaluation-result.yml"
 ): Promise<ReturnObject> {
-    // An artifact object is only passed in the unit test. If that is the case,
-    // set the download destination to the unit test output folder.
-    // If not, use the regular Github Action artifact, and the normal output folder
-    let destination: string = "";
-    if (artifactObject !== undefined) {
-        destination = "__tests__/.tortellini-unit-test";
-    } else {
-        artifactObject = artifact;
-        destination = ".tortellini-artifact";
-    }
-
     const downloadResponse = await getArtifactData(
         "tortellini-result",
-        destination,
-        artifactObject
+        input.destination,
+        input.artifactObject
     );
 
-    const fileContents = await getFileFromArtifact(
-        downloadResponse,
-        "evaluation-result.yml"
-    );
+    const fileContents = await getFileFromArtifact(downloadResponse, fileName);
+
+    if (fileContents === "")
+        return { ReturnName: "Tortellini", ReturnData: {} };
 
     const obj = YAML.parse(fileContents);
 
@@ -39,12 +38,23 @@ export async function runTortellini(
     };
 }
 
-// Only get the data that is relevant for license checking
-// To make sure all properties are always present,
-// replace undefined properties with a dash
+/**
+ * Filters the data from the YAML file.
+ *
+ * The YAML file contains a lot of information that is not interesting for this project,
+ * like information about the analysis itself (start and end time, environment info, etc.), and
+ * a massive dependency tree.
+ *
+ * We only need a list of dependencies with their license data, and a list of license violations.
+ *
+ * @param obj The object that contains the data from the YAML file.
+ * @returns An object containing only the data that is relevant for FairSECO.
+ */
 export async function filterData(obj: any): Promise<any> {
     // Project data
-    const project = obj.analyzer.result.projects[0];
+    const projects: any[] = obj.analyzer.result.projects || [];
+    const project = projects[0] || {};
+
     const projData = {
         id: project.id || "-",
         licenses: project.declared_licenses || "-",
@@ -54,7 +64,7 @@ export async function filterData(obj: any): Promise<any> {
     };
 
     // Package data
-    const packages = obj.analyzer.result.packages;
+    const packages: any[] = obj.analyzer.result.packages || [];
     const packData = [];
     for (const pack of packages) {
         const p = {

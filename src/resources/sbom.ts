@@ -1,37 +1,44 @@
 import { ReturnObject } from "../getdata";
-import { Artifact, getArtifactData, getFileFromArtifact } from "./helperfunctions/artifact";
+import {
+    Artifact,
+    getArtifactData,
+    getFileFromArtifact,
+} from "./helperfunctions/artifact";
 import * as artifact from "@actions/artifact";
-import YAML from "yaml";
 
-// Get the SBOM info from the file
+/**
+ * This function downloads the artifact created by the SBOM action,
+ * and parses the JSON to an object.
+ *
+ * @param artifactObject The {@link Artifact} object that is used. During normal operation of the program, this should simply be \@actions/artifact, but for the unit tests a mock is passed instead.
+ * @param destination The path to the directory in which the artifact file should be downloaded.
+ * @param fileName The name of the file that should be read.
+ * @returns A {@link action.ReturnObject} containing the data from the spdx file.
+ */
 export async function runSBOM(
-    artifactObject?: Artifact
-    ): Promise<ReturnObject> {
-    let destination: string = "";
-    if (artifactObject !== undefined) {
-        destination = "__tests__/.SBOM-unit-test";
-    } else {
-        artifactObject = artifact;
-        destination = ".SBOM-artifact";
-    }
-
+    artifactObject: Artifact = artifact,
+    destination: string = ".SBOM-artifact",
+    fileName: string = "SBOM.spdx"
+): Promise<ReturnObject> {
     // Get the SBOM file
     const downloadResponse = await getArtifactData(
-        "SBOM.spdx",
+        fileName,
         destination,
         artifactObject
     );
 
-    const fileContents = await getFileFromArtifact(
-        downloadResponse,
-        "SBOM.spdx"
-    );
+    const fileContents = await getFileFromArtifact(downloadResponse, fileName);
 
-    const obj = YAML.parse(fileContents);
+    let obj;
+
+    if (fileContents !== "") {
+        obj = JSON.parse(fileContents);
+    } else {
+        obj = {};
+    }
 
     return {
         ReturnName: "SBOM",
         ReturnData: obj,
     };
 }
-

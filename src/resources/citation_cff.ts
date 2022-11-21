@@ -30,6 +30,11 @@ export interface ValidationErrorCffObject {
     validation_message: string;
 }
 
+/**
+ * Reads a CITATION.cff file.
+ * @param path Specifies the path to the directory the CITATION.cff file is in.
+ * @returns The data from the CITATION.cff file.
+ */
 export async function getCitationFile(path?: string): Promise<ReturnObject> {
     let file: Buffer;
 
@@ -121,8 +126,14 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
     }
 }
 
-// Finds the error in the docker stderr output,
-// when trying to run cffconvert in docker yields a non-zero exit code
+export const unknownErrorMsg = "Unknown Error";
+
+/**
+ * Finds the error when trying to run cffconvert in docker
+ * yields a non-zero exit code indicating failure.
+ * @param stderr The stderr output produced by docker.
+ * @returns A string showing information about the error.
+ */
 export function getError(stderr: string): string {
     // An error given by cffconvert appears as a line which looks like *Error: *
     // Find the first line that includes Error: in the first word and return it
@@ -133,5 +144,5 @@ export function getError(stderr: string): string {
     }
 
     // No cffconvert error message was found, so the error is unknown.
-    return "Unknown error";
+    return unknownErrorMsg;
 }

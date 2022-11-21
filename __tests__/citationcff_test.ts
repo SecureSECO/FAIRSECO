@@ -9,10 +9,6 @@ describe("Test getCitationFile", () => {
 
         const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
 
-        console.log(result);
-
-        console.log(cffData);
-
         expect(cffData.status).toBe("valid");
 
         if (cffData.status == "valid") {
@@ -29,10 +25,6 @@ describe("Test getCitationFile", () => {
         );
 
         const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
-
-        console.log(result);
-
-        console.log(cffData);
 
         expect(cffData.status).toBe("validation_error");
 
@@ -51,10 +43,6 @@ describe("Test getCitationFile", () => {
 
         const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
 
-        console.log(result);
-
-        console.log(cffData);
-
         expect(cffData.status).toBe("validation_error");
 
         if (cffData.status == "valid") {
@@ -71,10 +59,6 @@ describe("Test getCitationFile", () => {
         );
 
         const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
-
-        console.log(result);
-
-        console.log(cffData);
 
         expect(cffData.status).toBe("validation_error");
 
@@ -93,10 +77,6 @@ describe("Test getCitationFile", () => {
 
         const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
 
-        console.log(result);
-
-        console.log(cffData);
-
         expect(cffData.status).toBe("validation_error");
 
         if (cffData.status == "validation_error") {
@@ -113,10 +93,6 @@ describe("Test getCitationFile", () => {
         );
 
         const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
-
-        console.log(result);
-
-        console.log(cffData);
 
         expect(cffData.status).toBe("validation_error");
 
@@ -135,10 +111,6 @@ describe("Test getCitationFile", () => {
 
         const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
 
-        console.log(result);
-
-        console.log(cffData);
-
         expect(cffData.status).toBe("validation_error");
 
         if (cffData.status == "validation_error") {
@@ -156,10 +128,6 @@ describe("Test getCitationFile", () => {
 
         const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
 
-        console.log(result);
-
-        console.log(cffData);
-
         expect(cffData.status).toBe("missing_file");
     });
 
@@ -170,10 +138,48 @@ describe("Test getCitationFile", () => {
 
         const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
 
-        console.log(result);
-
-        console.log(cffData);
-
         expect(cffData.status).toBe("incorrect_yaml");
+    });
+});
+
+describe("Test GetError", () => {
+    test("One Line", () => {
+        const input = "Error: Unit Test 1";
+
+        const result = cff.getError(input);
+
+        expect(result).toBe(input);
+    });
+
+    test("Error not at the start", () => {
+        const input = "Apple Error: Unit Test 2";
+
+        const result = cff.getError(input);
+
+        expect(result).toBe(cff.unknownErrorMsg);
+    });
+
+    test("Two Lines", () => {
+        const input = "Error: Unit Test 3\n Second line";
+
+        const result = cff.getError(input);
+
+        expect(result).toBe(input.split("\n")[0]);
+    });
+
+    test("Garbage", () => {
+        const input = "dyy ywy rtyrtywb  sheb";
+
+        const result = cff.getError(input);
+
+        expect(result).toBe(cff.unknownErrorMsg);
+    });
+
+    test("Empty String", () => {
+        const input = "";
+
+        const result = cff.getError(input);
+
+        expect(result).toBe(cff.unknownErrorMsg);
     });
 });
