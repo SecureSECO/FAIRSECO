@@ -18,10 +18,11 @@ async function correctData(): Promise<void>{
     return expect(TortResultDirect).toMatchObject(await TortResulWithFiltering);
 }
 
+// runTortellini function without filtering the data after
 export async function runTortelliniWithoutFiltering(
     artifactObject?: art.Artifact
 ): Promise<ReturnObject> {
-    // An artifact object is only passed in the unit test. If that is the case,
+    // An artifact object is only passed in the test. If that is the case,
     // set the download destination to the unit test output folder.
     // If not, use the regular Github Action artifact, and the normal output folder
     let destination: string = "";
@@ -44,8 +45,6 @@ export async function runTortelliniWithoutFiltering(
     );
 
     const obj = YAML.parse(fileContents);
-
-    //const filteredData = await tort.filterData(obj);
 
     return {
         ReturnName: "Tortellini",
