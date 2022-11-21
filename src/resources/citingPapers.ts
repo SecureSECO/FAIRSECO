@@ -1,6 +1,6 @@
 import { ReturnObject } from "../getdata";
 import { semanticScholarCitations } from "./semanticscholarAPI";
-// import { openAlexCitations } from "./openalexAPI";
+import { openAlexCitations } from "./openalexAPI";
 import { Author, Journal } from "./journal";
 import { ValidCffObject } from "./citation_cff";
 
@@ -33,13 +33,13 @@ export async function runCitingPapers(cffFile: ValidCffObject): Promise<ReturnOb
         }
         authors.push(new Author(givenNames, familyName, orchidId));
     });
-    const outData1: Journal[] = await semanticScholarCitations(authors, title, refTitles);
-    // const outData2: Journal[] = await openAlexCitations(authors, title);
+    //const outData1: Journal[] = await semanticScholarCitations(authors, title, refTitles);
+    const outData2: Journal[] = await openAlexCitations(authors, title, refTitles);
     // const output: Journal[] = deleteDuplicates(outData1);
 
     return {
         ReturnName: "citingPapers",
-        ReturnData: outData1,
+        ReturnData: outData2, //aanpassen
     };
 } 
 

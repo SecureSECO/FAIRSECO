@@ -78,7 +78,9 @@ export async function getRefTitles(authors: Author[], title: string): Promise<st
                 method: 'GET',
                 headers: {},
             });
-            const outputJSON = await response.json();
+            const outputText = await response.text();
+            const outputJSON = JSON.parse(outputText);
+            //const outputJSON = await response.json();
             outputJSON.data.forEach((element: any) => {
                 for (const [key, value] of Object.entries(element)) {
                     if (key === "papers")
@@ -87,7 +89,11 @@ export async function getRefTitles(authors: Author[], title: string): Promise<st
             });
         }
         catch (error){
-            console.log("Error while searching for author " + author.givenNames + " " + author.familyName + " on semantics scholar");
+            let errorMessage = "Error while searching for author " + author.givenNames + " " + author.familyName + " on semantics scholar"
+            if(error instanceof Error){
+                errorMessage = error.message;
+            }
+            console.log(errorMessage)
         } 
         papers.forEach((element: any) => {
             // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
