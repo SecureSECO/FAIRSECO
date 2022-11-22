@@ -9,10 +9,6 @@ describe("Test getCitationFile", () => {
 
         const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
 
-        console.log(result);
-
-        console.log(cffData);
-
         expect(cffData.status).toBe("valid");
 
         if (cffData.status == "valid") {
@@ -29,10 +25,6 @@ describe("Test getCitationFile", () => {
         );
 
         const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
-
-        console.log(result);
-
-        console.log(cffData);
 
         expect(cffData.status).toBe("validation_error");
 
@@ -51,10 +43,6 @@ describe("Test getCitationFile", () => {
 
         const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
 
-        console.log(result);
-
-        console.log(cffData);
-
         expect(cffData.status).toBe("validation_error");
 
         if (cffData.status == "valid") {
@@ -71,10 +59,6 @@ describe("Test getCitationFile", () => {
         );
 
         const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
-
-        console.log(result);
-
-        console.log(cffData);
 
         expect(cffData.status).toBe("validation_error");
 
@@ -93,10 +77,6 @@ describe("Test getCitationFile", () => {
 
         const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
 
-        console.log(result);
-
-        console.log(cffData);
-
         expect(cffData.status).toBe("validation_error");
 
         if (cffData.status == "validation_error") {
@@ -113,10 +93,6 @@ describe("Test getCitationFile", () => {
         );
 
         const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
-
-        console.log(result);
-
-        console.log(cffData);
 
         expect(cffData.status).toBe("validation_error");
 
@@ -135,10 +111,6 @@ describe("Test getCitationFile", () => {
 
         const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
 
-        console.log(result);
-
-        console.log(cffData);
-
         expect(cffData.status).toBe("validation_error");
 
         if (cffData.status == "validation_error") {
@@ -156,10 +128,6 @@ describe("Test getCitationFile", () => {
 
         const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
 
-        console.log(result);
-
-        console.log(cffData);
-
         expect(cffData.status).toBe("missing_file");
     });
 
@@ -169,10 +137,6 @@ describe("Test getCitationFile", () => {
         );
 
         const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
-
-        console.log(result);
-
-        console.log(cffData);
 
         expect(cffData.status).toBe("incorrect_yaml");
     });

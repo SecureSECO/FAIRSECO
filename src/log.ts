@@ -49,12 +49,12 @@ export function LogMessage(content: string | Error, level: ErrorLevel): void {
     } else {
         console.error(message);
     }
-    const fd: number = fs.openSync("./.FairSECO/program.log", "a+");
+    const fd: number = fs.openSync("./.FairSECO/program.log", "a");
     try {
         fs.writeSync(fd, message);
         fs.closeSync(fd);
-    } catch {
-        console.error("");
+    } catch (e) {
+        console.error(e);
     }
 }
 
@@ -66,12 +66,13 @@ export function LogMessage(content: string | Error, level: ErrorLevel): void {
 export function createLogFile(): void {
     const fd: number = fs.openSync("./.FairSECO/program.log", "w+");
     const d: Date = new Date();
+    const dateString = d.toLocaleString("en-US");
     try {
         fs.writeSync(fd, "[INFO] FairSECO Log initialized");
         fs.writeSync(fd, "[INFO] date:" + d.toDateString());
         fs.writeSync(fd, "\n------------------------------\n");
         fs.closeSync(fd);
     } catch {
-        console.error("");
+        console.error(dateString +" - [ERR]: Failed to create log file");
     }
 }
