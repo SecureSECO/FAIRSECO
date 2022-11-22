@@ -1,18 +1,21 @@
 import { runTortellini } from "./resources/tortellini";
 import { runHowfairis } from "./resources/howfairis";
 import { runSearchseco } from "./resources/searchseco";
-import { getCitationFile } from "./resources/citation_cff";
+import { runCitingPapers } from "./resources/citingPapers";
+import { getCitationFile, CffObject } from "./resources/citation_cff";
 import { runSBOM } from "./resources/sbom";
 
-
+/** An object that contains data gathered by FairSECO. */
 export interface ReturnObject {
+    /** Describes the name of the gathered data. */
     ReturnName: string;
+
+    /** The gathered data. */
     ReturnData: object;
 }
 
 export async function data(): Promise<ReturnObject[]> {
     const output: ReturnObject[] = [];
-
     try {
         const tortelliniResult = await runTortellini();
         output.push(tortelliniResult);
@@ -38,12 +41,26 @@ export async function data(): Promise<ReturnObject[]> {
     }
 
     try {
-        const cffResult = await getCitationFile(".");
+        const cffResult = await getCitationFile("./src/resources");
         output.push(cffResult);
     } catch (error) {
         console.error("Getting CITATION.cff caused an error:");
     }
-    
+
+    try {
+        const cffFile = output[3].ReturnData as CffObject;
+        if (cffFile.status === "valid") {
+            const citingPapersResult = await runCitingPapers(cffFile);
+            output.push(citingPapersResult);
+        }
+        else {
+            throw new Error("Invalid cff File");
+        }
+
+    } catch (error) {
+        console.error("Scholarly threw an error:");
+        console.error(error);
+    }
     try {
         const SBOMResult = await runSBOM();
         output.push(SBOMResult);
@@ -52,6 +69,5 @@ export async function data(): Promise<ReturnObject[]> {
 
         console.error(error);
     }
-
     return output;
 }

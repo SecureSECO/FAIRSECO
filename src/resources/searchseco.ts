@@ -109,66 +109,63 @@ export async function runSearchseco(): Promise<ReturnObject> {
     };
 }
 
-/**
- * Top-level object that contains a list of methods for which a match has been found
- */
+/** Top-level object that contains a list of methods for which a match has been found. */
 export interface Output {
     methods: Method[];
 }
 
-/**
- * A method for which a match has been found.
- */
+/** A method for which a match has been found. */
 export interface Method {
     /** The hash of the abstract tree of this method, that was used to compare it with other methods in the database. */
     hash: String;
 
-    /** An object containing the data associated with this method in this project */
+    /** An object containing the data associated with this method in this project. */
     data: MethodData;
 
-    /** List of matches */
+    /** The list of matches. */
     matches: Match[];
 }
 
-/** Object containing the data associated with this method */
+/** Object containing the data associated with this method. */
 export interface MethodData {
-    /** The name of the method */
+    /** The name of the method. */
     name: String;
 
-    /** Only used in the matches, to indicate from which project the match originates */
+    /** Only used in the matches, to indicate from which project the match originates. */
     project?: String;
 
-    /** The path to the file in which the method was found */
+    /** The path to the file in which the method was found. */
     file: String;
 
-    /** The line on which the method starts in the file */
+    /** The line on which the method starts in the file. */
     line: number;
 
-    /** A list of authors associated with the project */
+    /** A list of authors associated with the project. */
     authors: String[];
 }
 
-/** Object containing data about a match */
+/** Object containing data about a match. */
 export interface Match {
-    /** An object containing the data of the reused method */
+    /** An object containing the data of the reused method. */
     data: MethodData;
 
-    /** An object containing vulnerabilities detected by SearchSECO */
+    /** An object containing vulnerabilities detected by SearchSECO. */
     vuln: Vuln;
 }
 
+/** Object containing information about a vulnerability. */
 export interface Vuln {
-    /** Vulnerability code */
+    /** The vulnerability code. */
     code: number;
 
-    /** The url where information about this vulnerability can be found */
+    /** The url where information about this vulnerability can be found. */
     url: String;
 }
 
 /**
  *
- * @param input The string returned by SearchSECO, split on newlines. Each line is also trimmed to remove leading and trailing whitespace
- * @returns An {@link Output} object with data parsed from the output of SearchSECO
+ * @param input The string returned by SearchSECO, split on newlines. Each line is also trimmed to remove leading and trailing whitespace.
+ * @returns An {@link Output} object with data parsed from the output of SearchSECO.
  */
 export function parseInput(input: String[]): Output {
     const hashIndices: number[] = getHashIndices(input);
@@ -188,8 +185,8 @@ export function parseInput(input: String[]): Output {
  * This function gives the lines that contain a hash, and the total number of lines. The array is used
  * to indicate where data for a particular method begins and ends.
  *
- * @param input The string returned by SearchSECO, split on newlines. Each line is also trimmed to remove leading and trailing whitespace
- * @returns An array containing the indices of lines that contain a hash
+ * @param input The string returned by SearchSECO, split on newlines. Each line is also trimmed to remove leading and trailing whitespace.
+ * @returns An array containing the indices of lines that contain a hash.
  */
 export function getHashIndices(input: String[]): number[] {
     const indices: number[] = [];
@@ -212,10 +209,10 @@ export function getHashIndices(input: String[]): number[] {
  *
  * `*Method <methodName> in file <fileName> line <lineNumber>`
  *
- * @param input The string returned by SearchSECO, split on newlines. Each line is also trimmed to remove leading and trailing whitespace
- * @param start The index of the first line that belongs to this method
- * @param end The index of the first line that belongs to the next method (or that indicates the end of the input array)
- * @returns A {@link MethodData} object containing the data belonging to this method in this project
+ * @param input The string returned by SearchSECO, split on newlines. Each line is also trimmed to remove leading and trailing whitespace.
+ * @param start The index of the first line that belongs to this method.
+ * @param end The index of the first line that belongs to the next method (or that indicates the end of the input array).
+ * @returns A {@link MethodData} object containing the data belonging to this method in this project.
  */
 export function getMethodInfo(
     input: String[],
@@ -250,10 +247,10 @@ export function getMethodInfo(
 /**
  *
  *
- * @param input The string returned by SearchSECO, split on newlines. Each line is also trimmed to remove leading and trailing whitespace
- * @param start The index of the first line that belongs to this method
- * @param end The index of the first line that belongs to the next method (or that indicates the end of the input array)
- * @returns An array containing {@link Match} objects. These objects contain data of the methods that were found in other projects
+ * @param input The string returned by SearchSECO, split on newlines. Each line is also trimmed to remove leading and trailing whitespace.
+ * @param start The index of the first line that belongs to this method.
+ * @param end The index of the first line that belongs to the next method (or that indicates the end of the input array).
+ * @returns An array containing {@link Match} objects. These objects contain data of the methods that were found in other projects.
  */
 export function getMatches(
     input: String[],
@@ -328,12 +325,12 @@ export function getMatches(
 }
 
 /**
- * Gives the lines within one method block that contain `*Method`
+ * Gives the lines within one method block that contain `*Method`.
  *
- * @param input The string returned by SearchSECO, split on newlines. Each line is also trimmed to remove leading and trailing whitespace
- * @param start The index of the first line that belongs to this method
- * @param end The index of the first line that belongs to the next method (or that indicates the end of the input array)
- * @returns Array containing the indices of lines containing `*Method`
+ * @param input The string returned by SearchSECO, split on newlines. Each line is also trimmed to remove leading and trailing whitespace.
+ * @param start The index of the first line that belongs to this method.
+ * @param end The index of the first line that belongs to the next method (or that indicates the end of the input array).
+ * @returns An array containing the indices of lines containing `*Method`.
  */
 export function getMatchIndicesOfHash(
     input: String[],

@@ -20,6 +20,7 @@
         "@types/jest-json-schema": "^6.1.1",
         "@types/node": "^18.11.0",
         "@typescript-eslint/eslint-plugin": "^5.38.1",
+        "@types/node-fetch": "^2.6.2",
         "eslint": "^8.24.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-config-standard-with-typescript": "^23.0.0",
@@ -30,8 +31,8 @@
         "jest-json-schema": "^6.1.0",
         "prettier": "^2.7.1",
         "ts-jest": "^29.0.3",
-        "typescript": "^4.8.4",
-        "typedoc": "^0.23.21"
+        "typedoc": "^0.23.21",
+        "typescript": "^4.8.4"
     },
     "bugs": {
         "url": "https://github.com/QDUNI/FairSECO/issues"
@@ -42,9 +43,10 @@
         "@actions/core": "^1.10.0",
         "@actions/exec": "^1.1.1",
         "@vercel/ncc": "^0.34.0",
+        "ci": "^2.2.0",
         "html-validator": "^6.0.1",
         "path": "^0.12.7",
+        "node-fetch": "^2.6.7",
         "yaml": "^2.1.3"
     }
-
-}
+  }
