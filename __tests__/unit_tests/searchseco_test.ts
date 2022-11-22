@@ -1,4 +1,4 @@
-import * as ss from "../src/resources/searchseco";
+import * as ss from "../../src/resources/searchseco";
 import YAML from "yaml";
 
 jest.setTimeout(20000);

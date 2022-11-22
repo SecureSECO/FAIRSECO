@@ -1,5 +1,5 @@
-import { Journal } from "../src/resources/journal";
-import { deleteDuplicates } from "../src/resources/citingPapers";
+import { Journal } from "../../src/resources/journal";
+import { deleteDuplicates } from "../../src/resources/citingPapers";
 
 test("Check deleteDuplicates with two empty arrays", () => {
     expect(deleteDuplicates([], [])).toStrictEqual([]);

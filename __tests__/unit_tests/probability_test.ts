@@ -1,6 +1,6 @@
-import { MetaDataJournal } from "../src/resources/journal";
-import { deleteDuplicates } from "../src/resources/citingPapers";
-import { calculateProbabiltyOfReference } from "../src/resources/probability"
+import { MetaDataJournal } from "../../src/resources/journal";
+import { deleteDuplicates } from "../../src/resources/citingPapers";
+import { calculateProbabiltyOfReference } from "../../src/resources/probability"
 
 test('empty map is handeled properly, returns empty array', () => {
   expect(calculateProbabiltyOfReference(new Map())).toStrictEqual([]);
