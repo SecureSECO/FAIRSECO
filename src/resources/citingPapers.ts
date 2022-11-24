@@ -1,7 +1,7 @@
 import { ReturnObject } from "../getdata";
 import { semanticScholarCitations } from "./semanticscholarAPI";
 import { openAlexCitations } from "./openalexAPI";
-import { Author, Journal } from "./journal";
+import { Author, Paper } from "./Paper";
 import { ValidCffObject } from "./citation_cff";
 
 export async function runCitingPapers(cffFile: ValidCffObject): Promise<ReturnObject> {
@@ -33,17 +33,18 @@ export async function runCitingPapers(cffFile: ValidCffObject): Promise<ReturnOb
         }
         authors.push(new Author(givenNames, familyName, orchidId));
     });
-    const outData1: Journal[] = await semanticScholarCitations(authors, title, refTitles);
-    const outData2: Journal[] = await openAlexCitations(authors, title, refTitles);
-    const output: Journal[] = deleteDuplicates(outData1, outData2);
+    const outData1: Paper[] = await semanticScholarCitations(authors, title, refTitles);
+    const outData2: Paper[] = await openAlexCitations(authors, title, refTitles);
+    const output: Paper[] = deleteDuplicates(outData1, outData2);
     return {
         ReturnName: "citingPapers",
         ReturnData: output
     };
 } 
 
-export function deleteDuplicates(array1: Journal[], array2: Journal[]): Journal[] {
-    let output: Journal[] = array1.concat(array2);
+// TODO: Make combine function, so missing meta data will be combined from both sources
+export function deleteDuplicates(array1: Paper[], array2: Paper[]): Paper[] {
+    let output: Paper[] = array1.concat(array2);
     output = output.filter((value, index, self) => 
         index === self.findIndex((t) => 
             t.doi === value.doi && t.doi !== "" || t.pmid === value.pmid && t.pmid !== "" || t.pmcid === value.pmcid && t.pmcid !== ""

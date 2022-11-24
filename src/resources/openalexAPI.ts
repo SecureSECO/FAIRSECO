@@ -1,23 +1,23 @@
 import fetch from "node-fetch";
-import { Author, Journal, MetaDataJournal } from "./journal";
+import { Author, Paper, MetaDataPaper } from "./Paper";
 import { calculateProbabiltyOfReference } from "./probability";
 /**
  * 
  * @returns array containing the list of papers citing the giving piece of research software.
  */
-export async function openAlexCitations(authors: Author[], title: string, firstRefTitles: string[]): Promise<Journal[]> {
+export async function openAlexCitations(authors: Author[], title: string, firstRefTitles: string[]): Promise<Paper[]> {
     // find reference titles
     let refTitles: string[] = await getRefTitles(authors, title);
     refTitles = firstRefTitles.concat(refTitles);
     // prepare query strings
     const apiURL = "https://api.openalex.org/";
     const query = "works?filter=cites:";
-    const filter = ",type:journal-article";
+    const filter = ",type:Paper-article";
     // get the unique id OpenAlex gives it's papers
     let paperId = refTitles[0];
     paperId = paperId.replace("https://openalex.org/", "");
     // instanciate output array
-    let output: Journal[] = [];
+    let output: Paper[] = [];
     try {
         // API call and save output in Json object
         const firstResponse : any = await fetch(apiURL + query + paperId + filter + "&per-page=1", {
@@ -39,7 +39,7 @@ export async function openAlexCitations(authors: Author[], title: string, firstR
         }
         outputText = "[" + outputText.slice(0, -1) + "]";
         const outputJSON = JSON.parse(outputText);
-        // save outputted metadata in Journal object and append to output array
+        // save outputted metadata in Paper object and append to output array
         outputJSON.forEach((element: any) => {
             let title = ""; let year = 0; let DOI = ""; let pmid = ""; let pmcid = ""; const fields: string[] = [];
             if (element.title !== undefined && element.publication_year !== undefined) {
@@ -69,8 +69,8 @@ export async function openAlexCitations(authors: Author[], title: string, firstR
                             fields.push(concept.display_name);
                     });
                 }
-                const tempJournal = new Journal(title, DOI, pmid, pmcid, year, "OpenAlex", [], fields);
-                output = output.concat([tempJournal]);
+                const tempPaper = new Paper(title, DOI, pmid, pmcid, year, "OpenAlex", [], fields);
+                output = output.concat([tempPaper]);
             }
         });
         return output;
@@ -89,7 +89,7 @@ export async function getRefTitles(authors: Author[], title: string): Promise<st
     // instanciate output array and maps
     const output: string[] = [];
     const papersPerAuthor: Map<Author, any[]> = new Map();
-    const uniquePapers: Map<string, MetaDataJournal> = new Map();
+    const uniquePapers: Map<string, MetaDataPaper> = new Map();
     // prepare API strings
     const apiURL = "https://api.openalex.org/";
     const query = "authors?filter=display_name.search:";
@@ -135,14 +135,14 @@ export async function getRefTitles(authors: Author[], title: string): Promise<st
     // find all the unique papers, and keep count of how many authors it shares
     papersPerAuthor.forEach(papers => {
         papers.forEach(paper => {
-            let paperData: MetaDataJournal;
+            let paperData: MetaDataPaper;
             if (uniquePapers.has(paper.id)) {
-                paperData = uniquePapers.get(paper.id) as MetaDataJournal;
+                paperData = uniquePapers.get(paper.id) as MetaDataPaper;
                 paperData.contributors = paperData.contributors + 1;
                 uniquePapers.set(paper.paperId, paperData);
             }
             else {
-                uniquePapers.set(paper.id, new MetaDataJournal(paper.title, 1, paper.cited_by_count, paper.host_venue, 1));
+                uniquePapers.set(paper.id, new MetaDataPaper(paper.title, 1, paper.cited_by_count, paper.host_venue, 1));
             }
         });
     });

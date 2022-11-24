@@ -1,7 +1,7 @@
 import { count } from "console";
 import fetch from "node-fetch";
 import { ReturnObject } from "../getdata";
-import { Journal } from "./journal";
+import { Journal } from "./Paper";
 
 // Test ScienceDirect API, returns citation count for example paper
 export async function testScienceDirectAPI(){

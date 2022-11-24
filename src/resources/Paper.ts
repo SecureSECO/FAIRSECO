@@ -1,5 +1,5 @@
 
-export class Journal {
+export class Paper {
     title: string;
     doi: string;
     pmid: string;
@@ -9,6 +9,10 @@ export class Journal {
     authors: Author[];
     discipline: Discipline;
     fields: Field[];
+    // TODO
+    // journal: string;
+    // numberOfCitations: int;
+    // URL: string;
 
     constructor(title: string, doi: string, pmid: string, pmcid: string, year: number, database: string, authors: Author[], fields: string[]) {
         this.title = title;
@@ -188,18 +192,18 @@ export class Journal {
     }
 }
 
-export class MetaDataJournal {
+export class MetaDataPaper {
     title: string;
     contributors: number;
     citationCount: number;
-    journal: string;
+    Paper: string;
     probability: number;
 
-    constructor(title: string, contributors: number, citationCount: number, journal: string, probabilty: number) {
+    constructor(title: string, contributors: number, citationCount: number, Paper: string, probabilty: number) {
         this.title = title;
         this.contributors = contributors;
         this.citationCount = citationCount;
-        this.journal = journal;
+        this.Paper = Paper;
         this.probability = probabilty;
     }
 }

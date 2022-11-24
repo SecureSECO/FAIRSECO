@@ -1,4 +1,4 @@
-import { MetaDataJournal } from "./journal"
+import { MetaDataJournal } from "./Paper"
 /**
  * 
  * @returns array containing for each paper a probability from 0 to 1 that they are a reference paper.

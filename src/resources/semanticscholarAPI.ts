@@ -1,11 +1,11 @@
 import fetch from "node-fetch";
-import { Author, Journal, MetaDataJournal } from "./journal";
+import { Author, Paper, MetaDataPaper } from "./Paper";
 import { calculateProbabiltyOfReference } from "./probability";
 /**
  * 
  * @returns array containing the list of papers citing the giving piece of research software.
  */
-export async function semanticScholarCitations(authors: Author[], title: string, firstRefTitles: string[]): Promise<Journal[]> {
+export async function semanticScholarCitations(authors: Author[], title: string, firstRefTitles: string[]): Promise<Paper[]> {
     // find reference titles
     let refTitles: string[] = await getRefTitles(authors, title);
     refTitles = firstRefTitles.concat(refTitles);
@@ -15,7 +15,7 @@ export async function semanticScholarCitations(authors: Author[], title: string,
     // get the unique id semantic scholar gives it's papers
     const paperId = refTitles[0];
     // instanciate output array
-    let output: Journal[] = [];
+    let output: Paper[] = [];
 
     try {
         // API call and save output in Json object
@@ -24,7 +24,7 @@ export async function semanticScholarCitations(authors: Author[], title: string,
             headers: {},
         });
         const outputJSON : any = await response.json();
-        // save outputted metadata in Journal object and append to output array
+        // save outputted metadata in Paper object and append to output array
         outputJSON.data.forEach((element: any) => {
             const title = element.citingPaper.title;
             const year = element.citingPaper.year;
@@ -52,8 +52,8 @@ export async function semanticScholarCitations(authors: Author[], title: string,
                     fields.push(element.category);
                 });
             }
-            const tempJournal = new Journal(title, DOI, pmid, pmcid, year, "SemanticScholar", [], fields);
-            output = output.concat([tempJournal]);
+            const tempPaper = new Paper(title, DOI, pmid, pmcid, year, "SemanticScholar", [], fields);
+            output = output.concat([tempPaper]);
         });
         return output;
     }
@@ -71,7 +71,7 @@ export async function getRefTitles(authors: Author[], title: string): Promise<st
     // instanciate output array and maps
     const output: string[] = [];
     const papersPerAuthor: Map<Author, any[]> = new Map();
-    const uniquePapers: Map<string, MetaDataJournal> = new Map();
+    const uniquePapers: Map<string, MetaDataPaper> = new Map();
     // prepare API strings
     const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/author/";
     const searchQuery = "search?query=";
@@ -111,14 +111,14 @@ export async function getRefTitles(authors: Author[], title: string): Promise<st
     // find all the unique papers, and keep count of how many authors it shares
     papersPerAuthor.forEach(papers => {
         papers.forEach(paper => {
-            let paperData: MetaDataJournal;
+            let paperData: MetaDataPaper;
             if (uniquePapers.has(paper.paperId)) {
-                paperData = uniquePapers.get(paper.paperId) as MetaDataJournal;
+                paperData = uniquePapers.get(paper.paperId) as MetaDataPaper;
                 paperData.contributors = paperData.contributors + 1;
                 uniquePapers.set(paper.paperId, paperData);
             }
             else {
-                uniquePapers.set(paper.paperId, new MetaDataJournal(paper.title, 1, paper.citationCount, paper.venue, 1));
+                uniquePapers.set(paper.paperId, new MetaDataPaper(paper.title, 1, paper.citationCount, paper.venue, 1));
             }
         });
     });
