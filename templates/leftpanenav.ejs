@@ -1,0 +1,33 @@
+<div class="LeftPaneNav">
+    <div class="HighlightBlock"></div>
+    <div class="ActiveBlock"></div>
+    <div class="NavItem Active" onMouseOver="hoverNav(this)" onClick="clickNav(this)" ><i class="fa-solid fa-pen-nib"></i><p>Citations</p></div>
+    <div class="NavItem" onMouseOver="hoverNav(this)"onClick="clickNav(this)"><i class="fa-solid fa-copyright"></i><p>Licences</p></div>
+    <div class="NavItem" onMouseOver="hoverNav(this)"onClick="clickNav(this)"><i class="fa-solid fa-scroll"></i><p>SBOM</p></div>
+</div>
+<script>
+function hoverNav(ele) {
+    const padding = 20;
+    const {top, left, width, height} = ele.getBoundingClientRect();
+    const highlightblock =document.querySelector('.HighlightBlock');
+    const newwidth = Math.ceil(ele.clientWidth);
+    highlightblock.style.width = `${newwidth + padding}px`;
+    highlightblock.style.translate = `${(left - padding/2) - 8}px`;
+}
+
+
+function clickNav(ele) {
+    const spans = ele.parentElement.children
+    for(let i = 1; i<spans.length; i++){
+        spans[i].classList.remove('Active');
+    };
+    ele.classList.add('Active');
+    const padding = 20;
+    const {top, left, width, height} = ele.getBoundingClientRect();
+    const highlightblock =document.querySelector('.ActiveBlock');
+    const newwidth = Math.ceil(ele.clientWidth);
+    highlightblock.style.width = `${newwidth + padding}px`;
+    highlightblock.style.translate = `${(left - padding/2) - 8}px`;
+}
+
+</script>

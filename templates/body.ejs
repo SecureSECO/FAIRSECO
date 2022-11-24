@@ -1,57 +1,8 @@
 <body>
-    <div class="wrapper">
-        <%- include('header')%>
-        <section class="content">
-            <div class="buttoncontent">
-                <button class="tablink" onclick="openPage('Overview', this, '#dce6f8')" id="defaultOpen">Overview</button>
-                <button class="tablink" onclick="openPage('Citations', this, '#dce6f8')">Citations</button>
-                <button class="tablink" onclick="openPage('FAIRness', this, '#dce6f8')">FAIRness</button>
-                <button class="tablink" onclick="openPage('Licenses', this, '#dce6f8')">Licenses</button>
-            </div>
-            <div id="Overview" class="tabcontent">
-
-                <p></p>
-            </div>
-            <div id="Citations" class="tabcontent">
-                <p>
-                    <table class="table_content" id="citationsContent">
-                        <tr>
-                            <th>Title</th>
-                            <th>Year</th>
-                            <th>DOI</th>
-                        </tr>
-                    </table>
-                </p> 
-            </div>
-            <div id="FAIRness" class="tabcontent">
-
-                <p>
-                    <table class="table_content" id="fairnessTable">
-
-                    </table>
-                </p>
-            </div>
-            <div id="Licenses" class="tabcontent">
-
-                <p>
-                    <table class="table_content" id="licensesContent">
-                        <tr>
-                            <th></th> 
-                            <th>Package</th>
-                            <th>Rule</th>
-                            <th>Message</th>
-                        </tr>
-                        <tr>
-                            <td><button class="emergency">!</button></td> 
-                            <td>NPM:fairseco:1.0.0</td>
-                            <td>UNHANDDLED_LICENSE</td>
-                            <td>The licence ISC is currently not coverd by policy rules. The licence was declared in package NPM:fairseco:1.0.0</td>
-                        </tr>
-                    </table>
-                </p>
-            </div>
-        </section>
-        <%- include('footer') %>
-    </div>
-    <%- include('script') %>
+    <div id="BackgroundSphere1"></div>
+    <%- include('header') %>
+    <%- include('leftpane') %>
+    <%- include('rightpane')%>
+    <%- include('footer') %>
+    <!-- <%- include('script') %> -->
 </body>
