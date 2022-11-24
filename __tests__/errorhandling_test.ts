@@ -16,16 +16,29 @@ test("Formatting message works", async () => {
     let message = log.formatMessage(testContent, log.ErrorLevel.info);
 
     // Check if the formatted message starts with the current date
-    let messageDate = Date.parse(message);
+    let messageDate = Date.parse(message.split('-')[0]);
     let currentDate = new Date().getTime();
     // Check if the message date and current date are within 60 seconds of eachother
-    expect(currentDate - messageDate).toBeLessThanOrEqual(600);
+    expect(currentDate - messageDate).toBeLessThanOrEqual(60000);
 
     // Check if the formatted message includes the error level
     expect(message.includes("INFO")).toBe(true);
 
     // Check if the formatted message includes the given content
     expect(message.includes(testContent)).toBe(true);
+});
+
+test("Formatting message using an Error works", async () => {
+    try {
+        // Cause an error
+        fs.readFileSync("wrongpath//");
+    } catch (testError) {
+        // Format message using error
+        let message = log.formatMessage(testError, log.ErrorLevel.err);
+
+        // Check if formatted message includes error message
+        expect(message.includes(testError.message)).toBe(true);
+    }
 });
 
 test("A logged error ends up in the log file", async () => {

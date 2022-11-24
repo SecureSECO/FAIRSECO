@@ -22,7 +22,7 @@ export enum ErrorLevel {
  */
 export function LogMessage(content: string | Error, level: ErrorLevel): void {
     // Format the message
-    let message: string = formatMessage(content, level);
+    const message: string = formatMessage(content, level);
 
     // Write the message to stdout or stderr based on the error level
     if (level >= ErrorLevel.err) {
@@ -35,7 +35,7 @@ export function LogMessage(content: string | Error, level: ErrorLevel): void {
     try {
         fs.appendFileSync("./.FairSECO/program.log", message);
     } catch (e) {
-        console.error(e);
+        console.error(formatMessage(e, ErrorLevel.err));
     }
 }
 
@@ -43,7 +43,7 @@ export function LogMessage(content: string | Error, level: ErrorLevel): void {
  * Creates the log file on disk.
  */
 export function createLogFile(): void {
-    // Open the file
+    // Open the log file
     const fd: number = fs.openSync("./.FairSECO/program.log", "w+");
     
     // Write to the log file
@@ -79,7 +79,6 @@ export function formatMessage(content: string | Error, level: ErrorLevel): strin
         message += content;
     } else {
         message += content.message;
-        // TODO: Check for the verbose flag here and print stack trace if necessary.
     }
 
     return message;
