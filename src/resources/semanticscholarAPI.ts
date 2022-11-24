@@ -11,7 +11,7 @@ export async function semanticScholarCitations(authors: Author[], title: string,
     refTitles = firstRefTitles.concat(refTitles);
     // prepare query strings
     const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/paper/";
-    const fieldsQuery = "/citations?fields=title,externalIds,year,authors,fieldsOfStudy&limit=1000";
+    const fieldsQuery = "/citations?fields=title,externalIds,year,authors,s2FieldsOfStudy&limit=1000";
     // get the unique id semantic scholar gives it's papers
     const paperId = refTitles[0];
     // instanciate output array
@@ -47,8 +47,8 @@ export async function semanticScholarCitations(authors: Author[], title: string,
                 pmid = pmid.toLowerCase();
                 pmcid = pmcid.toLowerCase();
             }
-            if (element.citinPaper.s2FieldsOfStudy !== undefined) {
-                element.citinPaper.s2FieldsOfStudy.forEach((element: any) => {
+            if (element.citingPaper.s2FieldsOfStudy !== undefined) {
+                element.citingPaper.s2FieldsOfStudy.forEach((element: any) => {
                     fields.push(element.category);
                 });
             }

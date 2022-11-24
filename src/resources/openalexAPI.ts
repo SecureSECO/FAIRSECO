@@ -41,9 +41,9 @@ export async function openAlexCitations(authors: Author[], title: string, firstR
         const outputJSON = JSON.parse(outputText);
         // save outputted metadata in Journal object and append to output array
         outputJSON.forEach((element: any) => {
-            let title = ""; let year = 0; let DOI = ""; let pmid = ""; let pmcid = "";
+            let title = ""; let year = 0; let DOI = ""; let pmid = ""; let pmcid = ""; const fields: string[] = [];
             if (element.title !== undefined && element.publication_year !== undefined) {
-                if (element.ids !== undefined && element.title !== undefined && element.publication_year !== undefined) {
+                if (element.ids !== undefined) {
                     title = element.title;
                     year = element.publication_year;
                     for (const [key, value] of Object.entries(element.ids)) {
@@ -58,17 +58,19 @@ export async function openAlexCitations(authors: Author[], title: string, firstR
                                 pmcid = String(value);
                                 break;
                         }
-                    }            
+                    }         
                     DOI = DOI.slice(16);
                     pmid = pmid.slice(32);
                     pmcid = pmcid.slice(32);
-                    const tempJournal = new Journal(title, DOI, pmid, pmcid, year, "OpenAlex", []);
-                    output = output.concat([tempJournal]);
                 }
-                else {
-                    const tempJournal = new Journal(title, DOI, pmid, pmcid, year, "OpenAlex", []);
-                    output = output.concat([tempJournal]);
+                if (element.concepts !== undefined) {
+                    element.concepts.forEach((concept: any) => {
+                        if (concept.level === 0)
+                            fields.push(concept.display_name);
+                    });
                 }
+                const tempJournal = new Journal(title, DOI, pmid, pmcid, year, "OpenAlex", [], fields);
+                output = output.concat([tempJournal]);
             }
         });
         return output;

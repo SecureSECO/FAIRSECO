@@ -1,3 +1,4 @@
+
 export class Journal {
     title: string;
     doi: string;
@@ -107,6 +108,9 @@ export class Journal {
             case ("Computer Science"):
                 output = "Formal Sciences";
                 break;
+            case ("Computer science"):
+                output = "Formal Sciences";
+                break;
             case ("Medicine"):
                 output = "Applied Sciences";
                 break;
@@ -146,6 +150,9 @@ export class Journal {
             case ("Political Science"):
                 output = "Applied Sciences";
                 break;
+            case ("Political science"):
+                output = "Applied Sciences";
+                break;
             case ("Economics"):
                 output = "Social Sciences";
                 break;
@@ -159,6 +166,9 @@ export class Journal {
                 output = "Applied Sciences";
                 break;
             case ("Environmental Science"):
+                output = "Applied Sciences";
+                break;
+            case ("Environmental science"):
                 output = "Applied Sciences";
                 break;
             case ("Agricultural and Food Sciences"):
