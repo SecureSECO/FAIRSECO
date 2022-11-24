@@ -1,0 +1,195 @@
+<script>
+// Site functionality - START
+function openPage(pageName, elmnt, color) {
+    // Hide all elements with class="tabcontent" by default */
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    // Remove the background color of all tablinks/buttons
+    tablinks = document.getElementsByClassName("tablink");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].style.backgroundColor = "";
+    }
+
+    // Show the specific tab content
+    document.getElementById(pageName).style.display = "block";
+
+    // Add the specific color to the button used to open the tab content
+    elmnt.style.backgroundColor = color;
+}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+//
+
+// If you wanna work on this outside the github acton environment:
+// Comment out the two lines below:
+var allData = {{node inserts the data here}};
+
+fairSeco();
+//
+
+
+function fairSeco() {
+    // Initialisation
+
+    var tortellini;
+    var howFairIs;
+    var searchSeco;
+    var SBOM;
+    var citingPapers;
+    // Site functionality - END
+
+    // A generic way of storing the different data in vars
+    for(let i = 0; i < allData.length; i++){
+        const element = allData[i];
+        switch(element.ReturnName) {
+            case "Tortellini":
+                tortellini = element.ReturnData;
+                break;
+            case "HowFairIs":
+                howFairIs = element.ReturnData;
+                break;
+            case "SearchSeco":
+                searchSeco = element.ReturnData;
+                break;
+            case "SBOM":
+                SBOM = element.ReturnData;
+                break;
+            case 'citingPapers':
+                citingPapers = element.ReturnData;
+            default:
+            break;
+        }
+    }
+
+    let violations = tortellini.violations;
+    let violationsTable = document.getElementById("licensesContent").childNodes[1];
+    let fairnessTable = document.getElementById("fairnessTable");
+    let scholarlyTable = document.getElementById("citationsContent").childNodes[1];
+    createFairnessTable();
+    // Violations object
+    // .how_to_fix
+    // .license
+    // .license_source
+    // .message
+    // .pkg
+    // .rule
+    // .severity
+
+    // Create the content for the licenses page.
+    for (let i = 0; i < violations.length; i++){
+        let violation = violations[i];
+        let tr = document.createElement("tr");
+        let td1 = document.createElement("td");
+        let btn = document.createElement("button");
+        btn.setAttribute("class","emergency")
+        let textNode1 = document.createTextNode("!");
+        btn.appendChild(textNode1);
+        td1.appendChild(btn);
+        let td2 = document.createElement("td");
+        let textNode2 = document.createTextNode(violation.pkg);
+        td2.appendChild(textNode2);
+        let td3 = document.createElement("td");
+        let textNode3 = document.createTextNode(violation.rule);
+        td3.appendChild(textNode3);
+        let td4 = document.createElement("td");
+        let textNode4 = document.createTextNode(violation.message);
+        td4.appendChild(textNode4);
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+        tr.appendChild(td3);
+        tr.appendChild(td4);
+        // Add them to the webapp
+        violationsTable.appendChild(tr);
+    }
+
+
+    //  Create the content for the citations page
+    for (let i = 0; i < citingPapers.length; i++){
+        let citation = citingPapers[i];
+        let tr = document.createElement("tr");
+        let td1 = document.createElement("td");
+        let textNode1 = document.createTextNode("!");
+        let td2 = document.createElement("td");
+        let textNode2 = document.createTextNode(citation.title);
+        td2.appendChild(textNode2);
+        let td3 = document.createElement("td");
+        let textNode3 = document.createTextNode(citation.year);
+        td3.appendChild(textNode3);
+        let td4 = document.createElement("td");
+        let textNode4 = document.createTextNode(citation.doi);
+        let a = document.createElement("a");
+        td4.appendChild(a);
+        a.appendChild(textNode4)
+        a.href = "http://www.doi.org/" + citation.doi;
+        a.target = "_blank";
+        //tr.appendChild(td1);
+        tr.appendChild(td2);
+        tr.appendChild(td3);
+        tr.appendChild(td4);
+        // Add them to the webapp
+        scholarlyTable.appendChild(tr);
+    }
+
+
+    // Debugging
+    console.log("Tortellini:");
+    console.log(tortellini);
+    console.log("HowFairIs:")
+    console.log(howFairIs);
+    console.log("SearchSeco:")            
+    console.log(searchSeco);
+    console.log("SBOM:")            
+    console.log(SBOM);
+    //
+
+    // Create the content for the fairness page.
+    function createFairnessTable(){
+        let fairScore = createRow("Fairness Score", howFairIs[0].count);
+        let badgeImg = document.createElement("img");
+        badgeImg.setAttribute("src", howFairIs[0].badge);
+        badgeImg.setAttribute("alt", "howfairis badge");
+        let check = createRow("Checklist",howFairIs[0].checklist);
+
+        let badge = document.createElement("tr");
+        let label_ = document.createElement("td");
+        let value_ = document.createElement("td");
+        label_.appendChild(document.createTextNode("Badge"));
+        value_.appendChild(badgeImg);
+        badge.appendChild(label_);
+        badge.appendChild(value_);
+
+
+        let citation = createRow("Citation", howFairIs[0].citation);
+        let license = createRow("License", howFairIs[0].license);
+        let registry = createRow("Registry", howFairIs[0].registry);
+        let repository = createRow("Repository", howFairIs[0].repository);
+
+        fairnessTable.appendChild(fairScore);
+        fairnessTable.appendChild(badge);
+        fairnessTable.appendChild(check);
+        fairnessTable.appendChild(citation);
+        fairnessTable.appendChild(license);
+        fairnessTable.appendChild(registry);
+        fairnessTable.appendChild(repository);
+    }
+
+    function createRow(label, value){
+        let row = document.createElement("tr");
+        let label_ = document.createElement("td");
+        let value_ = document.createElement("td");
+        label_.appendChild(document.createTextNode(label));
+        value_.appendChild(document.createTextNode(value));
+        row.appendChild(label_);
+        row.appendChild(value_);
+
+        return row;
+    }
+}
+
+
+</script>
