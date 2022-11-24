@@ -15,28 +15,66 @@ export enum ErrorLevel {
  * @remarks
  * This function will only log the stack trace for errors if the verbose flag is set. (Once we implement the verbose flag)
  *
- * @param content - string or error to be printed
- * @param level - Severity of the error as an {@link ErrorLevel}
- * @returns nothing
+ * @param content - The string or error to be printed.
+ * @param level - Severity of the error as an {@link ErrorLevel}.
  *
  * @see {@link ErrorLevel}
  */
 export function LogMessage(content: string | Error, level: ErrorLevel): void {
-    let message: string = "";
-    const d: Date = new Date();
-    message += d.toLocaleString("en-US");
-    switch (level) {
-        case ErrorLevel.info:
-            message += "- [INFO]: ";
-            break;
-        case ErrorLevel.warn:
-            message += "- [WARN]: ";
-            break;
-        case ErrorLevel.err:
-            message += "- [ERR]: ";
-            break;
-        default:
+    // Format the message
+    let message: string = formatMessage(content, level);
+
+    // Write the message to stdout or stderr based on the error level
+    if (level >= ErrorLevel.err) {
+        console.error(message);
+    } else {
+        console.log(message);
     }
+
+    // Write the message to the log file
+    try {
+        fs.appendFileSync("./.FairSECO/program.log", message);
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+/**
+ * Creates the log file on disk.
+ */
+export function createLogFile(): void {
+    // Open the file
+    const fd: number = fs.openSync("./.FairSECO/program.log", "w+");
+    
+    // Write to the log file
+    try {
+        fs.writeSync(fd, formatMessage("FairSECO Log initialized", ErrorLevel.info));
+        fs.writeSync(fd, "\n------------------------------\n");
+        fs.closeSync(fd);
+    } catch {
+        console.error(formatMessage("Failed to create log file", ErrorLevel.err));
+    }
+}
+
+/**
+ * Formats a message for logging.
+ * @param content The message in the form of a string or Error.
+ * @param level The {@link ErrorLevel | error level} of the message.
+ * @returns The formatted message.
+ */
+export function formatMessage(content: string | Error, level: ErrorLevel): string {
+    // Start the message with the current date
+    let message: string = new Date().toLocaleString("en-US");
+
+    // Add the error level to the message
+    const levelNames = {
+        [ErrorLevel.info]: "INFO",
+        [ErrorLevel.warn]: "WARN",
+        [ErrorLevel.err]: "ERR"
+    };
+    message += "- [" + levelNames[level] + "]: ";
+
+    // Add the content of the message
     if (typeof content === "string") {
         message += content;
     } else {
@@ -44,35 +82,5 @@ export function LogMessage(content: string | Error, level: ErrorLevel): void {
         // TODO: Check for the verbose flag here and print stack trace if necessary.
     }
 
-    if (level <= 1) {
-        console.log(message);
-    } else {
-        console.error(message);
-    }
-    const fd: number = fs.openSync("./.FairSECO/program.log", "a");
-    try {
-        fs.writeSync(fd, message);
-        fs.closeSync(fd);
-    } catch (e) {
-        console.error(e);
-    }
-}
-
-/**
- * Creates the log file on disk
- * @returns nothing
- */
-
-export function createLogFile(): void {
-    const fd: number = fs.openSync("./.FairSECO/program.log", "w+");
-    const d: Date = new Date();
-    const dateString = d.toLocaleString("en-US");
-    try {
-        fs.writeSync(fd, "[INFO] FairSECO Log initialized");
-        fs.writeSync(fd, "[INFO] date:" + d.toDateString());
-        fs.writeSync(fd, "\n------------------------------\n");
-        fs.closeSync(fd);
-    } catch {
-        console.error(dateString +" - [ERR]: Failed to create log file");
-    }
+    return message;
 }
