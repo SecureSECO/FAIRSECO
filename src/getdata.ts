@@ -2,7 +2,7 @@ import { runTortellini } from "./resources/tortellini";
 import { runHowfairis } from "./resources/howfairis";
 import { runSearchseco } from "./resources/searchseco";
 import { runCitingPapers } from "./resources/citingPapers";
-import { getCitationFile, CffObject } from "./resources/citation_cff";
+import { getCitationFile, CffObject, ValidCffObject } from "./resources/citation_cff";
 import { runSBOM } from "./resources/sbom";
 
 /** An object that contains data gathered by FairSECO. */
@@ -16,29 +16,29 @@ export interface ReturnObject {
 
 export async function data(): Promise<ReturnObject[]> {
     const output: ReturnObject[] = [];
-    try {
-        const tortelliniResult = await runTortellini();
-        output.push(tortelliniResult);
-    } catch (error) {
-        console.error("Tortellini threw an error:");
-        console.error(error);
-    }
+    // try {
+    //     const tortelliniResult = await runTortellini();
+    //     output.push(tortelliniResult);
+    // } catch (error) {
+    //     console.error("Tortellini threw an error:");
+    //     console.error(error);
+    // }
 
-    try {
-        const howfairisResult = await runHowfairis();
-        output.push(howfairisResult);
-    } catch (error) {
-        console.error("Howfairis threw an error:");
-        console.error(error);
-    }
+    // try {
+    //     const howfairisResult = await runHowfairis();
+    //     output.push(howfairisResult);
+    // } catch (error) {
+    //     console.error("Howfairis threw an error:");
+    //     console.error(error);
+    // }
 
-    try {
-        const searchsecoResult = await runSearchseco();
-        output.push(searchsecoResult);
-    } catch (error) {
-        console.error("Searchseco threw an error:");
-        console.error(error);
-    }
+    // try {
+    //     const searchsecoResult = await runSearchseco();
+    //     output.push(searchsecoResult);
+    // } catch (error) {
+    //     console.error("Searchseco threw an error:");
+    //     console.error(error);
+    // }
 
     try {
         const cffResult = await getCitationFile("./src/resources");
@@ -48,7 +48,7 @@ export async function data(): Promise<ReturnObject[]> {
     }
 
     try {
-        const cffFile = output[3].ReturnData as CffObject;
+        const cffFile: CffObject = output.find(x => x.ReturnName === "Citation")?.ReturnData as CffObject ?? { status: "missing_file"};
         if (cffFile.status === "valid") {
             const citingPapersResult = await runCitingPapers(cffFile);
             output.push(citingPapersResult);

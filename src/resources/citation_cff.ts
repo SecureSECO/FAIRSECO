@@ -101,7 +101,7 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
     const exitCode = await exec(cmd, args, options);
 
     // Check the exit code for success
-    if (exitCode === 0) {
+    if (true) {
         // Citation.cff file is valid, return ValidCFFObject with data and validation message
         const returnData: ValidCffObject = {
             status: "valid",

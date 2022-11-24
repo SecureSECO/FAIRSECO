@@ -1,36 +1,34 @@
 import fetch from "node-fetch";
 import { Author, Journal, MetaDataJournal } from "./journal";
 import { calculateProbabiltyOfReference } from "./probability";
-
-
-interface semScholarResponse{
-    offset: number
-    data: object[]
-}
-
-export async function semanticScholarCitations(authors: Author[], title: string, refTitles: string[]): Promise<Journal[]> {
+/**
+ * 
+ * @returns array containing the list of papers citing the giving piece of research software.
+ */
+export async function semanticScholarCitations(authors: Author[], title: string, firstRefTitles: string[]): Promise<Journal[]> {
     // find reference titles
-    const extraRefTitles: string[] = await getRefTitles(authors, title);
-    refTitles.concat(extraRefTitles);
+    let refTitles: string[] = await getRefTitles(authors, title);
+    refTitles = firstRefTitles.concat(refTitles);
     // prepare query strings
     const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/paper/";
-    const fieldsQuery = "/citations?fields=title,externalIds,year&limit=1000";
+    const fieldsQuery = "/citations?fields=title,externalIds,year,authors,fieldsOfStudy&limit=1000";
     // get the unique id semantic scholar gives it's papers
-    const paperId = await getSemanticScholarPaperId(refTitles[0]);
+    const paperId = refTitles[0];
     // instanciate output array
     let output: Journal[] = [];
+
     try {
         // API call and save output in Json object
         const response : any = await fetch(semanticScholarApiURL + paperId + fieldsQuery, {
             method: 'GET',
             headers: {},
         });
-        const outputJSON : semScholarResponse = await response.json();
+        const outputJSON : any = await response.json();
         // save outputted metadata in Journal object and append to output array
         outputJSON.data.forEach((element: any) => {
             const title = element.citingPaper.title;
             const year = element.citingPaper.year;
-            let DOI = ""; let pmid = ""; let pmcid = "";
+            let DOI = ""; let pmid = ""; let pmcid = ""; const fields: string[] = [];
             if (element.citingPaper.externalIds !== undefined) {
                 for (const [key, value] of Object.entries(element.citingPaper.externalIds)) {
                     switch (key) {
@@ -48,14 +46,14 @@ export async function semanticScholarCitations(authors: Author[], title: string,
                 DOI = DOI.toLowerCase();
                 pmid = pmid.toLowerCase();
                 pmcid = pmcid.toLowerCase();
-
-                const tempJournal = new Journal(title, DOI, pmid, pmcid, year, "SemanticScholar", []);
-                output = output.concat([tempJournal]);
             }
-            else {
-                const tempJournal = new Journal(title, DOI, pmid, pmcid, year, "SemanticScholar", []);
-                output = output.concat([tempJournal]);
+            if (element.citinPaper.s2FieldsOfStudy !== undefined) {
+                element.citinPaper.s2FieldsOfStudy.forEach((element: any) => {
+                    fields.push(element.category);
+                });
             }
+            const tempJournal = new Journal(title, DOI, pmid, pmcid, year, "SemanticScholar", [], fields);
+            output = output.concat([tempJournal]);
         });
         return output;
     }
@@ -65,7 +63,10 @@ export async function semanticScholarCitations(authors: Author[], title: string,
     }      
 }
 
-// function that searches semantic scholar for possible reference titles
+/**
+ * 
+ * @returns and array of titles that are probably reference papers for the piece of software
+ */
 export async function getRefTitles(authors: Author[], title: string): Promise<string[]> {
     // instanciate output array and maps
     const output: string[] = [];
@@ -132,7 +133,10 @@ export async function getRefTitles(authors: Author[], title: string): Promise<st
     return output;
 }
 
-// function that gets unique id of the paper from the semantic scholar API
+/**
+ * 
+ * @returns the unqiue id of a paper from Semantic Scholar
+ */
 export async function getSemanticScholarPaperId(title: string): Promise<string> {
     // prepare query strings
     const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/paper/";

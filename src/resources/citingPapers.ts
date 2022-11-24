@@ -36,7 +36,6 @@ export async function runCitingPapers(cffFile: ValidCffObject): Promise<ReturnOb
     const outData1: Journal[] = await semanticScholarCitations(authors, title, refTitles);
     const outData2: Journal[] = await openAlexCitations(authors, title, refTitles);
     const output: Journal[] = deleteDuplicates(outData1, outData2);
-
     return {
         ReturnName: "citingPapers",
         ReturnData: output
