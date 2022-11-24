@@ -14902,326 +14902,18 @@ exports.pre = pre;
 
 /***/ }),
 
-/***/ 3223:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getError = exports.unknownErrorMsg = exports.getCitationFile = void 0;
-const yaml_1 = __importDefault(__nccwpck_require__(1317));
-const path_ = __importStar(__nccwpck_require__(1017));
-const fs = __importStar(__nccwpck_require__(7147));
-const exec_1 = __nccwpck_require__(9710);
-/**
- * Reads a CITATION.cff file.
- * @param path Specifies the path to the directory the CITATION.cff file is in.
- * @returns The data from the CITATION.cff file.
- */
-function getCitationFile(path) {
-    return __awaiter(this, void 0, void 0, function* () {
-        let file;
-        // Use current directory if none is specified
-        const filePath = path === undefined ? "." : path;
-        // Read the citation.cff file
-        try {
-            file = fs.readFileSync(filePath + "/CITATION.cff");
-        }
-        catch (_a) {
-            // Reading file failed
-            console.log("WARNING: No citation.cff file found");
-            // Return MissingCFFObject indicating missing citation.cff file
-            const returnData = { status: "missing_file" };
-            return {
-                ReturnName: "Citation",
-                ReturnData: returnData,
-            };
-        }
-        let result;
-        // Parse the citation.cff file (YAML format)
-        try {
-            result = yaml_1.default.parse(file.toString());
-        }
-        catch (_b) {
-            // Parsing failed, incorrect YAML
-            console.log("WARNING: Incorrect format");
-            // Return IncorrectYamlCFFObject to indicate incorrect yaml
-            const returnData = { status: "incorrect_yaml" };
-            return {
-                ReturnName: "Citation",
-                ReturnData: returnData,
-            };
-        }
-        const cmd = "docker";
-        const absPath = path_.resolve(filePath);
-        const args = [
-            "run",
-            "--rm",
-            "-v",
-            absPath + ":/app",
-            "citationcff/cffconvert",
-            "--validate",
-        ];
-        let stdout = "";
-        let stderr = "";
-        const options = {
-            ignoreReturnCode: true,
-        };
-        options.listeners = {
-            stdout: (data) => {
-                stdout += data.toString();
-            },
-            stderr: (data) => {
-                stderr += data.toString();
-            },
-        };
-        // Run cffconvert in docker to validate the citation.cff file
-        const exitCode = yield (0, exec_1.exec)(cmd, args, options);
-        // Check the exit code for success
-        if (true) {
-            // Citation.cff file is valid, return ValidCFFObject with data and validation message
-            const returnData = {
-                status: "valid",
-                citation: result,
-                validation_message: stdout,
-            };
-            return {
-                ReturnName: "Citation",
-                ReturnData: returnData,
-            };
-        }
-        else {}
-    });
-}
-exports.getCitationFile = getCitationFile;
-exports.unknownErrorMsg = "Unknown Error";
-/**
- * Finds the error when trying to run cffconvert in docker
- * yields a non-zero exit code indicating failure.
- * @param stderr The stderr output produced by docker.
- * @returns A string showing information about the error.
- */
-function getError(stderr) {
-    // An error given by cffconvert appears as a line which looks like *Error: *
-    // Find the first line that includes Error: in the first word and return it
-    const lines = stderr.split("\n");
-    for (const x of lines) {
-        const first = x.split(" ")[0];
-        if (first === null || first === void 0 ? void 0 : first.includes("Error:"))
-            return x;
-    }
-    // No cffconvert error message was found, so the error is unknown.
-    return exports.unknownErrorMsg;
-}
-exports.getError = getError;
-
-
-/***/ }),
-
-/***/ 6695:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.deleteDuplicates = exports.runCitingPapers = void 0;
-const openalexAPI_1 = __nccwpck_require__(5532);
-const journal_1 = __nccwpck_require__(5451);
-function runCitingPapers(cffFile) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const authors = [];
-        const title = cffFile.citation.title;
-        const refTitles = [];
-        if (cffFile.citation.references !== undefined) {
-            cffFile.citation.references.forEach((element) => {
-                if (element.type === "article")
-                    refTitles.push(element.title);
-            });
-        }
-        cffFile.citation.authors.forEach((element) => {
-            let familyName = "";
-            let givenNames = "";
-            let orchidId = "";
-            for (const [key, value] of Object.entries(element)) {
-                switch (key) {
-                    case ("family-names"):
-                        familyName = String(value);
-                        break;
-                    case ("given-names"):
-                        givenNames = String(value);
-                        break;
-                    case ("orcid"):
-                        orchidId = String(value);
-                        break;
-                }
-            }
-            authors.push(new journal_1.Author(givenNames, familyName, orchidId));
-        });
-        const outData1 = []; // await semanticScholarCitations(authors, title, refTitles);
-        const outData2 = yield (0, openalexAPI_1.openAlexCitations)(authors, title, refTitles);
-        const output = deleteDuplicates(outData1, outData2);
-        // console.log(output);
-        return {
-            ReturnName: "citingPapers",
-            ReturnData: output
-        };
-    });
-}
-exports.runCitingPapers = runCitingPapers;
-function deleteDuplicates(array1, array2) {
-    let output = array1.concat(array2);
-    output = output.filter((value, index, self) => index === self.findIndex((t) => t.doi === value.doi && t.doi !== "" || t.pmid === value.pmid && t.pmid !== "" || t.pmcid === value.pmcid && t.pmcid !== ""));
-    return output;
-}
-exports.deleteDuplicates = deleteDuplicates;
-
-
-/***/ }),
-
-/***/ 2949:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.testArtifactObject = exports.getFileFromArtifact = exports.getArtifactData = void 0;
-const fs = __importStar(__nccwpck_require__(7147));
-const path = __importStar(__nccwpck_require__(1017));
-/**
- * Downloads an artifact that was uploaded by another action in a previous step or job in the workflow.
- *
- * @param artifactName The name of the artifact given by the action that created it.
- * @param destination The directory in which the artifact files should be downloaded.
- * @param artifactObject The {@link Artifact} module that is used. During normal operation of the program, this should simply be \@actions/artifact, but for the unit tests a mock is passed instead.
- * @returns A {@link DownloadResponse} object containing the download path and the artifact name.
- */
-function getArtifactData(artifactName, destination, artifactObject) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const artifactClient = artifactObject.create();
-        const downloadResponse = yield artifactClient.downloadArtifact(artifactName, destination);
-        return downloadResponse;
-    });
-}
-exports.getArtifactData = getArtifactData;
-/**
- * Get a file from the artifact as a string.
- *
- * @param dlResponse The {@link DownloadResponse} object that was returned by {@link getArtifactData}.
- * @param fileName The name of the file that should be read.
- * @returns The contents of the file.
- */
-function getFileFromArtifact(dlResponse, fileName) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const filePath = path.join(dlResponse.downloadPath, fileName);
-        const buffer = fs.readFileSync(filePath);
-        return buffer.toString();
-    });
-}
-exports.getFileFromArtifact = getFileFromArtifact;
-/**
- * An {@link Artifact} object that can be used for unit testing.
- * the {@link ArtifactClient} provided by create() does not download anything
- * when downloadArtifact is called, but it returns a download response
- * as if a file was correctly downloaded.
- */
-exports.testArtifactObject = {
-    create: () => {
-        const client = {
-            downloadArtifact: (name, path, options) => __awaiter(void 0, void 0, void 0, function* () {
-                return { artifactName: name, downloadPath: path };
-            }),
-        };
-        return client;
-    },
-};
-
-
-/***/ }),
-
-/***/ 5451:
+/***/ 2151:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Author = exports.MetaDataJournal = exports.Journal = void 0;
-class Journal {
+exports.Author = exports.MetaDataPaper = exports.Paper = void 0;
+class Paper {
+    // TODO
+    // journal: string;
+    // numberOfCitations: int;
+    // URL: string;
     constructor(title, doi, pmid, pmcid, year, database, authors, fields) {
         this.title = title;
         this.year = year;
@@ -15395,22 +15087,20 @@ class Journal {
                 output = "Social Sciences";
                 break;
         }
-        if (output === "Unknown")
-            console.log(input);
         return output;
     }
 }
-exports.Journal = Journal;
-class MetaDataJournal {
-    constructor(title, contributors, citationCount, journal, probabilty) {
+exports.Paper = Paper;
+class MetaDataPaper {
+    constructor(title, contributors, citationCount, Paper, probabilty) {
         this.title = title;
         this.contributors = contributors;
         this.citationCount = citationCount;
-        this.journal = journal;
+        this.Paper = Paper;
         this.probability = probabilty;
     }
 }
-exports.MetaDataJournal = MetaDataJournal;
+exports.MetaDataPaper = MetaDataPaper;
 class Author {
     constructor(givenNames, familyName, orchidId) {
         this.familyName = familyName;
@@ -15419,6 +15109,319 @@ class Author {
     }
 }
 exports.Author = Author;
+
+
+/***/ }),
+
+/***/ 3223:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getError = exports.unknownErrorMsg = exports.getCitationFile = void 0;
+const yaml_1 = __importDefault(__nccwpck_require__(1317));
+const path_ = __importStar(__nccwpck_require__(1017));
+const fs = __importStar(__nccwpck_require__(7147));
+const exec_1 = __nccwpck_require__(9710);
+/**
+ * Reads a CITATION.cff file.
+ * @param path Specifies the path to the directory the CITATION.cff file is in.
+ * @returns The data from the CITATION.cff file.
+ */
+function getCitationFile(path) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let file;
+        // Use current directory if none is specified
+        const filePath = path === undefined ? "." : path;
+        // Read the citation.cff file
+        try {
+            file = fs.readFileSync(filePath + "/CITATION.cff");
+        }
+        catch (_a) {
+            // Reading file failed
+            console.log("WARNING: No citation.cff file found");
+            // Return MissingCFFObject indicating missing citation.cff file
+            const returnData = { status: "missing_file" };
+            return {
+                ReturnName: "Citation",
+                ReturnData: returnData,
+            };
+        }
+        let result;
+        // Parse the citation.cff file (YAML format)
+        try {
+            result = yaml_1.default.parse(file.toString());
+        }
+        catch (_b) {
+            // Parsing failed, incorrect YAML
+            console.log("WARNING: Incorrect format");
+            // Return IncorrectYamlCFFObject to indicate incorrect yaml
+            const returnData = { status: "incorrect_yaml" };
+            return {
+                ReturnName: "Citation",
+                ReturnData: returnData,
+            };
+        }
+        const cmd = "docker";
+        const absPath = path_.resolve(filePath);
+        const args = [
+            "run",
+            "--rm",
+            "-v",
+            absPath + ":/app",
+            "citationcff/cffconvert",
+            "--validate",
+        ];
+        let stdout = "";
+        let stderr = "";
+        const options = {
+            ignoreReturnCode: true,
+        };
+        options.listeners = {
+            stdout: (data) => {
+                stdout += data.toString();
+            },
+            stderr: (data) => {
+                stderr += data.toString();
+            },
+        };
+        // Run cffconvert in docker to validate the citation.cff file
+        const exitCode = yield (0, exec_1.exec)(cmd, args, options);
+        // Check the exit code for success
+        if (true) {
+            // Citation.cff file is valid, return ValidCFFObject with data and validation message
+            const returnData = {
+                status: "valid",
+                citation: result,
+                validation_message: stdout,
+            };
+            return {
+                ReturnName: "Citation",
+                ReturnData: returnData,
+            };
+        }
+        else {}
+    });
+}
+exports.getCitationFile = getCitationFile;
+exports.unknownErrorMsg = "Unknown Error";
+/**
+ * Finds the error when trying to run cffconvert in docker
+ * yields a non-zero exit code indicating failure.
+ * @param stderr The stderr output produced by docker.
+ * @returns A string showing information about the error.
+ */
+function getError(stderr) {
+    // An error given by cffconvert appears as a line which looks like *Error: *
+    // Find the first line that includes Error: in the first word and return it
+    const lines = stderr.split("\n");
+    for (const x of lines) {
+        const first = x.split(" ")[0];
+        if (first === null || first === void 0 ? void 0 : first.includes("Error:"))
+            return x;
+    }
+    // No cffconvert error message was found, so the error is unknown.
+    return exports.unknownErrorMsg;
+}
+exports.getError = getError;
+
+
+/***/ }),
+
+/***/ 6695:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.deleteDuplicates = exports.runCitingPapers = void 0;
+const semanticscholarAPI_1 = __nccwpck_require__(5273);
+const openalexAPI_1 = __nccwpck_require__(5532);
+const Paper_1 = __nccwpck_require__(2151);
+function runCitingPapers(cffFile) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const authors = [];
+        const title = cffFile.citation.title;
+        const refTitles = [];
+        if (cffFile.citation.references !== undefined) {
+            cffFile.citation.references.forEach((element) => {
+                if (element.type === "article")
+                    refTitles.push(element.title);
+            });
+        }
+        cffFile.citation.authors.forEach((element) => {
+            let familyName = "";
+            let givenNames = "";
+            let orchidId = "";
+            for (const [key, value] of Object.entries(element)) {
+                switch (key) {
+                    case ("family-names"):
+                        familyName = String(value);
+                        break;
+                    case ("given-names"):
+                        givenNames = String(value);
+                        break;
+                    case ("orcid"):
+                        orchidId = String(value);
+                        break;
+                }
+            }
+            authors.push(new Paper_1.Author(givenNames, familyName, orchidId));
+        });
+        const outData1 = yield (0, semanticscholarAPI_1.semanticScholarCitations)(authors, title, refTitles);
+        const outData2 = yield (0, openalexAPI_1.openAlexCitations)(authors, title, refTitles);
+        const output = deleteDuplicates(outData1, outData2);
+        return {
+            ReturnName: "citingPapers",
+            ReturnData: output
+        };
+    });
+}
+exports.runCitingPapers = runCitingPapers;
+// TODO: Make combine function, so missing meta data will be combined from both sources
+function deleteDuplicates(array1, array2) {
+    let output = array1.concat(array2);
+    output = output.filter((value, index, self) => index === self.findIndex((t) => t.doi === value.doi && t.doi !== "" || t.pmid === value.pmid && t.pmid !== "" || t.pmcid === value.pmcid && t.pmcid !== ""));
+    return output;
+}
+exports.deleteDuplicates = deleteDuplicates;
+
+
+/***/ }),
+
+/***/ 2949:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.testArtifactObject = exports.getFileFromArtifact = exports.getArtifactData = void 0;
+const fs = __importStar(__nccwpck_require__(7147));
+const path = __importStar(__nccwpck_require__(1017));
+/**
+ * Downloads an artifact that was uploaded by another action in a previous step or job in the workflow.
+ *
+ * @param artifactName The name of the artifact given by the action that created it.
+ * @param destination The directory in which the artifact files should be downloaded.
+ * @param artifactObject The {@link Artifact} module that is used. During normal operation of the program, this should simply be \@actions/artifact, but for the unit tests a mock is passed instead.
+ * @returns A {@link DownloadResponse} object containing the download path and the artifact name.
+ */
+function getArtifactData(artifactName, destination, artifactObject) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const artifactClient = artifactObject.create();
+        const downloadResponse = yield artifactClient.downloadArtifact(artifactName, destination);
+        return downloadResponse;
+    });
+}
+exports.getArtifactData = getArtifactData;
+/**
+ * Get a file from the artifact as a string.
+ *
+ * @param dlResponse The {@link DownloadResponse} object that was returned by {@link getArtifactData}.
+ * @param fileName The name of the file that should be read.
+ * @returns The contents of the file.
+ */
+function getFileFromArtifact(dlResponse, fileName) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const filePath = path.join(dlResponse.downloadPath, fileName);
+        const buffer = fs.readFileSync(filePath);
+        return buffer.toString();
+    });
+}
+exports.getFileFromArtifact = getFileFromArtifact;
+/**
+ * An {@link Artifact} object that can be used for unit testing.
+ * the {@link ArtifactClient} provided by create() does not download anything
+ * when downloadArtifact is called, but it returns a download response
+ * as if a file was correctly downloaded.
+ */
+exports.testArtifactObject = {
+    create: () => {
+        const client = {
+            downloadArtifact: (name, path, options) => __awaiter(void 0, void 0, void 0, function* () {
+                return { artifactName: name, downloadPath: path };
+            }),
+        };
+        return client;
+    },
+};
 
 
 /***/ }),
@@ -15443,7 +15446,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getOpenAlexPaperId = exports.getRefTitles = exports.openAlexCitations = void 0;
 const node_fetch_1 = __importDefault(__nccwpck_require__(2504));
-const journal_1 = __nccwpck_require__(5451);
+const Paper_1 = __nccwpck_require__(2151);
 const probability_1 = __nccwpck_require__(8587);
 /**
  *
@@ -15457,7 +15460,7 @@ function openAlexCitations(authors, title, firstRefTitles) {
         // prepare query strings
         const apiURL = "https://api.openalex.org/";
         const query = "works?filter=cites:";
-        const filter = ",type:journal-article";
+        const filter = ",type:Paper-article";
         // get the unique id OpenAlex gives it's papers
         let paperId = refTitles[0];
         paperId = paperId.replace("https://openalex.org/", "");
@@ -15484,7 +15487,7 @@ function openAlexCitations(authors, title, firstRefTitles) {
             }
             outputText = "[" + outputText.slice(0, -1) + "]";
             const outputJSON = JSON.parse(outputText);
-            // save outputted metadata in Journal object and append to output array
+            // save outputted metadata in Paper object and append to output array
             outputJSON.forEach((element) => {
                 let title = "";
                 let year = 0;
@@ -15519,8 +15522,8 @@ function openAlexCitations(authors, title, firstRefTitles) {
                                 fields.push(concept.display_name);
                         });
                     }
-                    const tempJournal = new journal_1.Journal(title, DOI, pmid, pmcid, year, "OpenAlex", [], fields);
-                    output = output.concat([tempJournal]);
+                    const tempPaper = new Paper_1.Paper(title, DOI, pmid, pmcid, year, "OpenAlex", [], fields);
+                    output = output.concat([tempPaper]);
                 }
             });
             return output;
@@ -15594,7 +15597,7 @@ function getRefTitles(authors, title) {
                     uniquePapers.set(paper.paperId, paperData);
                 }
                 else {
-                    uniquePapers.set(paper.id, new journal_1.MetaDataJournal(paper.title, 1, paper.cited_by_count, paper.host_venue, 1));
+                    uniquePapers.set(paper.id, new Paper_1.MetaDataPaper(paper.title, 1, paper.cited_by_count, paper.host_venue, 1));
                 }
             });
         });
@@ -15687,6 +15690,16 @@ function calculateProbabiltyOfReference(uniquePapers) {
     }
     else {
         const wordsMainPaper = title.toLowerCase().split(" ");
+        const mainTitle = new Map();
+        let count = 0;
+        wordsMainPaper.forEach(word => {
+            if (mainTitle.has(word)) {
+                count = mainTitle.get(word);
+                mainTitle.set(word, count + 1);
+            }
+            else
+                mainTitle.set(word, 1);
+        });
         uniquePapers.forEach((paper, id) => {
             if (id === mainPaperId)
                 output[i] = 1;
@@ -15694,15 +15707,20 @@ function calculateProbabiltyOfReference(uniquePapers) {
                 output[i] = 0;
             else {
                 const wordsPaper = paper.title.toLowerCase().split(" ");
+                const title = new Map();
                 let similarWordsCount = 0;
-                for (let i = 0; i < wordsMainPaper.length; i++) {
-                    for (let j = 0; j < wordsPaper.length; j++) {
-                        if (wordsMainPaper[i] === wordsPaper[j]) {
-                            similarWordsCount++;
-                            wordsPaper[j] = "";
-                        }
+                wordsPaper.forEach(word => {
+                    if (title.has(word)) {
+                        count = title.get(word);
+                        title.set(word, count + 1);
                     }
-                }
+                    else
+                        title.set(word, 1);
+                });
+                mainTitle.forEach((count, word) => {
+                    if (title.has(word))
+                        similarWordsCount += Math.min(mainTitle.get(word), title.get(word));
+                });
                 output[i] = similarWordsCount / wordsMainPaper.length;
             }
             i++;
@@ -15784,6 +15802,198 @@ function runSBOM(artifactObject = artifact, destination = ".SBOM-artifact", file
     });
 }
 exports.runSBOM = runSBOM;
+
+
+/***/ }),
+
+/***/ 5273:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getSemanticScholarPaperId = exports.getRefTitles = exports.semanticScholarCitations = void 0;
+const node_fetch_1 = __importDefault(__nccwpck_require__(2504));
+const Paper_1 = __nccwpck_require__(2151);
+const probability_1 = __nccwpck_require__(8587);
+/**
+ *
+ * @returns array containing the list of papers citing the giving piece of research software.
+ */
+function semanticScholarCitations(authors, title, firstRefTitles) {
+    return __awaiter(this, void 0, void 0, function* () {
+        // find reference titles
+        let refTitles = yield getRefTitles(authors, title);
+        refTitles = firstRefTitles.concat(refTitles);
+        // prepare query strings
+        const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/paper/";
+        const fieldsQuery = "/citations?fields=title,externalIds,year,authors,s2FieldsOfStudy&limit=1000";
+        // get the unique id semantic scholar gives it's papers
+        const paperId = refTitles[0];
+        // instanciate output array
+        let output = [];
+        try {
+            // API call and save output in Json object
+            const response = yield (0, node_fetch_1.default)(semanticScholarApiURL + paperId + fieldsQuery, {
+                method: 'GET',
+                headers: {},
+            });
+            const outputJSON = yield response.json();
+            // save outputted metadata in Paper object and append to output array
+            outputJSON.data.forEach((element) => {
+                const title = element.citingPaper.title;
+                const year = element.citingPaper.year;
+                let DOI = "";
+                let pmid = "";
+                let pmcid = "";
+                const fields = [];
+                if (element.citingPaper.externalIds !== undefined) {
+                    for (const [key, value] of Object.entries(element.citingPaper.externalIds)) {
+                        switch (key) {
+                            case ("DOI"):
+                                DOI = String(value);
+                                break;
+                            case ("PubMed"):
+                                pmid = String(value);
+                                break;
+                            case ("PubMedCentral"):
+                                pmcid = String(value);
+                                break;
+                        }
+                    }
+                    DOI = DOI.toLowerCase();
+                    pmid = pmid.toLowerCase();
+                    pmcid = pmcid.toLowerCase();
+                }
+                if (element.citingPaper.s2FieldsOfStudy !== undefined) {
+                    element.citingPaper.s2FieldsOfStudy.forEach((element) => {
+                        fields.push(element.category);
+                    });
+                }
+                const tempPaper = new Paper_1.Paper(title, DOI, pmid, pmcid, year, "SemanticScholar", [], fields);
+                output = output.concat([tempPaper]);
+            });
+            return output;
+        }
+        catch (error) {
+            console.log("error while searching semantic scholar with semantic scholar ID of: " + title);
+            return output;
+        }
+    });
+}
+exports.semanticScholarCitations = semanticScholarCitations;
+/**
+ *
+ * @returns and array of titles that are probably reference papers for the piece of software
+ */
+function getRefTitles(authors, title) {
+    return __awaiter(this, void 0, void 0, function* () {
+        // instanciate output array and maps
+        const output = [];
+        const papersPerAuthor = new Map();
+        const uniquePapers = new Map();
+        // prepare API strings
+        const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/author/";
+        const searchQuery = "search?query=";
+        const fieldsQuery = "&fields=papers.title,papers.citationCount,papers.venue";
+        // find of every author their papers with the title of the software mentioned in the paper
+        for (const author of authors) {
+            let papers = [];
+            let papersFiltered = [];
+            try {
+                const response = yield (0, node_fetch_1.default)(semanticScholarApiURL + searchQuery + author.givenNames + " " + author.familyName + fieldsQuery, {
+                    method: 'GET',
+                    headers: {},
+                });
+                const outputText = yield response.text();
+                const outputJSON = JSON.parse(outputText);
+                outputJSON.data.forEach((element) => {
+                    for (const [key, value] of Object.entries(element)) {
+                        if (key === "papers")
+                            papers = papers.concat(value);
+                    }
+                });
+            }
+            catch (error) {
+                let errorMessage = "Error while searching for author " + author.givenNames + " " + author.familyName + " on semantics scholar";
+                if (error instanceof Error) {
+                    errorMessage = error.message;
+                }
+                console.log(errorMessage);
+            }
+            papers.forEach((element) => {
+                // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+                if (element.title.toLowerCase().includes(title.toLowerCase()))
+                    papersFiltered = papersFiltered.concat([element]);
+            });
+            papersPerAuthor.set(author, papersFiltered);
+        }
+        // find all the unique papers, and keep count of how many authors it shares
+        papersPerAuthor.forEach(papers => {
+            papers.forEach(paper => {
+                let paperData;
+                if (uniquePapers.has(paper.paperId)) {
+                    paperData = uniquePapers.get(paper.paperId);
+                    paperData.contributors = paperData.contributors + 1;
+                    uniquePapers.set(paper.paperId, paperData);
+                }
+                else {
+                    uniquePapers.set(paper.paperId, new Paper_1.MetaDataPaper(paper.title, 1, paper.citationCount, paper.venue, 1));
+                }
+            });
+        });
+        // calculate the probability of each paper being a reference paper
+        const probScores = (0, probability_1.calculateProbabiltyOfReference)(uniquePapers);
+        let i = 0;
+        uniquePapers.forEach((value, key) => {
+            if (probScores[i] > 0.6)
+                output.push(key);
+            i++;
+        });
+        return output;
+    });
+}
+exports.getRefTitles = getRefTitles;
+/**
+ *
+ * @returns the unqiue id of a paper from Semantic Scholar
+ */
+function getSemanticScholarPaperId(title) {
+    return __awaiter(this, void 0, void 0, function* () {
+        // prepare query strings
+        const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/paper/";
+        const searchQuery = "search?query=";
+        try {
+            // API call and save it in JSON, then extract the paperID
+            // TODO: remove ANYs 
+            const response = yield (0, node_fetch_1.default)(semanticScholarApiURL + searchQuery + "\"" + title + "\"", {
+                method: 'GET',
+                headers: {},
+            });
+            const outputJSON = yield response.json();
+            const paperid = outputJSON.data[0].paperId;
+            return paperid;
+        }
+        catch (error) {
+            console.log("Error while fetching paperID from semantic scholar of: " + title);
+            const output = "";
+            return output;
+        }
+    });
+}
+exports.getSemanticScholarPaperId = getSemanticScholarPaperId;
 
 
 /***/ }),
