@@ -15317,7 +15317,7 @@ function runCitingPapers(cffFile) {
         const output = deleteDuplicates(outData1, outData2);
         return {
             ReturnName: "citingPapers",
-            ReturnData: outData2
+            ReturnData: outData1
         };
     });
 }
@@ -15532,7 +15532,6 @@ function openAlexCitations(authors, title, firstRefTitles) {
                         });
                     }
                     const tempPaper = new Paper_1.Paper(title, DOI, pmid, pmcid, year, "OpenAlex", [], fields, journal, openalexurl, numberOfCitations);
-                    console.log(tempPaper);
                     output = output.concat([tempPaper]);
                 }
             });
@@ -15849,7 +15848,7 @@ function semanticScholarCitations(authors, title, firstRefTitles) {
         refTitles = firstRefTitles.concat(refTitles);
         // prepare query strings
         const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/paper/";
-        const fieldsQuery = "/citations?fields=title,externalIds,year,authors,s2FieldsOfStudy&limit=1000";
+        const fieldsQuery = "/citations?fields=title,externalIds,year,authors,s2FieldsOfStudy,journal,url,citationCount&limit=1000";
         // get the unique id semantic scholar gives it's papers
         const paperId = refTitles[0];
         // instanciate output array
@@ -15889,6 +15888,18 @@ function semanticScholarCitations(authors, title, firstRefTitles) {
                     DOI = DOI.toLowerCase();
                     pmid = pmid.toLowerCase();
                     pmcid = pmcid.toLowerCase();
+                }
+                if (element.citingPaper.journal !== undefined && element.citingPaper.journal !== null) {
+                    const journalObject = element.citingPaper.journal;
+                    if (journalObject.name !== undefined) {
+                        journal = journalObject.name;
+                    }
+                }
+                if (element.citingPaper.url !== undefined) {
+                    url = element.citingPaper.url;
+                }
+                if (element.citingPaper.citationCount !== undefined) {
+                    numberOfCitations = element.citingPaper.citationCount;
                 }
                 if (element.citingPaper.s2FieldsOfStudy !== undefined) {
                     element.citingPaper.s2FieldsOfStudy.forEach((element) => {
