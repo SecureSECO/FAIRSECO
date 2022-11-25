@@ -12,10 +12,9 @@ export class Paper {
     fields: Field[];
     journal: string;
     url : string;
-    // TODO
-    //numberOfCitations: number;
+    numberOfCitations: number;
 
-    constructor(title: string, doi: string, pmid: string, pmcid: string, year: number, database: string, authors: Author[], fields: string[], journal: string, url: string) {
+    constructor(title: string, doi: string, pmid: string, pmcid: string, year: number, database: string, authors: Author[], fields: string[], journal: string, url: string, numberOfCitations: number) {
         this.title = title;
         this.year = year;
         this.doi = doi;
@@ -27,6 +26,7 @@ export class Paper {
         this.discipline = this.getDiscipline(fields);
         this.journal = journal;
         this.url = url;
+        this.numberOfCitations = numberOfCitations;
     }
 
     private getFields(input: string[]): Field[] {

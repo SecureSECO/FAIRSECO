@@ -14910,11 +14910,7 @@ exports.pre = pre;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Author = exports.MetaDataPaper = exports.Paper = void 0;
 class Paper {
-    // TODO
-    // journal: string;
-    // numberOfCitations: int;
-    // URL: string;
-    constructor(title, doi, pmid, pmcid, year, database, authors, fields, journal, url) {
+    constructor(title, doi, pmid, pmcid, year, database, authors, fields, journal, url, numberOfCitations) {
         this.title = title;
         this.year = year;
         this.doi = doi;
@@ -14926,6 +14922,7 @@ class Paper {
         this.discipline = this.getDiscipline(fields);
         this.journal = journal;
         this.url = url;
+        this.numberOfCitations = numberOfCitations;
     }
     getFields(input) {
         const output = [];
@@ -15500,7 +15497,8 @@ function openAlexCitations(authors, title, firstRefTitles) {
                 const fields = [];
                 let journal = "";
                 let url = "";
-                if (element.title !== undefined && element.publication_year !== undefined && element.host_venue.publisher !== undefined) {
+                let numberOfCitations = 0;
+                if (element.title !== undefined && element.publication_year !== undefined && element.host_venue.publisher !== undefined && element.cited_by_count !== undefined) {
                     if (element.ids !== undefined) {
                         title = element.title;
                         year = element.publication_year;
@@ -15521,9 +15519,7 @@ function openAlexCitations(authors, title, firstRefTitles) {
                         pmid = pmid.slice(32);
                         pmcid = pmcid.slice(32);
                         journal = element.host_venue.publisher;
-                        console.log('--------------------');
-                        console.log('journal: ' + journal);
-                        console.log('url: ' + openalexurl);
+                        numberOfCitations = element.cited_by_count;
                     }
                     if (element.concepts !== undefined) {
                         element.concepts.forEach((concept) => {
@@ -15531,9 +15527,8 @@ function openAlexCitations(authors, title, firstRefTitles) {
                                 fields.push(concept.display_name);
                         });
                     }
-                    // console.log('----- journal: ' + journal)
-                    // console.log('----- url: ' + openalexurl)
-                    const tempPaper = new Paper_1.Paper(title, DOI, pmid, pmcid, year, "OpenAlex", [], fields, journal, openalexurl);
+                    console.log(numberOfCitations);
+                    const tempPaper = new Paper_1.Paper(title, DOI, pmid, pmcid, year, "OpenAlex", [], fields, journal, openalexurl, numberOfCitations);
                     output = output.concat([tempPaper]);
                 }
             });
@@ -15872,6 +15867,7 @@ function semanticScholarCitations(authors, title, firstRefTitles) {
                 const fields = [];
                 let journal = "";
                 let url = "";
+                let numberOfCitations = 0;
                 if (element.citingPaper.externalIds !== undefined) {
                     for (const [key, value] of Object.entries(element.citingPaper.externalIds)) {
                         switch (key) {
@@ -15895,7 +15891,7 @@ function semanticScholarCitations(authors, title, firstRefTitles) {
                         fields.push(element.category);
                     });
                 }
-                const tempPaper = new Paper_1.Paper(title, DOI, pmid, pmcid, year, "SemanticScholar", [], fields, journal, url);
+                const tempPaper = new Paper_1.Paper(title, DOI, pmid, pmcid, year, "SemanticScholar", [], fields, journal, url, numberOfCitations);
                 output = output.concat([tempPaper]);
             });
             return output;

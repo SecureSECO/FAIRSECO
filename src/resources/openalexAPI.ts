@@ -43,8 +43,8 @@ export async function openAlexCitations(authors: Author[], title: string, firstR
         const outputJSON = JSON.parse(outputText);
         // save outputted metadata in Paper object and append to output array
         outputJSON.forEach((element: any) => {
-            let title = ""; let year = 0; let DOI = ""; let pmid = ""; let pmcid = ""; const fields: string[] = []; let journal = ""; let url ="";
-            if (element.title !== undefined && element.publication_year !== undefined && element.host_venue.publisher !== undefined) {
+            let title = ""; let year = 0; let DOI = ""; let pmid = ""; let pmcid = ""; const fields: string[] = []; let journal = ""; let url =""; let numberOfCitations = 0;
+            if (element.title !== undefined && element.publication_year !== undefined && element.host_venue.publisher !== undefined && element.cited_by_count !== undefined) {
                 if (element.ids !== undefined) {
                     title = element.title;
                     year = element.publication_year;
@@ -65,6 +65,7 @@ export async function openAlexCitations(authors: Author[], title: string, firstR
                     pmid = pmid.slice(32);
                     pmcid = pmcid.slice(32);
                     journal = element.host_venue.publisher;
+                    numberOfCitations = element.cited_by_count;
                 }
                 if (element.concepts !== undefined) {
                     element.concepts.forEach((concept: any) => {
@@ -72,9 +73,7 @@ export async function openAlexCitations(authors: Author[], title: string, firstR
                             fields.push(concept.display_name);
                     });
                 }
-                // console.log('----- journal: ' + journal)
-                // console.log('----- url: ' + openalexurl)
-                const tempPaper = new Paper(title, DOI, pmid, pmcid, year, "OpenAlex", [], fields, journal, openalexurl);
+                const tempPaper = new Paper(title, DOI, pmid, pmcid, year, "OpenAlex", [], fields, journal, openalexurl, numberOfCitations);
                 output = output.concat([tempPaper]);
             }
         });
