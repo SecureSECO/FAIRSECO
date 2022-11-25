@@ -12,7 +12,7 @@ export async function openAlexCitations(authors: Author[], title: string, firstR
     // prepare query strings
     const apiURL = "https://api.openalex.org/";
     const query = "works?filter=cites:";
-    const filter = ",type:Paper-article";
+    const filter = ",type:journal-article";
     // get the unique id OpenAlex gives it's papers
     let paperId = refTitles[0];
     paperId = paperId.replace("https://openalex.org/", "");
@@ -28,6 +28,7 @@ export async function openAlexCitations(authors: Author[], title: string, firstR
         const amount = firstResponseJSON.meta.count;
         const pages = Math.ceil(amount / 200);
         let outputText = "";
+        //if pages not 0 ?
         for (let i = 1; i <= pages; i++) {
             const response = await fetch(apiURL + query + paperId + filter + "&page=" + String(i) + "&per-page=200", {
                 method: 'GET',
