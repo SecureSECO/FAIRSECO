@@ -15498,7 +15498,7 @@ function openAlexCitations(authors, title, firstRefTitles) {
                 let journal = "";
                 let url = "";
                 let numberOfCitations = 0;
-                if (element.title !== undefined && element.publication_year !== undefined && element.host_venue.publisher !== undefined && element.cited_by_count !== undefined) {
+                if (element.title !== undefined && element.publication_year !== undefined) {
                     if (element.ids !== undefined) {
                         title = element.title;
                         year = element.publication_year;
@@ -15518,7 +15518,11 @@ function openAlexCitations(authors, title, firstRefTitles) {
                         DOI = DOI.slice(16);
                         pmid = pmid.slice(32);
                         pmcid = pmcid.slice(32);
+                    }
+                    if (element.host_venue.publisher !== undefined) {
                         journal = element.host_venue.publisher;
+                    }
+                    if (element.cited_by_count !== undefined) {
                         numberOfCitations = element.cited_by_count;
                     }
                     if (element.concepts !== undefined) {
@@ -15527,8 +15531,8 @@ function openAlexCitations(authors, title, firstRefTitles) {
                                 fields.push(concept.display_name);
                         });
                     }
-                    console.log(numberOfCitations);
                     const tempPaper = new Paper_1.Paper(title, DOI, pmid, pmcid, year, "OpenAlex", [], fields, journal, openalexurl, numberOfCitations);
+                    console.log(tempPaper);
                     output = output.concat([tempPaper]);
                 }
             });
