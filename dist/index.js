@@ -14914,7 +14914,7 @@ class Paper {
     // journal: string;
     // numberOfCitations: int;
     // URL: string;
-    constructor(title, doi, pmid, pmcid, year, database, authors, fields) {
+    constructor(title, doi, pmid, pmcid, year, database, authors, fields, journal, url) {
         this.title = title;
         this.year = year;
         this.doi = doi;
@@ -14924,6 +14924,8 @@ class Paper {
         this.authors = authors;
         this.fields = this.getFields(fields);
         this.discipline = this.getDiscipline(fields);
+        this.journal = journal;
+        this.url = url;
     }
     getFields(input) {
         const output = [];
@@ -15462,8 +15464,8 @@ function openAlexCitations(authors, title, firstRefTitles) {
         const query = "works?filter=cites:";
         const filter = ",type:journal-article";
         // get the unique id OpenAlex gives it's papers
-        let paperId = refTitles[0];
-        paperId = paperId.replace("https://openalex.org/", "");
+        let openalexurl = refTitles[0];
+        let paperId = openalexurl.replace("https://openalex.org/", "");
         // instanciate output array
         let output = [];
         try {
@@ -15496,7 +15498,9 @@ function openAlexCitations(authors, title, firstRefTitles) {
                 let pmid = "";
                 let pmcid = "";
                 const fields = [];
-                if (element.title !== undefined && element.publication_year !== undefined) {
+                let journal = "";
+                let url = "";
+                if (element.title !== undefined && element.publication_year !== undefined && element.host_venue.publisher !== undefined) {
                     if (element.ids !== undefined) {
                         title = element.title;
                         year = element.publication_year;
@@ -15516,6 +15520,10 @@ function openAlexCitations(authors, title, firstRefTitles) {
                         DOI = DOI.slice(16);
                         pmid = pmid.slice(32);
                         pmcid = pmcid.slice(32);
+                        journal = element.host_venue.publisher;
+                        console.log('--------------------');
+                        console.log('journal: ' + journal);
+                        console.log('url: ' + openalexurl);
                     }
                     if (element.concepts !== undefined) {
                         element.concepts.forEach((concept) => {
@@ -15523,7 +15531,9 @@ function openAlexCitations(authors, title, firstRefTitles) {
                                 fields.push(concept.display_name);
                         });
                     }
-                    const tempPaper = new Paper_1.Paper(title, DOI, pmid, pmcid, year, "OpenAlex", [], fields);
+                    // console.log('----- journal: ' + journal)
+                    // console.log('----- url: ' + openalexurl)
+                    const tempPaper = new Paper_1.Paper(title, DOI, pmid, pmcid, year, "OpenAlex", [], fields, journal, openalexurl);
                     output = output.concat([tempPaper]);
                 }
             });
@@ -15860,6 +15870,8 @@ function semanticScholarCitations(authors, title, firstRefTitles) {
                 let pmid = "";
                 let pmcid = "";
                 const fields = [];
+                let journal = "";
+                let url = "";
                 if (element.citingPaper.externalIds !== undefined) {
                     for (const [key, value] of Object.entries(element.citingPaper.externalIds)) {
                         switch (key) {
@@ -15883,7 +15895,7 @@ function semanticScholarCitations(authors, title, firstRefTitles) {
                         fields.push(element.category);
                     });
                 }
-                const tempPaper = new Paper_1.Paper(title, DOI, pmid, pmcid, year, "SemanticScholar", [], fields);
+                const tempPaper = new Paper_1.Paper(title, DOI, pmid, pmcid, year, "SemanticScholar", [], fields, journal, url);
                 output = output.concat([tempPaper]);
             });
             return output;

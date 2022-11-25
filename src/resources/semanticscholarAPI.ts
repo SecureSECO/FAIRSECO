@@ -28,7 +28,7 @@ export async function semanticScholarCitations(authors: Author[], title: string,
         outputJSON.data.forEach((element: any) => {
             const title = element.citingPaper.title;
             const year = element.citingPaper.year;
-            let DOI = ""; let pmid = ""; let pmcid = ""; const fields: string[] = [];
+            let DOI = ""; let pmid = ""; let pmcid = ""; const fields: string[] = []; let journal =""; let url = ""
             if (element.citingPaper.externalIds !== undefined) {
                 for (const [key, value] of Object.entries(element.citingPaper.externalIds)) {
                     switch (key) {
@@ -52,7 +52,7 @@ export async function semanticScholarCitations(authors: Author[], title: string,
                     fields.push(element.category);
                 });
             }
-            const tempPaper = new Paper(title, DOI, pmid, pmcid, year, "SemanticScholar", [], fields);
+            const tempPaper = new Paper(title, DOI, pmid, pmcid, year, "SemanticScholar", [], fields, journal, url);
             output = output.concat([tempPaper]);
         });
         return output;

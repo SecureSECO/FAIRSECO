@@ -1,4 +1,5 @@
 import fetch from "node-fetch";
+import { stringify } from "querystring";
 import { Author, Paper, MetaDataPaper } from "./Paper";
 import { calculateProbabiltyOfReference } from "./probability";
 /**
@@ -14,8 +15,8 @@ export async function openAlexCitations(authors: Author[], title: string, firstR
     const query = "works?filter=cites:";
     const filter = ",type:journal-article";
     // get the unique id OpenAlex gives it's papers
-    let paperId = refTitles[0];
-    paperId = paperId.replace("https://openalex.org/", "");
+    let openalexurl = refTitles[0];
+    let paperId = openalexurl.replace("https://openalex.org/", "");
     // instanciate output array
     let output: Paper[] = [];
     try {
@@ -42,8 +43,8 @@ export async function openAlexCitations(authors: Author[], title: string, firstR
         const outputJSON = JSON.parse(outputText);
         // save outputted metadata in Paper object and append to output array
         outputJSON.forEach((element: any) => {
-            let title = ""; let year = 0; let DOI = ""; let pmid = ""; let pmcid = ""; const fields: string[] = [];
-            if (element.title !== undefined && element.publication_year !== undefined) {
+            let title = ""; let year = 0; let DOI = ""; let pmid = ""; let pmcid = ""; const fields: string[] = []; let journal = ""; let url ="";
+            if (element.title !== undefined && element.publication_year !== undefined && element.host_venue.publisher !== undefined) {
                 if (element.ids !== undefined) {
                     title = element.title;
                     year = element.publication_year;
@@ -63,6 +64,7 @@ export async function openAlexCitations(authors: Author[], title: string, firstR
                     DOI = DOI.slice(16);
                     pmid = pmid.slice(32);
                     pmcid = pmcid.slice(32);
+                    journal = element.host_venue.publisher;
                 }
                 if (element.concepts !== undefined) {
                     element.concepts.forEach((concept: any) => {
@@ -70,7 +72,9 @@ export async function openAlexCitations(authors: Author[], title: string, firstR
                             fields.push(concept.display_name);
                     });
                 }
-                const tempPaper = new Paper(title, DOI, pmid, pmcid, year, "OpenAlex", [], fields);
+                // console.log('----- journal: ' + journal)
+                // console.log('----- url: ' + openalexurl)
+                const tempPaper = new Paper(title, DOI, pmid, pmcid, year, "OpenAlex", [], fields, journal, openalexurl);
                 output = output.concat([tempPaper]);
             }
         });

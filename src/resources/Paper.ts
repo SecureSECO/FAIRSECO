@@ -1,3 +1,4 @@
+import internal from "stream";
 
 export class Paper {
     title: string;
@@ -9,12 +10,12 @@ export class Paper {
     authors: Author[];
     discipline: Discipline;
     fields: Field[];
+    journal: string;
+    url : string;
     // TODO
-    // journal: string;
-    // numberOfCitations: int;
-    // URL: string;
+    //numberOfCitations: number;
 
-    constructor(title: string, doi: string, pmid: string, pmcid: string, year: number, database: string, authors: Author[], fields: string[]) {
+    constructor(title: string, doi: string, pmid: string, pmcid: string, year: number, database: string, authors: Author[], fields: string[], journal: string, url: string) {
         this.title = title;
         this.year = year;
         this.doi = doi;
@@ -24,6 +25,8 @@ export class Paper {
         this.authors = authors;
         this.fields = this.getFields(fields);
         this.discipline = this.getDiscipline(fields);
+        this.journal = journal;
+        this.url = url;
     }
 
     private getFields(input: string[]): Field[] {
