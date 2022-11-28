@@ -1,319 +1,28 @@
 # YAML 1.2
-abstract: "ESMValTool: A community diagnostic and performance metrics tool for routine evaluation of Earth system models in CMIP."
-
+---
+abstract: "Python library for fuzzy comparison of mass spectrum data and other Python objects."
 authors:
   -
-    affiliation: "NLeSC, Netherlands"
-    family-names: Andela
-    given-names: Bouwe
-    orcid: "https://orcid.org/0000-0001-9005-8940"
+    affiliation: "Netherlands eScience Center"
+    family-names: Huber
+    given-names: Florian
+    orcid: "https://orcid.org/0000-0002-3535-9406"
   -
-    affiliation: "DLR, Germany"
-    family-names: Broetz
-    given-names: Bjoern
+    affiliation: "Wageningen University and Research"
+    family-names: Hooft
+    name-particle: van der
+    given-names: Justin J. J.
+    orcid: "https://orcid.org/0000-0002-9340-5511"
   -
-    affiliation: "PML, UK"
-    name-particle: de
-    family-names: Mora
-    given-names: Lee
-    orcid: "https://orcid.org/0000-0002-5080-3149"
+    affiliation: "Netherlands eScience Center"
+    family-names: Spaaks
+    given-names: Jurriaan H.
+    orcid: "https://orcid.org/0000-0002-7064-4069"
   -
-    affiliation: "NLeSC, Netherlands"
-    family-names: Drost
-    given-names: Niels
-    orcid: "https://orcid.org/0000-0001-9795-7981"
-  -
-    affiliation: "DLR, Germany"
-    family-names: Eyring
-    given-names: Veronika
-    orcid: "https://orcid.org/0000-0002-6887-4885"
-  -
-    affiliation: "AWI, Germany"
-    family-names: Koldunov
-    given-names: Nikolay
-    orcid: "https://orcid.org/0000-0002-3365-8146"
-  -
-    affiliation: "DLR, Germany"
-    family-names: Lauer
-    given-names: Axel
-    orcid: "https://orcid.org/0000-0002-9270-1044"
-  -
-    affiliation: "LMU, Germany"
-    family-names: Mueller
-    given-names: Benjamin
-  -
-    affiliation: "URead, UK"
-    family-names: Predoi
-    given-names: Valeriu
-    orcid: "https://orcid.org/0000-0002-9729-6578"
-  -
-    affiliation: "DLR, Germany"
-    family-names: Righi
-    given-names: Mattia
-    orcid: "https://orcid.org/0000-0003-3827-5950"
-  -
-    affiliation: "DLR, Germany"
-    family-names: Schlund
-    given-names: Manuel
-    orcid: "https://orcid.org/0000-0001-5251-0158"
-  -
-    affiliation: "BSC, Spain"
-    family-names: Vegas-Regidor
-    given-names: Javier
-    orcid: "https://orcid.org/0000-0003-0096-4291"
-  -
-    affiliation: "SMHI, Sweden"
-    family-names: Zimmermann
-    given-names: Klaus
-  -
-    affiliation: "University of Bremen, Germany"
-    family-names: Adeniyi
-    given-names: Kemisola
-  -
-    affiliation: "ISAC-CNR, Italy"
-    family-names: Arnone
-    given-names: Enrico
-    orcid: "https://orcid.org/0000-0001-6740-5051"
-  -
-    affiliation: "BSC, Spain"
-    family-names: Bellprat
-    given-names: Omar
-    orcid: "https://orcid.org/0000-0001-6434-1793"
-  -
-    affiliation: "SMHI, Sweden"
-    family-names: Berg
-    given-names: Peter
-    orcid: "https://orcid.org/0000-0002-1469-2568"
-  -
-    affiliation: "DLR, Germany"
-    family-names: Bock
-    given-names: Lisa
-    orcid: "https://orcid.org/0000-0001-7058-5938"
-  -
-    affiliation: "BSC, Spain"
-    family-names: Caron
-    given-names: Louis-Philippe
-    orcid: "https://orcid.org/0000-0001-5221-0147"
-  -
-    affiliation: "MPI for Biogeochemistry, Germany"
-    family-names: Carvalhais
-    given-names: Nuno
-  -
-    affiliation: "ENEA, Italy"
-    family-names: Cionni
-    given-names: Irene
-    orcid: "https://orcid.org/0000-0002-0591-9193"
-  -
-    affiliation: "BSC, Spain"
-    family-names: Cortesi
-    given-names: Nicola
-    orcid: "https://orcid.org/0000-0002-1442-9225"
-  -
-    affiliation: "ISAC-CNR, Italy"
-    family-names: Corti
-    given-names: Susanna
-  -
-    affiliation: "ETH Zurich, Switzerland"
-    family-names: Crezee
-    given-names: Bas
-    orcid: "https://orcid.org/0000-0002-1774-1126"
-  -
-    affiliation: "ETH Zurich, Switzerland"
-    family-names: Davin
-    given-names: Edouard Leopold
-    orcid: "https://orcid.org/0000-0003-3322-9330"
-  -
-    affiliation: "ISAC-CNR, Italy"
-    family-names: Davini
-    given-names: Paolo
-    orcid: "https://orcid.org/0000-0003-3389-7849"
-  -
-    affiliation: "NCAR, USA"
-    family-names: Deser
-    given-names: Clara
-  -
-    affiliation: "NLeSC, Netherlands"
+    affiliation: "Netherlands eScience Center"
     family-names: Diblen
     given-names: Faruk
-  -
-    affiliation: "UCLouvain, Belgium"
-    family-names: Docquier
-    given-names: David
-  -
-    affiliation: "MetOffice, UK"
-    family-names: Dreyer
-    given-names: Laura
-  -
-    affiliation: "DKRZ, Germany"
-    family-names: Ehbrecht
-    given-names: Carsten
-  -
-    affiliation: "MetOffice, UK"
-    family-names: Earnshaw
-    given-names: Paul
-  -
-    affiliation: "University of Bremen, Germany"
-    family-names: Gier
-    given-names: Bettina
-  -
-    affiliation: "BSC, Spain"
-    family-names: Gonzalez-Reviriego
-    given-names: Nube
-    orcid: "https://orcid.org/0000-0002-5919-6701"
-  -
-    affiliation: "University of Arizona, USA"
-    family-names: Goodman
-    given-names: Paul
-  -
-    affiliation: "HZG, Germany"
-    family-names: Hagemann
-    given-names: Stefan
-    orcid: "https://orcid.org/0000-0001-5444-2945"
-  -
-    affiliation: "ISAC-CNR, Italy"
-    name-particle: von
-    family-names: Hardenberg
-    given-names: Jost
-    orcid: "https://orcid.org/0000-0002-5312-8070"
-  -
-    affiliation: "DLR, Germany"
-    family-names: Hassler
-    given-names: Birgit
-    orcid: "https://orcid.org/0000-0003-2724-709X"
-  -
-    affiliation: "BSC, Spain"
-    family-names: Hunter
-    given-names: Alasdair
-    orcid: "https://orcid.org/0000-0001-8365-3709"
-  -
-    affiliation: "FUB, Germany"
-    family-names: Kadow
-    given-names: Christopher
-  -
-    affiliation: "DKRZ, Germany"
-    family-names: Kindermann
-    given-names: Stephan
-    orcid: "https://orcid.org/0000-0001-9335-1093"
-  -
-    affiliation: "MPI for Biogeochemistry, Germany"
-    family-names: Koirala
-    given-names: Sujan
-  -
-    affiliation: "BSC, Spain"
-    family-names: Lledó
-    given-names: Llorenç
-  -
-    affiliation: "ETH Zurich, Switzerland"
-    family-names: Lejeune
-    given-names: Quentin
-  -
-    affiliation: "University of Hamburg, German"
-    family-names: Lembo
-    given-names: Valerio
-    orcid: "https://orcid.org/0000-0001-6085-5914"
-  -
-    affiliation: "MetOffice, UK"
-    family-names: Little
-    given-names: Bill
-  -
-    affiliation: "BSC, Spain"
-    family-names: Loosveldt-Tomas
-    given-names: Saskia
-  -
-    affiliation: "ETH Zurich, Switzerland"
-    family-names: Lorenz
-    given-names: Ruth
-    orcid: "https://orcid.org/0000-0002-3986-1268"
-  -
-    affiliation: "CMCC, Italy"
-    family-names: Lovato
-    given-names: Tomas
-    orcid: "https://orcid.org/0000-0002-5188-6767"
-  -
-    affiliation: "University of Hamburg, German"
-    family-names: Lucarini
-    given-names: Valerio
-  -
-    affiliation: "UCLouvain, Belgium"
-    family-names: Massonnet
-    given-names: François
-  -
-    affiliation: "NIBIO, Norway"
-    family-names: Mohr
-    given-names: Christian Wilhelm
-    orcid: "https://orcid.org/0000-0003-2656-1802"
-  -
-    affiliation: "University of Arizona, USA"
-    family-names: Amarjiit
-    given-names: Pandde
-  -
-    affiliation: "BSC, Spain"
-    family-names: Pérez-Zanón
-    given-names: Núria
-  -
-    affiliation: "NCAR, USA"
-    family-names: Phillips
-    given-names: Adam
-    orcid: "https://orcid.org/0000-0003-4859-8585"
-  -
-    affiliation: "University of Arizona, USA"
-    family-names: Russell
-    given-names: Joellen
-  -
-    affiliation: "CICERO, Norway"
-    family-names: Sandstad
-    given-names: Marit
-  -
-    affiliation: "MetOffice, UK"
-    family-names: Sellar
-    given-names: Alistair
-  -
-    affiliation: "DLR, Germany"
-    family-names: Senftleben
-    given-names: Daniel
-  -
-    affiliation: "ISMAR-CNR, Italy"
-    family-names: Serva
-    given-names: Federico
-    orcid: "https://orcid.org/0000-0002-7118-0817"
-  -
-    affiliation: "CICERO, Norway"
-    family-names: Sillmann
-    given-names: Jana
-  -
-    affiliation: "MPI-M, Germany"
-    family-names: Stacke
-    given-names: Tobias
-    orcid: "https://orcid.org/0000-0003-4637-5337"
-  -
-    affiliation: "URead, UK"
-    family-names: Swaminathan
-    given-names: Ranjini
-    orcid: "https://orcid.org/0000-0001-5853-2673"
-  -
-    affiliation: "BSC, Spain"
-    family-names: Torralba
-    given-names: Verónica
-  -
-    affiliation: "University of Bremen, Germany"
-    family-names: Weigel
-    given-names: Katja
-    orcid: "https://orcid.org/0000-0001-6133-7801"
-  -
-    affiliation: "University of Reading, UK"
-    family-names: Roberts
-    given-names: Charles
-    orcid: "https://orcid.org/0000-0002-1147-8961"
-  -
-    affiliation: "Netherlands eScience Center"
-    family-names: Kalverla
-    given-names: Peter
-    orcid: "https://orcid.org/0000-0002-5025-7862"
-  -
-    affiliation: "Netherlands eScience Center"
-    family-names: Alidoost
-    given-names: Sarah
-    orcid: "https://orcid.org/0000-0001-8407-6472"
+    orcid: "https://orcid.org/0000-0002-0989-929X"
   -
     affiliation: "Netherlands eScience Center"
     family-names: Verhoeven
@@ -321,34 +30,115 @@ authors:
     orcid: "https://orcid.org/0000-0002-5821-2060"
   -
     affiliation: "Netherlands eScience Center"
-    family-names: Vreede
-    given-names: Barbara
-    orcid: "https://orcid.org/0000-0002-5023-4601"
+    family-names: Geng
+    given-names: Cunliang
+    orcid: "https://orcid.org/0000-0002-1409-8358"
   -
     affiliation: "Netherlands eScience Center"
-    family-names: Smeets
-    given-names: Stef
-    orcid: "https://orcid.org/0000-0002-5413-9038"
+    family-names: Meijer
+    given-names: Christiaan
+    orcid: "https://orcid.org/0000-0002-5529-5761"
+  -
+    affiliation: "University of Glasgow"
+    family-names: Rogers
+    given-names: Simon
+    orcid: "https://orcid.org/0000-0003-3578-4477"
   -
     affiliation: "Netherlands eScience Center"
-    family-names: Soares Siqueira
-    given-names: Abel
-    orcid: "https://orcid.org/0000-0003-4451-281X"
+    family-names: Belloum
+    given-names: Adam
+    orcid: "https://orcid.org/0000-0001-6306-6937"
   -
-    affiliation: "DLR, Germany"
-    family-names: Kazeroni
-    given-names: Rémi
-    orcid: "https://orcid.org/0000-0001-7205-9528"
+    affiliation: "Netherlands eScience Center"
+    family-names: Spreeuw
+    given-names: Hanno
+    orcid: "https://orcid.org/0000-0002-5057-0322"
   -
-    affiliation: "NASA, USA"
-    family-names: Potter
-    given-names: Jerry
+    affiliation: "University of Glasgow"
+    family-names: Villanueva Castilla
+    given-names: Efrain Manuel
+    orcid: "https://orcid.org/0000-0001-7665-3575"
+  -
+    affiliation: "University of Glasgow"
+    family-names: Ashouritaklimi
+    given-names: Kianoosh
+    orcid: "https://orcid.org/0000-0001-6317-3193"
+  -
+    affiliation: "Netherlands eScience Center"
+    family-names: de Jonge
+    given-names: Niek
+    orcid: "https://orcid.org/0000-0002-3054-6210"
+  -
+    affiliation: "Research Centre for Toxic Compounds in the Environment"
+    family-names: Hecht
+    given-names: Helge
+    orcid: "https://orcid.org/0000-0001-6744-996X"
+  -
+    affiliation: "ICS, Masaryk University"
+    family-names: Skoryk
+    given-names: Maksym
+    orcid: "https://orcid.org/0000-0003-2056-8018"
 
-cff-version: 1.2.0
-date-released: 2022-10-28
-doi: "10.5281/zenodo.3401363"
+cff-version: "1.1.0"
+keywords:
+  - python
+  - "similarity measures"
+  - "mass spectrometry"
+  - "fuzzy matching"
+  - "fuzzy search"
 license: "Apache-2.0"
-message: "If you use this software, please cite it using these metadata."
-repository-code: "https://github.com/ESMValGroup/ESMValTool/"
-title: ESMValTool
-version: "v2.7.0"
+message: "If you use this software, please cite the referenced paper."
+references:
+  - type: article
+    authors:
+      - name: Florian Huber
+        orcid: 0000-0002-3535-9406
+        affiliation: Netherlands eScience Center
+        address: Science Park 140, 1098XG Amsterdam, The Netherlands
+      - name: Stefan Verhoeven
+        orcid: 0000-0002-5821-2060
+        affiliation: Netherlands eScience Center
+        address: Science Park 140, 1098XG Amsterdam, The Netherlands
+      - name: Christiaan Meijer
+        orcid: 0000-0002-5529-5761
+        affiliation: Netherlands eScience Center
+        address: Science Park 140, 1098XG Amsterdam, The Netherlands
+      - name: Hanno Spreeuw
+        orcid: 0000-0002-5057-0322
+        affiliation: Netherlands eScience Center
+        address: Science Park 140, 1098XG Amsterdam, The Netherlands
+      - name: Efraín Manuel Villanueva Castilla
+        orcid: 0000-0001-7665-3575
+        affiliation: School of Computing Science, University of Glasgow
+        address: Glasgow, United Kingdom
+      - name: Cunliang Geng
+        orcid: 0000-0002-1409-8358
+        affiliation: Netherlands eScience Center
+        address: Science Park 140, 1098XG Amsterdam, The Netherlands
+      - name: Justin J. J. van der Hooft
+        orcid: 0000-0002-9340-5511
+        affiliation: Bioinformatics Group, Plant Sciences Group, University of Wageningen
+        address: Wageningen, the Netherlands
+      - name: Simon Rogers
+        orcid: 0000-0003-3578-4477
+        affiliation: School of Computing Science, University of Glasgow
+        address: Glasgow, United Kingdom
+      - name: Adam Belloum
+        orcid: 0000-0001-6306-6937
+        affiliation: Netherlands eScience Center
+        address: Science Park 140, 1098XG Amsterdam, The Netherlands
+      - name: Faruk Diblen
+        orcid: 0000-0002-0989-929X
+        affiliation: Netherlands eScience Center
+        address: Science Park 140, 1098XG Amsterdam, The Netherlands
+      - name: Jurriaan H. Spaaks
+        orcid: 0000-0002-7064-4069
+        affiliation: Netherlands eScience Center
+        address: Science Park 140, 1098XG Amsterdam, The Netherlands
+    title: "matchms - processing and similarity evaluation of mass spectrometry data."
+    journal: "Journal of Open Source Software"
+    year: 2020
+    doi: 10.21105/joss.02411
+repository-code: "https://github.com/matchms/matchms"
+title: matchms
+...

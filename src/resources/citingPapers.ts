@@ -33,17 +33,17 @@ export async function runCitingPapers(cffFile: ValidCffObject): Promise<ReturnOb
         }
         authors.push(new Author(givenNames, familyName, orchidId));
     });
-    const outData1: Paper[] = await semanticScholarCitations(authors, title, refTitles);
+    //const outData1: Paper[] = await semanticScholarCitations(authors, title, refTitles);
     const outData2: Paper[] = await openAlexCitations(authors, title, refTitles);
-    const output: Paper[] = deleteDuplicates(outData1, outData2);
-    for(const paper of output){
+    //const output: Paper[] = deleteDuplicates(outData1, outData2);
+    for(const paper of outData2){
         console.log("----------")
         console.log(paper.url)
         console.log(paper.fields)
     }
     return {
         ReturnName: "citingPapers",
-        ReturnData: output
+        ReturnData: outData2
     };
 } 
 
