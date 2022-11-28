@@ -7,7 +7,6 @@ import { runSBOM } from "./resources/sbom";
 import { ErrorLevel, LogMessage } from "./log";
 import { getGithubInfo, GithubInfo } from "./git";
 
-
 /** An object that contains data gathered by FairSECO. */
 export interface ReturnObject {
     /** Describes the name of the gathered data. */
@@ -20,11 +19,10 @@ export interface ReturnObject {
 export async function data(): Promise<ReturnObject[]> {
     const output: ReturnObject[] = [];
 
-    let ghinfo: GithubInfo;
-    ghinfo = await getGithubInfo();
+    const ghinfo: GithubInfo = await getGithubInfo();
 
     try {
-        const tortelliniResult = await runTortellini(ghinfo);
+        const tortelliniResult = await runTortellini();
         output.push(tortelliniResult);
     } catch (error) {
         LogMessage(
@@ -35,20 +33,18 @@ export async function data(): Promise<ReturnObject[]> {
     }
 
     try {
-        const howfairisResult = await runHowfairis(ghinfo);
+        const howfairisResult = await runHowfairis();
         output.push(howfairisResult);
     } catch (error) {
-
         LogMessage(
             "An error occurred while running howfairis.",
             ErrorLevel.err
         );
         LogMessage(error, ErrorLevel.err);
-
     }
 
     try {
-        const searchsecoResult = await runSearchseco(ghinfo);
+        const searchsecoResult = await runSearchseco();
         output.push(searchsecoResult);
     } catch (error) {
         LogMessage(
@@ -89,11 +85,9 @@ export async function data(): Promise<ReturnObject[]> {
         if (cffFile.status === "valid") {
             const citingPapersResult = await runCitingPapers(cffFile);
             output.push(citingPapersResult);
-        }
-        else {
+        } else {
             throw new Error("Invalid cff File");
         }
-
     } catch (error) {
         console.error("Scholarly threw an error:");
         console.error(error);
