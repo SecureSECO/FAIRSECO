@@ -1,5 +1,6 @@
 import * as ss from "../src/resources/searchseco";
 import YAML from "yaml";
+import { getGithubInfo } from "../src/git";
 
 jest.setTimeout(20000);
 
@@ -558,7 +559,7 @@ describe("Test parseInput", () => {
 
 test("Test runSearchSECO", async () => {
     jest.setTimeout(15000);
-    const result = await ss.runSearchseco();
+    const result = await ss.runSearchseco(await getGithubInfo());
 
     // Since the previous tests already check if the data is processed correctly,
     // we only need to check if SearchSECO gets executed at all, and if it can

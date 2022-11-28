@@ -33,7 +33,7 @@ export async function data(): Promise<ReturnObject[]> {
     }
 
     try {
-        const howfairisResult = await runHowfairis();
+        const howfairisResult = await runHowfairis(ghinfo);
         output.push(howfairisResult);
     } catch (error) {
         LogMessage(
@@ -44,7 +44,7 @@ export async function data(): Promise<ReturnObject[]> {
     }
 
     try {
-        const searchsecoResult = await runSearchseco();
+        const searchsecoResult = await runSearchseco(ghinfo);
         output.push(searchsecoResult);
     } catch (error) {
         LogMessage(

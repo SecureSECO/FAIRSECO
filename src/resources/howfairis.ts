@@ -1,5 +1,5 @@
 import { ReturnObject } from "../getdata";
-import { getRepoUrl } from "../git";
+import { GithubInfo } from "../git";
 
 import { exec, ExecOptions } from "@actions/exec";
 
@@ -9,8 +9,7 @@ import { exec, ExecOptions } from "@actions/exec";
  *
  * @returns A {@link action.ReturnObject} containing the result from fairtally.
  */
-export async function runHowfairis(): Promise<ReturnObject> {
-    const gitrepo: string = await getRepoUrl();
+export async function runHowfairis(ghInfo: GithubInfo): Promise<ReturnObject> {
     console.debug("HowFairIs started");
     const cmd = "docker";
     const args = [
@@ -21,7 +20,7 @@ export async function runHowfairis(): Promise<ReturnObject> {
         "json",
         "-o",
         "-",
-        gitrepo,
+        ghInfo.FullURL,
     ];
 
     let stdout = "";

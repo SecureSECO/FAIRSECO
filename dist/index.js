@@ -17579,7 +17579,7 @@ function data() {
             (0, log_1.LogMessage)(error, log_1.ErrorLevel.err);
         }
         try {
-            const howfairisResult = yield (0, howfairis_1.runHowfairis)();
+            const howfairisResult = yield (0, howfairis_1.runHowfairis)(ghinfo);
             output.push(howfairisResult);
         }
         catch (error) {
@@ -17587,7 +17587,7 @@ function data() {
             (0, log_1.LogMessage)(error, log_1.ErrorLevel.err);
         }
         try {
-            const searchsecoResult = yield (0, searchseco_1.runSearchseco)();
+            const searchsecoResult = yield (0, searchseco_1.runSearchseco)(ghinfo);
             output.push(searchsecoResult);
         }
         catch (error) {
@@ -18408,7 +18408,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.runHowfairis = void 0;
-const git_1 = __nccwpck_require__(4827);
 const exec_1 = __nccwpck_require__(9710);
 /**
  * This function runs the fairtally docker image on the current repo,
@@ -18416,9 +18415,8 @@ const exec_1 = __nccwpck_require__(9710);
  *
  * @returns A {@link action.ReturnObject} containing the result from fairtally.
  */
-function runHowfairis() {
+function runHowfairis(ghInfo) {
     return __awaiter(this, void 0, void 0, function* () {
-        const gitrepo = yield (0, git_1.getRepoUrl)();
         console.debug("HowFairIs started");
         const cmd = "docker";
         const args = [
@@ -18429,7 +18427,7 @@ function runHowfairis() {
             "json",
             "-o",
             "-",
-            gitrepo,
+            ghInfo.FullURL,
         ];
         let stdout = "";
         let stderr = "";
@@ -18866,7 +18864,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getMatchIndicesOfHash = exports.getMatches = exports.getMethodInfo = exports.getHashIndices = exports.parseInput = exports.runSearchseco = void 0;
-const git_1 = __nccwpck_require__(4827);
 const exec_1 = __nccwpck_require__(9710);
 /**
  * This function first runs the searchSECO docker and listens to stdout for its output.
@@ -18897,9 +18894,9 @@ const exec_1 = __nccwpck_require__(9710);
  * @returns A {@link action.ReturnObject} containing the name of the module and the object constructed from SearchSECO's output.
  *
  */
-function runSearchseco() {
+function runSearchseco(ghInfo) {
     return __awaiter(this, void 0, void 0, function* () {
-        const gitrepo = yield (0, git_1.getRepoUrl)();
+        const gitrepo = ghInfo.FullURL;
         // Once the real SearchSECO is fully functional again, this should be replaced with 'searchseco/controller'
         const dockerImage = "jarnohendriksen/mockseco:v1";
         // This needs to be added to the docker command (const args) on the line indicated below
@@ -18941,10 +18938,6 @@ function runSearchseco() {
         // Executes the docker run command
         const exitCode = yield (0, exec_1.exec)(cmd, args, options);
         console.debug("Docker running SearchSECO returned " + String(exitCode));
-        console.debug("stdout:");
-        console.debug(stdout);
-        console.debug("stderr:");
-        console.debug(stderr);
         // ParseInput expects an array of trimmed lines
         // (i.e. without trailing or leading whitespace)
         const lines = stdout.split("\n");

@@ -1,5 +1,5 @@
 import { ReturnObject } from "../getdata";
-import { getRepoUrl } from "../git";
+import { GithubInfo } from "../git";
 import { exec, ExecOptions } from "@actions/exec";
 import core from "@actions/core";
 
@@ -32,8 +32,8 @@ import core from "@actions/core";
  * @returns A {@link action.ReturnObject} containing the name of the module and the object constructed from SearchSECO's output.
  *
  */
-export async function runSearchseco(): Promise<ReturnObject> {
-    const gitrepo: string = await getRepoUrl();
+export async function runSearchseco(ghInfo: GithubInfo): Promise<ReturnObject> {
+    const gitrepo: string = ghInfo.FullURL;
 
     // Once the real SearchSECO is fully functional again, this should be replaced with 'searchseco/controller'
     const dockerImage = "jarnohendriksen/mockseco:v1";

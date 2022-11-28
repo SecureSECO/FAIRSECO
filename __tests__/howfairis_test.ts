@@ -4,6 +4,7 @@
 import { runHowfairis } from "../src/resources/howfairis";
 import { ReturnObject } from "../src/getdata";
 import { matchers } from "jest-json-schema";
+import { getGithubInfo } from "../src/git";
 expect.extend(matchers);
 jest.setTimeout(30000);
 
@@ -45,7 +46,7 @@ test("that output json matches the schema", async () => {
                     },
                     stderr: {
                         type: "string",
-                        nullable: "true"
+                        nullable: "true",
                     },
                     stdout: {
                         type: "string",
@@ -75,6 +76,8 @@ test("that output json matches the schema", async () => {
     };
 
     //Run Howfairis and check if output JSON matches with the predefined schema
-    const outputmodule: ReturnObject = await runHowfairis();
+    const outputmodule: ReturnObject = await runHowfairis(
+        await getGithubInfo()
+    );
     expect(outputmodule).toMatchSchema(schema);
 });
