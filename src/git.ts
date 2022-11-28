@@ -1,5 +1,6 @@
 import * as core from "@actions/core";
 import * as gh from "@actions/github";
+import * as log from "./log"
 
 export interface GithubInfo {
     Repo: string;
@@ -62,9 +63,7 @@ export async function getRepoStats(
         // First try our supplied token, if that doesn't work, we can already return the dummy.
         octokit = gh.getOctokit(token);
     } catch {
-        console.error(
-            "Error while contacting octokit API, did you supply a valid token?"
-        );
+        log.LogMessage("Error while contacting octokit API, did you supply a valid token?", log.ErrorLevel.err);
         return repostats; // We return the dummy when we can't do anything
     }
     try {
@@ -78,12 +77,9 @@ export async function getRepoStats(
         repostats.watchers = response.watchers_count;
         repostats.visibility = response.visibility;
     } catch {
-        console.error(
-            "Error when requesting repo information. Was the supplied repo name and owner correct?"
-        );
+        log.LogMessage("Error when requesting repo information. Was the supplied repo name and owner correct?", log.ErrorLevel.err);
     }
 
-    // console.log(response);
     return repostats;
 }
 
@@ -141,7 +137,7 @@ export async function getContributors(
             });
         return contributors;
     } catch {
-        console.error("An error occured while retrieving contributors.");
+        log.LogMessage("An error occured while retrieving contributors.", log.ErrorLevel.err);
         return [];
     }
 }
@@ -168,9 +164,9 @@ export async function getRepoReadme(
         });
         result = Buffer.from(readme, "base64").toString();
     } catch {
-        console.error("An error occured while retrieving readme.");
+        log.LogMessage("An error occured while retrieving readme.", log.ErrorLevel.err);
     }
-    // console.log(result);
+    
     return result;
 }
 
