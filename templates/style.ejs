@@ -118,10 +118,15 @@ body {
     margin-right: 4px;
 }
 
-.Citations{
-    padding: 20px;
+.CitationsContainer{
     max-height: 80%;
     overflow-y: scroll;
+  -webkit-mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+}
+
+.Citations{
+    padding: 20px;
     width: 100%;
     table-layout: auto; 
 }
@@ -158,7 +163,11 @@ body {
 }
 
 .info2 h1 {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 70%;
     font-weight: 400;
 }
 .info2 h2 {

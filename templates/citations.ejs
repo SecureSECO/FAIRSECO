@@ -1,11 +1,13 @@
+<div class="CitationsContainer">
 <table class="Citations">
     <tr>
-        <th>Description</th>
+        <th>Title, Authors, Description</th>
         <th>Date</th>
         <th>Doi</th>
         <th>Link</th>
     </tr>
-    <% for (let i = 0; i < 10; i++) { %>
-        <%- include('citation')%>
-    <% } %>
+    <% citations.forEach((citation) => { %>
+        <%- include('citation', {"citation": citation})%>
+    <% }) %>
 </table>
+</div>
