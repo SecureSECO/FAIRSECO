@@ -8,15 +8,23 @@ import { calculateProbabiltyOfReference } from "./probability";
  */
 export async function openAlexCitations(authors: Author[], title: string, firstRefTitles: string[]): Promise<Paper[]> {
     // find reference titles
-    let refTitles: string[] = await getRefTitles(authors, title);
-    refTitles = firstRefTitles.concat(refTitles);
+    //const starttime = performance.now()
+    let paperId = "";
+    if(firstRefTitles.length === 0){      
+        let refTitles: string[] = await getRefTitles(authors, title);
+        paperId = refTitles[0];
+    }
+    else{
+        //also need to check for multiple titles?
+        paperId = await getOpenAlexPaperId(firstRefTitles[0]);
+
+    }    
+    paperId = paperId.replace("https://openalex.org/", "");
     // prepare query strings
     const apiURL = "https://api.openalex.org/";
     const query = "works?filter=cites:";
     const filter = ",type:journal-article";
     // get the unique id OpenAlex gives it's papers
-    let openalexurl = refTitles[0];
-    let paperId = openalexurl.replace("https://openalex.org/", "");
     // instanciate output array
     let output: Paper[] = [];
     try {
@@ -85,10 +93,12 @@ export async function openAlexCitations(authors: Author[], title: string, firstR
                 output = output.concat([tempPaper]);
             }
         });
+        //console.log("Getting citations took " + (performance.now() - endtime) + " ms")
         return output;
     }
     catch (error){
         console.log("error while searching openAlex with openAlex ID of: " + paperId);
+        console.log()
         return output;
     }      
 }
@@ -122,7 +132,6 @@ export async function getRefTitles(authors: Author[], title: string): Promise<st
             }
             const worksApiURL: string = results.works_api_url;
             let next_cursor = "*"
-            let newamount = 0;
             while(next_cursor !== null) {
                 const response = await fetch(worksApiURL + "&per-page=200&cursor=" + next_cursor,{
                     method: 'GET',
@@ -131,7 +140,6 @@ export async function getRefTitles(authors: Author[], title: string): Promise<st
                 const responseJSON = await response.json();
                 papers = papers.concat(responseJSON.results);
                 next_cursor = responseJSON.meta.next_cursor;
-                newamount += 1;
             }
         }
         catch (error){
@@ -189,7 +197,7 @@ export async function getOpenAlexPaperId(title: string): Promise<string> {
         });
         const output = await response.text();
         const outputJSON = JSON.parse(output);
-        const paperid = outputJSON.results[0].id;;
+        const paperid = outputJSON.results[0].id;
         return paperid;
     }
     catch (error){

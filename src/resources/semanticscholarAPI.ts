@@ -7,13 +7,19 @@ import { calculateProbabiltyOfReference } from "./probability";
  */
 export async function semanticScholarCitations(authors: Author[], title: string, firstRefTitles: string[]): Promise<Paper[]> {
     // find reference titles
-    let refTitles: string[] = await getRefTitles(authors, title);
-    refTitles = firstRefTitles.concat(refTitles);
+    let paperId = "";
+    if(firstRefTitles.length === 0){      
+        let refTitles: string[] = await getRefTitles(authors, title);
+        paperId = refTitles[0];
+    }
+    else{
+        //also need to check for multiple titles?
+        paperId = await getSemanticScholarPaperId(firstRefTitles[0]);
+    }
     // prepare query strings
     const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/paper/";
     const fieldsQuery = "/citations?fields=title,externalIds,year,authors,s2FieldsOfStudy,journal,url,citationCount&limit=1000";
     // get the unique id semantic scholar gives it's papers
-    const paperId = refTitles[0];
     // instanciate output array
     let output: Paper[] = [];
 
@@ -153,6 +159,7 @@ export async function getSemanticScholarPaperId(title: string): Promise<string> 
     // prepare query strings
     const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/paper/";
     const searchQuery = "search?query=";
+    console.log(semanticScholarApiURL + searchQuery + "\"" + title + "\"")
     try {
         // API call and save it in JSON, then extract the paperID
         // TODO: remove ANYs 
@@ -160,7 +167,11 @@ export async function getSemanticScholarPaperId(title: string): Promise<string> 
             method: 'GET',
             headers: {},
         });
-        const outputJSON : any = await response.json();
+        const outputText = await response.text()
+        const outputJSON : any = JSON.parse(outputText);
+        
+        console.log(outputJSON);
+        //const outputJSON : any = await response.json();
         const paperid = outputJSON.data[0].paperId;
         return paperid;
     }
