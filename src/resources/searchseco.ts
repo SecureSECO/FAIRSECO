@@ -1,6 +1,5 @@
 import { ReturnObject } from "../getdata";
 import { getRepoUrl } from "../git";
-
 import { exec, ExecOptions } from "@actions/exec";
 import core from "@actions/core";
 

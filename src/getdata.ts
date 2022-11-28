@@ -4,6 +4,9 @@ import { runSearchseco } from "./resources/searchseco";
 import { runCitingPapers } from "./resources/citingPapers";
 import { getCitationFile, CffObject } from "./resources/citation_cff";
 import { runSBOM } from "./resources/sbom";
+import { ErrorLevel, LogMessage } from "./log";
+import { getGithubInfo, GithubInfo } from "./git";
+
 
 /** An object that contains data gathered by FairSECO. */
 export interface ReturnObject {
@@ -16,28 +19,62 @@ export interface ReturnObject {
 
 export async function data(): Promise<ReturnObject[]> {
     const output: ReturnObject[] = [];
+
+    let ghinfo: GithubInfo;
+    ghinfo = await getGithubInfo();
+
     try {
-        const tortelliniResult = await runTortellini();
+        const tortelliniResult = await runTortellini(ghinfo);
         output.push(tortelliniResult);
     } catch (error) {
-        console.error("Tortellini threw an error:");
-        console.error(error);
+        LogMessage(
+            "An error occurred while gathering tortellini data:",
+            ErrorLevel.err
+        );
+        LogMessage(error, ErrorLevel.err);
     }
 
     try {
-        const howfairisResult = await runHowfairis();
+        const howfairisResult = await runHowfairis(ghinfo);
         output.push(howfairisResult);
     } catch (error) {
-        console.error("Howfairis threw an error:");
-        console.error(error);
+
+        LogMessage(
+            "An error occurred while running howfairis.",
+            ErrorLevel.err
+        );
+        LogMessage(error, ErrorLevel.err);
+
     }
 
     try {
-        const searchsecoResult = await runSearchseco();
+        const searchsecoResult = await runSearchseco(ghinfo);
         output.push(searchsecoResult);
     } catch (error) {
-        console.error("Searchseco threw an error:");
-        console.error(error);
+        LogMessage(
+            "An error occurred while running searchSECO.",
+            ErrorLevel.err
+        );
+        LogMessage(error, ErrorLevel.err);
+    }
+
+    try {
+        const cffResult = await getCitationFile(".");
+        output.push(cffResult);
+    } catch (error) {
+        LogMessage(
+            "An error occurred while fetching CITATION.cff.",
+            ErrorLevel.err
+        );
+        LogMessage(error, ErrorLevel.err);
+    }
+
+    try {
+        const SBOMResult = await runSBOM();
+        output.push(SBOMResult);
+    } catch (error) {
+        LogMessage("An error occurred during SBOM generation.", ErrorLevel.err);
+        LogMessage(error, ErrorLevel.err);
     }
 
     try {
