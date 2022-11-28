@@ -18,7 +18,7 @@
 <h1>Function runSearchseco</h1></div>
 <section class="tsd-panel">
 <ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-<li class="tsd-signature tsd-anchor-link" id="runSearchseco">run<wbr/>Searchseco<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/getdata.ReturnObject.html" class="tsd-signature-type" data-tsd-kind="Interface">ReturnObject</a><span class="tsd-signature-symbol">&gt;</span><a href="#runSearchseco" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" id="icon-anchor-a"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" id="icon-anchor-b"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" id="icon-anchor-c"></path></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="runSearchseco">run<wbr/>Searchseco<span class="tsd-signature-symbol">(</span>ghInfo<span class="tsd-signature-symbol">: </span><a href="../interfaces/git.GithubInfo.html" class="tsd-signature-type" data-tsd-kind="Interface">GithubInfo</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/getdata.ReturnObject.html" class="tsd-signature-type" data-tsd-kind="Interface">ReturnObject</a><span class="tsd-signature-symbol">&gt;</span><a href="#runSearchseco" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" id="icon-anchor-a"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" id="icon-anchor-b"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" id="icon-anchor-c"></path></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>This function first runs the searchSECO docker and listens to stdout for its output.
 Then, it tries to parse whatever SearchSECO returned into an <a href="../interfaces/resources_searchseco.Output.html">Output</a> object.</p>
@@ -31,9 +31,14 @@ To solve this, the line <code>const entrypoint = &#39;--entrypoint=&quot;./contr
 
 <h3>Returns</h3><p>A action.ReturnObject containing the name of the module and the object constructed from SearchSECO&#39;s output.</p>
 </div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>ghInfo: <a href="../interfaces/git.GithubInfo.html" class="tsd-signature-type" data-tsd-kind="Interface">GithubInfo</a></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/getdata.ReturnObject.html" class="tsd-signature-type" data-tsd-kind="Interface">ReturnObject</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/QDUNI/FairSECO/blob/17bb8c8/src/resources/searchseco.ts#L35">resources/searchseco.ts:35</a></li></ul></aside></li></ul></section></div>
+<li>Defined in <a href="https://github.com/QDUNI/FairSECO/blob/5b52a45/src/resources/searchseco.ts#L35">resources/searchseco.ts:35</a></li></ul></aside></li></ul></section></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
 <details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
