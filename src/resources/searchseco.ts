@@ -86,10 +86,6 @@ export async function runSearchseco(): Promise<ReturnObject> {
     const exitCode = await exec(cmd, args, options);
 
     console.debug("Docker running SearchSECO returned " + String(exitCode));
-    console.debug("stdout:");
-    console.debug(stdout);
-    console.debug("stderr:");
-    console.debug(stderr);
 
     // ParseInput expects an array of trimmed lines
     // (i.e. without trailing or leading whitespace)

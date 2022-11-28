@@ -7,7 +7,7 @@ import fs, { PathLike } from "fs";
  * @returns Whether the preconditions for getting the data are satisfied.
  */
 export async function pre(): Promise<boolean> {
-    createFairSECODir("./.FairSECO/");
+    createFairSECODir();
     createLogFile();
 
     try {
@@ -23,11 +23,15 @@ export async function pre(): Promise<boolean> {
     return false;
 }
 
-function createFairSECODir(path: PathLike): void {
+/**
+ * Creates the FairSECO directory.
+ * This function is exported for unit tests.
+ */
+export function createFairSECODir(): void {
     // Create dir if not exists
     console.log("Creating FairSECO directory.");
     try {
-        fs.mkdirSync(path);
+        fs.mkdirSync("./.FairSECO/");
     } catch {
         console.log("Folder already exists, skipping");
     }
