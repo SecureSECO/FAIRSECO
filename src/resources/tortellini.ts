@@ -1,10 +1,26 @@
 import { ReturnObject } from "../getdata";
 import * as artifact from "@actions/artifact";
+import * as fs from "fs";
+import * as path from "path";
+import YAML from "yaml";
+import { GithubInfo } from "../git";
+
+// Because the unit tests can't access Github tokens, all artifact-related types are
+// replaced with types that can be replaced with mock objects
+export type Artifact = typeof artifact | TestArtifact;
+export type ArtClient = artifact.ArtifactClient | TestClient;
+export type DownloadResponse = artifact.DownloadResponse | TestResponse;
+export type DownloadOptions = artifact.DownloadOptions | undefined;
+
+export interface TestArtifact {
+    create: () => TestClient;
+}
 
 import YAML from "yaml";
 import { Artifact, getArtifactData, getFileFromArtifact } from "./helperfunctions/artifact";
 
 export async function runTortellini(
+    ghinfo: GithubInfo,
     artifactObject?: Artifact
 ): Promise<ReturnObject> {
     // An artifact object is only passed in the unit test. If that is the case,

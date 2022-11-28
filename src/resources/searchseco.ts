@@ -1,6 +1,6 @@
 import { ReturnObject } from "../getdata";
 import { getRepoUrl } from "../git";
-
+import { GithubInfo } from "../git";
 import { exec, ExecOptions } from "@actions/exec";
 import core from "@actions/core";
 
@@ -72,6 +72,11 @@ export async function runSearchseco(): Promise<ReturnObject> {
     }
 
     const output: Output = parseInput(filteredlines);
+
+
+
+
+export async function runSearchseco(ghinfo: GithubInfo): Promise<ReturnObject> {
 
     return {
         ReturnName: "SearchSeco",
