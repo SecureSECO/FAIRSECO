@@ -118,4 +118,60 @@ body {
     margin-right: 4px;
 }
 
+.Citations{
+    padding: 20px;
+}
+
+.Citation {
+    display: grid;
+    grid-template-areas:
+        'aaaaaa aaaaaa aaaaaa bbbbbb cccccc';
+    margin: 4px 0px;
+}
+.Citation .info1 {
+    grid-area: aaaaaa;
+    display: flex;
+    flex-direction: column;
+}
+
+.Citation .info1 .info2{
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+.info2 h1, .info2 h2{
+   color: #D9F8DF;
+   margin: 0;
+}
+
+.info2 h1 {
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+.info2 h2 {
+    font-size: 0.8rem;
+    font-style: italic;
+    font-weight: 400;
+}
+.info2 .middot {
+margin: 0 8px
+}
+
+.info1 h3 {
+    margin: 0;
+    color: #A3C6AA;
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
+.Citation .doi {
+    grid-area: bbbbbb;
+    color: #779C7E;
+
+}
+.Citation .link {
+    grid-area: cccccc;
+}
+
 </style>
