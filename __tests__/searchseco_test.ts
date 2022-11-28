@@ -1,7 +1,7 @@
 import * as ss from "../src/resources/searchseco";
 import YAML from "yaml";
 
-jest.setTimeout(20000);
+jest.setTimeout(100000);
 
 describe("Test getHashIndices", () => {
     test("Single Hash", () => {
@@ -554,11 +554,33 @@ describe("Test parseInput", () => {
             "https://www.url-of-vulnerability.com"
         );
     });
+
+    test("Only Header", () => {
+        const input = [
+            "-----------------------------------------------------------------------------------------------------",
+            'Matched the project at "https://github.com/user/project" against the database.',
+            "-----------------------------------------------------------------------------------------------------",
+            "Summary:",
+            "Methods in checked project: 4",
+            "Matches: 2 (50%)",
+            "Projects found in database:",
+            "Local authors present in matches:",
+            "Authors present in database matches:",
+            "--------------------------------------------------------------------------------------------------------------------------------",
+            "Details of matches found",
+            "--------------------------------------------------------------------------------------------------------------------------------",
+        ];
+
+        const result = ss.parseInput(input);
+
+        expect(result.methods).toEqual([]);
+    });
 });
 
 test("Test runSearchSECO", async () => {
-    jest.setTimeout(15000);
-    const result = await ss.runSearchseco();
+    const getRepoFn = jest.fn();
+    getRepoFn.mockReturnValue("https://github.com/rowins/test");
+    const result = await ss.runSearchseco(getRepoFn, true);
 
     // Since the previous tests already check if the data is processed correctly,
     // we only need to check if SearchSECO gets executed at all, and if it can
