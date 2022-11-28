@@ -136,16 +136,28 @@ body {
 
 .Citations{
     padding: 20px;
+    max-height: 80%;
+    overflow-y: scroll;
+    width: 100%;
+    table-layout: auto; 
 }
 
-.Citation {
-    display: grid;
-    grid-template-areas:
-        'aaaaaa aaaaaa aaaaaa bbbbbb cccccc';
+.Citations th {
+    color: #779C7E;
+    font-style: italic;
+    padding-bottom: 24px;
+    font-size: 1.2rem;
+}
+
+.Citation tr{
     margin: 4px 0px;
 }
+
+.Citation td {
+    max-width: 600px;
+}
+
 .Citation .info1 {
-    grid-area: aaaaaa;
     display: flex;
     flex-direction: column;
 }
@@ -181,14 +193,27 @@ margin: 0 8px
     font-weight: 400;
 }
 
-.Citation .doi {
-    grid-area: bbbbbb;
+.Citation .year, .Citation .doi, .Citation .link {
+    text-align: center;
     color: #779C7E;
+    padding: 0 24px;
+}
 
-}
 .Citation .link {
-    grid-area: cccccc;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 150ms ease;
+    height: inherit;
 }
+
+a:visited {
+  color: #779C7E;
+}
+
+.Citation .link:hover{
+    color: #D9F8DF;
+}
+
 
 </style>
 
@@ -239,149 +264,165 @@ function clickNav(ele) {
 
 </script>
 
-    <div class="Citations">
+    <table class="Citations">
+    <tr>
+        <th>Description</th>
+        <th>Date</th>
+        <th>Doi</th>
+        <th>Link</th>
+    </tr>
     
-        <div class="Citation">
-    <div class="info1">
+        <tr class="Citation">
+    <td class="info1">
         <div class="info2">
-            <h1 class="title">Lorem ipsum dolor sit amet</h1>
+            <h1 class="title">Citation Title Here</h1>
             <h2 class="middot" >&middot;</h2>
             <h2 class="authors">Lorem ipsum</h2>
         </div>
         <h3 class="description">consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna.</h3>
-    </div>
-    <div class="doi"><p>10.3866/PKU.WHXB201112303</p></div>
-    <div class="link"><a><i class="fa-solid fa-link"></i></a></div>
-</div>
+    </td>
+    <td class="year"><p>2022</p></td>
+    <td class="doi"><p>10.3866/PKU.WHXB201112303</p></td>
+    <td class="link"><a href=""><i class="fa-solid fa-link"></i></a></td>
+</tr>
 
     
-        <div class="Citation">
-    <div class="info1">
+        <tr class="Citation">
+    <td class="info1">
         <div class="info2">
-            <h1 class="title">Lorem ipsum dolor sit amet</h1>
+            <h1 class="title">Citation Title Here</h1>
             <h2 class="middot" >&middot;</h2>
             <h2 class="authors">Lorem ipsum</h2>
         </div>
         <h3 class="description">consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna.</h3>
-    </div>
-    <div class="doi"><p>10.3866/PKU.WHXB201112303</p></div>
-    <div class="link"><a><i class="fa-solid fa-link"></i></a></div>
-</div>
+    </td>
+    <td class="year"><p>2022</p></td>
+    <td class="doi"><p>10.3866/PKU.WHXB201112303</p></td>
+    <td class="link"><a href=""><i class="fa-solid fa-link"></i></a></td>
+</tr>
 
     
-        <div class="Citation">
-    <div class="info1">
+        <tr class="Citation">
+    <td class="info1">
         <div class="info2">
-            <h1 class="title">Lorem ipsum dolor sit amet</h1>
+            <h1 class="title">Citation Title Here</h1>
             <h2 class="middot" >&middot;</h2>
             <h2 class="authors">Lorem ipsum</h2>
         </div>
         <h3 class="description">consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna.</h3>
-    </div>
-    <div class="doi"><p>10.3866/PKU.WHXB201112303</p></div>
-    <div class="link"><a><i class="fa-solid fa-link"></i></a></div>
-</div>
+    </td>
+    <td class="year"><p>2022</p></td>
+    <td class="doi"><p>10.3866/PKU.WHXB201112303</p></td>
+    <td class="link"><a href=""><i class="fa-solid fa-link"></i></a></td>
+</tr>
 
     
-        <div class="Citation">
-    <div class="info1">
+        <tr class="Citation">
+    <td class="info1">
         <div class="info2">
-            <h1 class="title">Lorem ipsum dolor sit amet</h1>
+            <h1 class="title">Citation Title Here</h1>
             <h2 class="middot" >&middot;</h2>
             <h2 class="authors">Lorem ipsum</h2>
         </div>
         <h3 class="description">consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna.</h3>
-    </div>
-    <div class="doi"><p>10.3866/PKU.WHXB201112303</p></div>
-    <div class="link"><a><i class="fa-solid fa-link"></i></a></div>
-</div>
+    </td>
+    <td class="year"><p>2022</p></td>
+    <td class="doi"><p>10.3866/PKU.WHXB201112303</p></td>
+    <td class="link"><a href=""><i class="fa-solid fa-link"></i></a></td>
+</tr>
 
     
-        <div class="Citation">
-    <div class="info1">
+        <tr class="Citation">
+    <td class="info1">
         <div class="info2">
-            <h1 class="title">Lorem ipsum dolor sit amet</h1>
+            <h1 class="title">Citation Title Here</h1>
             <h2 class="middot" >&middot;</h2>
             <h2 class="authors">Lorem ipsum</h2>
         </div>
         <h3 class="description">consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna.</h3>
-    </div>
-    <div class="doi"><p>10.3866/PKU.WHXB201112303</p></div>
-    <div class="link"><a><i class="fa-solid fa-link"></i></a></div>
-</div>
+    </td>
+    <td class="year"><p>2022</p></td>
+    <td class="doi"><p>10.3866/PKU.WHXB201112303</p></td>
+    <td class="link"><a href=""><i class="fa-solid fa-link"></i></a></td>
+</tr>
 
     
-        <div class="Citation">
-    <div class="info1">
+        <tr class="Citation">
+    <td class="info1">
         <div class="info2">
-            <h1 class="title">Lorem ipsum dolor sit amet</h1>
+            <h1 class="title">Citation Title Here</h1>
             <h2 class="middot" >&middot;</h2>
             <h2 class="authors">Lorem ipsum</h2>
         </div>
         <h3 class="description">consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna.</h3>
-    </div>
-    <div class="doi"><p>10.3866/PKU.WHXB201112303</p></div>
-    <div class="link"><a><i class="fa-solid fa-link"></i></a></div>
-</div>
+    </td>
+    <td class="year"><p>2022</p></td>
+    <td class="doi"><p>10.3866/PKU.WHXB201112303</p></td>
+    <td class="link"><a href=""><i class="fa-solid fa-link"></i></a></td>
+</tr>
 
     
-        <div class="Citation">
-    <div class="info1">
+        <tr class="Citation">
+    <td class="info1">
         <div class="info2">
-            <h1 class="title">Lorem ipsum dolor sit amet</h1>
+            <h1 class="title">Citation Title Here</h1>
             <h2 class="middot" >&middot;</h2>
             <h2 class="authors">Lorem ipsum</h2>
         </div>
         <h3 class="description">consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna.</h3>
-    </div>
-    <div class="doi"><p>10.3866/PKU.WHXB201112303</p></div>
-    <div class="link"><a><i class="fa-solid fa-link"></i></a></div>
-</div>
+    </td>
+    <td class="year"><p>2022</p></td>
+    <td class="doi"><p>10.3866/PKU.WHXB201112303</p></td>
+    <td class="link"><a href=""><i class="fa-solid fa-link"></i></a></td>
+</tr>
 
     
-        <div class="Citation">
-    <div class="info1">
+        <tr class="Citation">
+    <td class="info1">
         <div class="info2">
-            <h1 class="title">Lorem ipsum dolor sit amet</h1>
+            <h1 class="title">Citation Title Here</h1>
             <h2 class="middot" >&middot;</h2>
             <h2 class="authors">Lorem ipsum</h2>
         </div>
         <h3 class="description">consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna.</h3>
-    </div>
-    <div class="doi"><p>10.3866/PKU.WHXB201112303</p></div>
-    <div class="link"><a><i class="fa-solid fa-link"></i></a></div>
-</div>
+    </td>
+    <td class="year"><p>2022</p></td>
+    <td class="doi"><p>10.3866/PKU.WHXB201112303</p></td>
+    <td class="link"><a href=""><i class="fa-solid fa-link"></i></a></td>
+</tr>
 
     
-        <div class="Citation">
-    <div class="info1">
+        <tr class="Citation">
+    <td class="info1">
         <div class="info2">
-            <h1 class="title">Lorem ipsum dolor sit amet</h1>
+            <h1 class="title">Citation Title Here</h1>
             <h2 class="middot" >&middot;</h2>
             <h2 class="authors">Lorem ipsum</h2>
         </div>
         <h3 class="description">consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna.</h3>
-    </div>
-    <div class="doi"><p>10.3866/PKU.WHXB201112303</p></div>
-    <div class="link"><a><i class="fa-solid fa-link"></i></a></div>
-</div>
+    </td>
+    <td class="year"><p>2022</p></td>
+    <td class="doi"><p>10.3866/PKU.WHXB201112303</p></td>
+    <td class="link"><a href=""><i class="fa-solid fa-link"></i></a></td>
+</tr>
 
     
-        <div class="Citation">
-    <div class="info1">
+        <tr class="Citation">
+    <td class="info1">
         <div class="info2">
-            <h1 class="title">Lorem ipsum dolor sit amet</h1>
+            <h1 class="title">Citation Title Here</h1>
             <h2 class="middot" >&middot;</h2>
             <h2 class="authors">Lorem ipsum</h2>
         </div>
         <h3 class="description">consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna.</h3>
-    </div>
-    <div class="doi"><p>10.3866/PKU.WHXB201112303</p></div>
-    <div class="link"><a><i class="fa-solid fa-link"></i></a></div>
-</div>
+    </td>
+    <td class="year"><p>2022</p></td>
+    <td class="doi"><p>10.3866/PKU.WHXB201112303</p></td>
+    <td class="link"><a href=""><i class="fa-solid fa-link"></i></a></td>
+</tr>
 
     
-</div>
+</table>
 
 </div>
 

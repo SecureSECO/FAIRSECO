@@ -120,16 +120,28 @@ body {
 
 .Citations{
     padding: 20px;
+    max-height: 80%;
+    overflow-y: scroll;
+    width: 100%;
+    table-layout: auto; 
 }
 
-.Citation {
-    display: grid;
-    grid-template-areas:
-        'aaaaaa aaaaaa aaaaaa bbbbbb cccccc';
+.Citations th {
+    color: #779C7E;
+    font-style: italic;
+    padding-bottom: 24px;
+    font-size: 1.2rem;
+}
+
+.Citation tr{
     margin: 4px 0px;
 }
+
+.Citation td {
+    max-width: 600px;
+}
+
 .Citation .info1 {
-    grid-area: aaaaaa;
     display: flex;
     flex-direction: column;
 }
@@ -165,13 +177,26 @@ margin: 0 8px
     font-weight: 400;
 }
 
-.Citation .doi {
-    grid-area: bbbbbb;
+.Citation .year, .Citation .doi, .Citation .link {
+    text-align: center;
     color: #779C7E;
+    padding: 0 24px;
+}
 
-}
 .Citation .link {
-    grid-area: cccccc;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 150ms ease;
+    height: inherit;
 }
+
+a:visited {
+  color: #779C7E;
+}
+
+.Citation .link:hover{
+    color: #D9F8DF;
+}
+
 
 </style>
