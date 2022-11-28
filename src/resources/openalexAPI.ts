@@ -44,6 +44,9 @@ export async function openAlexCitations(authors: Author[], title: string, firstR
         // save outputted metadata in Paper object and append to output array
         outputJSON.forEach((element: any) => {
             let title = ""; let year = 0; let DOI = ""; let pmid = ""; let pmcid = ""; const fields: string[] = []; let journal = ""; let url =""; let numberOfCitations = 0;
+            if(element.id !== undefined){
+                url = element.id;
+            }
             if (element.title !== undefined && element.publication_year !== undefined) {
                 if (element.ids !== undefined) {
                     title = element.title;
@@ -78,7 +81,7 @@ export async function openAlexCitations(authors: Author[], title: string, firstR
                             fields.push(concept.display_name);
                     });
                 }
-                const tempPaper = new Paper(title, DOI, pmid, pmcid, year, "OpenAlex", [], fields, journal, openalexurl, numberOfCitations);
+                const tempPaper = new Paper(title, DOI, pmid, pmcid, year, "OpenAlex", [], fields, journal, url, numberOfCitations);
                 output = output.concat([tempPaper]);
             }
         });
