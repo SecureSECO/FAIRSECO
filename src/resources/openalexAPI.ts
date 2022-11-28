@@ -113,16 +113,22 @@ export async function getRefTitles(authors: Author[], title: string): Promise<st
             });
             const outputJSON = await response.json();
             const results = outputJSON.results[0];
-            const amount = results.works_count;
-            const pages = Math.ceil(amount / 200);
+            if(results === undefined){
+                //console.log("no results for author " + author.givenNames + " " + author.familyName)
+                continue;
+            }
             const worksApiURL: string = results.works_api_url;
-            for (let i = 1; i <= pages; i++) {
-                const response = await fetch(worksApiURL + "&page=" + String(i) + "&per-page=200", {
+            let next_cursor = "*"
+            let newamount = 0;
+            while(next_cursor !== null) {
+                const response = await fetch(worksApiURL + "&per-page=200&cursor=" + next_cursor,{
                     method: 'GET',
                     headers: {},
                 });
                 const responseJSON = await response.json();
                 papers = papers.concat(responseJSON.results);
+                next_cursor = responseJSON.meta.next_cursor;
+                newamount += 1;
             }
         }
         catch (error){

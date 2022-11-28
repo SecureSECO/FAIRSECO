@@ -15315,9 +15315,14 @@ function runCitingPapers(cffFile) {
         const outData1 = yield (0, semanticscholarAPI_1.semanticScholarCitations)(authors, title, refTitles);
         const outData2 = yield (0, openalexAPI_1.openAlexCitations)(authors, title, refTitles);
         const output = deleteDuplicates(outData1, outData2);
+        for (const paper of output) {
+            console.log("----------");
+            console.log(paper.url);
+            console.log(paper.fields);
+        }
         return {
             ReturnName: "citingPapers",
-            ReturnData: outData1
+            ReturnData: output
         };
     });
 }
@@ -15325,7 +15330,7 @@ exports.runCitingPapers = runCitingPapers;
 // TODO: Make combine function, so missing meta data will be combined from both sources
 function deleteDuplicates(array1, array2) {
     let output = array1.concat(array2);
-    output = output.filter((value, index, self) => index === self.findIndex((t) => t.doi === value.doi && t.doi !== "" || t.pmid === value.pmid && t.pmid !== "" || t.pmcid === value.pmcid && t.pmcid !== ""));
+    output = output.filter((value, index, self) => index === self.findIndex((t) => t.url === value.url && t.doi === value.doi && t.doi !== "" || t.pmid === value.pmid && t.pmid !== "" || t.pmcid === value.pmcid && t.pmcid !== ""));
     return output;
 }
 exports.deleteDuplicates = deleteDuplicates;
@@ -15568,17 +15573,35 @@ function getRefTitles(authors, title) {
                 });
                 const outputJSON = yield response.json();
                 const results = outputJSON.results[0];
+                if (results === undefined) {
+                    console.log("no results for author " + author.givenNames + " " + author.familyName);
+                    continue;
+                }
                 const amount = results.works_count;
                 const pages = Math.ceil(amount / 200);
                 const worksApiURL = results.works_api_url;
-                for (let i = 1; i <= pages; i++) {
-                    const response = yield (0, node_fetch_1.default)(worksApiURL + "&page=" + String(i) + "&per-page=200", {
+                // for (let i = 1; i <= pages; i++) {
+                //     const response = await fetch(worksApiURL + "&page=" + String(i) + "&per-page=200", {
+                //         method: 'GET',
+                //         headers: {},
+                //     });
+                //     const responseJSON = await response.json();
+                //     papers = papers.concat(responseJSON.results);
+                // }
+                let next_cursor = "*";
+                let newamount = 0;
+                while (next_cursor !== null) {
+                    const response = yield (0, node_fetch_1.default)(worksApiURL + "&per-page=200&cursor=" + next_cursor, {
                         method: 'GET',
                         headers: {},
                     });
                     const responseJSON = yield response.json();
                     papers = papers.concat(responseJSON.results);
+                    next_cursor = responseJSON.meta.next_cursor;
+                    newamount += 1;
                 }
+                // console.log(pages);
+                // console.log(newamount);
             }
             catch (error) {
                 let errorMessage = "Error while searching for author " + author.givenNames + " " + author.familyName + " on semantics scholar";
@@ -15586,6 +15609,10 @@ function getRefTitles(authors, title) {
                     errorMessage = error.message;
                 }
                 console.log(errorMessage);
+            }
+            if (papers.length === 0) {
+                console.log("no papers found for author: " + author.givenNames + " " + author.familyName);
+                continue;
             }
             papers.forEach((element) => {
                 if (element.title !== null) {
@@ -15597,6 +15624,9 @@ function getRefTitles(authors, title) {
             papersPerAuthor.set(author, papersFiltered);
         }
         // find all the unique papers, and keep count of how many authors it shares
+        if (papersPerAuthor.size === 0) {
+            return [];
+        }
         papersPerAuthor.forEach(papers => {
             papers.forEach(paper => {
                 let paperData;
@@ -15618,6 +15648,7 @@ function getRefTitles(authors, title) {
                 output.push(key);
             i++;
         });
+        console.log("OpenAlex is done");
         return output;
     });
 }
