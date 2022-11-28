@@ -21,6 +21,11 @@
     font-family: "Literata", "Serif"
 }
 
+h1 {
+    color: #D9F8DF;
+
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -247,11 +252,11 @@ a:visited {
 .LicencesContainer {
     height: 80%;
     width: 100%;
-    background: #099;
 }
 .Hidden {
     display: none;
 }
+
 
 .SlideInLeft{
     animation: slide-in-left 150ms ease 1 forwards;
@@ -339,7 +344,7 @@ a:visited {
     <div class="ActiveBlock"></div>
     <div class="NavItem Active" onMouseOver="hoverNav(this)" onClick="clickNav(this)" data-list-index="0" data-linked-class="CitationsContainer"><i class="fa-solid fa-pen-nib"></i><p>Citations</p></div>
     <div class="NavItem" onMouseOver="hoverNav(this)"onClick="clickNav(this)" data-list-index="1" data-linked-class="LicencesContainer"><i class="fa-solid fa-copyright"></i><p>Licences</p></div>
-    <div class="NavItem" onMouseOver="hoverNav(this)"onClick="clickNav(this)" data-list-index="2"><i class="fa-solid fa-scroll"></i><p>SBOM</p></div>
+    <div class="NavItem" onMouseOver="hoverNav(this)"onClick="clickNav(this)" data-list-index="2" data-linked-class="SBOMContainer"><i class="fa-solid fa-scroll"></i><p>SBOM</p></div>
 </div>
 <script>
 window.addEventListener('load', 
@@ -8144,6 +8149,10 @@ function clickNav(ele) {
 </table>
 </div>
     <div class="LicencesContainer Hidden">
+    <h1>Work in Progress</h1>
+</div>
+    <div class="SBOMContainer Hidden">
+    <h1>Work in Progress</h1>
 </div>
 </div>
 

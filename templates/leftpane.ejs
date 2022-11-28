@@ -9,4 +9,5 @@
     <% const licences = data.find((ele) => (ele.ReturnName === "Tortellini"))?.ReturnData; %>
     <%- include('citations', {"citations": citations}) %>
     <%- include('licences', {"licences": licences}) %>
+    <%- include('SBOM') %>
 </div>
