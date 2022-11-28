@@ -10,7 +10,7 @@ import {
 } from "../src/git";
 
 test("Has correct properties", async () => {
-    const ghinfo: GithubInfo = await getGithubInfo("QDUNI", "FairSECO");
+    const ghinfo: GithubInfo = await getGithubInfo();
     console.log(ghinfo);
     expect(ghinfo).toHaveProperty("Stars");
     expect(ghinfo).toHaveProperty("Watched");
