@@ -16,24 +16,8 @@ export interface TestArtifact {
     create: () => TestClient;
 }
 
-export type DLArtFunc = (
-    name: string,
-    path?: string | undefined,
-    options?: DownloadOptions
-) => TestResponse;
-
-export interface TestResponse {
-    artifactName: string;
-    downloadPath: string | undefined;
-}
-
-export interface TestClient {
-    downloadArtifact: (
-        name: string,
-        path?: string,
-        options?: DownloadOptions
-    ) => TestResponse;
-}
+import YAML from "yaml";
+import { Artifact, getArtifactData, getFileFromArtifact } from "./helperfunctions/artifact";
 
 export async function runTortellini(
     ghinfo: GithubInfo,
@@ -44,7 +28,7 @@ export async function runTortellini(
     // If not, use the regular Github Action artifact, and the normal output folder
     let destination: string = "";
     if (artifactObject !== undefined) {
-        destination = ".tortellini-unit-test";
+        destination = "__tests__/.tortellini-unit-test";
     } else {
         artifactObject = artifact;
         destination = ".tortellini-artifact";
@@ -69,34 +53,6 @@ export async function runTortellini(
         ReturnName: "Tortellini",
         ReturnData: filteredData,
     };
-}
-
-// Download the artifact that was uploaded by Tortellini
-export async function getArtifactData(
-    artifactName: string,
-    destination: string,
-    artifactObject: Artifact
-): Promise<DownloadResponse> {
-    const artifactClient = artifactObject.create();
-    const downloadResponse = await artifactClient.downloadArtifact(
-        artifactName,
-        destination
-    );
-
-    return downloadResponse;
-}
-
-// Get a file from the artifact as a string
-export async function getFileFromArtifact(
-    dlResponse: DownloadResponse,
-    fileName: string
-): Promise<string> {
-    let filePath: string = "";
-    if (dlResponse.downloadPath === undefined) filePath = fileName;
-    else filePath = path.join(dlResponse.downloadPath, fileName);
-    const buffer = fs.readFileSync(filePath);
-
-    return buffer.toString();
 }
 
 // Only get the data that is relevant for license checking

@@ -18,13 +18,3 @@ test("Check if html file exists", async () => {
         expect(fileExists).toBe(true);
     })
 });
-
-test("Check if css file exists", async () => {
-    let fileExists: Boolean = false;
-
-    WriteCSS("./.FairSECO/style.css").then(() => {
-        fileExists = fs.existsSync("./.FairSECO/style.css");
-    }).catch(() => {
-        expect(fileExists).toBe(true);
-    })
-});

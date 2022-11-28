@@ -41,8 +41,8 @@ async function generateHTML(result: ReturnObject[]): Promise<void> {
         await WriteHTML(result, "./.FairSECO/index.html")
         console.log("Successfully wrote HTML to dir");
 
-        await WriteCSS("./.FairSECO/style.css");
-        console.log("Successfully wrote CSS to dir");
+        //await WriteCSS("./.FairSECO/style.css");
+        //console.log("Successfully wrote CSS to dir");
     } catch {
         console.error("Error writing HTML file");;
     }
