@@ -45,6 +45,7 @@ body {
     margin: 0;
     background: rgba(15, 45, 30, 0.82);
     backdrop-filter: blur(30px);
+    overflow: hidden;
 }
 
 .LeftPane .Branding {
@@ -139,6 +140,7 @@ body {
     overflow-y: scroll;
   -webkit-mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
   mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+  animation: fade-in 600ms ease-out 1 forwards;
 }
 
 .Citations{
@@ -242,6 +244,81 @@ a:visited {
 }
 }
 
+.LicencesContainer {
+    height: 80%;
+    width: 100%;
+    background: #099;
+}
+.Hidden {
+    display: none;
+}
+
+.SlideInLeft{
+    animation: slide-in-left 150ms ease 1 forwards;
+}
+
+.SlideInRight{
+    animation: slide-in-right 150ms ease 1 forwards;
+}
+.SlideOutLeft{
+    animation: slide-out-left 150ms ease 1 forwards;
+}
+.SlideOutRight{
+    animation: slide-out-right 150ms ease 1 forwards;
+}
+
+@keyframes fade-in {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+@keyframes slide-in-right {
+    0% {
+        opacity: 0;
+        translate: -150px;
+    }
+    100% {
+        opacity: 1;
+        translate: 0px;
+    }
+}
+
+@keyframes slide-in-left {
+    0% {
+        opacity: 0;
+        translate: 150px;
+    }
+    100% {
+        opacity: 1;
+        translate: 0px;
+    }
+}
+
+@keyframes slide-out-right {
+    0% {
+        opacity: 1;
+        translate: 0px;
+    }
+    100% {
+        opacity: 0;
+        translate: -150px;
+    }
+}
+
+@keyframes slide-out-left {
+    0% {
+        opacity: 1;
+        translate: 0px;
+    }
+    100% {
+        opacity: 0;
+        translate: 150px;
+    }
+}
 </style>
 
 </head>
@@ -260,11 +337,18 @@ a:visited {
     <div class="LeftPaneNav">
     <div class="HighlightBlock"></div>
     <div class="ActiveBlock"></div>
-    <div class="NavItem Active" onMouseOver="hoverNav(this)" onClick="clickNav(this)" ><i class="fa-solid fa-pen-nib"></i><p>Citations</p></div>
-    <div class="NavItem" onMouseOver="hoverNav(this)"onClick="clickNav(this)"><i class="fa-solid fa-copyright"></i><p>Licences</p></div>
-    <div class="NavItem" onMouseOver="hoverNav(this)"onClick="clickNav(this)"><i class="fa-solid fa-scroll"></i><p>SBOM</p></div>
+    <div class="NavItem Active" onMouseOver="hoverNav(this)" onClick="clickNav(this)" data-list-index="0" data-linked-class="CitationsContainer"><i class="fa-solid fa-pen-nib"></i><p>Citations</p></div>
+    <div class="NavItem" onMouseOver="hoverNav(this)"onClick="clickNav(this)" data-list-index="1" data-linked-class="LicencesContainer"><i class="fa-solid fa-copyright"></i><p>Licences</p></div>
+    <div class="NavItem" onMouseOver="hoverNav(this)"onClick="clickNav(this)" data-list-index="2"><i class="fa-solid fa-scroll"></i><p>SBOM</p></div>
 </div>
 <script>
+window.addEventListener('load', 
+  function() { 
+  window.ActiveTab = document.querySelector(".ActiveTab")
+  window.ActiveIndex = 0
+  }, false);
+
+
 function hoverNav(ele) {
     const padding = 20;
     const {top, left, width, height} = ele.getBoundingClientRect();
@@ -287,13 +371,43 @@ function clickNav(ele) {
     const newwidth = Math.ceil(ele.clientWidth);
     highlightblock.style.width = `${newwidth + padding}px`;
     highlightblock.style.translate = `${(left - padding/2) - 8}px`;
+
+    //Animating the tabs to slide in and out from the right direction.
+    const newTab = document.querySelector("." + ele.dataset.linkedClass)
+    if (window.ActiveIndex > ele.dataset.listIndex){
+        window.ActiveTab.classList.add("SlideOutLeft")
+    }
+    else{
+        window.ActiveTab.classList.add("SlideOutRight")
+    }
+    setTimeout(()=>{
+        window.ActiveTab.classList.remove("SlideOutRight")
+        window.ActiveTab.classList.remove("SlideOutLeft")
+        window.ActiveTab.classList.add("Hidden")
+        window.ActiveTab.classList.remove("ActiveTab")
+    }, 150)
+    setTimeout(()=>{
+        if (window.ActiveIndex > ele.dataset.listIndex){
+            newTab.classList.add("SlideInRight")
+        }
+        else {
+            newTab.classList.add("SlideInLeft")
+        }
+        newTab.classList.remove("Hidden")
+        newTab.classList.remove("SlideOutRight")
+        newTab.classList.remove("SlideOutLeft")
+        newTab.classList.add("ActiveTab")
+        window.ActiveTab = document.querySelector('.ActiveTab');
+        window.ActiveIndex = ele.dataset.listIndex;
+    }, 150)
 }
 
 </script>
 
     
     
-    <div class="CitationsContainer">
+    
+    <div class="CitationsContainer ActiveTab">
 <table class="Citations">
     <tr>
         <th>Title, Authors, Description</th>
@@ -8028,6 +8142,8 @@ function clickNav(ele) {
 
     
 </table>
+</div>
+    <div class="LicencesContainer Hidden">
 </div>
 </div>
 

@@ -5,6 +5,8 @@
     </div>
     <%- include('leftpanenav')%>
     
-    <% let test = data.find((ele) => (ele.ReturnName === "citingPapers"))?.ReturnData; %>
-    <%- include('citations', {"citations": test}) %>
+    <% const citations = data.find((ele) => (ele.ReturnName === "citingPapers"))?.ReturnData; %>
+    <% const licences = data.find((ele) => (ele.ReturnName === "Tortellini"))?.ReturnData; %>
+    <%- include('citations', {"citations": citations}) %>
+    <%- include('licences', {"licences": licences}) %>
 </div>

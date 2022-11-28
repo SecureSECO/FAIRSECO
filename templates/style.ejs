@@ -29,6 +29,7 @@ body {
     margin: 0;
     background: rgba(15, 45, 30, 0.82);
     backdrop-filter: blur(30px);
+    overflow: hidden;
 }
 
 .LeftPane .Branding {
@@ -123,6 +124,7 @@ body {
     overflow-y: scroll;
   -webkit-mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
   mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+  animation: fade-in 600ms ease-out 1 forwards;
 }
 
 .Citations{
@@ -226,4 +228,79 @@ a:visited {
 }
 }
 
+.LicencesContainer {
+    height: 80%;
+    width: 100%;
+    background: #099;
+}
+.Hidden {
+    display: none;
+}
+
+.SlideInLeft{
+    animation: slide-in-left 150ms ease 1 forwards;
+}
+
+.SlideInRight{
+    animation: slide-in-right 150ms ease 1 forwards;
+}
+.SlideOutLeft{
+    animation: slide-out-left 150ms ease 1 forwards;
+}
+.SlideOutRight{
+    animation: slide-out-right 150ms ease 1 forwards;
+}
+
+@keyframes fade-in {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+@keyframes slide-in-right {
+    0% {
+        opacity: 0;
+        translate: -150px;
+    }
+    100% {
+        opacity: 1;
+        translate: 0px;
+    }
+}
+
+@keyframes slide-in-left {
+    0% {
+        opacity: 0;
+        translate: 150px;
+    }
+    100% {
+        opacity: 1;
+        translate: 0px;
+    }
+}
+
+@keyframes slide-out-right {
+    0% {
+        opacity: 1;
+        translate: 0px;
+    }
+    100% {
+        opacity: 0;
+        translate: -150px;
+    }
+}
+
+@keyframes slide-out-left {
+    0% {
+        opacity: 1;
+        translate: 0px;
+    }
+    100% {
+        opacity: 0;
+        translate: 150px;
+    }
+}
 </style>
