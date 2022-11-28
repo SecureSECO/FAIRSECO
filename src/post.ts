@@ -26,7 +26,17 @@ function createFairSECODir(path: PathLike): void {
 
 // Generate the report of FairSeco
 function createReport(result: ReturnObject[]): void {
-    const fd: number = fs.openSync("./.FairSECO/Report.yml", "w+");
+    let fd: number;
+    fd =  fs.openSync("./.FairSECO/Report.json", "w+");
+    try {
+        console.log(result);
+        fs.writeSync(fd, JSON.stringify(result));
+        console.log("Successfully wrote JSON file to dir");
+        fs.closeSync(fd);
+    } catch {
+        console.error("Error writing json file");
+    }
+    fd = fs.openSync("./.FairSECO/Report.yml", "w+");
     try {
         console.log(result);
         fs.writeSync(fd, YAML.stringify(result));
