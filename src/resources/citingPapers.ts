@@ -39,7 +39,7 @@ export async function runCitingPapers(cffFile: ValidCffObject): Promise<ReturnOb
     });
     const outData1: Paper[] = await semanticScholarCitations(authors, title, refTitles);
     const outData2: Paper[] = await openAlexCitations(authors, title, refTitles);
-    const output: Paper[] = deleteDuplicates(outData1, outData2);
+    const output: Paper[] = mergeDuplicates(outData1, outData2);
     for(const paper of output){
         console.log("----------")
         console.log(paper.url)
@@ -57,7 +57,7 @@ export async function runCitingPapers(cffFile: ValidCffObject): Promise<ReturnOb
  * This function stores all papers in a map with the DOI identifier as key, if the map already contains a paper with it's DOI it combines it into one making sure no meta-data is lost
  * it then does the same for the pmid identifier and pmcid identifier. Splitting this function over three foreach calls and three maps ensures an O(n) runtime, instead an O(n^2)
  */
-export function deleteDuplicates(array1: Paper[], array2: Paper[]): Paper[] {
+export function mergeDuplicates(array1: Paper[], array2: Paper[]): Paper[] {
     let totalArray: Paper[] = array1.concat(array2);
     const doiMap: Map<string, Paper> = new Map();
     const pmidMap: Map<string, Paper> = new Map();
