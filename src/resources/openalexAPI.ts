@@ -100,9 +100,9 @@ export async function openAlexCitations(authors: Author[], title: string, firstR
                 }
                 if (element.open_access !== undefined) {
                     if (element.open_access.oa_status === "closed")
-                        url = "Paper is not open access";
-                    else
                         url = element.id;
+                    else
+                        url = element.open_acces.oa_url;
                 }
                 const tempPaper = new Paper(title, DOI, pmid, pmcid, year, "OpenAlex", [], fields, journal, url, numberOfCitations);
                 output = output.concat([tempPaper]);
