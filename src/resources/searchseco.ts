@@ -98,8 +98,8 @@ export async function runSearchseco(ghInfo: GithubInfo): Promise<ReturnObject> {
     // Executes the docker run command
     const exitCode = await exec(cmd, args, options);
 
-    stdout = fs.readFileSync("./ssOutput.txt").toString();
-    stderr = fs.readFileSync("./ssError.txt").toString();
+    stdout = fs.readFileSync("./ssOutputFiles/ssOutput.txt").toString();
+    stderr = fs.readFileSync("./ssOutputFiles/ssError.txt").toString();
 
     console.debug("Docker running SearchSECO returned " + String(exitCode));
     if (stderr !== "") console.log(stderr);
