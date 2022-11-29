@@ -1,0 +1,25 @@
+<tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p><%= violation.pkg %></p>
+    </td>
+    <td class="Rule">
+        <p>
+            <% 
+            function toTitleCase(str) 
+                { 
+                return str.replace( 
+                    /\w\S*/g,
+                    function(txt) {
+                        return txt.charAt(0).toUpperCase() +
+                        txt.substr(1).toLowerCase();
+                    }); 
+                }%>
+            <%= toTitleCase(violation.rule) %>
+        </p>
+    </td>
+    <td class="Message"><p><%= violation.message%></p></td>
+    <td class="Howtofix"><p><%= violation.how_to_fix%></p></td>
+</tr>

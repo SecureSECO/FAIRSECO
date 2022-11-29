@@ -1,3 +1,13 @@
 <div class="LicencesContainer Hidden">
-    <h1>Work in Progress</h1>
+    <table class="Licences">
+        <tr>
+            <th>Type</th>
+            <th>Package</th>
+            <th>Rule</th>
+            <th>Message</th>
+        </tr>
+        <% licences.violations.forEach((violation) => { %> 
+        <%- include('violation', {"violation": violation})%> 
+        <% }) %>
+    </table>
 </div>
