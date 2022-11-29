@@ -15126,9 +15126,8 @@ class MetaDataPaper {
 }
 exports.MetaDataPaper = MetaDataPaper;
 class Author {
-    constructor(givenNames, familyName, orchidId) {
-        this.familyName = familyName;
-        this.givenNames = givenNames;
+    constructor(name, orchidId) {
+        this.name = name;
         this.orchidId = orchidId;
     }
 }
@@ -15339,7 +15338,7 @@ function runCitingPapers(cffFile) {
                         break;
                 }
             }
-            authors.push(new Paper_1.Author(givenNames, familyName, orchidId));
+            authors.push(new Paper_1.Author(givenNames + " " + familyName, orchidId));
         });
         const outData1 = yield (0, semanticscholarAPI_1.semanticScholarCitations)(authors, title, refTitles);
         const outData2 = yield (0, openalexAPI_1.openAlexCitations)(authors, title, refTitles);
@@ -15529,7 +15528,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getOpenAlexPaperId = exports.getRefTitles = exports.openAlexCitations = void 0;
+exports.getOpenAlexPaperId = exports.getRefTitles = exports.getCitationPapers = exports.openAlexCitations = void 0;
 const node_fetch_1 = __importDefault(__nccwpck_require__(2504));
 const Paper_1 = __nccwpck_require__(2151);
 const probability_1 = __nccwpck_require__(8587);
@@ -15539,17 +15538,22 @@ const probability_1 = __nccwpck_require__(8587);
  */
 function openAlexCitations(authors, title, firstRefTitles) {
     return __awaiter(this, void 0, void 0, function* () {
+        // initiate variables
+        let output = [];
+        let paperIds = [];
         // find reference titles
-        // const starttime = performance.now()
-        let paperId = "";
-        if (firstRefTitles.length === 0) {
-            const refTitles = yield getRefTitles(authors, title);
-            paperId = refTitles[0];
-        }
-        else {
-            // also need to check for multiple titles?
-            paperId = yield getOpenAlexPaperId(firstRefTitles[0]);
-        }
+        const paperTitles = firstRefTitles;
+        for (const title of paperTitles)
+            paperIds.push(yield getOpenAlexPaperId(title));
+        paperIds = paperIds.concat(yield getRefTitles(authors, title));
+        for (const paperId of paperIds)
+            output = output.concat(yield getCitationPapers(paperId));
+        return output;
+    });
+}
+exports.openAlexCitations = openAlexCitations;
+function getCitationPapers(paperId) {
+    return __awaiter(this, void 0, void 0, function* () {
         paperId = paperId.replace("https://openalex.org/", "");
         // prepare query strings
         const apiURL = "https://api.openalex.org/";
@@ -15621,30 +15625,21 @@ function openAlexCitations(authors, title, firstRefTitles) {
                     }
                     if (element.concepts !== undefined) {
                         element.concepts.forEach((concept) => {
-                            if (concept.level === 0)
+                            if (concept.level === 0 && concept.score > 0.2)
                                 fields.push(concept.display_name);
                         });
                     }
                     if (element.authorships !== undefined) {
                         element.authorships.forEach((element) => {
                             var _a;
-                            const fullName = element.author.display_name;
-                            let firstName = "";
-                            let lastName = "";
-                            if (fullName.length > 1) {
-                                firstName = fullName[0];
-                                lastName = fullName[fullName.length - 1];
-                            }
-                            else
-                                firstName = fullName;
-                            authors.push(new Paper_1.Author(firstName, lastName, (_a = element.author.orcid) !== null && _a !== void 0 ? _a : ""));
+                            authors.push(new Paper_1.Author(element.author.display_name, (_a = element.author.orcid) !== null && _a !== void 0 ? _a : ""));
                         });
                     }
                     if (element.open_access !== undefined) {
                         if (element.open_access.oa_status === "closed")
-                            url = "Paper is not open access";
-                        else
                             url = element.id;
+                        else
+                            url = element.open_access.oa_url;
                     }
                     const tempPaper = new Paper_1.Paper(title, DOI, pmid, pmcid, year, "OpenAlex", [], fields, journal, url, numberOfCitations);
                     output = output.concat([tempPaper]);
@@ -15659,7 +15654,7 @@ function openAlexCitations(authors, title, firstRefTitles) {
         }
     });
 }
-exports.openAlexCitations = openAlexCitations;
+exports.getCitationPapers = getCitationPapers;
 /**
  *
  * @returns and array of titles that are probably reference papers for the piece of software
@@ -15678,7 +15673,7 @@ function getRefTitles(authors, title) {
             let papers = [];
             let papersFiltered = [];
             try {
-                const response = yield (0, node_fetch_1.default)(apiURL + query + author.givenNames + "+" + author.familyName + "&per-page=200", {
+                const response = yield (0, node_fetch_1.default)(apiURL + query + author.name + "&per-page=200", {
                     method: 'GET',
                     headers: {},
                 });
@@ -15689,19 +15684,19 @@ function getRefTitles(authors, title) {
                     continue;
                 }
                 const worksApiURL = results.works_api_url;
-                let next_cursor = "*";
-                while (next_cursor !== null) {
-                    const response = yield (0, node_fetch_1.default)(worksApiURL + "&per-page=200&cursor=" + next_cursor, {
+                let nextCursor = "*";
+                while (nextCursor !== null) {
+                    const response = yield (0, node_fetch_1.default)(worksApiURL + "&per-page=200&cursor=" + nextCursor, {
                         method: 'GET',
                         headers: {},
                     });
                     const responseJSON = yield response.json();
                     papers = papers.concat(responseJSON.results);
-                    next_cursor = responseJSON.meta.next_cursor;
+                    nextCursor = responseJSON.meta.next_cursor;
                 }
             }
             catch (error) {
-                let errorMessage = "Error while searching for author " + author.givenNames + " " + author.familyName + " on semantics scholar";
+                let errorMessage = "Error while searching for author " + author.name + " on semantics scholar";
                 if (error instanceof Error) {
                     errorMessage = error.message;
                 }
@@ -15951,7 +15946,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getSemanticScholarPaperId = exports.getRefTitles = exports.semanticScholarCitations = void 0;
+exports.getSemanticScholarPaperId = exports.getRefTitles = exports.getCitationPapers = exports.semanticScholarCitations = void 0;
 const node_fetch_1 = __importDefault(__nccwpck_require__(2504));
 const Paper_1 = __nccwpck_require__(2151);
 const probability_1 = __nccwpck_require__(8587);
@@ -15961,19 +15956,25 @@ const probability_1 = __nccwpck_require__(8587);
  */
 function semanticScholarCitations(authors, title, firstRefTitles) {
     return __awaiter(this, void 0, void 0, function* () {
+        // initiate variables
+        let output = [];
+        let paperIds = [];
         // find reference titles
-        let paperId = "";
-        if (firstRefTitles.length === 0) {
-            let refTitles = yield getRefTitles(authors, title);
-            paperId = refTitles[0];
-        }
-        else {
-            // also need to check for multiple titles?
-            paperId = yield getSemanticScholarPaperId(firstRefTitles[0]);
-        }
+        const paperTitles = firstRefTitles;
+        for (const title of paperTitles)
+            paperIds.push(yield getSemanticScholarPaperId(title));
+        paperIds = paperIds.concat(yield getRefTitles(authors, title));
+        for (const paperId of paperIds)
+            output = output.concat(yield getCitationPapers(paperId));
+        return output;
+    });
+}
+exports.semanticScholarCitations = semanticScholarCitations;
+function getCitationPapers(paperId) {
+    return __awaiter(this, void 0, void 0, function* () {
         // prepare query strings
         const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/paper/";
-        const fieldsQuery = "/citations?fields=title,externalIds,year,authors,s2FieldsOfStudy,journal,url,citationCount&limit=1000";
+        const fieldsQuery = "/citations?fields=title,externalIds,year,authors,s2FieldsOfStudy,journal,openAccessPdf,url,citationCount&limit=1000";
         // get the unique id semantic scholar gives it's papers
         // instanciate output array
         let output = [];
@@ -15995,6 +15996,7 @@ function semanticScholarCitations(authors, title, firstRefTitles) {
                 let journal = "";
                 let url = "";
                 let numberOfCitations = 0;
+                const authors = [];
                 if (element.citingPaper.externalIds !== undefined) {
                     for (const [key, value] of Object.entries(element.citingPaper.externalIds)) {
                         switch (key) {
@@ -16019,7 +16021,10 @@ function semanticScholarCitations(authors, title, firstRefTitles) {
                         journal = journalObject.name;
                     }
                 }
-                if (element.citingPaper.url !== undefined) {
+                if (element.citingPaper.openAccessPdf !== null) {
+                    url = element.citingPaper.openAccessPdf.url;
+                }
+                else {
                     url = element.citingPaper.url;
                 }
                 if (element.citingPaper.citationCount !== undefined) {
@@ -16030,18 +16035,22 @@ function semanticScholarCitations(authors, title, firstRefTitles) {
                         fields.push(element.category);
                     });
                 }
+                if (element.authors !== undefined) {
+                    const author = new Paper_1.Author(element.authors.name, element.authors.authorId);
+                    authors.push(author);
+                }
                 const tempPaper = new Paper_1.Paper(title, DOI, pmid, pmcid, year, "SemanticScholar", [], fields, journal, url, numberOfCitations);
                 output = output.concat([tempPaper]);
             });
             return output;
         }
         catch (error) {
-            console.log("error while searching semantic scholar with semantic scholar ID of: " + title);
+            console.log("error while searching semantic scholar with semantic scholar ID of: " + paperId);
             return output;
         }
     });
 }
-exports.semanticScholarCitations = semanticScholarCitations;
+exports.getCitationPapers = getCitationPapers;
 /**
  *
  * @returns and array of titles that are probably reference papers for the piece of software
@@ -16061,7 +16070,7 @@ function getRefTitles(authors, title) {
             let papers = [];
             let papersFiltered = [];
             try {
-                const response = yield (0, node_fetch_1.default)(semanticScholarApiURL + searchQuery + author.givenNames + " " + author.familyName + fieldsQuery, {
+                const response = yield (0, node_fetch_1.default)(semanticScholarApiURL + searchQuery + author.name + fieldsQuery, {
                     method: 'GET',
                     headers: {},
                 });
@@ -16075,7 +16084,7 @@ function getRefTitles(authors, title) {
                 });
             }
             catch (error) {
-                let errorMessage = "Error while searching for author " + author.givenNames + " " + author.familyName + " on semantics scholar";
+                let errorMessage = "Error while searching for author " + author.name + " on semantics scholar";
                 if (error instanceof Error) {
                     errorMessage = error.message;
                 }

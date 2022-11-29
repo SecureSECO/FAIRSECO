@@ -5,18 +5,21 @@ import { calculateProbabiltyOfReference } from "./probability";
  * 
  * @returns array containing the list of papers citing the giving piece of research software.
  */
-export async function openAlexCitations(authors: Author[], title: string, firstRefTitles: string[]): Promise<Paper[]> {
+ export async function openAlexCitations(authors: Author[], title: string, firstRefTitles: string[]): Promise<Paper[]> {
+    // initiate variables
+    let output: Paper[] = [];
+    let paperIds: string[] = [];
     // find reference titles
-    // const starttime = performance.now()
-    let paperId = "";
-    if(firstRefTitles.length === 0){      
-        const refTitles: string[] = await getRefTitles(authors, title);
-        paperId = refTitles[0];
-    }
-    else{
-        // also need to check for multiple titles?
-        paperId = await getOpenAlexPaperId(firstRefTitles[0]);
-    }    
+    const paperTitles: string[] = firstRefTitles;
+    for (const title of paperTitles) 
+        paperIds.push(await getOpenAlexPaperId(title));
+    paperIds = paperIds.concat(await getRefTitles(authors, title));
+    for (const paperId of paperIds) 
+        output = output.concat(await getCitationPapers(paperId));
+    return output;
+}
+
+export async function getCitationPapers(paperId: string): Promise<Paper[]> {
     paperId = paperId.replace("https://openalex.org/", "");
     // prepare query strings
     const apiURL = "https://api.openalex.org/";
@@ -93,7 +96,7 @@ export async function openAlexCitations(authors: Author[], title: string, firstR
                     if (element.open_access.oa_status === "closed")
                         url = element.id;
                     else
-                        url = element.open_acces.oa_url;
+                        url = element.open_access.oa_url;
                 }
                 const tempPaper = new Paper(title, DOI, pmid, pmcid, year, "OpenAlex", [], fields, journal, url, numberOfCitations);
                 output = output.concat([tempPaper]);

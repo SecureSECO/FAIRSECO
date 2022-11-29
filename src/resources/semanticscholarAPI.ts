@@ -6,23 +6,26 @@ import { calculateProbabiltyOfReference } from "./probability";
  * @returns array containing the list of papers citing the giving piece of research software.
  */
 export async function semanticScholarCitations(authors: Author[], title: string, firstRefTitles: string[]): Promise<Paper[]> {
+    // initiate variables
+    let output: Paper[] = [];
+    let paperIds: string[] = [];
     // find reference titles
-    let paperId = "";
-    if(firstRefTitles.length === 0){      
-        const refTitles: string[] = await getRefTitles(authors, title);
-        paperId = refTitles[0];
-    }
-    else{
-        // also need to check for multiple titles?
-        paperId = await getSemanticScholarPaperId(firstRefTitles[0]);
-    }
+    const paperTitles: string[] = firstRefTitles;
+    for (const title of paperTitles) 
+        paperIds.push(await getSemanticScholarPaperId(title));
+    paperIds = paperIds.concat(await getRefTitles(authors, title));
+    for (const paperId of paperIds) 
+        output = output.concat(await getCitationPapers(paperId));
+    return output;
+}
+
+export async function getCitationPapers(paperId: string): Promise < Paper[] > {
     // prepare query strings
     const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/paper/";
     const fieldsQuery = "/citations?fields=title,externalIds,year,authors,s2FieldsOfStudy,journal,openAccessPdf,url,citationCount&limit=1000";
     // get the unique id semantic scholar gives it's papers
     // instanciate output array
     let output: Paper[] = [];
-
     try {
         // API call and save output in Json object
         const response : any = await fetch(semanticScholarApiURL + paperId + fieldsQuery, {
@@ -83,9 +86,9 @@ export async function semanticScholarCitations(authors: Author[], title: string,
         return output;
     }
     catch (error){
-        console.log("error while searching semantic scholar with semantic scholar ID of: " + title);
+        console.log("error while searching semantic scholar with semantic scholar ID of: " + paperId);
         return output;
-    }      
+    }
 }
 
 /**

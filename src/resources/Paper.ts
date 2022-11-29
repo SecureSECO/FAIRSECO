@@ -12,7 +12,17 @@ export class Paper {
     url : string;
     numberOfCitations: number;
 
-    constructor(title: string, doi: string, pmid: string, pmcid: string, year: number, database: string, authors: Author[], fields: string[], journal: string, url: string, numberOfCitations: number) {
+    constructor(title: string,
+                doi: string,
+                pmid: string,
+                pmcid: string,
+                year: number,
+                database: string,
+                authors: Author[],
+                fields: string[],
+                journal: string,
+                url: string,
+                numberOfCitations: number) {
         this.title = title;
         this.year = year;
         this.doi = doi;
