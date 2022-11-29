@@ -80,7 +80,7 @@ export async function openAlexCitations(authors: Author[], title: string, firstR
                 }
                 if (element.concepts !== undefined) {
                     element.concepts.forEach((concept: any) => {
-                        if (concept.level === 0)
+                        if (concept.level === 0 && concept.score > 0.2)
                             fields.push(concept.display_name);
                     });
                 }
@@ -102,7 +102,7 @@ export async function openAlexCitations(authors: Author[], title: string, firstR
                     if (element.open_access.oa_status === "closed")
                         url = "Paper is not open access";
                     else
-                        url = element.open_access.oa_url;
+                        url = element.id;
                 }
                 const tempPaper = new Paper(title, DOI, pmid, pmcid, year, "OpenAlex", [], fields, journal, url, numberOfCitations);
                 output = output.concat([tempPaper]);
