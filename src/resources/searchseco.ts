@@ -69,10 +69,6 @@ export async function runSearchseco(ghInfo: GithubInfo): Promise<ReturnObject> {
     let stdout = "";
     let stderr = "";
 
-    // Output from Docker itself
-    let dockOut = "";
-    let dockErr = "";
-
     try {
         if (!fs.existsSync("./ssOutputFiles")) fs.mkdirSync("./ssOutputFiles/");
         else console.log("Folder ssOutputFiles already exists!");
@@ -92,20 +88,17 @@ export async function runSearchseco(ghInfo: GithubInfo): Promise<ReturnObject> {
 
     // SearchSECO prints its results in the console. The code below copies the
     // output to the variables stdout and stderr
-    // options.listeners = {
-    //     stdout: (data: Buffer) => {
-    //         stdout += data.toString();
-    //     },
-    //     stderr: (data: Buffer) => {
-    //         stderr += data.toString();
-    //     },
-    // };
+    options.listeners = {
+        stdout: (data: Buffer) => {
+            stdout += data.toString();
+        },
+        stderr: (data: Buffer) => {
+            stderr += data.toString();
+        },
+    };
 
     // Executes the docker run command
     const exitCode = await exec(cmd, args, options);
-
-    dockOut = fs.readFileSync("./ssOutputFiles/ssOutput.txt").toString();
-    dockErr = fs.readFileSync("./ssOutputFiles/ssError.txt").toString();
 
     console.debug("Docker running SearchSECO returned " + String(exitCode));
     // if (stderr !== "") console.log(stderr);
