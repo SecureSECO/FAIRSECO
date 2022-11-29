@@ -31,22 +31,27 @@ test("Check deleteDuplicates with two different arrays with one similar paper", 
 });
 
 test("Check Paper.getFields with one field", () => {
-    const testFields = ["computer science"]
+    const testFields = ["Computer Science"]
     const testPaper: Paper = new Paper("title", "DOI", "pmid", "pmcid", 2022, "database", [],  testFields, "journal", "url", 0);
-    const expectedFields = ["Computer Science"]
-    expect(testPaper.fields === expectedFields)
+    expect(testPaper.fields === testFields)
 });
 
 test("Check Paper.getFields with one 'unknown' field", () => {
-    const testFields = ["unknown"]
+    const testFields = ["Unknown"]
     const testPaper: Paper = new Paper("title", "DOI", "pmid", "pmcid", 2022, "database", [],  testFields, "journal", "url", 0);
-    const expectedFields = ["Unknown"]
-    expect(testPaper.fields === expectedFields)
+    expect(testPaper.fields === testFields)
 });
 
 test("Check Paper.getFields with multiple (different) fields", () => {
-    const testFields = ["computer science", "geology", "sociology", "environmental science", "unknown"]
+    const testFields = ["Computer Science", "Geology", "Sociology", "Environmental Science", "Unknown"]
     const testPaper: Paper = new Paper("title", "DOI", "pmid", "pmcid", 2022, "database", [],  testFields, "journal", "url", 0);
-    const expectedFields = ["Computer Science", "Geology", "Sociology", "Environmental Science", "Unknown"]
+    expect(testPaper.fields === testFields)
+});
+
+
+test("Check Paper.getDiscipline with one field", () => {
+    const testFields = ["Computer Science"]
+    const testPaper: Paper = new Paper("title", "DOI", "pmid", "pmcid", 2022, "database", [],  testFields, "journal", "url", 0);
+    const expectedFields = ["Format Sciences"]
     expect(testPaper.fields === expectedFields)
 });

@@ -145,83 +145,75 @@ export class Paper {
 
     private getDiscipline(input: string[]): Discipline {
         let output: Discipline = "Unknown";
-        switch (input[0]) {
-            case ("Computer Science"):
+        const inputField : string = input[0].toLowerCase()
+        switch (inputField) {
+            case ("computer science"):
                 output = "Formal Sciences";
                 break;
-            case ("Computer science"):
-                output = "Formal Sciences";
-                break;
-            case ("Medicine"):
+            case ("medicine"):
                 output = "Applied Sciences";
                 break;
-            case ("Chemistry"):
+            case ("chemistry"):
                 output = "Natural Sciences";
                 break;
-            case ("Biology"):
+            case ("biology"):
                 output = "Natural Sciences";;
                 break;
-            case ("Materials Science"):
+            case ("materials science"):
                 output = "Applied Sciences";
                 break;
-            case ("Physics"):
+            case ("physics"):
                 output = "Natural Sciences";
                 break;
-            case ("Geology"):
+            case ("geology"):
                 output = "Natural Sciences";
                 break;
-            case ("Psychology"):
+            case ("psychology"):
                 output = "Social Sciences";
                 break;
-            case ("Art"):
+            case ("art"):
                 output = "Humanities";
                 break;
-            case ("History"):
+            case ("history"):
                 output = "Humanities";
                 break;
-            case ("Geography"):
+            case ("geography"):
                 output = "Social Sciences";
                 break;
-            case ("Sociology"):
+            case ("sociology"):
                 output = "Social Sciences";
                 break;
-            case ("Business"):
+            case ("business"):
                 output = "Applied Sciences";
                 break;
-            case ("Political Science"):
+            case ("political science"):
                 output = "Applied Sciences";
                 break;
-            case ("Political science"):
-                output = "Applied Sciences";
-                break;
-            case ("Economics"):
+            case ("economics"):
                 output = "Social Sciences";
                 break;
-            case ("Philosophy"):
+            case ("philosophy"):
                 output = "Humanities";
                 break;
-            case ("Mathematics"):
+            case ("mathematics"):
                 output = "Formal Sciences";
                 break;
-            case ("Engineering"):
+            case ("engineering"):
                 output = "Applied Sciences";
                 break;
-            case ("Environmental Science"):
+            case ("environmental science"):
                 output = "Applied Sciences";
                 break;
-            case ("Environmental science"):
+            case ("agricultural and food sciences"):
                 output = "Applied Sciences";
                 break;
-            case ("Agricultural and Food Sciences"):
-                output = "Applied Sciences";
-                break;
-            case ("Law"):
+            case ("law"):
                 output = "Humanities";
                 break;
-            case ("Education"):
+            case ("education"):
                 output = "Social Sciences";
                 break;
-            case ("Linguistics"):
+            case ("linguistics"):
                 output = "Social Sciences";
                 break;
         }
