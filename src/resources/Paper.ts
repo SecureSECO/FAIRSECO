@@ -268,6 +268,40 @@ export class Author {
     }
 }
 
+export class Citations {
+    papers: Paper[];
+    unqiueFields: Field[];
+    firstYear: number;
+    firstHandCitations: number;
+    secondHandCitations: number;
+    disciplines: Map<Discipline, number>;
+
+    constructor(papers: Paper[]) {
+        this.papers = papers;
+        this.firstHandCitations = this.papers.length;
+        let firstYear = Number.MAX_SAFE_INTEGER;
+        const unqiueFields: Set<Field> = new Set();
+        let secondHandCitations = 0;
+        const disciplines: Map<Discipline, number> = new Map;
+        papers.forEach(paper => {
+            if (paper.year < firstYear)
+                firstYear = paper.year;
+            paper.fields.forEach(field => {
+                unqiueFields.add(field);
+            })
+            secondHandCitations += paper.numberOfCitations;
+            if (disciplines.has(paper.discipline))
+                disciplines.set(paper.discipline, disciplines.get(paper.discipline) as number + 1);
+            else
+                disciplines.set(paper.discipline, 1);
+        })
+        this.unqiueFields = Array.from(unqiueFields.values());
+        this.firstYear = firstYear;
+        this.secondHandCitations = secondHandCitations;
+        this.disciplines = disciplines;
+    }
+}
+
 export type Discipline = 
     | "Humanities" 
     | "Social Sciences"

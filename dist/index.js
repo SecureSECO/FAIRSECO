@@ -14908,7 +14908,7 @@ exports.pre = pre;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Author = exports.MetaDataPaper = exports.Paper = void 0;
+exports.Citations = exports.Author = exports.MetaDataPaper = exports.Paper = void 0;
 class Paper {
     constructor(title, doi, pmid, pmcid, year, database, authors, fields, journal, url, numberOfCitations) {
         this.title = title;
@@ -15029,89 +15029,103 @@ class Paper {
         return output;
     }
     getDiscipline(input) {
-        let output = "Unknown";
-        switch (input[0]) {
-            case ("Computer Science"):
-                output = "Formal Sciences";
+        const output = [];
+        const inputField = input[0].toLowerCase();
+        switch (inputField) {
+            case ("computer science"):
+                output.push("Formal Sciences");
                 break;
-            case ("Computer science"):
-                output = "Formal Sciences";
+            case ("medicine"):
+                output.push("Applied Sciences");
                 break;
-            case ("Medicine"):
-                output = "Applied Sciences";
+            case ("chemistry"):
+                output.push("Natural Sciences");
                 break;
-            case ("Chemistry"):
-                output = "Natural Sciences";
-                break;
-            case ("Biology"):
-                output = "Natural Sciences";
+            case ("biology"):
+                output.push("Natural Sciences");
                 ;
                 break;
-            case ("Materials Science"):
-                output = "Applied Sciences";
+            case ("materials science"):
+                output.push("Applied Sciences");
                 break;
-            case ("Physics"):
-                output = "Natural Sciences";
+            case ("physics"):
+                output.push("Natural Sciences");
                 break;
-            case ("Geology"):
-                output = "Natural Sciences";
+            case ("geology"):
+                output.push("Natural Sciences");
                 break;
-            case ("Psychology"):
-                output = "Social Sciences";
+            case ("psychology"):
+                output.push("Social Sciences");
                 break;
-            case ("Art"):
-                output = "Humanities";
+            case ("art"):
+                output.push("Humanities");
                 break;
-            case ("History"):
-                output = "Humanities";
+            case ("history"):
+                output.push("Humanities");
                 break;
-            case ("Geography"):
-                output = "Social Sciences";
+            case ("geography"):
+                output.push("Social Sciences");
                 break;
-            case ("Sociology"):
-                output = "Social Sciences";
+            case ("sociology"):
+                output.push("Social Sciences");
                 break;
-            case ("Business"):
-                output = "Applied Sciences";
+            case ("business"):
+                output.push("Applied Sciences");
                 break;
-            case ("Political Science"):
-                output = "Applied Sciences";
+            case ("political science"):
+                output.push("Applied Sciences");
                 break;
-            case ("Political science"):
-                output = "Applied Sciences";
+            case ("economics"):
+                output.push("Social Sciences");
                 break;
-            case ("Economics"):
-                output = "Social Sciences";
+            case ("philosophy"):
+                output.push("Humanities");
                 break;
-            case ("Philosophy"):
-                output = "Humanities";
+            case ("mathematics"):
+                output.push("Formal Sciences");
                 break;
-            case ("Mathematics"):
-                output = "Formal Sciences";
+            case ("engineering"):
+                output.push("Applied Sciences");
                 break;
-            case ("Engineering"):
-                output = "Applied Sciences";
+            case ("environmental science"):
+                output.push("Applied Sciences");
                 break;
-            case ("Environmental Science"):
-                output = "Applied Sciences";
+            case ("agricultural and food sciences"):
+                output.push("Applied Sciences");
                 break;
-            case ("Environmental science"):
-                output = "Applied Sciences";
+            case ("law"):
+                output.push("Humanities");
                 break;
-            case ("Agricultural and Food Sciences"):
-                output = "Applied Sciences";
+            case ("education"):
+                output.push("Social Sciences");
                 break;
-            case ("Law"):
-                output = "Humanities";
-                break;
-            case ("Education"):
-                output = "Social Sciences";
-                break;
-            case ("Linguistics"):
-                output = "Social Sciences";
+            case ("linguistics"):
+                output.push("Social Sciences");
                 break;
         }
-        return output;
+        const map = new Map();
+        output.forEach(element => {
+            if (map.has(element))
+                map.set(element, map.get(element) + 1);
+            else
+                map.set(element, 1);
+        });
+        let result = "Unknown";
+        let max = 0;
+        let twoHighest = false;
+        map.forEach((value, key) => {
+            if (max < value) {
+                result = key;
+                max = value;
+                twoHighest = false;
+            }
+            else if (max === value && max !== 0)
+                twoHighest = true;
+        });
+        if (twoHighest)
+            return output[0];
+        else
+            return result;
     }
 }
 exports.Paper = Paper;
@@ -15132,6 +15146,33 @@ class Author {
     }
 }
 exports.Author = Author;
+class Citations {
+    constructor(papers) {
+        this.papers = papers;
+        this.firstHandCitations = this.papers.length;
+        let firstYear = Number.MAX_SAFE_INTEGER;
+        const unqiueFields = new Set();
+        let secondHandCitations = 0;
+        let disciplines = new Map;
+        papers.forEach(paper => {
+            if (paper.year < firstYear)
+                firstYear = paper.year;
+            paper.fields.forEach(field => {
+                unqiueFields.add(field);
+            });
+            secondHandCitations += paper.numberOfCitations;
+            if (disciplines.has(paper.discipline))
+                disciplines.set(paper.discipline, disciplines.get(paper.discipline) + 1);
+            else
+                disciplines.set(paper.discipline, 1);
+        });
+        this.unqiueFields = Array.from(unqiueFields.values());
+        this.firstYear = firstYear;
+        this.secondHandCitations = secondHandCitations;
+        this.disciplines = disciplines;
+    }
+}
+exports.Citations = Citations;
 
 
 /***/ }),
@@ -15302,7 +15343,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.deleteDuplicates = exports.runCitingPapers = void 0;
+exports.mergeDuplicates = exports.runCitingPapers = void 0;
 const semanticscholarAPI_1 = __nccwpck_require__(5273);
 const openalexAPI_1 = __nccwpck_require__(5532);
 const Paper_1 = __nccwpck_require__(2151);
@@ -15342,12 +15383,10 @@ function runCitingPapers(cffFile) {
         });
         const outData1 = yield (0, semanticscholarAPI_1.semanticScholarCitations)(authors, title, refTitles);
         const outData2 = yield (0, openalexAPI_1.openAlexCitations)(authors, title, refTitles);
-        const output = deleteDuplicates(outData1, outData2);
-        for (const paper of output) {
-            console.log("----------");
-            console.log(paper.url);
-            console.log(paper.fields);
-        }
+        const outputPapers = mergeDuplicates(outData1, outData2);
+        const output = new Paper_1.Citations(outputPapers);
+        console.log(output);
+        console.log(output.unqiueFields);
         return {
             ReturnName: "citingPapers",
             ReturnData: output
@@ -15361,7 +15400,7 @@ exports.runCitingPapers = runCitingPapers;
  * This function stores all papers in a map with the DOI identifier as key, if the map already contains a paper with it's DOI it combines it into one making sure no meta-data is lost
  * it then does the same for the pmid identifier and pmcid identifier. Splitting this function over three foreach calls and three maps ensures an O(n) runtime, instead an O(n^2)
  */
-function deleteDuplicates(array1, array2) {
+function mergeDuplicates(array1, array2) {
     let totalArray = array1.concat(array2);
     const doiMap = new Map();
     const pmidMap = new Map();
@@ -15413,7 +15452,7 @@ function deleteDuplicates(array1, array2) {
     totalArray = Array.from(pmcidMap.values());
     return totalArray;
 }
-exports.deleteDuplicates = deleteDuplicates;
+exports.mergeDuplicates = mergeDuplicates;
 
 
 /***/ }),
@@ -15541,17 +15580,22 @@ function openAlexCitations(authors, title, firstRefTitles) {
         // initiate variables
         let output = [];
         let paperIds = [];
-        // find reference titles
-        const paperTitles = firstRefTitles;
-        for (const title of paperTitles)
-            paperIds.push(yield getOpenAlexPaperId(title));
-        paperIds = paperIds.concat(yield getRefTitles(authors, title));
+        // find reference titles if neccessary
+        if (firstRefTitles.length === 0)
+            paperIds = yield getRefTitles(authors, title);
+        else
+            for (const title of firstRefTitles)
+                paperIds.push(yield getOpenAlexPaperId(title));
         for (const paperId of paperIds)
             output = output.concat(yield getCitationPapers(paperId));
         return output;
     });
 }
 exports.openAlexCitations = openAlexCitations;
+/**
+ *
+ * @returns array containing the list of papers citing the giving paperId.
+ */
 function getCitationPapers(paperId) {
     return __awaiter(this, void 0, void 0, function* () {
         paperId = paperId.replace("https://openalex.org/", "");
@@ -15959,17 +16003,22 @@ function semanticScholarCitations(authors, title, firstRefTitles) {
         // initiate variables
         let output = [];
         let paperIds = [];
-        // find reference titles
-        const paperTitles = firstRefTitles;
-        for (const title of paperTitles)
-            paperIds.push(yield getSemanticScholarPaperId(title));
-        paperIds = paperIds.concat(yield getRefTitles(authors, title));
+        // find reference titles if neccessary
+        if (firstRefTitles.length === 0)
+            paperIds = yield getRefTitles(authors, title);
+        else
+            for (const title of firstRefTitles)
+                paperIds.push(yield getSemanticScholarPaperId(title));
         for (const paperId of paperIds)
             output = output.concat(yield getCitationPapers(paperId));
         return output;
     });
 }
 exports.semanticScholarCitations = semanticScholarCitations;
+/**
+ *
+ * @returns array containing the list of papers citing the giving paperId.
+ */
 function getCitationPapers(paperId) {
     return __awaiter(this, void 0, void 0, function* () {
         // prepare query strings
@@ -16036,10 +16085,10 @@ function getCitationPapers(paperId) {
                     });
                 }
                 if (element.authors !== undefined) {
-                    const author = new Paper_1.Author(element.authors.name, element.authors.authorId);
-                    authors.push(author);
+                    for (const author of element.authors)
+                        authors.push(new Paper_1.Author(author.name, ""));
                 }
-                const tempPaper = new Paper_1.Paper(title, DOI, pmid, pmcid, year, "SemanticScholar", [], fields, journal, url, numberOfCitations);
+                const tempPaper = new Paper_1.Paper(title, DOI, pmid, pmcid, year, "SemanticScholar", authors, fields, journal, url, numberOfCitations);
                 output = output.concat([tempPaper]);
             });
             return output;

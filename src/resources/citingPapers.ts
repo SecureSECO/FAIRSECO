@@ -1,7 +1,7 @@
 import { ReturnObject } from "../getdata";
 import { semanticScholarCitations } from "./semanticscholarAPI";
 import { openAlexCitations } from "./openalexAPI";
-import { Author, Paper } from "./Paper";
+import { Author, Paper, Citations } from "./Paper";
 import { ValidCffObject } from "./citation_cff";
 
 /**
@@ -39,12 +39,10 @@ export async function runCitingPapers(cffFile: ValidCffObject): Promise<ReturnOb
     });
     const outData1: Paper[] = await semanticScholarCitations(authors, title, refTitles);
     const outData2: Paper[] = await openAlexCitations(authors, title, refTitles);
-    const output: Paper[] = mergeDuplicates(outData1, outData2);
-    for(const paper of output){
-        console.log("----------")
-        console.log(paper.url)
-        console.log(paper.fields)
-    }
+    const outputPapers: Paper[] = mergeDuplicates(outData1, outData2);
+    const output = new Citations(outputPapers);
+    console.log(output);
+    console.log(output.unqiueFields);
     return {
         ReturnName: "citingPapers",
         ReturnData: output
