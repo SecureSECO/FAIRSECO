@@ -1,3 +1,4 @@
+import internal from "stream";
 
 export class Paper {
     title: string;
@@ -9,12 +10,11 @@ export class Paper {
     authors: Author[];
     discipline: Discipline;
     fields: Field[];
-    // TODO
-    // journal: string;
-    // numberOfCitations: int;
-    // URL: string;
+    journal: string;
+    url : string;
+    numberOfCitations: number;
 
-    constructor(title: string, doi: string, pmid: string, pmcid: string, year: number, database: string, authors: Author[], fields: string[]) {
+    constructor(title: string, doi: string, pmid: string, pmcid: string, year: number, database: string, authors: Author[], fields: string[], journal: string, url: string, numberOfCitations: number) {
         this.title = title;
         this.year = year;
         this.doi = doi;
@@ -24,6 +24,9 @@ export class Paper {
         this.authors = authors;
         this.fields = this.getFields(fields);
         this.discipline = this.getDiscipline(fields);
+        this.journal = journal;
+        this.url = url;
+        this.numberOfCitations = numberOfCitations;
     }
 
     public combine(input: Paper): Paper {
@@ -51,76 +54,80 @@ export class Paper {
     private getFields(input: string[]): Field[] {
         const output: Field[] = []
         input.forEach(element => {
+            element = element.toLowerCase();
             switch (element) {
-                case ("Computer Science"):
+                case ("computer science"):
                     output.push("Computer science");
                     break;
-                case ("Medicine"):
+                case ("medicine"):
                     output.push("Medicine");
                     break;
-                case ("Chemistry"):
+                case ("chemistry"):
                     output.push("Chemistry");
                     break;
-                case ("Biology"):
+                case ("biology"):
                     output.push("Biology");
                     break;
-                case ("Materials Science"):
+                case ("materials science"):
                     output.push("Materials science");
                     break;
-                case ("Physics"):
+                case ("physics"):
                     output.push("Physics");
                     break;
-                case ("Geology"):
+                case ("geology"):
                     output.push("Geology");
                     break;
-                case ("Psychology"):
+                case ("psychology"):
                     output.push("Psychology");
                     break;
-                case ("Art"):
+                case ("art"):
                     output.push("Art");
                     break;
-                case ("History"):
+                case ("history"):
                     output.push("History");
                     break;
-                case ("Geography"):
+                case ("geography"):
                     output.push("Geography");
                     break;
-                case ("Sociology"):
+                case ("sociology"):
                     output.push("Sociology");
                     break;
-                case ("Business"):
+                case ("business"):
                     output.push("Business");
                     break;
-                case ("Political Science"):
+                case ("political science"):
                     output.push("Political science");
                     break;
-                case ("Economics"):
+                case ("economics"):
                     output.push("Economics");
                     break;
-                case ("Philosophy"):
+                case ("philosophy"):
                     output.push("Philosophy");
                     break;
-                case ("Mathematics"):
+                case ("mathematics"):
                     output.push("Mathematics");
                     break;
-                case ("Engineering"):
+                case ("engineering"):
                     output.push("Engineering");
                     break;
-                case ("Environmental Science"):
+                case ("environmental science"):
                     output.push("Environmental science");
                     break;
-                case ("Agricultural and Food Sciences"):
+                case ("agricultural and food sciences"):
                     output.push("Biology");
                     break;
-                case ("Law"):
+                case ("law"):
                     output.push("Philosophy");
                     break;
-                case ("Education"):
+                case ("education"):
                     output.push("Psychology");
                     break;
-                case ("Linguistics"):
+                case ("linguistics"):
                     output.push("Psychology");
                     break;
+                // default:
+                //     console.log(element)
+                //     break;
             }
         });
         if (output.length === 0)

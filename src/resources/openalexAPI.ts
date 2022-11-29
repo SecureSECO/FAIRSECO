@@ -1,4 +1,5 @@
 import fetch from "node-fetch";
+import { stringify } from "querystring";
 import { Author, Paper, MetaDataPaper } from "./Paper";
 import { calculateProbabiltyOfReference } from "./probability";
 /**
@@ -7,15 +8,23 @@ import { calculateProbabiltyOfReference } from "./probability";
  */
 export async function openAlexCitations(authors: Author[], title: string, firstRefTitles: string[]): Promise<Paper[]> {
     // find reference titles
-    let refTitles: string[] = await getRefTitles(authors, title);
-    refTitles = firstRefTitles.concat(refTitles);
+    //const starttime = performance.now()
+    let paperId = "";
+    if(firstRefTitles.length === 0){      
+        let refTitles: string[] = await getRefTitles(authors, title);
+        paperId = refTitles[0];
+    }
+    else{
+        //also need to check for multiple titles?
+        paperId = await getOpenAlexPaperId(firstRefTitles[0]);
+
+    }    
+    paperId = paperId.replace("https://openalex.org/", "");
     // prepare query strings
     const apiURL = "https://api.openalex.org/";
     const query = "works?filter=cites:";
-    const filter = ",type:Paper-article";
+    const filter = ",type:journal-article";
     // get the unique id OpenAlex gives it's papers
-    let paperId = refTitles[0];
-    paperId = paperId.replace("https://openalex.org/", "");
     // instanciate output array
     let output: Paper[] = [];
     try {
@@ -28,6 +37,7 @@ export async function openAlexCitations(authors: Author[], title: string, firstR
         const amount = firstResponseJSON.meta.count;
         const pages = Math.ceil(amount / 200);
         let outputText = "";
+        //if pages not 0 ?
         for (let i = 1; i <= pages; i++) {
             const response = await fetch(apiURL + query + paperId + filter + "&page=" + String(i) + "&per-page=200", {
                 method: 'GET',
@@ -41,7 +51,10 @@ export async function openAlexCitations(authors: Author[], title: string, firstR
         const outputJSON = JSON.parse(outputText);
         // save outputted metadata in Paper object and append to output array
         outputJSON.forEach((element: any) => {
-            let title = ""; let year = 0; let DOI = ""; let pmid = ""; let pmcid = ""; const fields: string[] = [];
+            let title = ""; let year = 0; let DOI = ""; let pmid = ""; let pmcid = ""; const fields: string[] = []; let journal = ""; let url =""; let numberOfCitations = 0;
+            if(element.id !== undefined){
+                url = element.id;
+            }
             if (element.title !== undefined && element.publication_year !== undefined) {
                 if (element.ids !== undefined) {
                     title = element.title;
@@ -62,6 +75,13 @@ export async function openAlexCitations(authors: Author[], title: string, firstR
                     DOI = DOI.slice(16);
                     pmid = pmid.slice(32);
                     pmcid = pmcid.slice(32);
+                }        
+                if(element.host_venue.publisher !== undefined)
+                {
+                    journal = element.host_venue.publisher;
+                }
+                if(element.cited_by_count !== undefined){
+                    numberOfCitations = element.cited_by_count;
                 }
                 if (element.concepts !== undefined) {
                     element.concepts.forEach((concept: any) => {
@@ -69,14 +89,16 @@ export async function openAlexCitations(authors: Author[], title: string, firstR
                             fields.push(concept.display_name);
                     });
                 }
-                const tempPaper = new Paper(title, DOI, pmid, pmcid, year, "OpenAlex", [], fields);
+                const tempPaper = new Paper(title, DOI, pmid, pmcid, year, "OpenAlex", [], fields, journal, url, numberOfCitations);
                 output = output.concat([tempPaper]);
             }
         });
+        //console.log("Getting citations took " + (performance.now() - endtime) + " ms")
         return output;
     }
     catch (error){
         console.log("error while searching openAlex with openAlex ID of: " + paperId);
+        console.log()
         return output;
     }      
 }
@@ -104,16 +126,20 @@ export async function getRefTitles(authors: Author[], title: string): Promise<st
             });
             const outputJSON = await response.json();
             const results = outputJSON.results[0];
-            const amount = results.works_count;
-            const pages = Math.ceil(amount / 200);
+            if(results === undefined){
+                //console.log("no results for author " + author.givenNames + " " + author.familyName)
+                continue;
+            }
             const worksApiURL: string = results.works_api_url;
-            for (let i = 1; i <= pages; i++) {
-                const response = await fetch(worksApiURL + "&page=" + String(i) + "&per-page=200", {
+            let next_cursor = "*"
+            while(next_cursor !== null) {
+                const response = await fetch(worksApiURL + "&per-page=200&cursor=" + next_cursor,{
                     method: 'GET',
                     headers: {},
                 });
                 const responseJSON = await response.json();
                 papers = papers.concat(responseJSON.results);
+                next_cursor = responseJSON.meta.next_cursor;
             }
         }
         catch (error){
@@ -171,7 +197,7 @@ export async function getOpenAlexPaperId(title: string): Promise<string> {
         });
         const output = await response.text();
         const outputJSON = JSON.parse(output);
-        const paperid = outputJSON.results[0].id;;
+        const paperid = outputJSON.results[0].id;
         return paperid;
     }
     catch (error){

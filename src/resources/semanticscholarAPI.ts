@@ -7,13 +7,19 @@ import { calculateProbabiltyOfReference } from "./probability";
  */
 export async function semanticScholarCitations(authors: Author[], title: string, firstRefTitles: string[]): Promise<Paper[]> {
     // find reference titles
-    let refTitles: string[] = await getRefTitles(authors, title);
-    refTitles = firstRefTitles.concat(refTitles);
+    let paperId = "";
+    if(firstRefTitles.length === 0){      
+        let refTitles: string[] = await getRefTitles(authors, title);
+        paperId = refTitles[0];
+    }
+    else{
+        //also need to check for multiple titles?
+        paperId = await getSemanticScholarPaperId(firstRefTitles[0]);
+    }
     // prepare query strings
     const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/paper/";
-    const fieldsQuery = "/citations?fields=title,externalIds,year,authors,s2FieldsOfStudy&limit=1000";
+    const fieldsQuery = "/citations?fields=title,externalIds,year,authors,s2FieldsOfStudy,journal,url,citationCount&limit=1000";
     // get the unique id semantic scholar gives it's papers
-    const paperId = refTitles[0];
     // instanciate output array
     let output: Paper[] = [];
 
@@ -28,7 +34,7 @@ export async function semanticScholarCitations(authors: Author[], title: string,
         outputJSON.data.forEach((element: any) => {
             const title = element.citingPaper.title;
             const year = element.citingPaper.year;
-            let DOI = ""; let pmid = ""; let pmcid = ""; const fields: string[] = [];
+            let DOI = ""; let pmid = ""; let pmcid = ""; const fields: string[] = []; let journal =""; let url = ""; let numberOfCitations = 0;
             if (element.citingPaper.externalIds !== undefined) {
                 for (const [key, value] of Object.entries(element.citingPaper.externalIds)) {
                     switch (key) {
@@ -47,12 +53,24 @@ export async function semanticScholarCitations(authors: Author[], title: string,
                 pmid = pmid.toLowerCase();
                 pmcid = pmcid.toLowerCase();
             }
+            if(element.citingPaper.journal !== undefined && element.citingPaper.journal !== null){
+                const journalObject = element.citingPaper.journal
+                if(journalObject.name !== undefined){
+                    journal = journalObject.name
+                }
+            }
+            if(element.citingPaper.url !== undefined){
+                url = element.citingPaper.url
+            }
+            if(element.citingPaper.citationCount !== undefined){
+                numberOfCitations = element.citingPaper.citationCount
+            }
             if (element.citingPaper.s2FieldsOfStudy !== undefined) {
                 element.citingPaper.s2FieldsOfStudy.forEach((element: any) => {
                     fields.push(element.category);
                 });
             }
-            const tempPaper = new Paper(title, DOI, pmid, pmcid, year, "SemanticScholar", [], fields);
+            const tempPaper = new Paper(title, DOI, pmid, pmcid, year, "SemanticScholar", [], fields, journal, url, numberOfCitations);
             output = output.concat([tempPaper]);
         });
         return output;
@@ -141,6 +159,7 @@ export async function getSemanticScholarPaperId(title: string): Promise<string> 
     // prepare query strings
     const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/paper/";
     const searchQuery = "search?query=";
+    console.log(semanticScholarApiURL + searchQuery + "\"" + title + "\"")
     try {
         // API call and save it in JSON, then extract the paperID
         // TODO: remove ANYs 
@@ -148,7 +167,11 @@ export async function getSemanticScholarPaperId(title: string): Promise<string> 
             method: 'GET',
             headers: {},
         });
-        const outputJSON : any = await response.json();
+        const outputText = await response.text()
+        const outputJSON : any = JSON.parse(outputText);
+        
+        console.log(outputJSON);
+        //const outputJSON : any = await response.json();
         const paperid = outputJSON.data[0].paperId;
         return paperid;
     }
