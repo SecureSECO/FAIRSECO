@@ -1,7 +1,8 @@
 import { ReturnObject } from "../getdata";
 import { GithubInfo } from "../git";
+import * as fs from "fs";
+
 import { exec, ExecOptions } from "@actions/exec";
-import core from "@actions/core";
 
 /**
  * This function first runs the searchSECO docker and listens to stdout for its output.
@@ -67,25 +68,45 @@ export async function runSearchseco(ghInfo: GithubInfo): Promise<ReturnObject> {
     let stdout = "";
     let stderr = "";
 
+    try {
+        fs.mkdirSync("./ssOutputFiles");
+    } catch {
+        console.error("Could not create folder");
+    }
+
+    const stdOutStream = fs.createWriteStream("./ssOutputFiles/ssOutput.txt");
+    const stdErrStream = fs.createWriteStream("./ssOutputFiles/ssError.txt");
+
     const options: ExecOptions = {
         ignoreReturnCode: true,
+        windowsVerbatimArguments: true,
+        outStream: stdOutStream,
+        errStream: stdErrStream,
     };
 
     // SearchSECO prints its results in the console. The code below copies the
     // output to the variables stdout and stderr
-    options.listeners = {
-        stdout: (data: Buffer) => {
-            stdout += data.toString();
-        },
-        stderr: (data: Buffer) => {
-            stderr += data.toString();
-        },
-    };
+    // options.listeners = {
+    //     stdout: (data: Buffer) => {
+    //         stdout += data.toString();
+    //     },
+    //     stderr: (data: Buffer) => {
+    //         stderr += data.toString();
+    //     },
+    // };
 
     // Executes the docker run command
     const exitCode = await exec(cmd, args, options);
 
+    stdout = fs.readFileSync("./ssOutput.txt").toString();
+    stderr = fs.readFileSync("./ssError.txt").toString();
+
     console.debug("Docker running SearchSECO returned " + String(exitCode));
+    if (stderr !== "") console.log(stderr);
+    // console.debug("stdout:");
+    // console.debug(stdout);
+    // console.debug("stderr:");
+    // console.debug(stderr);
 
     // ParseInput expects an array of trimmed lines
     // (i.e. without trailing or leading whitespace)
