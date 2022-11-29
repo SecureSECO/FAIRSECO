@@ -4,6 +4,10 @@ import { openAlexCitations } from "./openalexAPI";
 import { Author, Paper } from "./Paper";
 import { ValidCffObject } from "./citation_cff";
 
+/**
+ * 
+ * @returns returnObject containing unique papers citing the software repository
+ */
 export async function runCitingPapers(cffFile: ValidCffObject): Promise<ReturnObject> {
     const authors: Author[] = [];
     const title: string = cffFile.citation.title;
@@ -42,14 +46,47 @@ export async function runCitingPapers(cffFile: ValidCffObject): Promise<ReturnOb
     };
 } 
 
-// TODO: Make combine function, so missing meta data will be combined from both sources
+/**
+ * 
+ * @returns array containing all the unique papers with the comined meta-data from both sources is it is listed by both databases
+ * This function stores all papers in a map with the DOI identifier as key, if the map already contains a paper with it's DOI it combines it into one making sure no meta-data is lost
+ * it then does the same for the pmid identifier and pmcid identifier. Splitting this function over three foreach calls and three maps ensures an O(n) runtime, instead an O(n^2)
+ */
 export function deleteDuplicates(array1: Paper[], array2: Paper[]): Paper[] {
-    let output: Paper[] = array1.concat(array2);
-    output = output.filter((value, index, self) => 
-        index === self.findIndex((t) => 
-            t.doi === value.doi && t.doi !== "" || t.pmid === value.pmid && t.pmid !== "" || t.pmcid === value.pmcid && t.pmcid !== ""
-        )
-    )
-    return output;
+    let totalArray: Paper[] = array1.concat(array2);
+    const doiMap: Map<string, Paper> = new Map();
+    const pmidMap: Map<string, Paper> = new Map();
+    const pmcidMap: Map<string, Paper> = new Map();
+    totalArray.forEach(element => {
+        if (doiMap.has(element.doi)) {
+            const tempPaper = doiMap.get(element.doi) as Paper;
+            doiMap.set(element.doi, element.combine(tempPaper));
+        }
+        else {
+            doiMap.set(element.doi, element);
+        }
+    })
+    totalArray = Array.from(pmidMap.values());
+    totalArray.forEach(element => {
+        if (pmidMap.has(element.pmid)) {
+            const tempPaper = pmidMap.get(element.pmid) as Paper;
+            pmidMap.set(element.pmid, element.combine(tempPaper));
+        }
+        else {
+            pmidMap.set(element.pmid, element);
+        }
+    })
+    totalArray = Array.from(pmidMap.values());
+    totalArray.forEach(element => {
+        if (pmcidMap.has(element.pmcid)) {
+            const tempPaper = pmcidMap.get(element.pmcid) as Paper;
+            pmcidMap.set(element.pmcid, element.combine(tempPaper));
+        }
+        else {
+            pmcidMap.set(element.pmcid, element);
+        }
+    })
+    totalArray = Array.from(pmcidMap.values());
+    return totalArray;
 }
 

@@ -26,6 +26,28 @@ export class Paper {
         this.discipline = this.getDiscipline(fields);
     }
 
+    public combine(input: Paper): Paper {
+        if (this.doi === "")
+            this.doi = input.doi;
+        if (this.pmid === "")
+            this.pmid = input.pmid;
+        if (this.pmcid === "")
+            this.pmcid = input.pmcid;
+        if (this.authors !== input.authors) {
+            input.authors.forEach(element => {
+                if (!this.authors.includes(element))
+                    this.authors.push(element);
+            });
+        }
+        if (this.fields !== input.fields) {
+            input.fields.forEach(element => {
+                if (!this.fields.includes(element))
+                    this.fields.push(element);
+            });
+        }
+        return this;
+    }
+
     private getFields(input: string[]): Field[] {
         const output: Field[] = []
         input.forEach(element => {

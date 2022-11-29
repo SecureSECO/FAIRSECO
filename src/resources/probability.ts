@@ -34,7 +34,6 @@ export function calculateProbabiltyOfReference(uniquePapers: Map<string, MetaDat
     const title = uniquePapers.get(mainPaperId)?.title;
 
     // Find the probabilty of a paper being a reference paper based on the similarity of the title to the main paper, ignoring papers beneath the mean value of contributors or citations.
-    // TODO: change title strings to Map<word, count> and compare those.
     if(title === undefined){
         console.log("Paper has no title")
     }
