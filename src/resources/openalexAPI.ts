@@ -20,6 +20,10 @@ import { calculateProbabiltyOfReference } from "./probability";
     return output;
 }
 
+/**
+ * 
+ * @returns array containing the list of papers citing the giving paperId.
+ */
 export async function getCitationPapers(paperId: string): Promise<Paper[]> {
     paperId = paperId.replace("https://openalex.org/", "");
     // prepare query strings

@@ -20,6 +20,10 @@ export async function semanticScholarCitations(authors: Author[], title: string,
     return output;
 }
 
+/**
+ * 
+ * @returns array containing the list of papers citing the giving paperId.
+ */
 export async function getCitationPapers(paperId: string): Promise < Paper[] > {
     // prepare query strings
     const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/paper/";
@@ -77,11 +81,11 @@ export async function getCitationPapers(paperId: string): Promise < Paper[] > {
                     fields.push(element.category);
                 });
             }
-            if(element.authors !== undefined){
-                const author = new Author(element.authors.name, element.authors.authorId);
-                authors.push(author);
+            if (element.authors !== undefined) {
+                for (const author of element.authors)
+                    authors.push(new Author(author.name, ""));
             }
-            const tempPaper = new Paper(title, DOI, pmid, pmcid, year, "SemanticScholar", [], fields, journal, url, numberOfCitations);
+            const tempPaper = new Paper(title, DOI, pmid, pmcid, year, "SemanticScholar", authors, fields, journal, url, numberOfCitations);
             output = output.concat([tempPaper]);
         });
         return output;
