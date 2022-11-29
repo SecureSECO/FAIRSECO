@@ -65,8 +65,13 @@ export async function runSearchseco(ghInfo: GithubInfo): Promise<ReturnObject> {
         gitrepo,
     ];
 
+    // Output from the docker container
     let stdout = "";
     let stderr = "";
+
+    // Output from Docker itself
+    let dockOut = "";
+    let dockErr = "";
 
     try {
         if (!fs.existsSync("./ssOutputFiles")) fs.mkdirSync("./ssOutputFiles/");
@@ -99,11 +104,11 @@ export async function runSearchseco(ghInfo: GithubInfo): Promise<ReturnObject> {
     // Executes the docker run command
     const exitCode = await exec(cmd, args, options);
 
-    stdout = fs.readFileSync("./ssOutputFiles/ssOutput.txt").toString();
-    stderr = fs.readFileSync("./ssOutputFiles/ssError.txt").toString();
+    dockOut = fs.readFileSync("./ssOutputFiles/ssOutput.txt").toString();
+    dockErr = fs.readFileSync("./ssOutputFiles/ssError.txt").toString();
 
     console.debug("Docker running SearchSECO returned " + String(exitCode));
-    if (stderr !== "") console.log(stderr);
+    // if (stderr !== "") console.log(stderr);
     // console.debug("stdout:");
     // console.debug(stdout);
     // console.debug("stderr:");

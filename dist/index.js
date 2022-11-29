@@ -18167,7 +18167,10 @@ function getCitationFile(path) {
         let stdout = "";
         let stderr = "";
         try {
-            fs.mkdirSync("./cffOutputFiles/");
+            if (!fs.existsSync("./cffOutputFiles"))
+                fs.mkdirSync("./cffOutputFiles/");
+            else
+                console.log("Folder cffOutputFiles already exists!");
         }
         catch (_c) {
             console.error("Could not create cffOutputFiles folder");
@@ -18468,8 +18471,13 @@ function runHowfairis(ghInfo) {
         ];
         let stdout = "";
         let stderr = "";
+        let dockOut = "";
+        let dockErr = "";
         try {
-            fs.mkdirSync("./hfiOutputFiles/");
+            if (!fs.existsSync("./hfiOutputFiles"))
+                fs.mkdirSync("./hfiOutputFiles/");
+            else
+                console.log("Folder hfiOutputFiles already exists!");
         }
         catch (_a) {
             console.error("Could not create hfiOutputFiles folder");
@@ -18482,17 +18490,17 @@ function runHowfairis(ghInfo) {
             outStream: stdOutStream,
             errStream: stdErrStream,
         };
-        // options.listeners = {
-        //     stdout: (data: Buffer) => {
-        //         stdout += data.toString();
-        //     },
-        //     stderr: (data: Buffer) => {
-        //         stderr += data.toString();
-        //     },
-        // };
+        options.listeners = {
+            stdout: (data) => {
+                stdout += data.toString();
+            },
+            stderr: (data) => {
+                stderr += data.toString();
+            },
+        };
         const exitCode = yield (0, exec_1.exec)(cmd, args, options);
-        stdout = fs.readFileSync("./hfiOutputFiles/hfiOutput.txt").toString();
-        stderr = fs.readFileSync("./hfiOutputFiles/hfiError.txt").toString();
+        dockOut = fs.readFileSync("./hfiOutputFiles/hfiOutput.txt").toString();
+        dockErr = fs.readFileSync("./hfiOutputFiles/hfiError.txt").toString();
         return {
             ReturnName: "HowFairIs",
             ReturnData: JSON.parse(stdout),
@@ -18997,7 +19005,10 @@ function runSearchseco(ghInfo) {
         let stdout = "";
         let stderr = "";
         try {
-            fs.mkdirSync("./ssOutputFiles/");
+            if (!fs.existsSync("./ssOutputFiles"))
+                fs.mkdirSync("./ssOutputFiles/");
+            else
+                console.log("Folder ssOutputFiles already exists!");
         }
         catch (_a) {
             console.error("Could not create ssOutputFiles folder");

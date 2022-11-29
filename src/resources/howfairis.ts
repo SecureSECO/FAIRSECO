@@ -24,8 +24,13 @@ export async function runHowfairis(ghInfo: GithubInfo): Promise<ReturnObject> {
         ghInfo.FullURL,
     ];
 
+    // Output from the docker container
     let stdout = "";
     let stderr = "";
+
+    // Output from Docker itself
+    let dockOut = "";
+    let dockErr = "";
 
     try {
         if (!fs.existsSync("./hfiOutputFiles"))
@@ -45,18 +50,18 @@ export async function runHowfairis(ghInfo: GithubInfo): Promise<ReturnObject> {
         errStream: stdErrStream,
     };
 
-    // options.listeners = {
-    //     stdout: (data: Buffer) => {
-    //         stdout += data.toString();
-    //     },
-    //     stderr: (data: Buffer) => {
-    //         stderr += data.toString();
-    //     },
-    // };
+    options.listeners = {
+        stdout: (data: Buffer) => {
+            stdout += data.toString();
+        },
+        stderr: (data: Buffer) => {
+            stderr += data.toString();
+        },
+    };
     const exitCode = await exec(cmd, args, options);
 
-    stdout = fs.readFileSync("./hfiOutputFiles/hfiOutput.txt").toString();
-    stderr = fs.readFileSync("./hfiOutputFiles/hfiError.txt").toString();
+    dockOut = fs.readFileSync("./hfiOutputFiles/hfiOutput.txt").toString();
+    dockErr = fs.readFileSync("./hfiOutputFiles/hfiError.txt").toString();
 
     return {
         ReturnName: "HowFairIs",

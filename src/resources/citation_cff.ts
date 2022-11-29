@@ -83,8 +83,13 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
         "--validate",
     ];
 
+    // Output from the docker container
     let stdout = "";
     let stderr = "";
+
+    // Output from Docker itself
+    let dockOut = "";
+    let dockErr = "";
 
     try {
         if (!fs.existsSync("./cffOutputFiles"))
@@ -115,8 +120,8 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
     // Run cffconvert in docker to validate the citation.cff file
     const exitCode = await exec(cmd, args, options);
 
-    stdout = fs.readFileSync("./cffOutputFiles/cffOutput.txt").toString();
-    stderr = fs.readFileSync("./cffOutputFiles/cffError.txt").toString();
+    dockOut = fs.readFileSync("./cffOutputFiles/cffOutput.txt").toString();
+    dockErr = fs.readFileSync("./cffOutputFiles/cffError.txt").toString();
 
     // Check the exit code for success
     if (exitCode === 0) {
