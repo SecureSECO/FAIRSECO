@@ -13,7 +13,7 @@ export async function semanticScholarCitations(authors: Author[], title: string,
         paperId = refTitles[0];
     }
     else{
-        //also need to check for multiple titles?
+        // also need to check for multiple titles?
         paperId = await getSemanticScholarPaperId(firstRefTitles[0]);
     }
     // prepare query strings
@@ -159,7 +159,6 @@ export async function getSemanticScholarPaperId(title: string): Promise<string> 
     // prepare query strings
     const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/paper/";
     const searchQuery = "search?query=";
-    console.log(semanticScholarApiURL + searchQuery + "\"" + title + "\"")
     try {
         // API call and save it in JSON, then extract the paperID
         // TODO: remove ANYs 
@@ -169,9 +168,7 @@ export async function getSemanticScholarPaperId(title: string): Promise<string> 
         });
         const outputText = await response.text()
         const outputJSON : any = JSON.parse(outputText);
-        
-        console.log(outputJSON);
-        //const outputJSON : any = await response.json();
+        // const outputJSON : any = await response.json();
         const paperid = outputJSON.data[0].paperId;
         return paperid;
     }

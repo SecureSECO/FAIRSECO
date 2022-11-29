@@ -1,5 +1,3 @@
-import internal from "stream";
-
 export class Paper {
     title: string;
     doi: string;

@@ -62,30 +62,45 @@ export function deleteDuplicates(array1: Paper[], array2: Paper[]): Paper[] {
     const doiMap: Map<string, Paper> = new Map();
     const pmidMap: Map<string, Paper> = new Map();
     const pmcidMap: Map<string, Paper> = new Map();
+    let mockID: number = 0;
     totalArray.forEach(element => {
         if (doiMap.has(element.doi)) {
             const tempPaper = doiMap.get(element.doi) as Paper;
             doiMap.set(element.doi, element.combine(tempPaper));
         }
+        else if (element.doi === "") {
+            doiMap.set(mockID.toString(), element);
+            mockID++;
+        }
         else {
             doiMap.set(element.doi, element);
         }
     })
-    totalArray = Array.from(pmidMap.values());
+    totalArray = Array.from(doiMap.values());
+    mockID = 0;
     totalArray.forEach(element => {
         if (pmidMap.has(element.pmid)) {
             const tempPaper = pmidMap.get(element.pmid) as Paper;
             pmidMap.set(element.pmid, element.combine(tempPaper));
+        }
+        else if (element.pmid === "") {
+            pmidMap.set(mockID.toString(), element);
+            mockID++;
         }
         else {
             pmidMap.set(element.pmid, element);
         }
     })
     totalArray = Array.from(pmidMap.values());
+    mockID = 0;
     totalArray.forEach(element => {
         if (pmcidMap.has(element.pmcid)) {
             const tempPaper = pmcidMap.get(element.pmcid) as Paper;
             pmcidMap.set(element.pmcid, element.combine(tempPaper));
+        }
+        else if (element.pmcid === "") {
+            pmcidMap.set(mockID.toString(), element);
+            mockID++;
         }
         else {
             pmcidMap.set(element.pmcid, element);
