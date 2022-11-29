@@ -35,7 +35,7 @@ export async function runCitingPapers(cffFile: ValidCffObject): Promise<ReturnOb
                     break;
             }
         }
-        authors.push(new Author(givenNames, familyName, orchidId));
+        authors.push(new Author(givenNames + " " + familyName, orchidId));
     });
     const outData1: Paper[] = await semanticScholarCitations(authors, title, refTitles);
     const outData2: Paper[] = await openAlexCitations(authors, title, refTitles);
