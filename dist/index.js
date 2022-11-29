@@ -18164,8 +18164,12 @@ function getCitationFile(path) {
             "citationcff/cffconvert",
             "--validate",
         ];
+        // Output from the docker container
         let stdout = "";
         let stderr = "";
+        // Output from Docker itself
+        let dockOut = "";
+        let dockErr = "";
         try {
             if (!fs.existsSync("./cffOutputFiles"))
                 fs.mkdirSync("./cffOutputFiles/");
@@ -18193,15 +18197,15 @@ function getCitationFile(path) {
         // };
         // Run cffconvert in docker to validate the citation.cff file
         const exitCode = yield (0, exec_1.exec)(cmd, args, options);
-        stdout = fs.readFileSync("./cffOutputFiles/cffOutput.txt").toString();
-        stderr = fs.readFileSync("./cffOutputFiles/cffError.txt").toString();
+        dockOut = fs.readFileSync("./cffOutputFiles/cffOutput.txt").toString();
+        dockErr = fs.readFileSync("./cffOutputFiles/cffError.txt").toString();
         // Check the exit code for success
         if (exitCode === 0) {
             // Citation.cff file is valid, return ValidCFFObject with data and validation message
             const returnData = {
                 status: "valid",
                 citation: result,
-                validation_message: stdout,
+                validation_message: getLastLine(stdout),
             };
             return {
                 ReturnName: "Citation",
@@ -18243,6 +18247,10 @@ function getError(stderr) {
     return exports.unknownErrorMsg;
 }
 exports.getError = getError;
+function getLastLine(input) {
+    const lines = input.split("\n");
+    return lines[lines.length - 1];
+}
 
 
 /***/ }),
@@ -18469,8 +18477,10 @@ function runHowfairis(ghInfo) {
             "-",
             ghInfo.FullURL,
         ];
+        // Output from the docker container
         let stdout = "";
         let stderr = "";
+        // Output from Docker itself
         let dockOut = "";
         let dockErr = "";
         try {
@@ -19002,8 +19012,12 @@ function runSearchseco(ghInfo) {
             "check",
             gitrepo,
         ];
+        // Output from the docker container
         let stdout = "";
         let stderr = "";
+        // Output from Docker itself
+        let dockOut = "";
+        let dockErr = "";
         try {
             if (!fs.existsSync("./ssOutputFiles"))
                 fs.mkdirSync("./ssOutputFiles/");
@@ -19033,11 +19047,10 @@ function runSearchseco(ghInfo) {
         // };
         // Executes the docker run command
         const exitCode = yield (0, exec_1.exec)(cmd, args, options);
-        stdout = fs.readFileSync("./ssOutputFiles/ssOutput.txt").toString();
-        stderr = fs.readFileSync("./ssOutputFiles/ssError.txt").toString();
+        dockOut = fs.readFileSync("./ssOutputFiles/ssOutput.txt").toString();
+        dockErr = fs.readFileSync("./ssOutputFiles/ssError.txt").toString();
         console.debug("Docker running SearchSECO returned " + String(exitCode));
-        if (stderr !== "")
-            console.log(stderr);
+        // if (stderr !== "") console.log(stderr);
         // console.debug("stdout:");
         // console.debug(stdout);
         // console.debug("stderr:");

@@ -129,7 +129,7 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
         const returnData: ValidCffObject = {
             status: "valid",
             citation: result,
-            validation_message: stdout,
+            validation_message: getLastLine(stdout),
         };
         return {
             ReturnName: "Citation",
@@ -168,4 +168,10 @@ export function getError(stderr: string): string {
 
     // No cffconvert error message was found, so the error is unknown.
     return unknownErrorMsg;
+}
+
+function getLastLine(input: string): string {
+    const lines = input.split("\n");
+
+    return lines[lines.length - 1];
 }
