@@ -145,87 +145,77 @@ export class Paper {
 
     private getDiscipline(input: string[]): Discipline {
         const output: Discipline[] = [];
-        for (const field of input) {
-            switch (field) {
-                case ("Computer Science"):
-                    output.push("Formal Sciences");
-                    break;
-                case ("Computer science"):
-                    output.push("Formal Sciences");
-                    break;
-                case ("Medicine"):
-                    output.push("Applied Sciences");
-                    break;
-                case ("Chemistry"):
-                    output.push("Natural Sciences");
-                    break;
-                case ("Biology"):
-                    output.push("Natural Sciences");
-                    break;
-                case ("Materials Science"):
-                    output.push("Applied Sciences");
-                    break;
-                case ("Physics"):
-                    output.push("Natural Sciences");
-                    break;
-                case ("Geology"):
-                    output.push("Natural Sciences");
-                    break;
-                case ("Psychology"):
-                    output.push("Social Sciences");
-                    break;
-                case ("Art"):
-                    output.push("Humanities");
-                    break;
-                case ("History"):
-                    output.push("Humanities");
-                    break;
-                case ("Geography"):
-                    output.push("Social Sciences");
-                    break;
-                case ("Sociology"):
-                    output.push("Social Sciences");
-                    break;
-                case ("Business"):
-                    output.push("Applied Sciences");
-                    break;
-                case ("Political Science"):
-                    output.push("Applied Sciences");
-                    break;
-                case ("Political science"):
-                    output.push("Applied Sciences");
-                    break;
-                case ("Economics"):
-                    output.push("Social Sciences");
-                    break;
-                case ("Philosophy"):
-                    output.push("Humanities");
-                    break;
-                case ("Mathematics"):
-                    output.push("Formal Sciences");
-                    break;
-                case ("Engineering"):
-                    output.push("Applied Sciences");
-                    break;
-                case ("Environmental Science"):
-                    output.push("Applied Sciences");
-                    break;
-                case ("Environmental science"):
-                    output.push("Applied Sciences");
-                    break;
-                case ("Agricultural and Food Sciences"):
-                    output.push("Applied Sciences");
-                    break;
-                case ("Law"):
-                    output.push("Humanities");
-                    break;
-                case ("Education"):
-                    output.push("Social Sciences");
-                    break;
-                case ("Linguistics"):
-                    output.push("Social Sciences");
-                    break;
-            }
+        const inputField : string = input[0].toLowerCase()
+        switch (inputField) {
+            case ("computer science"):
+                output.push("Formal Sciences");
+                break;
+            case ("medicine"):
+                output.push("Applied Sciences");
+                break;
+            case ("chemistry"):
+                output.push("Natural Sciences");
+                break;
+            case ("biology"):
+                output.push("Natural Sciences");;
+                break;
+            case ("materials science"):
+                output.push("Applied Sciences");
+                break;
+            case ("physics"):
+                output.push("Natural Sciences");
+                break;
+            case ("geology"):
+                output.push("Natural Sciences");
+                break;
+            case ("psychology"):
+                output.push("Social Sciences");
+                break;
+            case ("art"):
+                output.push("Humanities");
+                break;
+            case ("history"):
+                output.push("Humanities");
+                break;
+            case ("geography"):
+                output.push("Social Sciences");
+                break;
+            case ("sociology"):
+                output.push("Social Sciences");
+                break;
+            case ("business"):
+                output.push("Applied Sciences");
+                break;
+            case ("political science"):
+                output.push("Applied Sciences");
+                break;
+            case ("economics"):
+                output.push("Social Sciences");
+                break;
+            case ("philosophy"):
+                output.push("Humanities");
+                break;
+            case ("mathematics"):
+                output.push("Formal Sciences");
+                break;
+            case ("engineering"):
+                output.push("Applied Sciences");
+                break;
+            case ("environmental science"):
+                output.push("Applied Sciences");
+                break;
+            case ("agricultural and food sciences"):
+                output.push("Applied Sciences");
+                break;
+            case ("law"):
+                output.push("Humanities");
+                break;
+            case ("education"):
+                output.push("Social Sciences");
+                break;
+            case ("linguistics"):
+                output.push("Social Sciences");
+                break;
         }
         const map: Map<Discipline, number> = new Map();
         output.forEach(element => {
