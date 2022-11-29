@@ -28,7 +28,7 @@ export async function runHowfairis(ghInfo: GithubInfo): Promise<ReturnObject> {
     let stderr = "";
 
     try {
-        fs.mkdirSync("./hfiOutputFiles");
+        fs.mkdirSync("./hfiOutputFiles/");
     } catch {
         console.error("Could not create folder");
     }

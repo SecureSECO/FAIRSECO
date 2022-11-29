@@ -69,7 +69,7 @@ export async function runSearchseco(ghInfo: GithubInfo): Promise<ReturnObject> {
     let stderr = "";
 
     try {
-        fs.mkdirSync("./ssOutputFiles");
+        fs.mkdirSync("./ssOutputFiles/");
     } catch {
         console.error("Could not create folder");
     }
