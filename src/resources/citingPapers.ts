@@ -14,7 +14,7 @@ export async function runCitingPapers(cffFile: ValidCffObject): Promise<ReturnOb
     const refTitles: string[] = [];
     if (cffFile.citation.references !== undefined) {
         cffFile.citation.references.forEach((element: any) => {
-            if (element.type === "article")
+            if (element.type === "article" || element.type === "journal-article")
                 refTitles.push(element.title);
         });
     }

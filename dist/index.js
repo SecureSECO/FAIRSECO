@@ -15318,7 +15318,7 @@ function runCitingPapers(cffFile) {
         const refTitles = [];
         if (cffFile.citation.references !== undefined) {
             cffFile.citation.references.forEach((element) => {
-                if (element.type === "article")
+                if (element.type === "article" || element.type === "journal-article")
                     refTitles.push(element.title);
             });
         }
@@ -15644,7 +15644,7 @@ function openAlexCitations(authors, title, firstRefTitles) {
                         if (element.open_access.oa_status === "closed")
                             url = "Paper is not open access";
                         else
-                            url = element.open_access.oa_url;
+                            url = element.id;
                     }
                     const tempPaper = new Paper_1.Paper(title, DOI, pmid, pmcid, year, "OpenAlex", [], fields, journal, url, numberOfCitations);
                     output = output.concat([tempPaper]);
@@ -15966,7 +15966,6 @@ function semanticScholarCitations(authors, title, firstRefTitles) {
         if (firstRefTitles.length === 0) {
             let refTitles = yield getRefTitles(authors, title);
             paperId = refTitles[0];
-            console.log(refTitles);
         }
         else {
             // also need to check for multiple titles?
