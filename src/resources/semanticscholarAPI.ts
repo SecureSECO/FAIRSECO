@@ -9,11 +9,12 @@ export async function semanticScholarCitations(authors: Author[], title: string,
     // initiate variables
     let output: Paper[] = [];
     let paperIds: string[] = [];
-    // find reference titles
-    const paperTitles: string[] = firstRefTitles;
-    for (const title of paperTitles) 
-        paperIds.push(await getSemanticScholarPaperId(title));
-    paperIds = paperIds.concat(await getRefTitles(authors, title));
+    // find reference titles if neccessary
+    if (firstRefTitles.length === 0)
+        paperIds = await getRefTitles(authors, title);
+    else 
+        for (const title of firstRefTitles)
+            paperIds.push(await getSemanticScholarPaperId(title));
     for (const paperId of paperIds) 
         output = output.concat(await getCitationPapers(paperId));
     return output;
