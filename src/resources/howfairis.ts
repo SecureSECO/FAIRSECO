@@ -28,7 +28,9 @@ export async function runHowfairis(ghInfo: GithubInfo): Promise<ReturnObject> {
     let stderr = "";
 
     try {
-        fs.mkdirSync("./hfiOutputFiles/");
+        if (!fs.existsSync("./hfiOutputFiles"))
+            fs.mkdirSync("./hfiOutputFiles/");
+        else console.log("Folder hfiOutputFiles already exists!");
     } catch {
         console.error("Could not create hfiOutputFiles folder");
     }

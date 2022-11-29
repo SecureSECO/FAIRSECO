@@ -87,7 +87,9 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
     let stderr = "";
 
     try {
-        fs.mkdirSync("./cffOutputFiles/");
+        if (!fs.existsSync("./cffOutputFiles"))
+            fs.mkdirSync("./cffOutputFiles/");
+        else console.log("Folder cffOutputFiles already exists!");
     } catch {
         console.error("Could not create cffOutputFiles folder");
     }

@@ -69,7 +69,8 @@ export async function runSearchseco(ghInfo: GithubInfo): Promise<ReturnObject> {
     let stderr = "";
 
     try {
-        fs.mkdirSync("./ssOutputFiles/");
+        if (!fs.existsSync("./ssOutputFiles")) fs.mkdirSync("./ssOutputFiles/");
+        else console.log("Folder ssOutputFiles already exists!");
     } catch {
         console.error("Could not create ssOutputFiles folder");
     }
