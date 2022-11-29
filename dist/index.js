@@ -18167,10 +18167,10 @@ function getCitationFile(path) {
         let stdout = "";
         let stderr = "";
         try {
-            fs.mkdirSync("./cffOutputFiles");
+            fs.mkdirSync("./cffOutputFiles/");
         }
         catch (_c) {
-            console.error("Could not create folder");
+            console.error("Could not create cffOutputFiles folder");
         }
         const stdOutStream = fs.createWriteStream("./cffOutputFiles/cffOutput.txt");
         const stdErrStream = fs.createWriteStream("./cffOutputFiles/cffError.txt");
@@ -18469,10 +18469,10 @@ function runHowfairis(ghInfo) {
         let stdout = "";
         let stderr = "";
         try {
-            fs.mkdirSync("./hfiOutputFiles");
+            fs.mkdirSync("./hfiOutputFiles/");
         }
         catch (_a) {
-            console.error("Could not create folder");
+            console.error("Could not create hfiOutputFiles folder");
         }
         const stdOutStream = fs.createWriteStream("./hfiOutputFiles/hfiOutput.txt");
         const stdErrStream = fs.createWriteStream("./hfiOutputFiles/hfiError.txt");
@@ -18997,10 +18997,10 @@ function runSearchseco(ghInfo) {
         let stdout = "";
         let stderr = "";
         try {
-            fs.mkdirSync("./ssOutputFiles");
+            fs.mkdirSync("./ssOutputFiles/");
         }
         catch (_a) {
-            console.error("Could not create folder");
+            console.error("Could not create ssOutputFiles folder");
         }
         const stdOutStream = fs.createWriteStream("./ssOutputFiles/ssOutput.txt");
         const stdErrStream = fs.createWriteStream("./ssOutputFiles/ssError.txt");

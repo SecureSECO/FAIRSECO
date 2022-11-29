@@ -89,7 +89,7 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
     try {
         fs.mkdirSync("./cffOutputFiles/");
     } catch {
-        console.error("Could not create folder");
+        console.error("Could not create cffOutputFiles folder");
     }
 
     const stdOutStream = fs.createWriteStream("./cffOutputFiles/cffOutput.txt");

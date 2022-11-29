@@ -71,7 +71,7 @@ export async function runSearchseco(ghInfo: GithubInfo): Promise<ReturnObject> {
     try {
         fs.mkdirSync("./ssOutputFiles/");
     } catch {
-        console.error("Could not create folder");
+        console.error("Could not create ssOutputFiles folder");
     }
 
     const stdOutStream = fs.createWriteStream("./ssOutputFiles/ssOutput.txt");
