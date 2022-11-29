@@ -9,7 +9,7 @@ export async function semanticScholarCitations(authors: Author[], title: string,
     // find reference titles
     let paperId = "";
     if(firstRefTitles.length === 0){      
-        let refTitles: string[] = await getRefTitles(authors, title);
+        const refTitles: string[] = await getRefTitles(authors, title);
         paperId = refTitles[0];
     }
     else{
@@ -34,7 +34,7 @@ export async function semanticScholarCitations(authors: Author[], title: string,
         outputJSON.data.forEach((element: any) => {
             const title = element.citingPaper.title;
             const year = element.citingPaper.year;
-            let DOI = ""; let pmid = ""; let pmcid = ""; const fields: string[] = []; let journal =""; let url = ""; let numberOfCitations = 0;
+            let DOI = ""; let pmid = ""; let pmcid = ""; const fields: string[] = []; let journal =""; let url = ""; let numberOfCitations = 0; const authors: Author[] = [];
             if (element.citingPaper.externalIds !== undefined) {
                 for (const [key, value] of Object.entries(element.citingPaper.externalIds)) {
                     switch (key) {
@@ -70,6 +70,10 @@ export async function semanticScholarCitations(authors: Author[], title: string,
                     fields.push(element.category);
                 });
             }
+            if(element.authors !== undefined){
+                const author = new Author(element.authors.name, element.authors.authorId);
+                authors.push(author);
+            }
             const tempPaper = new Paper(title, DOI, pmid, pmcid, year, "SemanticScholar", [], fields, journal, url, numberOfCitations);
             output = output.concat([tempPaper]);
         });
@@ -99,7 +103,7 @@ export async function getRefTitles(authors: Author[], title: string): Promise<st
         let papers: any[] = [];
         let papersFiltered: any[] = [];
         try {
-            const response = await fetch(semanticScholarApiURL + searchQuery + author.givenNames + " " + author.familyName + fieldsQuery , {
+            const response = await fetch(semanticScholarApiURL + searchQuery + author.name + fieldsQuery , {
                 method: 'GET',
                 headers: {},
             });
@@ -113,7 +117,7 @@ export async function getRefTitles(authors: Author[], title: string): Promise<st
             });
         }
         catch (error){
-            let errorMessage = "Error while searching for author " + author.givenNames + " " + author.familyName + " on semantics scholar"
+            let errorMessage = "Error while searching for author " + author.name + " on semantics scholar"
             if(error instanceof Error){
                 errorMessage = error.message;
             }

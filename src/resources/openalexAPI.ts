@@ -86,16 +86,7 @@ export async function openAlexCitations(authors: Author[], title: string, firstR
                 }
                 if (element.authorships !== undefined) {
                     element.authorships.forEach((element: any) => {
-                        const fullName = element.author.display_name;
-                        let firstName = "";
-                        let lastName = "";
-                        if (fullName.length > 1) {
-                            firstName = fullName[0];
-                            lastName = fullName[fullName.length - 1];
-                        }
-                        else 
-                            firstName = fullName;
-                        authors.push(new Author(firstName, lastName, element.author.orcid ?? ""));
+                        authors.push(new Author(element.author.display_name, element.author.orcid ?? ""));
                     });
                 }
                 if (element.open_access !== undefined) {
@@ -134,7 +125,7 @@ export async function getRefTitles(authors: Author[], title: string): Promise<st
         let papers: any[] = [];
         let papersFiltered: any[] = [];
         try {
-            const response = await fetch(apiURL + query + author.givenNames + "+" + author.familyName + "&per-page=200", {
+            const response = await fetch(apiURL + query + author.name + "&per-page=200", {
                 method: 'GET',
                 headers: {},
             });
@@ -145,19 +136,19 @@ export async function getRefTitles(authors: Author[], title: string): Promise<st
                 continue;
             }
             const worksApiURL: string = results.works_api_url;
-            let next_cursor = "*"
-            while(next_cursor !== null) {
-                const response = await fetch(worksApiURL + "&per-page=200&cursor=" + next_cursor,{
+            let nextCursor = "*"
+            while(nextCursor !== null) {
+                const response = await fetch(worksApiURL + "&per-page=200&cursor=" + nextCursor,{
                     method: 'GET',
                     headers: {},
                 });
                 const responseJSON = await response.json();
                 papers = papers.concat(responseJSON.results);
-                next_cursor = responseJSON.meta.next_cursor;
+                nextCursor = responseJSON.meta.next_cursor;
             }
         }
         catch (error){
-            let errorMessage = "Error while searching for author " + author.givenNames + " " + author.familyName + " on semantics scholar"
+            let errorMessage = "Error while searching for author " + author.name + " on semantics scholar"
             if(error instanceof Error){
                 errorMessage = error.message;
             }

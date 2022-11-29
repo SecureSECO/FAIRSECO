@@ -236,13 +236,11 @@ export class MetaDataPaper {
 }
 
 export class Author {
-    givenNames: string;
-    familyName: string;
+    name: string;
     orchidId: string;
         
-    constructor(givenNames: string, familyName: string, orchidId: string) {
-        this.familyName = familyName;
-        this.givenNames = givenNames;
+    constructor(name: string, orchidId: string) {
+        this.name = name;
         this.orchidId = orchidId;
     }
 }
