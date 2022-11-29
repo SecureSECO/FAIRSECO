@@ -86,19 +86,35 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
     let stdout = "";
     let stderr = "";
 
+    try {
+        fs.mkdirSync("./cffOutputFiles");
+    } catch {
+        console.error("Could not create folder");
+    }
+
+    const stdOutStream = fs.createWriteStream("./cffOutputFiles/cffOutput.txt");
+    const stdErrStream = fs.createWriteStream("./cffOutputFiles/cffError.txt");
+
     const options: ExecOptions = {
         ignoreReturnCode: true,
+        windowsVerbatimArguments: true,
+        outStream: stdOutStream,
+        errStream: stdErrStream,
     };
-    options.listeners = {
-        stdout: (data: Buffer) => {
-            stdout += data.toString();
-        },
-        stderr: (data: Buffer) => {
-            stderr += data.toString();
-        },
-    };
+
+    // options.listeners = {
+    //     stdout: (data: Buffer) => {
+    //         stdout += data.toString();
+    //     },
+    //     stderr: (data: Buffer) => {
+    //         stderr += data.toString();
+    //     },
+    // };
     // Run cffconvert in docker to validate the citation.cff file
     const exitCode = await exec(cmd, args, options);
+
+    stdout = fs.readFileSync("./cffOutputFiles/cffOutput.txt").toString();
+    stderr = fs.readFileSync("./cffOutputFiles/cffError.txt").toString();
 
     // Check the exit code for success
     if (exitCode === 0) {

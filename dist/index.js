@@ -18166,19 +18166,32 @@ function getCitationFile(path) {
         ];
         let stdout = "";
         let stderr = "";
+        try {
+            fs.mkdirSync("./cffOutputFiles");
+        }
+        catch (_c) {
+            console.error("Could not create folder");
+        }
+        const stdOutStream = fs.createWriteStream("./cffOutputFiles/cffOutput.txt");
+        const stdErrStream = fs.createWriteStream("./cffOutputFiles/cffError.txt");
         const options = {
             ignoreReturnCode: true,
+            windowsVerbatimArguments: true,
+            outStream: stdOutStream,
+            errStream: stdErrStream,
         };
-        options.listeners = {
-            stdout: (data) => {
-                stdout += data.toString();
-            },
-            stderr: (data) => {
-                stderr += data.toString();
-            },
-        };
+        // options.listeners = {
+        //     stdout: (data: Buffer) => {
+        //         stdout += data.toString();
+        //     },
+        //     stderr: (data: Buffer) => {
+        //         stderr += data.toString();
+        //     },
+        // };
         // Run cffconvert in docker to validate the citation.cff file
         const exitCode = yield (0, exec_1.exec)(cmd, args, options);
+        stdout = fs.readFileSync("./cffOutputFiles/cffOutput.txt").toString();
+        stderr = fs.readFileSync("./cffOutputFiles/cffError.txt").toString();
         // Check the exit code for success
         if (exitCode === 0) {
             // Citation.cff file is valid, return ValidCFFObject with data and validation message
@@ -18397,6 +18410,29 @@ exports.testArtifactObject = {
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -18408,6 +18444,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.runHowfairis = void 0;
+const fs = __importStar(__nccwpck_require__(7147));
 const exec_1 = __nccwpck_require__(9710);
 /**
  * This function runs the fairtally docker image on the current repo,
@@ -18431,18 +18468,31 @@ function runHowfairis(ghInfo) {
         ];
         let stdout = "";
         let stderr = "";
+        try {
+            fs.mkdirSync("./hfiOutputFiles");
+        }
+        catch (_a) {
+            console.error("Could not create folder");
+        }
+        const stdOutStream = fs.createWriteStream("./hfiOutputFiles/hfiOutput.txt");
+        const stdErrStream = fs.createWriteStream("./hfiOutputFiles/hfiError.txt");
         const options = {
             ignoreReturnCode: true,
+            windowsVerbatimArguments: true,
+            outStream: stdOutStream,
+            errStream: stdErrStream,
         };
-        options.listeners = {
-            stdout: (data) => {
-                stdout += data.toString();
-            },
-            stderr: (data) => {
-                stderr += data.toString();
-            },
-        };
+        // options.listeners = {
+        //     stdout: (data: Buffer) => {
+        //         stdout += data.toString();
+        //     },
+        //     stderr: (data: Buffer) => {
+        //         stderr += data.toString();
+        //     },
+        // };
         const exitCode = yield (0, exec_1.exec)(cmd, args, options);
+        stdout = fs.readFileSync("./hfiOutputFiles/hfiOutput.txt").toString();
+        stderr = fs.readFileSync("./hfiOutputFiles/hfiError.txt").toString();
         return {
             ReturnName: "HowFairIs",
             ReturnData: JSON.parse(stdout),
