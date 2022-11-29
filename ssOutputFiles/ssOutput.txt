@@ -1,3 +1,0 @@
-[command]"C:\Program Files\Docker\Docker\resources\bin\docker.exe" run --rm --name searchseco-container -e "github_token=" -e "worker_name=test" jarnohendriksen/mockseco:v1 check https://github.com/
-docker: error during connect: This error may indicate that the docker daemon is not running.: Post "http://%2F%2F.%2Fpipe%2Fdocker_engine/v1.24/containers/create?name=searchseco-container": open //./pipe/docker_engine: The system cannot find the file specified.
-See 'docker run --help'.
