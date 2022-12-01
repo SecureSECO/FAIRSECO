@@ -579,8 +579,8 @@ describe("Test parseInput", () => {
 
 test("Test runSearchSECO", async () => {
     const getRepoFn = jest.fn();
-    getRepoFn.mockReturnValue("https://github.com/rowins/test");
-    const result = await ss.runSearchseco(getRepoFn, true);
+    getRepoFn.mockReturnValue("https://github.com/QDUNI/FairSECO");
+    const result = await ss.runSearchseco(getRepoFn);
 
     // Since the previous tests already check if the data is processed correctly,
     // we only need to check if SearchSECO gets executed at all, and if it can

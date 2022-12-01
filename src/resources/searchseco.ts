@@ -9,16 +9,14 @@ import { exec, ExecOptions } from "@actions/exec";
  *
  * @param getRepoUrlFn Here, you can pass a mocked version of the {@link git.getRepoUrl} function. This is needed when testing locally,
  * since the Github repo url can't be retrieved locally.
- * @param useMock An optional flag to indicate whether [this mock](https://hub.docker.com/r/jarnohendriksen/mockseco) should be used instead of the real SearchSECO.
- *                This can be useful for debugging, since it always return the same output
  * @returns A {@link getdata.ReturnObject} containing the name of the module and the object constructed from SearchSECO's output.
  *
  */
 export async function runSearchseco(
-    getRepoUrlFn: () => Promise<string> = getRepoUrl,
-    useMock: boolean = false
+    getRepoUrlFn: () => Promise<string> = getRepoUrl
 ): Promise<ReturnObject> {
     const gitrepo: string = await getRepoUrlFn();
+    const useMock = gitrepo === "https://github.com/QDUNI/FairSECO";
 
     // Determine which docker image to use
     const dockerImage = useMock
