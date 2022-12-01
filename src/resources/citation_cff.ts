@@ -83,12 +83,28 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
         "--validate",
     ];
 
+    // Output from the docker container
     let stdout = "";
     let stderr = "";
 
+    try {
+        if (!fs.existsSync("./cffOutputFiles"))
+            fs.mkdirSync("./cffOutputFiles/");
+        else console.log("Folder cffOutputFiles already exists!");
+    } catch {
+        console.error("Could not create cffOutputFiles folder");
+    }
+
+    const stdOutStream = fs.createWriteStream("./cffOutputFiles/cffOutput.txt");
+    const stdErrStream = fs.createWriteStream("./cffOutputFiles/cffError.txt");
+
     const options: ExecOptions = {
         ignoreReturnCode: true,
+        windowsVerbatimArguments: true,
+        outStream: stdOutStream,
+        errStream: stdErrStream,
     };
+
     options.listeners = {
         stdout: (data: Buffer) => {
             stdout += data.toString();
@@ -97,6 +113,7 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
             stderr += data.toString();
         },
     };
+
     // Run cffconvert in docker to validate the citation.cff file
     const exitCode = await exec(cmd, args, options);
 
@@ -106,7 +123,7 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
         const returnData: ValidCffObject = {
             status: "valid",
             citation: result,
-            validation_message: stdout,
+            validation_message: getLastLine(stdout),
         };
         return {
             ReturnName: "Citation",
@@ -145,4 +162,10 @@ export function getError(stderr: string): string {
 
     // No cffconvert error message was found, so the error is unknown.
     return unknownErrorMsg;
+}
+
+function getLastLine(input: string): string {
+    const lines = input.split("\n");
+
+    return lines[lines.length - 1];
 }

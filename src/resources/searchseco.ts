@@ -1,7 +1,8 @@
 import { ReturnObject } from "../getdata";
 import { GithubInfo } from "../git";
+import * as fs from "fs";
+
 import { exec, ExecOptions } from "@actions/exec";
-import core from "@actions/core";
 
 /**
  * This function first runs the searchSECO docker and listens to stdout for its output.
@@ -64,11 +65,25 @@ export async function runSearchseco(ghInfo: GithubInfo): Promise<ReturnObject> {
         gitrepo,
     ];
 
+    // Output from the docker container
     let stdout = "";
     let stderr = "";
 
+    try {
+        if (!fs.existsSync("./ssOutputFiles")) fs.mkdirSync("./ssOutputFiles/");
+        else console.log("Folder ssOutputFiles already exists!");
+    } catch {
+        console.error("Could not create ssOutputFiles folder");
+    }
+
+    const stdOutStream = fs.createWriteStream("./ssOutputFiles/ssOutput.txt");
+    const stdErrStream = fs.createWriteStream("./ssOutputFiles/ssError.txt");
+
     const options: ExecOptions = {
         ignoreReturnCode: true,
+        windowsVerbatimArguments: true,
+        outStream: stdOutStream,
+        errStream: stdErrStream,
     };
 
     // SearchSECO prints its results in the console. The code below copies the
@@ -86,6 +101,11 @@ export async function runSearchseco(ghInfo: GithubInfo): Promise<ReturnObject> {
     const exitCode = await exec(cmd, args, options);
 
     console.debug("Docker running SearchSECO returned " + String(exitCode));
+    // if (stderr !== "") console.log(stderr);
+    // console.debug("stdout:");
+    // console.debug(stdout);
+    // console.debug("stderr:");
+    // console.debug(stderr);
 
     // ParseInput expects an array of trimmed lines
     // (i.e. without trailing or leading whitespace)

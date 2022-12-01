@@ -1,5 +1,6 @@
 import { ReturnObject } from "../getdata";
 import { GithubInfo } from "../git";
+import * as fs from "fs";
 
 import { exec, ExecOptions } from "@actions/exec";
 
@@ -23,12 +24,28 @@ export async function runHowfairis(ghInfo: GithubInfo): Promise<ReturnObject> {
         ghInfo.FullURL,
     ];
 
+    // Output from the docker container
     let stdout = "";
     let stderr = "";
 
+    try {
+        if (!fs.existsSync("./hfiOutputFiles"))
+            fs.mkdirSync("./hfiOutputFiles/");
+        else console.log("Folder hfiOutputFiles already exists!");
+    } catch {
+        console.error("Could not create hfiOutputFiles folder");
+    }
+
+    const stdOutStream = fs.createWriteStream("./hfiOutputFiles/hfiOutput.txt");
+    const stdErrStream = fs.createWriteStream("./hfiOutputFiles/hfiError.txt");
+
     const options: ExecOptions = {
         ignoreReturnCode: true,
+        windowsVerbatimArguments: true,
+        outStream: stdOutStream,
+        errStream: stdErrStream,
     };
+
     options.listeners = {
         stdout: (data: Buffer) => {
             stdout += data.toString();
