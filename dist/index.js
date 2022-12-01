@@ -18198,78 +18198,79 @@ class Paper {
     }
     getDiscipline(input) {
         const output = [];
-        const inputField = input[0].toLowerCase();
-        switch (inputField) {
-            case ("computer science"):
-                output.push("Formal Sciences");
-                break;
-            case ("medicine"):
-                output.push("Applied Sciences");
-                break;
-            case ("chemistry"):
-                output.push("Natural Sciences");
-                break;
-            case ("biology"):
-                output.push("Natural Sciences");
-                ;
-                break;
-            case ("materials science"):
-                output.push("Applied Sciences");
-                break;
-            case ("physics"):
-                output.push("Natural Sciences");
-                break;
-            case ("geology"):
-                output.push("Natural Sciences");
-                break;
-            case ("psychology"):
-                output.push("Social Sciences");
-                break;
-            case ("art"):
-                output.push("Humanities");
-                break;
-            case ("history"):
-                output.push("Humanities");
-                break;
-            case ("geography"):
-                output.push("Social Sciences");
-                break;
-            case ("sociology"):
-                output.push("Social Sciences");
-                break;
-            case ("business"):
-                output.push("Applied Sciences");
-                break;
-            case ("political science"):
-                output.push("Applied Sciences");
-                break;
-            case ("economics"):
-                output.push("Social Sciences");
-                break;
-            case ("philosophy"):
-                output.push("Humanities");
-                break;
-            case ("mathematics"):
-                output.push("Formal Sciences");
-                break;
-            case ("engineering"):
-                output.push("Applied Sciences");
-                break;
-            case ("environmental science"):
-                output.push("Applied Sciences");
-                break;
-            case ("agricultural and food sciences"):
-                output.push("Applied Sciences");
-                break;
-            case ("law"):
-                output.push("Humanities");
-                break;
-            case ("education"):
-                output.push("Social Sciences");
-                break;
-            case ("linguistics"):
-                output.push("Social Sciences");
-                break;
+        for (const field of input) {
+            switch (field.toLowerCase()) {
+                case ("computer science"):
+                    output.push("Formal Sciences");
+                    break;
+                case ("medicine"):
+                    output.push("Applied Sciences");
+                    break;
+                case ("chemistry"):
+                    output.push("Natural Sciences");
+                    break;
+                case ("biology"):
+                    output.push("Natural Sciences");
+                    ;
+                    break;
+                case ("materials science"):
+                    output.push("Applied Sciences");
+                    break;
+                case ("physics"):
+                    output.push("Natural Sciences");
+                    break;
+                case ("geology"):
+                    output.push("Natural Sciences");
+                    break;
+                case ("psychology"):
+                    output.push("Social Sciences");
+                    break;
+                case ("art"):
+                    output.push("Humanities");
+                    break;
+                case ("history"):
+                    output.push("Humanities");
+                    break;
+                case ("geography"):
+                    output.push("Social Sciences");
+                    break;
+                case ("sociology"):
+                    output.push("Social Sciences");
+                    break;
+                case ("business"):
+                    output.push("Applied Sciences");
+                    break;
+                case ("political science"):
+                    output.push("Applied Sciences");
+                    break;
+                case ("economics"):
+                    output.push("Social Sciences");
+                    break;
+                case ("philosophy"):
+                    output.push("Humanities");
+                    break;
+                case ("mathematics"):
+                    output.push("Formal Sciences");
+                    break;
+                case ("engineering"):
+                    output.push("Applied Sciences");
+                    break;
+                case ("environmental science"):
+                    output.push("Applied Sciences");
+                    break;
+                case ("agricultural and food sciences"):
+                    output.push("Applied Sciences");
+                    break;
+                case ("law"):
+                    output.push("Humanities");
+                    break;
+                case ("education"):
+                    output.push("Social Sciences");
+                    break;
+                case ("linguistics"):
+                    output.push("Social Sciences");
+                    break;
+            }
         }
         const map = new Map();
         output.forEach(element => {
@@ -18443,9 +18444,6 @@ function getCitationFile(path) {
         // Output from the docker container
         let stdout = "";
         let stderr = "";
-        // Output from Docker itself
-        let dockOut = "";
-        let dockErr = "";
         try {
             if (!fs.existsSync("./cffOutputFiles"))
                 fs.mkdirSync("./cffOutputFiles/");
@@ -18463,18 +18461,16 @@ function getCitationFile(path) {
             outStream: stdOutStream,
             errStream: stdErrStream,
         };
-        // options.listeners = {
-        //     stdout: (data: Buffer) => {
-        //         stdout += data.toString();
-        //     },
-        //     stderr: (data: Buffer) => {
-        //         stderr += data.toString();
-        //     },
-        // };
+        options.listeners = {
+            stdout: (data) => {
+                stdout += data.toString();
+            },
+            stderr: (data) => {
+                stderr += data.toString();
+            },
+        };
         // Run cffconvert in docker to validate the citation.cff file
         const exitCode = yield (0, exec_1.exec)(cmd, args, options);
-        dockOut = fs.readFileSync("./cffOutputFiles/cffOutput.txt").toString();
-        dockErr = fs.readFileSync("./cffOutputFiles/cffError.txt").toString();
         // Check the exit code for success
         if (exitCode === 0) {
             // Citation.cff file is valid, return ValidCFFObject with data and validation message
@@ -18816,9 +18812,6 @@ function runHowfairis(ghInfo) {
         // Output from the docker container
         let stdout = "";
         let stderr = "";
-        // Output from Docker itself
-        let dockOut = "";
-        let dockErr = "";
         try {
             if (!fs.existsSync("./hfiOutputFiles"))
                 fs.mkdirSync("./hfiOutputFiles/");
@@ -18845,8 +18838,6 @@ function runHowfairis(ghInfo) {
             },
         };
         const exitCode = yield (0, exec_1.exec)(cmd, args, options);
-        dockOut = fs.readFileSync("./hfiOutputFiles/hfiOutput.txt").toString();
-        dockErr = fs.readFileSync("./hfiOutputFiles/hfiError.txt").toString();
         return {
             ReturnName: "HowFairIs",
             ReturnData: JSON.parse(stdout),
@@ -19380,9 +19371,6 @@ function runSearchseco(ghInfo) {
         // Output from the docker container
         let stdout = "";
         let stderr = "";
-        // Output from Docker itself
-        let dockOut = "";
-        let dockErr = "";
         try {
             if (!fs.existsSync("./ssOutputFiles"))
                 fs.mkdirSync("./ssOutputFiles/");
@@ -19402,18 +19390,16 @@ function runSearchseco(ghInfo) {
         };
         // SearchSECO prints its results in the console. The code below copies the
         // output to the variables stdout and stderr
-        // options.listeners = {
-        //     stdout: (data: Buffer) => {
-        //         stdout += data.toString();
-        //     },
-        //     stderr: (data: Buffer) => {
-        //         stderr += data.toString();
-        //     },
-        // };
+        options.listeners = {
+            stdout: (data) => {
+                stdout += data.toString();
+            },
+            stderr: (data) => {
+                stderr += data.toString();
+            },
+        };
         // Executes the docker run command
         const exitCode = yield (0, exec_1.exec)(cmd, args, options);
-        dockOut = fs.readFileSync("./ssOutputFiles/ssOutput.txt").toString();
-        dockErr = fs.readFileSync("./ssOutputFiles/ssError.txt").toString();
         console.debug("Docker running SearchSECO returned " + String(exitCode));
         // if (stderr !== "") console.log(stderr);
         // console.debug("stdout:");

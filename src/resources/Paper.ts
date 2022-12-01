@@ -145,8 +145,8 @@ export class Paper {
 
     private getDiscipline(input: string[]): Discipline {
         const output: Discipline[] = [];
-        const inputField : string = input[0].toLowerCase()
-        switch (inputField) {
+        for(const field of input){
+        switch (field.toLowerCase()) {
             case ("computer science"):
                 output.push("Formal Sciences");
                 break;
@@ -217,6 +217,7 @@ export class Paper {
                 output.push("Social Sciences");
                 break;
         }
+    }
         const map: Map<Discipline, number> = new Map();
         output.forEach(element => {
             if (map.has(element))

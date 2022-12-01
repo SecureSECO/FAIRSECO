@@ -1,33 +1,33 @@
 
 import { Paper } from "../src/resources/Paper";
-import { deleteDuplicates } from "../src/resources/citingPapers";
+import { mergeDuplicates } from "../src/resources/citingPapers";
 
-test("Check deleteDuplicates with two empty arrays", () => {
-    expect(deleteDuplicates([], [])).toStrictEqual([]);
+test("Check mergeDuplicates with two empty arrays", () => {
+    expect(mergeDuplicates([], [])).toStrictEqual([]);
 });
 
-test("Check deleteDuplicates with two identical singletons", () => {
+test("Check mergeDuplicates with two identical singletons", () => {
     const testPaper: Paper = new Paper("title", "DOI", "pmid", "pmcid", 2022, "database", [], [], "journal", "url", 0);
     const expectedPaper: Paper = new Paper("title", "DOI", "pmid", "pmcid", 2022, "database", [], ["Unknown"], "journal", "url", 0);
-    expect(deleteDuplicates([testPaper], [testPaper])).toStrictEqual([expectedPaper]);
+    expect(mergeDuplicates([testPaper], [testPaper])).toStrictEqual([expectedPaper]);
 });
 
-test("Check deleteDuplicates with two different singletons", () => {
+test("Check mergeDuplicates with two different singletons", () => {
     const testPaper1: Paper = new Paper("title", "DOI", "pmid", "pmcid", 2022, "database", [], [], "journal", "url", 0);
     const testPaper2: Paper = new Paper("title2", "DOI2", "pmid2", "pmcid2", 2022, "database", [], [], "journal", "url", 0);
     const expectedPaper1: Paper = new Paper("title", "DOI", "pmid", "pmcid", 2022, "database", [], ["Unknown"], "journal", "url", 0);
     const expectedPaper2: Paper = new Paper("title2", "DOI2", "pmid2", "pmcid2", 2022, "database", [], ["Unknown"], "journal", "url", 0);
-    expect(deleteDuplicates([testPaper1], [testPaper2])).toStrictEqual([expectedPaper1, expectedPaper2]);
+    expect(mergeDuplicates([testPaper1], [testPaper2])).toStrictEqual([expectedPaper1, expectedPaper2]);
 });
 
-test("Check deleteDuplicates with two different arrays with one similar paper", () => {
+test("Check mergeDuplicates with two different arrays with one similar paper", () => {
     const testPaper1: Paper = new Paper("title", "DOI", "pmid", "pmcid", 2022, "database", [], [], "journal", "url", 0);
     const testPaper2: Paper = new Paper("title2", "DOI2", "pmid2", "pmcid2", 2022, "database", [], [], "journal", "url", 0);
     const testPaper3: Paper = new Paper("title3", "DOI3", "pmid3", "pmcid3", 2022, "database", [], [], "journal", "url", 0);
     const expectedPaper1: Paper = new Paper("title", "DOI", "pmid", "pmcid", 2022, "database", [], ["Unknown"], "journal", "url", 0);
     const expectedPaper2: Paper = new Paper("title2", "DOI2", "pmid2", "pmcid2", 2022, "database", [], ["Unknown"], "journal", "url", 0);
     const expectedPaper3: Paper = new Paper("title3", "DOI3", "pmid3", "pmcid3", 2022, "database", [], ["Unknown"], "journal", "url", 0);
-    expect(deleteDuplicates([testPaper1, testPaper3], [testPaper2, testPaper3])).toStrictEqual([expectedPaper1, expectedPaper3, expectedPaper2]);
+    expect(mergeDuplicates([testPaper1, testPaper3], [testPaper2, testPaper3])).toStrictEqual([expectedPaper1, expectedPaper3, expectedPaper2]);
 });
 
 test("Check Paper.getFields with one field", () => {

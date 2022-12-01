@@ -43,7 +43,6 @@ export async function getCitationPapers(paperId: string): Promise<Paper[]> {
         const amount = firstResponseJSON.meta.count;
         const pages = Math.ceil(amount / 200);
         let outputText = "";
-        // if pages not 0 ?
         for (let i = 1; i <= pages; i++) {
             const response = await fetch(apiURL + query + paperId + filter + "&page=" + String(i) + "&per-page=200", {
                 method: 'GET',
