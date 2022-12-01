@@ -79,15 +79,16 @@ export async function data(): Promise<ReturnObject[]> {
     } catch (error) {
         console.error("Getting CITATION.cff caused an error:");
     }
-
     try {
-        const cffFile = output[3].ReturnData as CffObject;
+        const cffFile: CffObject = output.find(x => x.ReturnName === "Citation")?.ReturnData as CffObject ?? { status: "missing_file"};
         if (cffFile.status === "valid") {
             const citingPapersResult = await runCitingPapers(cffFile);
             output.push(citingPapersResult);
-        } else {
+        }
+        else {
             throw new Error("Invalid cff File");
         }
+
     } catch (error) {
         console.error("Scholarly threw an error:");
         console.error(error);

@@ -17567,6 +17567,7 @@ const sbom_1 = __nccwpck_require__(2766);
 const log_1 = __nccwpck_require__(2378);
 const git_1 = __nccwpck_require__(4827);
 function data() {
+    var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
         const output = [];
         const ghinfo = yield (0, git_1.getGithubInfo)();
@@ -17618,7 +17619,7 @@ function data() {
             console.error("Getting CITATION.cff caused an error:");
         }
         try {
-            const cffFile = output[3].ReturnData;
+            const cffFile = (_b = (_a = output.find(x => x.ReturnName === "Citation")) === null || _a === void 0 ? void 0 : _a.ReturnData) !== null && _b !== void 0 ? _b : { status: "missing_file" };
             if (cffFile.status === "valid") {
                 const citingPapersResult = yield (0, citingPapers_1.runCitingPapers)(cffFile);
                 output.push(citingPapersResult);
@@ -18069,6 +18070,281 @@ exports.createFairSECODir = createFairSECODir;
 
 /***/ }),
 
+/***/ 2151:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Citations = exports.Author = exports.MetaDataPaper = exports.Paper = void 0;
+class Paper {
+    constructor(title, doi, pmid, pmcid, year, database, authors, fields, journal, url, numberOfCitations) {
+        this.title = title;
+        this.year = year;
+        this.doi = doi;
+        this.pmid = pmid;
+        this.pmcid = pmcid;
+        this.database = database;
+        this.authors = authors;
+        this.fields = this.getFields(fields);
+        this.discipline = this.getDiscipline(fields);
+        this.journal = journal;
+        this.url = url;
+        this.numberOfCitations = numberOfCitations;
+    }
+    combine(input) {
+        if (this.doi === "")
+            this.doi = input.doi;
+        if (this.pmid === "")
+            this.pmid = input.pmid;
+        if (this.pmcid === "")
+            this.pmcid = input.pmcid;
+        if (this.authors !== input.authors) {
+            input.authors.forEach(element => {
+                if (!this.authors.includes(element))
+                    this.authors.push(element);
+            });
+        }
+        if (this.fields !== input.fields) {
+            input.fields.forEach(element => {
+                if (!this.fields.includes(element))
+                    this.fields.push(element);
+            });
+        }
+        return this;
+    }
+    getFields(input) {
+        const output = [];
+        input.forEach(element => {
+            element = element.toLowerCase();
+            switch (element) {
+                case ("computer science"):
+                    output.push("Computer science");
+                    break;
+                case ("medicine"):
+                    output.push("Medicine");
+                    break;
+                case ("chemistry"):
+                    output.push("Chemistry");
+                    break;
+                case ("biology"):
+                    output.push("Biology");
+                    break;
+                case ("materials science"):
+                    output.push("Materials science");
+                    break;
+                case ("physics"):
+                    output.push("Physics");
+                    break;
+                case ("geology"):
+                    output.push("Geology");
+                    break;
+                case ("psychology"):
+                    output.push("Psychology");
+                    break;
+                case ("art"):
+                    output.push("Art");
+                    break;
+                case ("history"):
+                    output.push("History");
+                    break;
+                case ("geography"):
+                    output.push("Geography");
+                    break;
+                case ("sociology"):
+                    output.push("Sociology");
+                    break;
+                case ("business"):
+                    output.push("Business");
+                    break;
+                case ("political science"):
+                    output.push("Political science");
+                    break;
+                case ("economics"):
+                    output.push("Economics");
+                    break;
+                case ("philosophy"):
+                    output.push("Philosophy");
+                    break;
+                case ("mathematics"):
+                    output.push("Mathematics");
+                    break;
+                case ("engineering"):
+                    output.push("Engineering");
+                    break;
+                case ("environmental science"):
+                    output.push("Environmental science");
+                    break;
+                case ("agricultural and food sciences"):
+                    output.push("Biology");
+                    break;
+                case ("law"):
+                    output.push("Philosophy");
+                    break;
+                case ("education"):
+                    output.push("Psychology");
+                    break;
+                case ("linguistics"):
+                    output.push("Psychology");
+                    break;
+                // default:
+                //     console.log(element)
+                //     break;
+            }
+        });
+        if (output.length === 0)
+            output.push("Unknown");
+        return output;
+    }
+    getDiscipline(input) {
+        const output = [];
+        const inputField = input[0].toLowerCase();
+        switch (inputField) {
+            case ("computer science"):
+                output.push("Formal Sciences");
+                break;
+            case ("medicine"):
+                output.push("Applied Sciences");
+                break;
+            case ("chemistry"):
+                output.push("Natural Sciences");
+                break;
+            case ("biology"):
+                output.push("Natural Sciences");
+                ;
+                break;
+            case ("materials science"):
+                output.push("Applied Sciences");
+                break;
+            case ("physics"):
+                output.push("Natural Sciences");
+                break;
+            case ("geology"):
+                output.push("Natural Sciences");
+                break;
+            case ("psychology"):
+                output.push("Social Sciences");
+                break;
+            case ("art"):
+                output.push("Humanities");
+                break;
+            case ("history"):
+                output.push("Humanities");
+                break;
+            case ("geography"):
+                output.push("Social Sciences");
+                break;
+            case ("sociology"):
+                output.push("Social Sciences");
+                break;
+            case ("business"):
+                output.push("Applied Sciences");
+                break;
+            case ("political science"):
+                output.push("Applied Sciences");
+                break;
+            case ("economics"):
+                output.push("Social Sciences");
+                break;
+            case ("philosophy"):
+                output.push("Humanities");
+                break;
+            case ("mathematics"):
+                output.push("Formal Sciences");
+                break;
+            case ("engineering"):
+                output.push("Applied Sciences");
+                break;
+            case ("environmental science"):
+                output.push("Applied Sciences");
+                break;
+            case ("agricultural and food sciences"):
+                output.push("Applied Sciences");
+                break;
+            case ("law"):
+                output.push("Humanities");
+                break;
+            case ("education"):
+                output.push("Social Sciences");
+                break;
+            case ("linguistics"):
+                output.push("Social Sciences");
+                break;
+        }
+        const map = new Map();
+        output.forEach(element => {
+            if (map.has(element))
+                map.set(element, map.get(element) + 1);
+            else
+                map.set(element, 1);
+        });
+        let result = "Unknown";
+        let max = 0;
+        let twoHighest = false;
+        map.forEach((value, key) => {
+            if (max < value) {
+                result = key;
+                max = value;
+                twoHighest = false;
+            }
+            else if (max === value && max !== 0)
+                twoHighest = true;
+        });
+        if (twoHighest)
+            return output[0];
+        else
+            return result;
+    }
+}
+exports.Paper = Paper;
+class MetaDataPaper {
+    constructor(title, contributors, citationCount, Paper, probabilty) {
+        this.title = title;
+        this.contributors = contributors;
+        this.citationCount = citationCount;
+        this.Paper = Paper;
+        this.probability = probabilty;
+    }
+}
+exports.MetaDataPaper = MetaDataPaper;
+class Author {
+    constructor(name, orchidId) {
+        this.name = name;
+        this.orchidId = orchidId;
+    }
+}
+exports.Author = Author;
+class Citations {
+    constructor(papers) {
+        this.papers = papers;
+        this.firstHandCitations = this.papers.length;
+        let firstYear = Number.MAX_SAFE_INTEGER;
+        const unqiueFields = new Set();
+        let secondHandCitations = 0;
+        const disciplines = new Map;
+        papers.forEach(paper => {
+            if (paper.year < firstYear)
+                firstYear = paper.year;
+            paper.fields.forEach(field => {
+                unqiueFields.add(field);
+            });
+            secondHandCitations += paper.numberOfCitations;
+            if (disciplines.has(paper.discipline))
+                disciplines.set(paper.discipline, disciplines.get(paper.discipline) + 1);
+            else
+                disciplines.set(paper.discipline, 1);
+        });
+        this.unqiueFields = Array.from(unqiueFields.values());
+        this.firstYear = firstYear;
+        this.secondHandCitations = secondHandCitations;
+        this.disciplines = disciplines;
+    }
+}
+exports.Citations = Citations;
+
+
+/***/ }),
+
 /***/ 3223:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -18270,10 +18546,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.deleteDuplicates = exports.runCitingPapers = void 0;
+exports.mergeDuplicates = exports.runCitingPapers = void 0;
 const semanticscholarAPI_1 = __nccwpck_require__(5273);
 const openalexAPI_1 = __nccwpck_require__(5532);
-const journal_1 = __nccwpck_require__(5451);
+const Paper_1 = __nccwpck_require__(2151);
+/**
+ *
+ * @returns returnObject containing unique papers citing the software repository
+ */
 function runCitingPapers(cffFile) {
     return __awaiter(this, void 0, void 0, function* () {
         const authors = [];
@@ -18281,7 +18561,7 @@ function runCitingPapers(cffFile) {
         const refTitles = [];
         if (cffFile.citation.references !== undefined) {
             cffFile.citation.references.forEach((element) => {
-                if (element.type === "article")
+                if (element.type === "article" || element.type === "journal-article")
                     refTitles.push(element.title);
             });
         }
@@ -18302,11 +18582,14 @@ function runCitingPapers(cffFile) {
                         break;
                 }
             }
-            authors.push(new journal_1.Author(givenNames, familyName, orchidId));
+            authors.push(new Paper_1.Author(givenNames + " " + familyName, orchidId));
         });
         const outData1 = yield (0, semanticscholarAPI_1.semanticScholarCitations)(authors, title, refTitles);
         const outData2 = yield (0, openalexAPI_1.openAlexCitations)(authors, title, refTitles);
-        const output = deleteDuplicates(outData1, outData2);
+        const outputPapers = mergeDuplicates(outData1, outData2);
+        const output = new Paper_1.Citations(outputPapers);
+        console.log(output);
+        console.log(output.unqiueFields);
         return {
             ReturnName: "citingPapers",
             ReturnData: output
@@ -18314,12 +18597,65 @@ function runCitingPapers(cffFile) {
     });
 }
 exports.runCitingPapers = runCitingPapers;
-function deleteDuplicates(array1, array2) {
-    let output = array1.concat(array2);
-    output = output.filter((value, index, self) => index === self.findIndex((t) => t.doi === value.doi && t.doi !== "" || t.pmid === value.pmid && t.pmid !== "" || t.pmcid === value.pmcid && t.pmcid !== ""));
-    return output;
+/**
+ *
+ * @returns array containing all the unique papers with the comined meta-data from both sources is it is listed by both databases
+ * This function stores all papers in a map with the DOI identifier as key, if the map already contains a paper with it's DOI it combines it into one making sure no meta-data is lost
+ * it then does the same for the pmid identifier and pmcid identifier. Splitting this function over three foreach calls and three maps ensures an O(n) runtime, instead an O(n^2)
+ */
+function mergeDuplicates(array1, array2) {
+    let totalArray = array1.concat(array2);
+    const doiMap = new Map();
+    const pmidMap = new Map();
+    const pmcidMap = new Map();
+    let mockID = 0;
+    totalArray.forEach(element => {
+        if (doiMap.has(element.doi)) {
+            const tempPaper = doiMap.get(element.doi);
+            doiMap.set(element.doi, element.combine(tempPaper));
+        }
+        else if (element.doi === "") {
+            doiMap.set(mockID.toString(), element);
+            mockID++;
+        }
+        else {
+            doiMap.set(element.doi, element);
+        }
+    });
+    totalArray = Array.from(doiMap.values());
+    mockID = 0;
+    totalArray.forEach(element => {
+        if (pmidMap.has(element.pmid)) {
+            const tempPaper = pmidMap.get(element.pmid);
+            pmidMap.set(element.pmid, element.combine(tempPaper));
+        }
+        else if (element.pmid === "") {
+            pmidMap.set(mockID.toString(), element);
+            mockID++;
+        }
+        else {
+            pmidMap.set(element.pmid, element);
+        }
+    });
+    totalArray = Array.from(pmidMap.values());
+    mockID = 0;
+    totalArray.forEach(element => {
+        if (pmcidMap.has(element.pmcid)) {
+            const tempPaper = pmcidMap.get(element.pmcid);
+            pmcidMap.set(element.pmcid, element.combine(tempPaper));
+        }
+        else if (element.pmcid === "") {
+            pmcidMap.set(mockID.toString(), element);
+            mockID++;
+        }
+        else {
+            pmcidMap.set(element.pmcid, element);
+        }
+    });
+    totalArray = Array.from(pmcidMap.values());
+    return totalArray;
 }
-exports.deleteDuplicates = deleteDuplicates;
+exports.mergeDuplicates = mergeDuplicates;
 
 
 /***/ }),
@@ -18522,47 +18858,6 @@ exports.runHowfairis = runHowfairis;
 
 /***/ }),
 
-/***/ 5451:
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Author = exports.MetaDataJournal = exports.Journal = void 0;
-class Journal {
-    constructor(title, doi, pmid, pmcid, year, database, authors) {
-        this.title = title;
-        this.year = year;
-        this.doi = doi;
-        this.pmid = pmid;
-        this.pmcid = pmcid;
-        this.database = database;
-        this.authors = authors;
-    }
-}
-exports.Journal = Journal;
-class MetaDataJournal {
-    constructor(title, contributors, citationCount, journal, probabilty) {
-        this.title = title;
-        this.contributors = contributors;
-        this.citationCount = citationCount;
-        this.journal = journal;
-        this.probability = probabilty;
-    }
-}
-exports.MetaDataJournal = MetaDataJournal;
-class Author {
-    constructor(givenNames, familyName, orchidId) {
-        this.familyName = familyName;
-        this.givenNames = givenNames;
-        this.orchidId = orchidId;
-    }
-}
-exports.Author = Author;
-
-
-/***/ }),
-
 /***/ 5532:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -18581,36 +18876,56 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getOpenAlexPaperId = exports.getRefTitles = exports.openAlexCitations = void 0;
+exports.getOpenAlexPaperId = exports.getRefTitles = exports.getCitationPapers = exports.openAlexCitations = void 0;
 const node_fetch_1 = __importDefault(__nccwpck_require__(2504));
-const journal_1 = __nccwpck_require__(5451);
+const Paper_1 = __nccwpck_require__(2151);
 const probability_1 = __nccwpck_require__(8587);
-function openAlexCitations(authors, title, refTitles) {
+/**
+ *
+ * @returns array containing the list of papers citing the giving piece of research software.
+ */
+function openAlexCitations(authors, title, firstRefTitles) {
     return __awaiter(this, void 0, void 0, function* () {
-        //title = title.toLowerCase();
-        // if(refTitle=== ""){
-        //     refTitle = await getTitle(authors, title);
-        // }
-        const extraRefTitles = yield getRefTitles(authors, title);
-        refTitles.concat(extraRefTitles);
+        // initiate variables
+        let output = [];
+        let paperIds = [];
+        // find reference titles if neccessary
+        if (firstRefTitles.length === 0)
+            paperIds = yield getRefTitles(authors, title);
+        else
+            for (const title of firstRefTitles)
+                paperIds.push(yield getOpenAlexPaperId(title));
+        for (const paperId of paperIds)
+            output = output.concat(yield getCitationPapers(paperId));
+        return output;
+    });
+}
+exports.openAlexCitations = openAlexCitations;
+/**
+ *
+ * @returns array containing the list of papers citing the giving paperId.
+ */
+function getCitationPapers(paperId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        paperId = paperId.replace("https://openalex.org/", "");
+        // prepare query strings
         const apiURL = "https://api.openalex.org/";
         const query = "works?filter=cites:";
         const filter = ",type:journal-article";
+        // get the unique id OpenAlex gives it's papers
+        // instanciate output array
         let output = [];
-        // get paper id
-        let paperId = yield getOpenAlexPaperId(refTitles[0]);
-        paperId = paperId.replace("https://openalex.org/", "");
         try {
-            // get meta data for amount of results
-            let outputText = "";
+            // API call and save output in Json object
             const firstResponse = yield (0, node_fetch_1.default)(apiURL + query + paperId + filter + "&per-page=1", {
                 method: 'GET',
                 headers: {},
             });
-            const firstResponseText = yield firstResponse.text();
-            const firstResponseJSON = JSON.parse(firstResponseText);
+            const firstResponseJSON = yield firstResponse.json();
             const amount = firstResponseJSON.meta.count;
             const pages = Math.ceil(amount / 200);
+            let outputText = "";
+            // if pages not 0 ?
             for (let i = 1; i <= pages; i++) {
                 const response = yield (0, node_fetch_1.default)(apiURL + query + paperId + filter + "&page=" + String(i) + "&per-page=200", {
                     method: 'GET',
@@ -18622,110 +18937,148 @@ function openAlexCitations(authors, title, refTitles) {
             }
             outputText = "[" + outputText.slice(0, -1) + "]";
             const outputJSON = JSON.parse(outputText);
+            // save outputted metadata in Paper object and append to output array
             outputJSON.forEach((element) => {
-                const title = element.title;
-                const year = element.publication_year;
+                let title = "";
+                let year = 0;
                 let DOI = "";
                 let pmid = "";
                 let pmcid = "";
-                if (element.ids !== undefined) {
-                    for (const [key, value] of Object.entries(element.ids)) {
-                        switch (key) {
-                            case ("doi"):
-                                DOI = String(value);
-                                break;
-                            case ("pmid"):
-                                pmid = String(value);
-                                break;
-                            case ("pmcid"):
-                                pmcid = String(value);
-                                break;
+                const authors = [];
+                const fields = [];
+                let journal = "";
+                let url = "";
+                let numberOfCitations = 0;
+                if (element.title !== undefined && element.publication_year !== undefined) {
+                    if (element.ids !== undefined) {
+                        title = element.title;
+                        year = element.publication_year;
+                        for (const [key, value] of Object.entries(element.ids)) {
+                            switch (key) {
+                                case ("doi"):
+                                    DOI = String(value);
+                                    break;
+                                case ("pmid"):
+                                    pmid = String(value);
+                                    break;
+                                case ("pmcid"):
+                                    pmcid = String(value);
+                                    break;
+                            }
                         }
+                        DOI = DOI.slice(16);
+                        pmid = pmid.slice(32);
+                        pmcid = pmcid.slice(32);
                     }
-                    DOI = DOI.slice(16);
-                    pmid = pmid.slice(32);
-                    pmcid = pmcid.slice(32);
-                    const tempJournal = new journal_1.Journal(title, DOI, pmid, pmcid, year, "OpenAlex", []);
-                    output = output.concat([tempJournal]);
-                }
-                else {
-                    const tempJournal = new journal_1.Journal(title, DOI, pmid, pmcid, year, "OpenAlex", []);
-                    output = output.concat([tempJournal]);
+                    if (element.host_venue.publisher !== undefined) {
+                        journal = element.host_venue.publisher;
+                    }
+                    if (element.cited_by_count !== undefined) {
+                        numberOfCitations = element.cited_by_count;
+                    }
+                    if (element.concepts !== undefined) {
+                        element.concepts.forEach((concept) => {
+                            if (concept.level === 0 && concept.score > 0.2)
+                                fields.push(concept.display_name);
+                        });
+                    }
+                    if (element.authorships !== undefined) {
+                        element.authorships.forEach((element) => {
+                            var _a;
+                            authors.push(new Paper_1.Author(element.author.display_name, (_a = element.author.orcid) !== null && _a !== void 0 ? _a : ""));
+                        });
+                    }
+                    if (element.open_access !== undefined) {
+                        if (element.open_access.oa_status === "closed")
+                            url = element.id;
+                        else
+                            url = element.open_access.oa_url;
+                    }
+                    const tempPaper = new Paper_1.Paper(title, DOI, pmid, pmcid, year, "OpenAlex", [], fields, journal, url, numberOfCitations);
+                    output = output.concat([tempPaper]);
                 }
             });
+            // console.log("Getting citations took " + (performance.now() - endtime) + " ms")
             return output;
         }
         catch (error) {
-            console.log("error while searching openAlex with openAlex ID of: " + title);
+            console.log("error while searching openAlex with openAlex ID of: " + paperId);
             return output;
         }
     });
 }
-exports.openAlexCitations = openAlexCitations;
+exports.getCitationPapers = getCitationPapers;
+/**
+ *
+ * @returns and array of titles that are probably reference papers for the piece of software
+ */
 function getRefTitles(authors, title) {
     return __awaiter(this, void 0, void 0, function* () {
-        const apiURL = "https://api.openalex.org/";
-        const query = "authors?filter=orcid:";
+        // instanciate output array and maps
         const output = [];
-        // Beter orcid-id or Author?
         const papersPerAuthor = new Map();
+        const uniquePapers = new Map();
+        // prepare API strings
+        const apiURL = "https://api.openalex.org/";
+        const query = "authors?filter=display_name.search:";
+        // find of every author their papers with the title of the software mentioned in the paper
         for (const author of authors) {
-            const orcid = author.orchidId;
-            let titles = [];
-            //const query = "works?filter=title.search:" + title + "authorships.author.orcidid:" + orcid
+            let papers = [];
+            let papersFiltered = [];
             try {
-                const response = yield (0, node_fetch_1.default)(apiURL + query + orcid, {
+                const response = yield (0, node_fetch_1.default)(apiURL + query + author.name + "&per-page=200", {
                     method: 'GET',
                     headers: {},
                 });
-                const responseText = yield response.text();
-                const responseJSON = JSON.parse(responseText);
-                // console.log(responseJSON.results[0].works_api_url);
-                const results = responseJSON.results[0];
-                let authorworks_url = "";
-                if (results.hasOwnProperty("works_api_url")) {
-                    authorworks_url = results.works_api_url;
-                    //console.log("-----------\nAuthor with id: " + author.orchidId + " has url: "+ authorworks_url);
-                    const response2 = yield (0, node_fetch_1.default)(authorworks_url, {
+                const outputJSON = yield response.json();
+                const results = outputJSON.results[0];
+                if (results === undefined) {
+                    // console.log("no results for author " + author.givenNames + " " + author.familyName)
+                    continue;
+                }
+                const worksApiURL = results.works_api_url;
+                let nextCursor = "*";
+                while (nextCursor !== null) {
+                    const response = yield (0, node_fetch_1.default)(worksApiURL + "&per-page=200&cursor=" + nextCursor, {
                         method: 'GET',
                         headers: {},
                     });
-                    const responseText2 = yield response2.text();
-                    const responseJSON2 = JSON.parse(responseText2);
-                    //console.log(responseJSON2);
-                    const authorTitles = responseJSON2.results
-                        .filter(function (o) { return o.title.toLowerCase().includes(title.toLowerCase()); });
-                    //.map(function(o:any){return o.title.toLowerCase()});
-                    //console.log(titles)
-                    titles.push(authorTitles);
-                    //titles = titles.flat(1);
-                    //papersPerAuthor.set(author.orchidId,titles)
-                    papersPerAuthor.set(author, titles);
-                }
-                else {
-                    console.log("Author with id: " + author.orchidId + " has no works-url");
+                    const responseJSON = yield response.json();
+                    papers = papers.concat(responseJSON.results);
+                    nextCursor = responseJSON.meta.next_cursor;
                 }
             }
-            catch (_a) { }
+            catch (error) {
+                let errorMessage = "Error while searching for author " + author.name + " on semantics scholar";
+                if (error instanceof Error) {
+                    errorMessage = error.message;
+                }
+                console.log(errorMessage);
+            }
+            papers.forEach((element) => {
+                if (element.title !== null) {
+                    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+                    if (element.title.toLowerCase().includes(title.toLowerCase()))
+                        papersFiltered = papersFiltered.concat([element]);
+                }
+            });
+            papersPerAuthor.set(author, papersFiltered);
         }
-        ;
-        const uniquePapers = new Map();
+        // find all the unique papers, and keep count of how many authors it shares
         papersPerAuthor.forEach(papers => {
             papers.forEach(paper => {
-                paper = paper[0];
                 let paperData;
-                //console.log(paper.id)
                 if (uniquePapers.has(paper.id)) {
                     paperData = uniquePapers.get(paper.id);
                     paperData.contributors = paperData.contributors + 1;
-                    uniquePapers.set(paper.id, paperData);
+                    uniquePapers.set(paper.paperId, paperData);
                 }
                 else {
-                    uniquePapers.set(paper.id, new journal_1.MetaDataJournal(paper.title, 1, paper.cited_by_count, paper.host_venue.publisher, 1));
+                    uniquePapers.set(paper.id, new Paper_1.MetaDataPaper(paper.title, 1, paper.cited_by_count, paper.host_venue, 1));
                 }
             });
         });
-        //console.log(uniquePapers)
+        // calculate the probability of each paper being a reference paper
         const probScores = (0, probability_1.calculateProbabiltyOfReference)(uniquePapers);
         let i = 0;
         uniquePapers.forEach((value, key) => {
@@ -18734,14 +19087,13 @@ function getRefTitles(authors, title) {
             i++;
         });
         return output;
-        // titles = titles.flat(1);
-        // console.log(titles);
-        // titles = titles.filter((item, index) => titles.indexOf(item) === index);
-        // console.log(titles);
-        // return [""];
     });
 }
 exports.getRefTitles = getRefTitles;
+/**
+ *
+ * @returns the unqiue id of a paper from OpenAlex
+ */
 function getOpenAlexPaperId(title) {
     return __awaiter(this, void 0, void 0, function* () {
         const apiURL = "https://api.openalex.org/";
@@ -18754,7 +19106,6 @@ function getOpenAlexPaperId(title) {
             const output = yield response.text();
             const outputJSON = JSON.parse(output);
             const paperid = outputJSON.results[0].id;
-            ;
             return paperid;
         }
         catch (error) {
@@ -18809,12 +19160,21 @@ function calculateProbabiltyOfReference(uniquePapers) {
     const meanCitations = lowestCitations + ((highestCitations - lowestCitations) / 2);
     const title = (_a = uniquePapers.get(mainPaperId)) === null || _a === void 0 ? void 0 : _a.title;
     // Find the probabilty of a paper being a reference paper based on the similarity of the title to the main paper, ignoring papers beneath the mean value of contributors or citations.
-    // TODO: change title strings to Map<word, count> and compare those.
     if (title === undefined) {
         console.log("Paper has no title");
     }
     else {
         const wordsMainPaper = title.toLowerCase().split(" ");
+        const mainTitle = new Map();
+        let count = 0;
+        wordsMainPaper.forEach(word => {
+            if (mainTitle.has(word)) {
+                count = mainTitle.get(word);
+                mainTitle.set(word, count + 1);
+            }
+            else
+                mainTitle.set(word, 1);
+        });
         uniquePapers.forEach((paper, id) => {
             if (id === mainPaperId)
                 output[i] = 1;
@@ -18822,15 +19182,20 @@ function calculateProbabiltyOfReference(uniquePapers) {
                 output[i] = 0;
             else {
                 const wordsPaper = paper.title.toLowerCase().split(" ");
+                const title = new Map();
                 let similarWordsCount = 0;
-                for (let i = 0; i < wordsMainPaper.length; i++) {
-                    for (let j = 0; j < wordsPaper.length; j++) {
-                        if (wordsMainPaper[i] === wordsPaper[j]) {
-                            similarWordsCount++;
-                            wordsPaper[j] = "";
-                        }
+                wordsPaper.forEach(word => {
+                    if (title.has(word)) {
+                        count = title.get(word);
+                        title.set(word, count + 1);
                     }
-                }
+                    else
+                        title.set(word, 1);
+                });
+                mainTitle.forEach((count, word) => {
+                    if (title.has(word))
+                        similarWordsCount += Math.min(mainTitle.get(word), title.get(word));
+                });
                 output[i] = similarWordsCount / wordsMainPaper.length;
             }
             i++;
@@ -19247,20 +19612,41 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getSemanticScholarPaperId = exports.getRefTitles = exports.semanticScholarCitations = void 0;
+exports.getSemanticScholarPaperId = exports.getRefTitles = exports.getCitationPapers = exports.semanticScholarCitations = void 0;
 const node_fetch_1 = __importDefault(__nccwpck_require__(2504));
-const journal_1 = __nccwpck_require__(5451);
+const Paper_1 = __nccwpck_require__(2151);
 const probability_1 = __nccwpck_require__(8587);
-function semanticScholarCitations(authors, title, refTitles) {
+/**
+ *
+ * @returns array containing the list of papers citing the giving piece of research software.
+ */
+function semanticScholarCitations(authors, title, firstRefTitles) {
     return __awaiter(this, void 0, void 0, function* () {
-        // find reference titles
-        const extraRefTitles = yield getRefTitles(authors, title);
-        refTitles.concat(extraRefTitles);
+        // initiate variables
+        let output = [];
+        let paperIds = [];
+        // find reference titles if neccessary
+        if (firstRefTitles.length === 0)
+            paperIds = yield getRefTitles(authors, title);
+        else
+            for (const title of firstRefTitles)
+                paperIds.push(yield getSemanticScholarPaperId(title));
+        for (const paperId of paperIds)
+            output = output.concat(yield getCitationPapers(paperId));
+        return output;
+    });
+}
+exports.semanticScholarCitations = semanticScholarCitations;
+/**
+ *
+ * @returns array containing the list of papers citing the giving paperId.
+ */
+function getCitationPapers(paperId) {
+    return __awaiter(this, void 0, void 0, function* () {
         // prepare query strings
         const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/paper/";
-        const fieldsQuery = "/citations?fields=title,externalIds,year&limit=1000";
+        const fieldsQuery = "/citations?fields=title,externalIds,year,authors,s2FieldsOfStudy,journal,openAccessPdf,url,citationCount&limit=1000";
         // get the unique id semantic scholar gives it's papers
-        const paperId = yield getSemanticScholarPaperId(refTitles[0]);
         // instanciate output array
         let output = [];
         try {
@@ -19270,13 +19656,18 @@ function semanticScholarCitations(authors, title, refTitles) {
                 headers: {},
             });
             const outputJSON = yield response.json();
-            // save outputted metadata in Journal object and append to output array
+            // save outputted metadata in Paper object and append to output array
             outputJSON.data.forEach((element) => {
                 const title = element.citingPaper.title;
                 const year = element.citingPaper.year;
                 let DOI = "";
                 let pmid = "";
                 let pmcid = "";
+                const fields = [];
+                let journal = "";
+                let url = "";
+                let numberOfCitations = 0;
+                const authors = [];
                 if (element.citingPaper.externalIds !== undefined) {
                     for (const [key, value] of Object.entries(element.citingPaper.externalIds)) {
                         switch (key) {
@@ -19294,24 +19685,47 @@ function semanticScholarCitations(authors, title, refTitles) {
                     DOI = DOI.toLowerCase();
                     pmid = pmid.toLowerCase();
                     pmcid = pmcid.toLowerCase();
-                    const tempJournal = new journal_1.Journal(title, DOI, pmid, pmcid, year, "SemanticScholar", []);
-                    output = output.concat([tempJournal]);
+                }
+                if (element.citingPaper.journal !== undefined && element.citingPaper.journal !== null) {
+                    const journalObject = element.citingPaper.journal;
+                    if (journalObject.name !== undefined) {
+                        journal = journalObject.name;
+                    }
+                }
+                if (element.citingPaper.openAccessPdf !== null) {
+                    url = element.citingPaper.openAccessPdf.url;
                 }
                 else {
-                    const tempJournal = new journal_1.Journal(title, DOI, pmid, pmcid, year, "SemanticScholar", []);
-                    output = output.concat([tempJournal]);
+                    url = element.citingPaper.url;
                 }
+                if (element.citingPaper.citationCount !== undefined) {
+                    numberOfCitations = element.citingPaper.citationCount;
+                }
+                if (element.citingPaper.s2FieldsOfStudy !== undefined) {
+                    element.citingPaper.s2FieldsOfStudy.forEach((element) => {
+                        fields.push(element.category);
+                    });
+                }
+                if (element.authors !== undefined) {
+                    for (const author of element.authors)
+                        authors.push(new Paper_1.Author(author.name, ""));
+                }
+                const tempPaper = new Paper_1.Paper(title, DOI, pmid, pmcid, year, "SemanticScholar", authors, fields, journal, url, numberOfCitations);
+                output = output.concat([tempPaper]);
             });
             return output;
         }
         catch (error) {
-            console.log("error while searching semantic scholar with semantic scholar ID of: " + title);
+            console.log("error while searching semantic scholar with semantic scholar ID of: " + paperId);
             return output;
         }
     });
 }
-exports.semanticScholarCitations = semanticScholarCitations;
-// function that searches semantic scholar for possible reference titles
+exports.getCitationPapers = getCitationPapers;
+/**
+ *
+ * @returns and array of titles that are probably reference papers for the piece of software
+ */
 function getRefTitles(authors, title) {
     return __awaiter(this, void 0, void 0, function* () {
         // instanciate output array and maps
@@ -19327,7 +19741,7 @@ function getRefTitles(authors, title) {
             let papers = [];
             let papersFiltered = [];
             try {
-                const response = yield (0, node_fetch_1.default)(semanticScholarApiURL + searchQuery + author.givenNames + " " + author.familyName + fieldsQuery, {
+                const response = yield (0, node_fetch_1.default)(semanticScholarApiURL + searchQuery + author.name + fieldsQuery, {
                     method: 'GET',
                     headers: {},
                 });
@@ -19341,7 +19755,7 @@ function getRefTitles(authors, title) {
                 });
             }
             catch (error) {
-                let errorMessage = "Error while searching for author " + author.givenNames + " " + author.familyName + " on semantics scholar";
+                let errorMessage = "Error while searching for author " + author.name + " on semantics scholar";
                 if (error instanceof Error) {
                     errorMessage = error.message;
                 }
@@ -19364,7 +19778,7 @@ function getRefTitles(authors, title) {
                     uniquePapers.set(paper.paperId, paperData);
                 }
                 else {
-                    uniquePapers.set(paper.paperId, new journal_1.MetaDataJournal(paper.title, 1, paper.citationCount, paper.venue, 1));
+                    uniquePapers.set(paper.paperId, new Paper_1.MetaDataPaper(paper.title, 1, paper.citationCount, paper.venue, 1));
                 }
             });
         });
@@ -19380,7 +19794,10 @@ function getRefTitles(authors, title) {
     });
 }
 exports.getRefTitles = getRefTitles;
-// function that gets unique id of the paper from the semantic scholar API
+/**
+ *
+ * @returns the unqiue id of a paper from Semantic Scholar
+ */
 function getSemanticScholarPaperId(title) {
     return __awaiter(this, void 0, void 0, function* () {
         // prepare query strings
@@ -19393,7 +19810,9 @@ function getSemanticScholarPaperId(title) {
                 method: 'GET',
                 headers: {},
             });
-            const outputJSON = yield response.json();
+            const outputText = yield response.text();
+            const outputJSON = JSON.parse(outputText);
+            // const outputJSON : any = await response.json();
             const paperid = outputJSON.data[0].paperId;
             return paperid;
         }

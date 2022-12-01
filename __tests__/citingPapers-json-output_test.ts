@@ -4,7 +4,7 @@
 import { openAlexCitations } from "../src/resources/openalexAPI";
 import { semanticScholarCitations } from "../src/resources/semanticscholarAPI";
 import { matchers } from "jest-json-schema";
-import { Author} from "../src/resources/journal";
+import { Author} from "../src/resources/Paper";
 
 expect.extend(matchers);
 jest.setTimeout(30000);
@@ -55,7 +55,7 @@ test("Check that openAlexCitations and semanticScholarCitations output json matc
 
     // We use a citation.cff example for the title and authors
     const title = "Parcels";
-    const authors: Author[] = [ new Author("Van Sebille", "Erik", "https://orcid.org/0000-0003-2041-0704"), new Author("Kehl", "Christian", "https://orcid.org/0000-0003-4200-1450"), new Author("Lange","Michael","https://orcid.org/0000-0002-3232-0127"), new Author("Delandmeter","Philippe", "https://orcid.org/0000-0003-0100-5834")];
+    const authors: Author[] = [ new Author("Erik Van Sebille", "https://orcid.org/0000-0003-2041-0704"), new Author("Christian Kehl", "https://orcid.org/0000-0003-4200-1450"), new Author("Michael Lange","https://orcid.org/0000-0002-3232-0127"), new Author("Philippe Delandmeter", "https://orcid.org/0000-0003-0100-5834")];
     const refTitles: string[] = [];
     //Run openAlexCitations and check if output JSON matches with the predefined schema
     const openAlex_output = await openAlexCitations(authors, title, refTitles);
