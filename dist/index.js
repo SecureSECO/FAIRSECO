@@ -17567,7 +17567,6 @@ const sbom_1 = __nccwpck_require__(2766);
 const log_1 = __nccwpck_require__(2378);
 const git_1 = __nccwpck_require__(4827);
 function data() {
-    var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
         const output = [];
         const ghinfo = yield (0, git_1.getGithubInfo)();
@@ -17595,8 +17594,9 @@ function data() {
             (0, log_1.LogMessage)("An error occurred while running searchSECO.", log_1.ErrorLevel.err);
             (0, log_1.LogMessage)(error, log_1.ErrorLevel.err);
         }
+        let cffResult = undefined;
         try {
-            const cffResult = yield (0, citation_cff_1.getCitationFile)(".");
+            cffResult = yield (0, citation_cff_1.getCitationFile)(".");
             output.push(cffResult);
         }
         catch (error) {
@@ -17612,33 +17612,26 @@ function data() {
             (0, log_1.LogMessage)(error, log_1.ErrorLevel.err);
         }
         try {
-            const cffResult = yield (0, citation_cff_1.getCitationFile)("./src/resources");
-            output.push(cffResult);
-        }
-        catch (error) {
-            console.error("Getting CITATION.cff caused an error:");
-        }
-        try {
-            const cffFile = (_b = (_a = output.find(x => x.ReturnName === "Citation")) === null || _a === void 0 ? void 0 : _a.ReturnData) !== null && _b !== void 0 ? _b : { status: "missing_file" };
-            if (cffFile.status === "valid") {
+            const cffFile = cffResult === null || cffResult === void 0 ? void 0 : cffResult.ReturnData;
+            if ((cffFile === null || cffFile === void 0 ? void 0 : cffFile.status) === "valid") {
                 const citingPapersResult = yield (0, citingPapers_1.runCitingPapers)(cffFile);
                 output.push(citingPapersResult);
             }
             else {
-                throw new Error("Invalid cff File");
+                throw new Error("Invalid CITATION.cff file");
             }
         }
         catch (error) {
-            console.error("Scholarly threw an error:");
-            console.error(error);
+            (0, log_1.LogMessage)("Scholarly threw an error:", log_1.ErrorLevel.err);
+            (0, log_1.LogMessage)(error, log_1.ErrorLevel.err);
         }
         try {
             const SBOMResult = yield (0, sbom_1.runSBOM)();
             output.push(SBOMResult);
         }
         catch (error) {
-            console.error("SBOM threw an error:");
-            console.error(error);
+            (0, log_1.LogMessage)("SBOM threw an error:", log_1.ErrorLevel.err);
+            (0, log_1.LogMessage)(error, log_1.ErrorLevel.err);
         }
         return output;
     });
@@ -17939,6 +17932,7 @@ exports.post = void 0;
 const yaml_1 = __importDefault(__nccwpck_require__(1317));
 const fs_1 = __importDefault(__nccwpck_require__(7147));
 const webapp_1 = __nccwpck_require__(173);
+const log_1 = __nccwpck_require__(2378);
 /**
  * Creates reports showing the gathered data in .yml and .html format.
  * @param result The data gathered by FairSECO.
@@ -17953,15 +17947,13 @@ function post(result) {
 exports.post = post;
 // Generate the report of FairSeco
 function createReport(result) {
-    const fd = fs_1.default.openSync("./.FairSECO/Report.yml", "w+");
+    (0, log_1.LogMessage)("FairSECO report:\n" + result, log_1.ErrorLevel.info);
     try {
-        console.log(result);
-        fs_1.default.writeSync(fd, yaml_1.default.stringify(result));
-        console.log("Successfully wrote YML file to dir");
-        fs_1.default.closeSync(fd);
+        fs_1.default.writeFileSync("./.FairSECO/Report.yml", yaml_1.default.stringify(result));
+        (0, log_1.LogMessage)("Successfully wrote YML file to dir.", log_1.ErrorLevel.info);
     }
     catch (_a) {
-        console.error("Error writing yaml file");
+        (0, log_1.LogMessage)("Error writing YML file.", log_1.ErrorLevel.err);
     }
 }
 // Make a webapp from the report
@@ -17969,12 +17961,12 @@ function generateHTML(result) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             yield (0, webapp_1.WriteHTML)(result, "./.FairSECO/index.html");
-            console.log("Successfully wrote HTML to dir");
+            (0, log_1.LogMessage)("Successfully wrote HTML file to dir.", log_1.ErrorLevel.info);
             // await WriteCSS("./.FairSECO/style.css");
             // console.log("Successfully wrote CSS to dir");
         }
         catch (_a) {
-            console.error("Error writing HTML file");
+            (0, log_1.LogMessage)("Error writing HTML file.", log_1.ErrorLevel.err);
         }
     });
 }
@@ -18056,13 +18048,13 @@ exports.pre = pre;
  * This function is exported for unit tests.
  */
 function createFairSECODir() {
-    // Create dir if not exists
-    console.log("Creating FairSECO directory.");
+    // Create dir if it does not yet exist
     try {
         fs_1.default.mkdirSync("./.FairSECO/");
+        (0, log_1.LogMessage)("FairSECO directory created.", log_1.ErrorLevel.info);
     }
     catch (_a) {
-        console.log("Folder already exists, skipping");
+        (0, log_1.LogMessage)("FairSECO directory already exists.", log_1.ErrorLevel.info);
     }
 }
 exports.createFairSECODir = createFairSECODir;
@@ -18388,6 +18380,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getError = exports.unknownErrorMsg = exports.getCitationFile = void 0;
+const dockerExit = __importStar(__nccwpck_require__(8248));
 const yaml_1 = __importDefault(__nccwpck_require__(1317));
 const path_ = __importStar(__nccwpck_require__(1017));
 const fs = __importStar(__nccwpck_require__(7147));
@@ -18406,24 +18399,27 @@ function getCitationFile(path) {
         try {
             file = fs.readFileSync(filePath + "/CITATION.cff");
         }
-        catch (_a) {
-            // Reading file failed
-            console.log("WARNING: No citation.cff file found");
-            // Return MissingCFFObject indicating missing citation.cff file
-            const returnData = { status: "missing_file" };
-            return {
-                ReturnName: "Citation",
-                ReturnData: returnData,
-            };
+        catch (e) {
+            if (e.code === "ENOENT") {
+                // File not found, return MissingCFFObject to indicate missing citation.cff file
+                const returnData = { status: "missing_file" };
+                return {
+                    ReturnName: "Citation",
+                    ReturnData: returnData,
+                };
+            }
+            else {
+                // Critical error, stop
+                throw e;
+            }
         }
         let result;
         // Parse the citation.cff file (YAML format)
         try {
             result = yaml_1.default.parse(file.toString());
         }
-        catch (_b) {
-            // Parsing failed, incorrect YAML
-            console.log("WARNING: Incorrect format");
+        catch (_a) {
+            // Parsing failed, incorrect YAML.
             // Return IncorrectYamlCFFObject to indicate incorrect yaml
             const returnData = { status: "incorrect_yaml" };
             return {
@@ -18450,7 +18446,7 @@ function getCitationFile(path) {
             else
                 console.log("Folder cffOutputFiles already exists!");
         }
-        catch (_c) {
+        catch (_b) {
             console.error("Could not create cffOutputFiles folder");
         }
         const stdOutStream = fs.createWriteStream("./cffOutputFiles/cffOutput.txt");
@@ -18471,8 +18467,10 @@ function getCitationFile(path) {
         };
         // Run cffconvert in docker to validate the citation.cff file
         const exitCode = yield (0, exec_1.exec)(cmd, args, options);
-        // Check the exit code for success
-        if (exitCode === 0) {
+        // Check the docker exit code for docker specific errors
+        dockerExit.throwDockerError(exitCode);
+        // Check cffconvert exit code for success
+        if (!dockerExit.isError(exitCode)) {
             // Citation.cff file is valid, return ValidCFFObject with data and validation message
             const returnData = {
                 status: "valid",
@@ -18501,8 +18499,7 @@ function getCitationFile(path) {
 exports.getCitationFile = getCitationFile;
 exports.unknownErrorMsg = "Unknown Error";
 /**
- * Finds the error when trying to run cffconvert in docker
- * yields a non-zero exit code indicating failure.
+ * Finds the error when cffconvert returns an error code.
  * @param stderr The stderr output produced by docker.
  * @returns A string showing information about the error.
  */
@@ -18721,11 +18718,9 @@ exports.getArtifactData = getArtifactData;
  * @returns The contents of the file.
  */
 function getFileFromArtifact(dlResponse, fileName) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const filePath = path.join(dlResponse.downloadPath, fileName);
-        const buffer = fs.readFileSync(filePath);
-        return buffer.toString();
-    });
+    const filePath = path.join(dlResponse.downloadPath, fileName);
+    const buffer = fs.readFileSync(filePath);
+    return buffer.toString();
 }
 exports.getFileFromArtifact = getFileFromArtifact;
 /**
@@ -18744,6 +18739,72 @@ exports.testArtifactObject = {
         return client;
     },
 };
+
+
+/***/ }),
+
+/***/ 8248:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+// Known docker errors: https://komodor.com/learn/exit-codes-in-containers-and-kubernetes-the-complete-guide/
+// Other exit codes indicate the contained command's exit code
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.throwError = exports.throwDockerError = exports.isDockerError = exports.isError = void 0;
+const dockerErrors = new Map();
+dockerErrors.set(125, 'Container failed to run error');
+dockerErrors.set(126, 'A command specified in the image specification could not be invoked');
+dockerErrors.set(127, 'File or directory specified in the image specification was not found');
+dockerErrors.set(128, 'Exit was triggered with an invalid exit code (valid codes are integers between 0-255)');
+dockerErrors.set(134, 'The container aborted itself using the abort() function.');
+dockerErrors.set(137, 'Container was immediately terminated by the operating system via SIGKILL signal');
+dockerErrors.set(139, 'Container attempted to access memory that was not assigned to it and was terminated');
+dockerErrors.set(143, 'Container received warning that it was about to be terminated, then terminated');
+dockerErrors.set(255, 'Container exited, returning an exit code outside the acceptable range, meaning the cause of the error is not known');
+/**
+ * Checks if a docker exit code indicates an error with docker or the application.
+ * @param exitCode The docker exit code.
+ * @returns `true` if the exit code indicates an error from docker or the application.
+ */
+function isError(exitCode) {
+    return exitCode !== 0;
+}
+exports.isError = isError;
+/**
+ * Checks if a docker exit code indicates a docker error.
+ * @param exitCode The docker exit code.
+ * @returns `true` if the exit code indicates a docker error, `false` if it indicates an application's return value.
+ */
+function isDockerError(exitCode) {
+    return exitCode in dockerErrors;
+}
+exports.isDockerError = isDockerError;
+/**
+ * Checks if a docker exit code indicates a docker error and throws the error if it does.
+ * No error is thrown if the exit code indicates an application error.
+ * @param exitCode The docker exit code.
+ */
+function throwDockerError(exitCode) {
+    if (isDockerError(exitCode)) {
+        throw new Error(dockerErrors.get(exitCode));
+    }
+}
+exports.throwDockerError = throwDockerError;
+/**
+ * Checks if a docker exit code indicates an error with docker or the application, and throw it if it does.
+ * @param application The name of the used application.
+ * @param exitCode The docker exit code.
+ */
+function throwError(application, exitCode) {
+    if (isError(exitCode)) {
+        // If the exit code is a docker error, throw it
+        throwDockerError(exitCode);
+        // Throw application error
+        throw new Error(application + " application error: " + exitCode.toString());
+    }
+}
+exports.throwError = throwError;
 
 
 /***/ }),
@@ -18785,10 +18846,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.runHowfairis = void 0;
-const fs = __importStar(__nccwpck_require__(7147));
+const dockerExit = __importStar(__nccwpck_require__(8248));
+const log_1 = __nccwpck_require__(2378);
 const exec_1 = __nccwpck_require__(9710);
+const fs_1 = __importDefault(__nccwpck_require__(7147));
 /**
  * This function runs the fairtally docker image on the current repo,
  * and gives the checklist of FAIRness criteria.
@@ -18797,7 +18863,7 @@ const exec_1 = __nccwpck_require__(9710);
  */
 function runHowfairis(ghInfo) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.debug("HowFairIs started");
+        (0, log_1.LogMessage)("Howfairis started.", log_1.ErrorLevel.info);
         const cmd = "docker";
         const args = [
             "run",
@@ -18813,16 +18879,16 @@ function runHowfairis(ghInfo) {
         let stdout = "";
         let stderr = "";
         try {
-            if (!fs.existsSync("./hfiOutputFiles"))
-                fs.mkdirSync("./hfiOutputFiles/");
+            if (!fs_1.default.existsSync("./hfiOutputFiles"))
+                fs_1.default.mkdirSync("./hfiOutputFiles/");
             else
-                console.log("Folder hfiOutputFiles already exists!");
+                (0, log_1.LogMessage)("Directory hfiOutputFiles already exists!", log_1.ErrorLevel.info);
         }
         catch (_a) {
-            console.error("Could not create hfiOutputFiles folder");
+            (0, log_1.LogMessage)("Could not create hfiOutputFiles directory.", log_1.ErrorLevel.err);
         }
-        const stdOutStream = fs.createWriteStream("./hfiOutputFiles/hfiOutput.txt");
-        const stdErrStream = fs.createWriteStream("./hfiOutputFiles/hfiError.txt");
+        const stdOutStream = fs_1.default.createWriteStream("./hfiOutputFiles/hfiOutput.txt");
+        const stdErrStream = fs_1.default.createWriteStream("./hfiOutputFiles/hfiError.txt");
         const options = {
             ignoreReturnCode: true,
             windowsVerbatimArguments: true,
@@ -18838,9 +18904,19 @@ function runHowfairis(ghInfo) {
             },
         };
         const exitCode = yield (0, exec_1.exec)(cmd, args, options);
+        // Check docker exit code
+        dockerExit.throwError("Howfairis", exitCode);
+        // Parse the JSON output
+        let returnData;
+        try {
+            returnData = JSON.parse(stdout);
+        }
+        catch (_b) {
+            throw new Error("Run output is not valid JSON");
+        }
         return {
             ReturnName: "HowFairIs",
-            ReturnData: JSON.parse(stdout),
+            ReturnData: returnData,
         };
     });
 }
@@ -18870,6 +18946,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getOpenAlexPaperId = exports.getRefTitles = exports.getCitationPapers = exports.openAlexCitations = void 0;
 const node_fetch_1 = __importDefault(__nccwpck_require__(2504));
 const Paper_1 = __nccwpck_require__(2151);
+const log_1 = __nccwpck_require__(2378);
 const probability_1 = __nccwpck_require__(8587);
 /**
  *
@@ -18992,7 +19069,7 @@ function getCitationPapers(paperId) {
             return output;
         }
         catch (error) {
-            console.log("error while searching openAlex with openAlex ID of: " + paperId);
+            (0, log_1.LogMessage)("Error while searching OpenAlex with OpenAlex paper ID of: " + paperId, log_1.ErrorLevel.err);
             return output;
         }
     });
@@ -19039,11 +19116,11 @@ function getRefTitles(authors, title) {
                 }
             }
             catch (error) {
-                let errorMessage = "Error while searching for author " + author.name + " on semantics scholar";
+                let errorMessage = "Error while searching for author " + author.name + " on Semantic Scholar";
                 if (error instanceof Error) {
                     errorMessage = error.message;
                 }
-                console.log(errorMessage);
+                (0, log_1.LogMessage)(errorMessage, log_1.ErrorLevel.err);
             }
             papers.forEach((element) => {
                 if (element.title !== null) {
@@ -19099,7 +19176,7 @@ function getOpenAlexPaperId(title) {
             return paperid;
         }
         catch (error) {
-            console.log("Error while fetching paperID from openAlex of: " + title);
+            (0, log_1.LogMessage)("Error while fetching paperID from OpenAlex of: " + title, log_1.ErrorLevel.err);
             const output = JSON.parse("");
             return output;
         }
@@ -19111,12 +19188,13 @@ exports.getOpenAlexPaperId = getOpenAlexPaperId;
 /***/ }),
 
 /***/ 8587:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.calculateProbabiltyOfReference = void 0;
+const log_1 = __nccwpck_require__(2378);
 /**
  *
  * @returns array containing for each paper a probability from 0 to 1 that they are a reference paper.
@@ -19151,7 +19229,7 @@ function calculateProbabiltyOfReference(uniquePapers) {
     const title = (_a = uniquePapers.get(mainPaperId)) === null || _a === void 0 ? void 0 : _a.title;
     // Find the probabilty of a paper being a reference paper based on the similarity of the title to the main paper, ignoring papers beneath the mean value of contributors or citations.
     if (title === undefined) {
-        console.log("Paper has no title");
+        (0, log_1.LogMessage)("Paper has no title", log_1.ErrorLevel.info);
     }
     else {
         const wordsMainPaper = title.toLowerCase().split(" ");
@@ -19239,6 +19317,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.runSBOM = void 0;
 const artifact_1 = __nccwpck_require__(2949);
 const artifact = __importStar(__nccwpck_require__(9151));
+const log_1 = __nccwpck_require__(2378);
 /**
  * This function downloads the artifact created by the SBOM action,
  * and parses the JSON to an object.
@@ -19252,12 +19331,13 @@ function runSBOM(artifactObject = artifact, destination = ".SBOM-artifact", file
     return __awaiter(this, void 0, void 0, function* () {
         // Get the SBOM file
         const downloadResponse = yield (0, artifact_1.getArtifactData)(fileName, destination, artifactObject);
-        const fileContents = yield (0, artifact_1.getFileFromArtifact)(downloadResponse, fileName);
+        const fileContents = (0, artifact_1.getFileFromArtifact)(downloadResponse, fileName);
         let obj;
         if (fileContents !== "") {
             obj = JSON.parse(fileContents);
         }
         else {
+            (0, log_1.LogMessage)("SBOM artifact file appears to be empty.", log_1.ErrorLevel.warn);
             obj = {};
         }
         return {
@@ -19310,6 +19390,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getMatchIndicesOfHash = exports.getMatches = exports.getMethodInfo = exports.getHashIndices = exports.parseInput = exports.runSearchseco = void 0;
+const log_1 = __nccwpck_require__(2378);
+const docker_exit_1 = __nccwpck_require__(8248);
 const fs = __importStar(__nccwpck_require__(7147));
 const exec_1 = __nccwpck_require__(9710);
 /**
@@ -19350,8 +19432,8 @@ function runSearchseco(ghInfo) {
         const entrypoint = '--entrypoint="./controller/build/searchseco"';
         // This needs to contain a working Github token, since the real SearchSECO needs it
         const ghToken = ""; // core.getInput("GITHUB_TOKEN");
-        console.debug("SearchSECO started");
-        console.debug("WARNING: Running a mock of SearchSECO. The output will be incorrect!");
+        (0, log_1.LogMessage)("SearchSECO started.", log_1.ErrorLevel.info);
+        (0, log_1.LogMessage)("Running a mock of SearchSECO. The output will be incorrect!", log_1.ErrorLevel.warn);
         const cmd = "docker";
         const args = [
             "run",
@@ -19374,10 +19456,10 @@ function runSearchseco(ghInfo) {
             if (!fs.existsSync("./ssOutputFiles"))
                 fs.mkdirSync("./ssOutputFiles/");
             else
-                console.log("Folder ssOutputFiles already exists!");
+                (0, log_1.LogMessage)("Directory ssOutputFiles already exists!", log_1.ErrorLevel.info);
         }
         catch (_a) {
-            console.error("Could not create ssOutputFiles folder");
+            (0, log_1.LogMessage)("Could not create ssOutputFiles directory", log_1.ErrorLevel.err);
         }
         const stdOutStream = fs.createWriteStream("./ssOutputFiles/ssOutput.txt");
         const stdErrStream = fs.createWriteStream("./ssOutputFiles/ssError.txt");
@@ -19399,12 +19481,8 @@ function runSearchseco(ghInfo) {
         };
         // Executes the docker run command
         const exitCode = yield (0, exec_1.exec)(cmd, args, options);
-        console.debug("Docker running SearchSECO returned " + String(exitCode));
-        // if (stderr !== "") console.log(stderr);
-        // console.debug("stdout:");
-        // console.debug(stdout);
-        // console.debug("stderr:");
-        // console.debug(stderr);
+        // Check docker exit code
+        (0, docker_exit_1.throwError)("SearchSECO", exitCode);
         // ParseInput expects an array of trimmed lines
         // (i.e. without trailing or leading whitespace)
         const lines = stdout.split("\n");
@@ -19600,6 +19678,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getSemanticScholarPaperId = exports.getRefTitles = exports.getCitationPapers = exports.semanticScholarCitations = void 0;
 const node_fetch_1 = __importDefault(__nccwpck_require__(2504));
 const Paper_1 = __nccwpck_require__(2151);
+const log_1 = __nccwpck_require__(2378);
 const probability_1 = __nccwpck_require__(8587);
 /**
  *
@@ -19701,7 +19780,7 @@ function getCitationPapers(paperId) {
             return output;
         }
         catch (error) {
-            console.log("error while searching semantic scholar with semantic scholar ID of: " + paperId);
+            (0, log_1.LogMessage)("Error while searching Semantic Scholar with Semantic Scholar paper ID of: " + paperId, log_1.ErrorLevel.err);
             return output;
         }
     });
@@ -19740,11 +19819,11 @@ function getRefTitles(authors, title) {
                 });
             }
             catch (error) {
-                let errorMessage = "Error while searching for author " + author.name + " on semantics scholar";
+                let errorMessage = "Error while searching for author " + author.name + " on Semantic Scholar";
                 if (error instanceof Error) {
                     errorMessage = error.message;
                 }
-                console.log(errorMessage);
+                (0, log_1.LogMessage)(errorMessage, log_1.ErrorLevel.err);
             }
             papers.forEach((element) => {
                 // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
@@ -19802,7 +19881,7 @@ function getSemanticScholarPaperId(title) {
             return paperid;
         }
         catch (error) {
-            console.log("Error while fetching paperID from semantic scholar of: " + title);
+            (0, log_1.LogMessage)("Error while fetching paperID from Semantic Scholar of: " + title, log_1.ErrorLevel.err);
             const output = "";
             return output;
         }
@@ -19903,6 +19982,7 @@ exports.filterData = exports.runTortellini = void 0;
 const yaml_1 = __importDefault(__nccwpck_require__(1317));
 const artifact_1 = __nccwpck_require__(2949);
 const input = __importStar(__nccwpck_require__(9478));
+const log_1 = __nccwpck_require__(2378);
 /**
  * Downloads the artifact that was uploaded by Tortellini, and parses the YAML file.
  *
@@ -19912,9 +19992,11 @@ const input = __importStar(__nccwpck_require__(9478));
 function runTortellini(fileName = "evaluation-result.yml") {
     return __awaiter(this, void 0, void 0, function* () {
         const downloadResponse = yield (0, artifact_1.getArtifactData)("tortellini-result", input.destination, input.artifactObject);
-        const fileContents = yield (0, artifact_1.getFileFromArtifact)(downloadResponse, fileName);
-        if (fileContents === "")
+        const fileContents = (0, artifact_1.getFileFromArtifact)(downloadResponse, fileName);
+        if (fileContents === "") {
+            (0, log_1.LogMessage)("Tortellini artifact file appears to be empty.", log_1.ErrorLevel.warn);
             return { ReturnName: "Tortellini", ReturnData: {} };
+        }
         const obj = yaml_1.default.parse(fileContents);
         const filteredData = yield filterData(obj);
         return {

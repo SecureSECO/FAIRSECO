@@ -4,7 +4,7 @@ import * as dockerExit from "./helperfunctions/docker_exit";
 import { ErrorLevel, LogMessage } from "../log";
 
 import { exec, ExecOptions } from "@actions/exec";
-import * as fs from fs;
+import fs from "fs";
 
 /**
  * This function runs the fairtally docker image on the current repo,
