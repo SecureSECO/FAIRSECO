@@ -1,8 +1,10 @@
 import { ReturnObject } from "../getdata";
 import { GithubInfo } from "../git";
-import * as fs from "fs";
+import * as dockerExit from "./helperfunctions/docker_exit";
+import { ErrorLevel, LogMessage } from "../log";
 
 import { exec, ExecOptions } from "@actions/exec";
+import * as fs from fs;
 
 /**
  * This function runs the fairtally docker image on the current repo,
@@ -11,7 +13,8 @@ import { exec, ExecOptions } from "@actions/exec";
  * @returns A {@link action.ReturnObject} containing the result from fairtally.
  */
 export async function runHowfairis(ghInfo: GithubInfo): Promise<ReturnObject> {
-    console.debug("HowFairIs started");
+    LogMessage("Howfairis started.", ErrorLevel.info);
+
     const cmd = "docker";
     const args = [
         "run",
@@ -31,9 +34,10 @@ export async function runHowfairis(ghInfo: GithubInfo): Promise<ReturnObject> {
     try {
         if (!fs.existsSync("./hfiOutputFiles"))
             fs.mkdirSync("./hfiOutputFiles/");
-        else console.log("Folder hfiOutputFiles already exists!");
+        else
+            LogMessage("Directory hfiOutputFiles already exists!", ErrorLevel.info);
     } catch {
-        console.error("Could not create hfiOutputFiles folder");
+        LogMessage("Could not create hfiOutputFiles directory.", ErrorLevel.err);
     }
 
     const stdOutStream = fs.createWriteStream("./hfiOutputFiles/hfiOutput.txt");
@@ -56,8 +60,19 @@ export async function runHowfairis(ghInfo: GithubInfo): Promise<ReturnObject> {
     };
     const exitCode = await exec(cmd, args, options);
 
+    // Check docker exit code
+    dockerExit.throwError("Howfairis", exitCode);
+
+    // Parse the JSON output
+    let returnData;
+    try {
+        returnData = JSON.parse(stdout);
+    } catch {
+        throw new Error("Run output is not valid JSON");
+    }
+
     return {
         ReturnName: "HowFairIs",
-        ReturnData: JSON.parse(stdout),
+        ReturnData: returnData,
     };
 }

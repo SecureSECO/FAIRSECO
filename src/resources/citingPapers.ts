@@ -22,6 +22,7 @@ export async function runCitingPapers(cffFile: ValidCffObject): Promise<ReturnOb
         let familyName = "";
         let givenNames = "";
         let orchidId = "";
+
         for (const [key, value] of Object.entries(element)) {
             switch (key) {
                 case ("family-names"):

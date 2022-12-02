@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import { Author, Paper, MetaDataPaper } from "./Paper";
+import { ErrorLevel, LogMessage } from "../log";
 import { calculateProbabiltyOfReference } from "./probability";
 /**
  * 
@@ -91,7 +92,7 @@ export async function getCitationPapers(paperId: string): Promise < Paper[] > {
         return output;
     }
     catch (error){
-        console.log("error while searching semantic scholar with semantic scholar ID of: " + paperId);
+        LogMessage("Error while searching Semantic Scholar with Semantic Scholar paper ID of: " + paperId, ErrorLevel.err);
         return output;
     }
 }
@@ -128,11 +129,11 @@ export async function getRefTitles(authors: Author[], title: string): Promise<st
             });
         }
         catch (error){
-            let errorMessage = "Error while searching for author " + author.name + " on semantics scholar"
+            let errorMessage = "Error while searching for author " + author.name + " on Semantic Scholar"
             if(error instanceof Error){
                 errorMessage = error.message;
             }
-            console.log(errorMessage)
+            LogMessage(errorMessage, ErrorLevel.err);
         } 
         papers.forEach((element: any) => {
             // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
@@ -188,7 +189,7 @@ export async function getSemanticScholarPaperId(title: string): Promise<string> 
         return paperid;
     }
     catch (error){
-        console.log("Error while fetching paperID from semantic scholar of: " + title);
+        LogMessage("Error while fetching paperID from Semantic Scholar of: " + title, ErrorLevel.err);
         const output = "";
         return output;
     } 

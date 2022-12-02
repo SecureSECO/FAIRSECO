@@ -1,4 +1,5 @@
 import { ReturnObject } from "../getdata";
+import * as dockerExit from "./helperfunctions/docker_exit";
 import YAML from "yaml";
 import * as path_ from "path";
 
@@ -43,16 +44,19 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
     // Read the citation.cff file
     try {
         file = fs.readFileSync(filePath + "/CITATION.cff");
-    } catch {
-        // Reading file failed
-        console.log("WARNING: No citation.cff file found");
-
-        // Return MissingCFFObject indicating missing citation.cff file
-        const returnData: MissingCffObject = { status: "missing_file" };
-        return {
-            ReturnName: "Citation",
-            ReturnData: returnData,
-        };
+    } catch (e) {
+        if (e.code === "ENOENT") {
+            // File not found, return MissingCFFObject to indicate missing citation.cff file
+            const returnData: MissingCffObject = { status: "missing_file" };
+            return {
+                ReturnName: "Citation",
+                ReturnData: returnData,
+            };
+        }
+        else {
+            // Critical error, stop
+            throw e;
+        }
     }
 
     let result: any;
@@ -61,9 +65,7 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
     try {
         result = YAML.parse(file.toString());
     } catch {
-        // Parsing failed, incorrect YAML
-        console.log("WARNING: Incorrect format");
-
+        // Parsing failed, incorrect YAML.
         // Return IncorrectYamlCFFObject to indicate incorrect yaml
         const returnData: IncorrectYamlCffObject = { status: "incorrect_yaml" };
         return {
@@ -117,8 +119,11 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
     // Run cffconvert in docker to validate the citation.cff file
     const exitCode = await exec(cmd, args, options);
 
-    // Check the exit code for success
-    if (exitCode === 0) {
+    // Check the docker exit code for docker specific errors
+    dockerExit.throwDockerError(exitCode);
+
+    // Check cffconvert exit code for success
+    if (!dockerExit.isError(exitCode)) {
         // Citation.cff file is valid, return ValidCFFObject with data and validation message
         const returnData: ValidCffObject = {
             status: "valid",
@@ -146,8 +151,7 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
 export const unknownErrorMsg = "Unknown Error";
 
 /**
- * Finds the error when trying to run cffconvert in docker
- * yields a non-zero exit code indicating failure.
+ * Finds the error when cffconvert returns an error code.
  * @param stderr The stderr output produced by docker.
  * @returns A string showing information about the error.
  */

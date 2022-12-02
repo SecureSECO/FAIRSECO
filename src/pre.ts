@@ -1,5 +1,5 @@
 import * as core from "@actions/core";
-import { createLogFile } from "./log";
+import { createLogFile, ErrorLevel, LogMessage } from "./log";
 import fs, { PathLike } from "fs";
 
 /**
@@ -28,11 +28,11 @@ export async function pre(): Promise<boolean> {
  * This function is exported for unit tests.
  */
 export function createFairSECODir(): void {
-    // Create dir if not exists
-    console.log("Creating FairSECO directory.");
+    // Create dir if it does not yet exist
     try {
         fs.mkdirSync("./.FairSECO/");
+        LogMessage("FairSECO directory created.", ErrorLevel.info);
     } catch {
-        console.log("Folder already exists, skipping");
+        LogMessage("FairSECO directory already exists.", ErrorLevel.info);
     }
 }

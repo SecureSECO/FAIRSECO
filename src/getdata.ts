@@ -54,8 +54,9 @@ export async function data(): Promise<ReturnObject[]> {
         LogMessage(error, ErrorLevel.err);
     }
 
+    let cffResult = undefined;
     try {
-        const cffResult = await getCitationFile(".");
+        cffResult = await getCitationFile(".");
         output.push(cffResult);
     } catch (error) {
         LogMessage(
@@ -74,32 +75,25 @@ export async function data(): Promise<ReturnObject[]> {
     }
 
     try {
-        const cffResult = await getCitationFile("./src/resources");
-        output.push(cffResult);
-    } catch (error) {
-        console.error("Getting CITATION.cff caused an error:");
-    }
-    try {
-        const cffFile: CffObject = output.find(x => x.ReturnName === "Citation")?.ReturnData as CffObject ?? { status: "missing_file"};
-        if (cffFile.status === "valid") {
+        const cffFile = cffResult?.ReturnData as CffObject;
+        if (cffFile?.status === "valid") {
             const citingPapersResult = await runCitingPapers(cffFile);
             output.push(citingPapersResult);
+        } else {
+            throw new Error("Invalid CITATION.cff file");
         }
-        else {
-            throw new Error("Invalid cff File");
-        }
-
     } catch (error) {
-        console.error("Scholarly threw an error:");
-        console.error(error);
+        LogMessage("Scholarly threw an error:", ErrorLevel.err);
+        LogMessage(error, ErrorLevel.err);
     }
+    
     try {
         const SBOMResult = await runSBOM();
         output.push(SBOMResult);
     } catch (error) {
-        console.error("SBOM threw an error:");
-
-        console.error(error);
+        LogMessage("SBOM threw an error:", ErrorLevel.err);
+        LogMessage(error, ErrorLevel.err);
     }
+
     return output;
 }

@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import { Author, Paper, MetaDataPaper } from "./Paper";
+import { ErrorLevel, LogMessage } from "../log";
 import { calculateProbabiltyOfReference } from "./probability";
 /**
  * 
@@ -109,8 +110,8 @@ export async function getCitationPapers(paperId: string): Promise<Paper[]> {
         // console.log("Getting citations took " + (performance.now() - endtime) + " ms")
         return output;
     }
-    catch (error){
-        console.log("error while searching openAlex with openAlex ID of: " + paperId);
+    catch (error) {
+        LogMessage("Error while searching OpenAlex with OpenAlex paper ID of: " + paperId, ErrorLevel.err);
         return output;
     }      
 }
@@ -155,11 +156,11 @@ export async function getRefTitles(authors: Author[], title: string): Promise<st
             }
         }
         catch (error){
-            let errorMessage = "Error while searching for author " + author.name + " on semantics scholar"
+            let errorMessage = "Error while searching for author " + author.name + " on Semantic Scholar"
             if(error instanceof Error){
                 errorMessage = error.message;
             }
-            console.log(errorMessage)
+            LogMessage(errorMessage, ErrorLevel.err);
         } 
         papers.forEach((element: any) => {
             if (element.title !== null) {
@@ -213,7 +214,7 @@ export async function getOpenAlexPaperId(title: string): Promise<string> {
         return paperid;
     }
     catch (error){
-        console.log("Error while fetching paperID from openAlex of: " + title);
+        LogMessage("Error while fetching paperID from OpenAlex of: " + title, ErrorLevel.err);
         const output = JSON.parse("");
         return output;
     } 

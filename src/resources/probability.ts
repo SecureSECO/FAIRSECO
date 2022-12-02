@@ -1,4 +1,5 @@
 import { MetaDataPaper } from "./Paper"
+import { ErrorLevel, LogMessage } from "../log";
 /**
  * 
  * @returns array containing for each paper a probability from 0 to 1 that they are a reference paper.
@@ -35,7 +36,7 @@ export function calculateProbabiltyOfReference(uniquePapers: Map<string, MetaDat
 
     // Find the probabilty of a paper being a reference paper based on the similarity of the title to the main paper, ignoring papers beneath the mean value of contributors or citations.
     if(title === undefined){
-        console.log("Paper has no title")
+        LogMessage("Paper has no title", ErrorLevel.info);
     }
     else{
         const wordsMainPaper: string[] = title.toLowerCase().split(" ");

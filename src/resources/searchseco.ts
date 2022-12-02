@@ -1,7 +1,9 @@
 import { ReturnObject } from "../getdata";
 import { GithubInfo } from "../git";
-import * as fs from "fs";
+import { ErrorLevel, LogMessage } from "../log";
+import { throwDockerError, throwError } from "./helperfunctions/docker_exit";
 
+import * as fs from "fs";
 import { exec, ExecOptions } from "@actions/exec";
 
 /**
@@ -45,10 +47,9 @@ export async function runSearchseco(ghInfo: GithubInfo): Promise<ReturnObject> {
     // This needs to contain a working Github token, since the real SearchSECO needs it
     const ghToken = ""; // core.getInput("GITHUB_TOKEN");
 
-    console.debug("SearchSECO started");
-    console.debug(
-        "WARNING: Running a mock of SearchSECO. The output will be incorrect!"
-    );
+    LogMessage("SearchSECO started.", ErrorLevel.info);
+    LogMessage("Running a mock of SearchSECO. The output will be incorrect!", ErrorLevel.warn);
+
     const cmd = "docker";
     const args = [
         "run",
@@ -70,10 +71,12 @@ export async function runSearchseco(ghInfo: GithubInfo): Promise<ReturnObject> {
     let stderr = "";
 
     try {
-        if (!fs.existsSync("./ssOutputFiles")) fs.mkdirSync("./ssOutputFiles/");
-        else console.log("Folder ssOutputFiles already exists!");
+        if (!fs.existsSync("./ssOutputFiles"))
+            fs.mkdirSync("./ssOutputFiles/");
+        else
+            LogMessage("Directory ssOutputFiles already exists!", ErrorLevel.info);
     } catch {
-        console.error("Could not create ssOutputFiles folder");
+        LogMessage("Could not create ssOutputFiles directory", ErrorLevel.err);
     }
 
     const stdOutStream = fs.createWriteStream("./ssOutputFiles/ssOutput.txt");
@@ -100,12 +103,8 @@ export async function runSearchseco(ghInfo: GithubInfo): Promise<ReturnObject> {
     // Executes the docker run command
     const exitCode = await exec(cmd, args, options);
 
-    console.debug("Docker running SearchSECO returned " + String(exitCode));
-    // if (stderr !== "") console.log(stderr);
-    // console.debug("stdout:");
-    // console.debug(stdout);
-    // console.debug("stderr:");
-    // console.debug(stderr);
+    // Check docker exit code
+    throwError("SearchSECO", exitCode);
 
     // ParseInput expects an array of trimmed lines
     // (i.e. without trailing or leading whitespace)

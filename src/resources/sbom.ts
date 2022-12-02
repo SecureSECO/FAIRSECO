@@ -5,6 +5,7 @@ import {
     getFileFromArtifact,
 } from "./helperfunctions/artifact";
 import * as artifact from "@actions/artifact";
+import { ErrorLevel, LogMessage } from "../log";
 
 /**
  * This function downloads the artifact created by the SBOM action,
@@ -27,13 +28,14 @@ export async function runSBOM(
         artifactObject
     );
 
-    const fileContents = await getFileFromArtifact(downloadResponse, fileName);
+    const fileContents = getFileFromArtifact(downloadResponse, fileName);
 
     let obj;
 
     if (fileContents !== "") {
         obj = JSON.parse(fileContents);
     } else {
+        LogMessage("SBOM artifact file appears to be empty.", ErrorLevel.warn);
         obj = {};
     }
 
