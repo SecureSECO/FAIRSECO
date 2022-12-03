@@ -106,18 +106,8 @@ export async function runSearchseco(ghInfo: GithubInfo): Promise<ReturnObject> {
         },
     };
 
-    // await exec("docker", ["pull", dockerImage]);
-
     // Executes the docker run command
     const exitCode = await exec(cmd, args, options);
-
-    const dockOut = fs.readFileSync("./ssOutputFiles/ssOutput.txt").toString();
-    const dockErr = fs.readFileSync("./ssOutputFiles/ssError.txt").toString();
-
-    if (exitCode !== 0) {
-        console.log("Docker Output: \n" + dockOut);
-        console.log("Docker Error: \n" + dockErr);
-    }
 
     // Check docker exit code
     throwError("SearchSECO", exitCode);

@@ -5,6 +5,7 @@ import * as path_ from "path";
 
 import * as fs from "fs";
 import { exec, ExecOptions } from "@actions/exec";
+import { ErrorLevel, LogMessage } from "../log";
 
 export type CffObject =
     | MissingCffObject
@@ -52,8 +53,7 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
                 ReturnName: "Citation",
                 ReturnData: returnData,
             };
-        }
-        else {
+        } else {
             // Critical error, stop
             throw e;
         }
@@ -92,9 +92,13 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
     try {
         if (!fs.existsSync("./cffOutputFiles"))
             fs.mkdirSync("./cffOutputFiles/");
-        else console.log("Folder cffOutputFiles already exists!");
+        else
+            LogMessage(
+                "Folder cffOutputFiles already exists!",
+                ErrorLevel.info
+            );
     } catch {
-        console.error("Could not create cffOutputFiles folder");
+        LogMessage("Could not create cffOutputFiles folder", ErrorLevel.err);
     }
 
     const stdOutStream = fs.createWriteStream("./cffOutputFiles/cffOutput.txt");
