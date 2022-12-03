@@ -2,7 +2,7 @@ import * as ss from "../src/resources/searchseco";
 import YAML from "yaml";
 import { getGithubInfo } from "../src/git";
 
-jest.setTimeout(20000);
+jest.setTimeout(100000);
 
 describe("Test getHashIndices", () => {
     test("Single Hash", () => {
@@ -554,6 +554,27 @@ describe("Test parseInput", () => {
         expect(hash2matches[0].vuln.url).toBe(
             "https://www.url-of-vulnerability.com"
         );
+    });
+
+    test("Only Header", () => {
+        const input = [
+            "-----------------------------------------------------------------------------------------------------",
+            'Matched the project at "https://github.com/user/project" against the database.',
+            "-----------------------------------------------------------------------------------------------------",
+            "Summary:",
+            "Methods in checked project: 4",
+            "Matches: 2 (50%)",
+            "Projects found in database:",
+            "Local authors present in matches:",
+            "Authors present in database matches:",
+            "--------------------------------------------------------------------------------------------------------------------------------",
+            "Details of matches found",
+            "--------------------------------------------------------------------------------------------------------------------------------",
+        ];
+
+        const result = ss.parseInput(input);
+
+        expect(result.methods).toEqual([]);
     });
 });
 

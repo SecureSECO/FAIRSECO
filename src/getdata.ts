@@ -86,7 +86,19 @@ export async function data(): Promise<ReturnObject[]> {
         LogMessage("Scholarly threw an error:", ErrorLevel.err);
         LogMessage(error, ErrorLevel.err);
     }
-    
+
+    try {
+        const cffFile = output[3].ReturnData as CffObject;
+        if (cffFile.status === "valid") {
+            const citingPapersResult = await runCitingPapers(cffFile);
+            output.push(citingPapersResult);
+        } else {
+            throw new Error("Invalid cff File");
+        }
+    } catch (error) {
+        console.error("Scholarly threw an error:");
+        console.error(error);
+    }
     try {
         const SBOMResult = await runSBOM();
         output.push(SBOMResult);
@@ -94,6 +106,5 @@ export async function data(): Promise<ReturnObject[]> {
         LogMessage("SBOM threw an error:", ErrorLevel.err);
         LogMessage(error, ErrorLevel.err);
     }
-
     return output;
 }
