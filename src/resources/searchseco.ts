@@ -40,7 +40,20 @@ export async function runSearchseco(ghInfo: GithubInfo): Promise<ReturnObject> {
         );
 
     const cmd = "docker";
-    const args = [
+    const mockArgs = [
+        "run",
+        "--rm",
+        "--name",
+        "searchseco-container",
+        "-e",
+        '"github_token=' + ghToken + '"',
+        "-e",
+        '"worker_name=test"',
+        dockerImage,
+        "check",
+        gitrepo,
+    ];
+    const realArgs = [
         "run",
         "--rm",
         "--name",
@@ -54,6 +67,8 @@ export async function runSearchseco(ghInfo: GithubInfo): Promise<ReturnObject> {
         "check",
         gitrepo,
     ];
+
+    const args = useMock ? mockArgs : realArgs;
 
     // Output from the docker container
     let stdout = "";
@@ -91,7 +106,7 @@ export async function runSearchseco(ghInfo: GithubInfo): Promise<ReturnObject> {
         },
     };
 
-    await exec("docker", ["pull", dockerImage]);
+    // await exec("docker", ["pull", dockerImage]);
 
     // Executes the docker run command
     const exitCode = await exec(cmd, args, options);
