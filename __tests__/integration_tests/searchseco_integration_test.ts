@@ -1,5 +1,5 @@
 import { exec, ExecOptions } from "@actions/exec";
-import { getGithubInfo, getRepoUrl } from "../../src/git";
+import { getGithubInfo, getRepoUrl, GithubInfo } from "../../src/git";
 import {
     getHashIndices,
     getMatches,
@@ -14,6 +14,20 @@ import {
 
 jest.setTimeout(30000);
 
+const ghInfo: GithubInfo = {
+    Repo: "",
+    GithubToken: "",
+    Owner: "",
+    FullURL: "https://github.com/QDUNI/FairSECO",
+    Stars: 0,
+    Forks: 0,
+    Watched: 0,
+    Visibility: undefined,
+    Readme: "",
+    Badges: [],
+    Contributors: [],
+};
+
 // Test cases for SearchSeco mock
 test(
     "Check if getMatches is working on the correct Indices",
@@ -24,11 +38,12 @@ test("Authors presence", authorsPresence);
 
 test("Parse the input with HashIndices", parseInputIntegration);
 
-test("Integration between SearchSeco and Parse input", localRunSearchSeco);
+test("Integration between SearchSeco and Parse input", () =>
+    localRunSearchSeco(ghInfo));
 
 // Test is searchseco mock gives same result as running it here locally
-async function localRunSearchSeco(): Promise<void> {
-    const gitrepo: string = await getRepoUrl();
+async function localRunSearchSeco(ghInfo: GithubInfo): Promise<void> {
+    const gitrepo: string = ghInfo.FullURL;
     // When the real SearchSECO is back, the run command needs to be slightly edited.
     // The docker image needs to be replaced with 'searchseco/controller',
     // and the enrtypoint needs to be inserted at the location indicated below.
@@ -95,7 +110,7 @@ async function localRunSearchSeco(): Promise<void> {
 
     const output: Output = parseInput(filteredlines);
 
-    const realOutput = (await runSearchseco(await getGithubInfo())).ReturnData;
+    const realOutput = (await runSearchseco(ghInfo)).ReturnData;
 
     expect(output).toEqual(realOutput);
 }
