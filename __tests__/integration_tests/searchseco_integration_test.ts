@@ -28,6 +28,8 @@ const ghInfo: GithubInfo = {
     Contributors: [],
 };
 
+jest.setTimeout(100000);
+
 // Test cases for SearchSeco mock
 test(
     "Check if getMatches is working on the correct Indices",

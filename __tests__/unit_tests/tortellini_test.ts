@@ -1,22 +1,22 @@
-import * as tort from "../src/resources/tortellini";
-import * as input from "../src/resources/tortellini-input";
-import * as art from "../src/resources/helperfunctions/artifact";
+import * as tort from "../../src/resources/tortellini";
+import * as input from "../../src/resources/tortellini-input";
+import * as art from "../../src/resources/helperfunctions/artifact";
 import { expect, test } from "@jest/globals";
 
 // Mock the tortellini-input module to replace used artifact object and file path for unit tests
-jest.mock("../src/resources/tortellini-input", () => {
+jest.mock("../../src/resources/tortellini-input", () => {
     const actualModule = jest.requireActual(
-        "../src/resources/tortellini-input"
+        "../../src/resources/tortellini-input"
     );
 
     // This code runs before modules are loaded so load the artifact module here
-    const art = require("../src/resources/helperfunctions/artifact");
+    const art = require("../../src/resources/helperfunctions/artifact");
 
     return {
         __esModule: true,
         ...actualModule,
         artifactObject: art.testArtifactObject, // Unit testing artifact object
-        destination: "__tests__/.tortellini-unit-test",
+        destination: "__tests__/unit_tests/.tortellini-unit-test",
     };
 });
 

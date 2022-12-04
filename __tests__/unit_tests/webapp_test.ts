@@ -1,6 +1,6 @@
 import * as fs from "fs";
-import { ReturnObject } from "../src/getdata";
-import { WriteHTML, WriteCSS } from "../src/webapp";
+import { ReturnObject } from "../../src/getdata";
+import { WriteHTML, WriteCSS } from "../../src/webapp";
 import validator from "html-validator";
 
 test("Check if html file exists", async () => {

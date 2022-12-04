@@ -1,4 +1,4 @@
-import { post } from "../src/post";
+import { post } from "../../src/post";
 import { expect, test } from "@jest/globals";
 import fs from "fs";
 
