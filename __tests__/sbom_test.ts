@@ -1,15 +1,15 @@
 import * as fs from "fs";
-import { ReturnObject } from "../../src/getdata";
-import { runSBOM } from "../../src/resources/sbom";
-import * as art from "../../src/resources/helperfunctions/artifact";
+import { ReturnObject } from "../src/getdata";
+import { runSBOM } from "../src/resources/sbom";
+import * as art from "../src/resources/helperfunctions/artifact";
 
 test("Correct SBOM File", async () => {
     let fileExists: Boolean = false;
 
-    runSBOM(art.testArtifactObject, "__tests__/unit_tests/.SBOM-unit-test", "correct.spdx")
+    runSBOM(art.testArtifactObject, "__tests__/.SBOM-unit-test", "correct.spdx")
         .then(() => {
             fileExists = fs.existsSync(
-                "./__tests__/unit_tests/.SBOM-unit-test/correct.spdx"
+                "./__tests__/.SBOM-unit-test/correct.spdx"
             );
             expect(fileExists).toBe(true);
         })
@@ -23,14 +23,14 @@ test("Correct SBOM File", async () => {
         async () =>
             (result = await runSBOM(
                 art.testArtifactObject,
-                "__tests__/unit_tests/.SBOM-unit-test",
+                "__tests__/.SBOM-unit-test",
                 "correct.spdx"
             ))
     ).not.toThrow();
 
     result = await runSBOM(
         art.testArtifactObject,
-        "__tests__/unit_tests/.SBOM-unit-test",
+        "__tests__/.SBOM-unit-test",
         "correct.spdx"
     );
 
@@ -40,10 +40,10 @@ test("Correct SBOM File", async () => {
 test("Empty File", async () => {
     let fileExists: Boolean = false;
 
-    runSBOM(art.testArtifactObject, "__tests__/unit_tests/.SBOM-unit-test", "empty.spdx")
+    runSBOM(art.testArtifactObject, "__tests__/.SBOM-unit-test", "empty.spdx")
         .then(() => {
             fileExists = fs.existsSync(
-                "./__tests__/unit_tests/.SBOM-unit-test/empty.spdx"
+                "./__tests__/.SBOM-unit-test/empty.spdx"
             );
             expect(fileExists).toBe(true);
         })
@@ -57,14 +57,14 @@ test("Empty File", async () => {
         async () =>
             (result = await runSBOM(
                 art.testArtifactObject,
-                "__tests__/unit_tests/.SBOM-unit-test",
+                "__tests__/.SBOM-unit-test",
                 "empty.spdx"
             ))
     ).not.toThrow();
 
     result = await runSBOM(
         art.testArtifactObject,
-        "__tests__/unit_tests/.SBOM-unit-test",
+        "__tests__/.SBOM-unit-test",
         "empty.spdx"
     );
 

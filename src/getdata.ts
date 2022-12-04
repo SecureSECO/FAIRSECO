@@ -18,12 +18,9 @@ export interface ReturnObject {
 
 export async function data(): Promise<ReturnObject[]> {
     const output: ReturnObject[] = [];
-<<<<<<< HEAD
 
     const ghinfo: GithubInfo = await getGithubInfo();
 
-=======
->>>>>>> Integration-Testing
     try {
         const tortelliniResult = await runTortellini();
         output.push(tortelliniResult);
@@ -59,11 +56,7 @@ export async function data(): Promise<ReturnObject[]> {
 
     let cffResult = undefined;
     try {
-<<<<<<< HEAD
         cffResult = await getCitationFile(".");
-=======
-        const cffResult = await getCitationFile("./src/resources");
->>>>>>> Integration-Testing
         output.push(cffResult);
     } catch (error) {
         LogMessage(
@@ -73,23 +66,6 @@ export async function data(): Promise<ReturnObject[]> {
         LogMessage(error, ErrorLevel.err);
     }
 
-<<<<<<< HEAD
-=======
-    try {
-        const cffFile = output[3].ReturnData as CffObject;
-        if (cffFile.status === "valid") {
-            const citingPapersResult = await runCitingPapers(cffFile);
-            output.push(citingPapersResult);
-        }
-        else {
-            throw new Error("Invalid cff File");
-        }
-
-    } catch (error) {
-        console.error("Scholarly threw an error:");
-        console.error(error);
-    }
->>>>>>> Integration-Testing
     try {
         const SBOMResult = await runSBOM();
         output.push(SBOMResult);
@@ -97,7 +73,6 @@ export async function data(): Promise<ReturnObject[]> {
         LogMessage("An error occurred during SBOM generation.", ErrorLevel.err);
         LogMessage(error, ErrorLevel.err);
     }
-<<<<<<< HEAD
 
     try {
         const cffFile = cffResult?.ReturnData as CffObject;
@@ -131,7 +106,5 @@ export async function data(): Promise<ReturnObject[]> {
         LogMessage("SBOM threw an error:", ErrorLevel.err);
         LogMessage(error, ErrorLevel.err);
     }
-=======
->>>>>>> Integration-Testing
     return output;
 }

@@ -1,10 +1,10 @@
-import * as cff from "../../src/resources/citation_cff";
+import * as cff from "../src/resources/citation_cff";
 
 describe("Test getCitationFile", () => {
     jest.setTimeout(60000);
     test("Correct", async () => {
         const result = await cff.getCitationFile(
-            "./__tests__/unit_tests/citation_files/correct"
+            "./__tests__/citation_files/correct"
         );
 
         const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
@@ -21,7 +21,7 @@ describe("Test getCitationFile", () => {
 
     test("Extra Key", async () => {
         const result = await cff.getCitationFile(
-            "./__tests__/unit_tests/citation_files/extra-key"
+            "./__tests__/citation_files/extra-key"
         );
 
         const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
@@ -38,7 +38,7 @@ describe("Test getCitationFile", () => {
 
     test("Incorrect DOI", async () => {
         const result = await cff.getCitationFile(
-            "./__tests__/unit_tests/citation_files/incorrect-doi"
+            "./__tests__/citation_files/incorrect-doi"
         );
 
         const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
@@ -55,7 +55,7 @@ describe("Test getCitationFile", () => {
 
     test("Incorrect Version", async () => {
         const result = await cff.getCitationFile(
-            "./__tests__/unit_tests/citation_files/incorrect-version"
+            "./__tests__/citation_files/incorrect-version"
         );
 
         const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
@@ -72,7 +72,7 @@ describe("Test getCitationFile", () => {
 
     test("No Authors", async () => {
         const result = await cff.getCitationFile(
-            "./__tests__/unit_tests/citation_files/no-authors"
+            "./__tests__/citation_files/no-authors"
         );
 
         const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
@@ -89,7 +89,7 @@ describe("Test getCitationFile", () => {
 
     test("No cff-version", async () => {
         const result = await cff.getCitationFile(
-            "./__tests__/unit_tests/citation_files/no-cff-version"
+            "./__tests__/citation_files/no-cff-version"
         );
 
         const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
@@ -106,7 +106,7 @@ describe("Test getCitationFile", () => {
 
     test("No message", async () => {
         const result = await cff.getCitationFile(
-            "./__tests__/unit_tests/citation_files/no-message"
+            "./__tests__/citation_files/no-message"
         );
 
         const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
@@ -123,7 +123,7 @@ describe("Test getCitationFile", () => {
 
     test("Missing File", async () => {
         const result = await cff.getCitationFile(
-            "./__tests__/unit_tests/citation_files/missing-file"
+            "./__tests__/citation_files/missing-file"
         );
 
         const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
@@ -133,7 +133,7 @@ describe("Test getCitationFile", () => {
 
     test("Incorrect YAML", async () => {
         const result = await cff.getCitationFile(
-            "./__tests__/unit_tests/citation_files/incorrect-yaml"
+            "./__tests__/citation_files/incorrect-yaml"
         );
 
         const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
