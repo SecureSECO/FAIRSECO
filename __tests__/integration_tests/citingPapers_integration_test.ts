@@ -11,7 +11,8 @@ import * as fs from "fs";
 import * as path_ from "path";
 import { Console } from "console";
 
-jest.setTimeout(60000);
+jest.setTimeout(100000);
+
 test("Check if semanticScholarCitations is correctly used", runCitingPapersIntegration);
 
 async function runCitingPapersIntegration(): Promise<void>{
@@ -153,3 +154,4 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
         };
     }
 }
+

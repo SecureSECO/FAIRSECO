@@ -2,6 +2,8 @@ import { exec, ExecOptions } from "@actions/exec";
 import { getRepoUrl } from "../../src/git";
 import { getHashIndices, getMatches, getMatchIndicesOfHash, getMethodInfo, Method, MethodData, Output, parseInput, runSearchseco } from "../../src/resources/searchseco";
 
+jest.setTimeout(100000);
+
 // Test cases for SearchSeco mock
 test("Check if getMatches is working on the correct Indices", correctIndicesMethod);
 
