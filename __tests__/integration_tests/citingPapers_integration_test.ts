@@ -10,6 +10,8 @@ import YAML from "yaml";
 import * as fs from "fs";
 import * as path_ from "path";
 import { Console } from "console";
+import { ErrorLevel, LogMessage } from "../../src/log";
+import * as dockerExit from "../../src/resources/helperfunctions/docker_exit";
 
 jest.setTimeout(100000);
 
@@ -68,7 +70,7 @@ async function runCitingPapersIntegration(): Promise<void>{
     
 }
 
-export async function getCitationFile(path?: string): Promise<ReturnObject> {
+async function getCitationFile(path?: string): Promise<ReturnObject> {
     let file: Buffer;
 
     // Use current directory if none is specified
@@ -76,16 +78,18 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
     // Read the citation.cff file
     try {
         file = fs.readFileSync(filePath + "/CITATION.cff");
-    } catch {
-        // Reading file failed
-        console.log("WARNING: No citation.cff file found");
-
-        // Return MissingCFFObject indicating missing citation.cff file
-        const returnData: MissingCffObject = { status: "missing_file" };
-        return {
-            ReturnName: "Citation",
-            ReturnData: returnData,
-        };
+    } catch (e) {
+        if (e.code === "ENOENT") {
+            // File not found, return MissingCFFObject to indicate missing citation.cff file
+            const returnData: MissingCffObject = { status: "missing_file" };
+            return {
+                ReturnName: "Citation",
+                ReturnData: returnData,
+            };
+        } else {
+            // Critical error, stop
+            throw e;
+        }
     }
 
     let result: any;
@@ -94,9 +98,7 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
     try {
         result = YAML.parse(file.toString());
     } catch {
-        // Parsing failed, incorrect YAML
-        console.log("WARNING: Incorrect format");
-
+        // Parsing failed, incorrect YAML.
         // Return IncorrectYamlCFFObject to indicate incorrect yaml
         const returnData: IncorrectYamlCffObject = { status: "incorrect_yaml" };
         return {
@@ -116,12 +118,32 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
         "--validate",
     ];
 
+    // Output from the docker container
     let stdout = "";
     let stderr = "";
 
+    try {
+        if (!fs.existsSync("./cffOutputFiles"))
+            fs.mkdirSync("./cffOutputFiles/");
+        else
+            LogMessage(
+                "Folder cffOutputFiles already exists!",
+                ErrorLevel.info
+            );
+    } catch {
+        LogMessage("Could not create cffOutputFiles folder", ErrorLevel.err);
+    }
+
+    const stdOutStream = fs.createWriteStream("./cffOutputFiles/cffOutput.txt");
+    const stdErrStream = fs.createWriteStream("./cffOutputFiles/cffError.txt");
+
     const options: ExecOptions = {
         ignoreReturnCode: true,
+        windowsVerbatimArguments: true,
+        outStream: stdOutStream,
+        errStream: stdErrStream,
     };
+
     options.listeners = {
         stdout: (data: Buffer) => {
             stdout += data.toString();
@@ -130,16 +152,20 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
             stderr += data.toString();
         },
     };
+
     // Run cffconvert in docker to validate the citation.cff file
     const exitCode = await exec(cmd, args, options);
 
-    // Check the exit code for success
-    if (exitCode === 0) {
+    // Check the docker exit code for docker specific errors
+    dockerExit.throwDockerError(exitCode);
+
+    // Check cffconvert exit code for success
+    if (!dockerExit.isError(exitCode)) {
         // Citation.cff file is valid, return ValidCFFObject with data and validation message
         const returnData: ValidCffObject = {
             status: "valid",
             citation: result,
-            validation_message: stdout,
+            validation_message: getLastLine(stdout),
         };
         return {
             ReturnName: "Citation",
@@ -159,3 +185,8 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
     }
 }
 
+function getLastLine(input: string): string {
+    const lines = input.split("\n");
+
+    return lines[lines.length - 1];
+}

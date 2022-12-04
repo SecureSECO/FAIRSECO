@@ -1,2 +1,2 @@
-[command]"C:\Program Files\Docker\Docker\resources\bin\docker.exe" run --rm -v C:\Users\rowin\Documents\GitHub\FairSECO\__tests__\unit_tests\citation_files\no-message:/app citationcff/cffconvert --validate
-ValueError: Unable to identify the schema version. Required key 'cff-version' seems to be missing.
+[command]"C:\Program Files\Docker\Docker\resources\bin\docker.exe" run --rm -v C:\Users\rowin\Documents\GitHub\FairSECO:/app citationcff/cffconvert --validate
+Citation metadata are valid according to schema version 1.2.0.
