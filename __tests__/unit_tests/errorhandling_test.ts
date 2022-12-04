@@ -1,4 +1,4 @@
-import * as log from "../src/log";
+import * as log from "../../src/log";
 import fs from "fs";
 
 // (Re)create the log file before each test

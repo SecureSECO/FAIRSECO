@@ -2,8 +2,8 @@ import { setOutput } from "@actions/core";
 import { exec, ExecOptions } from "@actions/exec";
 import { ReturnObject } from "../../src/getdata";
 import { CffObject, getError, IncorrectYamlCffObject, MissingCffObject, ValidationErrorCffObject, ValidCffObject } from "../../src/resources/citation_cff";
-import { deleteDuplicates, runCitingPapers } from "../../src/resources/citingPapers";
-import { Author, Journal } from "../../src/resources/journal";
+import {  mergeDuplicates, runCitingPapers } from "../../src/resources/citingPapers";
+import { Author, Paper, Citations } from "../../src/resources/Paper";
 import { openAlexCitations } from "../../src/resources/openalexAPI";
 import { semanticScholarCitations } from "../../src/resources/semanticscholarAPI";
 import YAML from "yaml";
@@ -13,7 +13,7 @@ import { Console } from "console";
 
 jest.setTimeout(100000);
 
-test("Check if semanticScholarCitations is correctly used", runCitingPapersIntegration);
+test("Check if all sources of citation are correctly used", runCitingPapersIntegration);
 
 async function runCitingPapersIntegration(): Promise<void>{
     
@@ -25,7 +25,10 @@ async function runCitingPapersIntegration(): Promise<void>{
     const refTitles: string[] = [];
     if (cffFile.citation.references !== undefined) {
         cffFile.citation.references.forEach((element: any) => {
-            if (element.type === "article")
+            if (
+                element.type === "article" ||
+                element.type === "journal-article"
+            )
                 refTitles.push(element.title);
         });
     }
@@ -35,27 +38,28 @@ async function runCitingPapersIntegration(): Promise<void>{
         let orchidId = "";
         for (const [key, value] of Object.entries(element)) {
             switch (key) {
-                case ("family-names"):
+                case "family-names":
                     familyName = String(value);
                     break;
-                case ("given-names"):
+                case "given-names":
                     givenNames = String(value);
                     break;
-                case ("orcid"):
+                case "orcid":
                     orchidId = String(value);
                     break;
             }
         }
-        authors.push(new Author(givenNames, familyName, orchidId));
+        authors.push(new Author(givenNames + " " + familyName, orchidId));
     });
 
-    let output: Journal[] 
+    let output1: Paper[] 
 
     await semanticScholarCitations(authors, title, refTitles).then(async (outData1) => {
         await openAlexCitations(authors, title, refTitles).then(async (outData2) => {
-            output = deleteDuplicates(outData1, outData2);
+            output1 = mergeDuplicates(outData1, outData2);
             await runCitingPapers(cffFile).then((outDataReal) => {
-                expect(output).toMatchObject(outDataReal.ReturnData);    
+                const output2 = new Citations(output1);
+                expect(output2).toMatchObject(outDataReal.ReturnData);    
             })
             
         })

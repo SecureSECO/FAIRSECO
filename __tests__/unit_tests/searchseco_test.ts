@@ -1,6 +1,6 @@
 import * as ss from "../../src/resources/searchseco";
 import YAML from "yaml";
-import { getGithubInfo, GithubInfo } from "../src/git";
+import { getGithubInfo, GithubInfo } from "../../src/git";
 
 jest.setTimeout(100000);
 

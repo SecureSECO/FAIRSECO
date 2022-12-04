@@ -7,7 +7,7 @@ import {
     getContributors,
     getRepoReadme,
     getRepoStats,
-} from "../src/git";
+} from "../../src/git";
 
 test("Has correct properties", async () => {
     const ghinfo: GithubInfo = await getGithubInfo();

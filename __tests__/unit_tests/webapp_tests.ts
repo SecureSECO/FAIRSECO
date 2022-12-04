@@ -1,6 +1,6 @@
 import * as fs from 'fs'
-import { ReturnObject } from '../src/getdata';
-import {WriteHTML, WriteCSS} from '../src/webapp'
+import { ReturnObject } from '../../src/getdata';
+import {WriteHTML, WriteCSS} from '../../src/webapp'
 
 test("Check if html file exists", async () => {
     let fileExists: Boolean = false;
