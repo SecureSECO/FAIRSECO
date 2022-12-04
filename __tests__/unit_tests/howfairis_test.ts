@@ -1,8 +1,8 @@
 // Test to check if fairtally works correctly
 // We check if fairtally gives the correct JSON output
 // Using a json schema and the jest-json-schema package we can run the test with jest
-import { runHowfairis } from "../src/resources/howfairis";
-import { ReturnObject } from "../src/getdata";
+import { runHowfairis } from "../../src/resources/howfairis";
+import { ReturnObject } from "../../src/getdata";
 import { matchers } from "jest-json-schema";
 import { getGithubInfo } from "../src/git";
 expect.extend(matchers);

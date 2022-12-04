@@ -46,7 +46,11 @@ html,body {overflow-x: hidden; background-color:#ffffff;}
   align-items: center;
   position: relative;
   padding: 0px 32px 0px 18px; 
+<<<<<<< HEAD
   background-color: darkgray;
+=======
+  background-color:darkgray;
+>>>>>>> Integration-Testing
 }
 
 .header_logo{
