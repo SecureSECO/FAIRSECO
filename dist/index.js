@@ -17602,7 +17602,7 @@ function WriteHTML(data, filePath) {
         //     "index.html.template"
         // );
         // const template = await fs.promises.readFile(templateFilename, "utf8");
-        const template = yield ejs_1.default.renderFile("../templates/index.ejs", { data: data });
+        const template = yield ejs_1.default.renderFile("./templates/index.ejs", { data });
         const app = template.replace("{{node inserts the data here}}", JSON.stringify(data));
         yield fs.promises.writeFile(filePath, app, "utf8");
     });
@@ -17614,9 +17614,9 @@ exports.WriteHTML = WriteHTML;
  */
 function WriteCSS(filePath) {
     return __awaiter(this, void 0, void 0, function* () {
-        const cssFilename = path_1.default.join(__dirname, '..', 'templates', 'style.css');
-        const cssContent = yield fs.promises.readFile(cssFilename, 'utf8');
-        yield fs.promises.writeFile(filePath, cssContent, 'utf8');
+        const cssFilename = path_1.default.join(__dirname, "..", "templates", "style.css");
+        const cssContent = yield fs.promises.readFile(cssFilename, "utf8");
+        yield fs.promises.writeFile(filePath, cssContent, "utf8");
     });
 }
 exports.WriteCSS = WriteCSS;
