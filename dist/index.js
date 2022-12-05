@@ -17604,14 +17604,6 @@ function data() {
             (0, log_1.LogMessage)(error, log_1.ErrorLevel.err);
         }
         try {
-            const SBOMResult = yield (0, sbom_1.runSBOM)();
-            output.push(SBOMResult);
-        }
-        catch (error) {
-            (0, log_1.LogMessage)("An error occurred during SBOM generation.", log_1.ErrorLevel.err);
-            (0, log_1.LogMessage)(error, log_1.ErrorLevel.err);
-        }
-        try {
             const cffFile = cffResult === null || cffResult === void 0 ? void 0 : cffResult.ReturnData;
             if ((cffFile === null || cffFile === void 0 ? void 0 : cffFile.status) === "valid") {
                 const citingPapersResult = yield (0, citingPapers_1.runCitingPapers)(cffFile);
@@ -17624,20 +17616,6 @@ function data() {
         catch (error) {
             (0, log_1.LogMessage)("Scholarly threw an error:", log_1.ErrorLevel.err);
             (0, log_1.LogMessage)(error, log_1.ErrorLevel.err);
-        }
-        try {
-            const cffFile = output[3].ReturnData;
-            if (cffFile.status === "valid") {
-                const citingPapersResult = yield (0, citingPapers_1.runCitingPapers)(cffFile);
-                output.push(citingPapersResult);
-            }
-            else {
-                throw new Error("Invalid cff File");
-            }
-        }
-        catch (error) {
-            console.error("Scholarly threw an error:");
-            console.error(error);
         }
         try {
             const SBOMResult = yield (0, sbom_1.runSBOM)();

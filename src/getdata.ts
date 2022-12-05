@@ -53,7 +53,6 @@ export async function data(): Promise<ReturnObject[]> {
         );
         LogMessage(error, ErrorLevel.err);
     }
-
     let cffResult = undefined;
     try {
         cffResult = await getCitationFile(".");
@@ -63,14 +62,6 @@ export async function data(): Promise<ReturnObject[]> {
             "An error occurred while fetching CITATION.cff.",
             ErrorLevel.err
         );
-        LogMessage(error, ErrorLevel.err);
-    }
-
-    try {
-        const SBOMResult = await runSBOM();
-        output.push(SBOMResult);
-    } catch (error) {
-        LogMessage("An error occurred during SBOM generation.", ErrorLevel.err);
         LogMessage(error, ErrorLevel.err);
     }
 
@@ -85,19 +76,6 @@ export async function data(): Promise<ReturnObject[]> {
     } catch (error) {
         LogMessage("Scholarly threw an error:", ErrorLevel.err);
         LogMessage(error, ErrorLevel.err);
-    }
-
-    try {
-        const cffFile = output[3].ReturnData as CffObject;
-        if (cffFile.status === "valid") {
-            const citingPapersResult = await runCitingPapers(cffFile);
-            output.push(citingPapersResult);
-        } else {
-            throw new Error("Invalid cff File");
-        }
-    } catch (error) {
-        console.error("Scholarly threw an error:");
-        console.error(error);
     }
     try {
         const SBOMResult = await runSBOM();
