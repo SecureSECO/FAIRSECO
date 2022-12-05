@@ -20,7 +20,7 @@ export async function WriteHTML(
     // );
 
     // const template = await fs.promises.readFile(templateFilename, "utf8");
-    const template = await ejs.renderFile("../templates/index.ejs", { data: data });
+    const template = await ejs.renderFile("./templates/index.ejs", { data });
     const app = template.replace(
         "{{node inserts the data here}}",
         JSON.stringify(data)
@@ -33,16 +33,9 @@ export async function WriteHTML(
  * Includes the local CSS file for the webapp.
  * @param filePath The path to the HTML file of the webapp.
  */
-export async function WriteCSS(
-    filePath: string
-): Promise<void> {
-    const cssFilename = path.join(
-        __dirname,
-        '..',
-        'templates',
-        'style.css'
-    )
+export async function WriteCSS(filePath: string): Promise<void> {
+    const cssFilename = path.join(__dirname, "..", "templates", "style.css");
 
-    const cssContent = await fs.promises.readFile(cssFilename, 'utf8')
-    await fs.promises.writeFile(filePath, cssContent, 'utf8')
+    const cssContent = await fs.promises.readFile(cssFilename, "utf8");
+    await fs.promises.writeFile(filePath, cssContent, "utf8");
 }
