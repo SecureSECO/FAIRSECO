@@ -20,7 +20,7 @@ export async function WriteHTML(
     // );
 
     // const template = await fs.promises.readFile(templateFilename, "utf8");
-    const template = ejs.render("../templates/index.ejs", {"data": data});
+    const template = ejs.renderFile("../templates/index.ejs", { data: data });
     const app = template.replace(
         "{{node inserts the data here}}",
         JSON.stringify(data)
