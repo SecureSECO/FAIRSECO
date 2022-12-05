@@ -11,3 +11,116 @@
     <% }) %>
 </table>
 </div>
+<style>
+    .CitationsContainer {
+        max-height: 80%;
+        overflow-y: scroll;
+        -webkit-mask-image: linear-gradient(
+            to bottom,
+            black 90%,
+            transparent 100%
+        );
+        mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+        animation: fade-in 600ms ease-out 1 forwards;
+    }
+
+    .Citations {
+        padding: 20px;
+        width: 100%;
+        table-layout: auto;
+    }
+
+    .Citations th {
+        color: #779c7e;
+        font-style: italic;
+        padding-bottom: 24px;
+        font-size: 1.2rem;
+    }
+
+    .Citation tr {
+        margin: 4px 0px;
+    }
+
+    .Citation td {
+        max-width: 600px;
+    }
+
+    .Citation .info1 {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .Citation .info1 .info2 {
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+    }
+
+    .info2 h1,
+    .info2 h2 {
+        color: #d9f8df;
+        margin: 0;
+    }
+
+    .info2 h1 {
+        font-size: 1.2rem;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        max-width: 70%;
+        font-weight: 400;
+    }
+    .info2 h2 {
+        font-size: 0.8rem;
+        font-style: italic;
+        font-weight: 400;
+    }
+    .info2 .middot {
+        margin: 0 8px;
+    }
+
+    .info1 h3 {
+        margin: 0;
+        color: #a3c6aa;
+        font-size: 0.9rem;
+        font-weight: 400;
+    }
+
+    .Citation .year,
+    .Citation .doi,
+    .Citation .link {
+        text-align: center;
+        color: #779c7e;
+        padding: 0 24px;
+    }
+
+    .Citation .link {
+        cursor: pointer;
+        font-size: 1.2rem;
+        transition: all 150ms ease;
+        height: inherit;
+    }
+
+
+    .Citation .link:hover {
+        color: #d9f8df;
+    }
+
+    @media screen and (min-width: 1000px) {
+        .Citation td {
+            max-width: 420px;
+        }
+        .info2 h1 {
+            font-size: 1rem;
+        }
+    }
+
+    @media screen and (min-width: 2500px) {
+        .Citation td {
+            max-width: 700px;
+        }
+        .info2 h1 {
+            font-size: 1.2rem;
+        }
+    }
+</style>

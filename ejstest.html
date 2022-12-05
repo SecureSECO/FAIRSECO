@@ -1,5 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+    * {
+        box-sizing: border-box;
+        font-family: "Literata", "Serif";
+    }
+</style>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,66 +20,30 @@
     <!-- <script src="https://code.jquery.com/jquery-3.5.0.js"></script> -->
     <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->
     <title>FairSECO</title>
-    <style>
-    * {
-        box-sizing: border-box;
-        font-family: "Literata", "Serif";
-    }
+    <!--  -->
+</head>
 
-    h1 {
-        color: #d9f8df;
-    }
 
-    body {
-        margin: 0;
-        padding: 0;
-        background: #b8d7cc;
-        overflow: hidden;
-    }
+<body>
 
-    #BackgroundSphere1 {
-        height: 100vh;
-        width: 100vh;
-        background-color: #68be9f;
-        position: absolute;
-        bottom: -50vh;
-        left: 25vw;
-        border-radius: 50%;
-        z-index: -2;
-    }
+    <div id="BackgroundSphere1"></div>
+    <header class="header">
+</header>
 
-    .LeftPane {
-        width: 50vw;
-        height: 100vh;
-        padding: 0;
-        margin: 0;
-        background: rgba(15, 45, 30, 0.82);
-        backdrop-filter: blur(30px);
-        overflow: hidden;
-    }
+    <div class="LeftPane">
+    <div class="Branding">
+        <h1 class="Name"><i class="fa-solid fa-scale-balanced"></i>FairSECO</h1>
+        <h2 class="Tagline">Tagline.</h2>
+    </div>
+    <div class="LeftPaneNav">
+    <div class="HighlightBlock"></div>
+    <div class="ActiveBlock"></div>
+    <div class="NavItem Active" onMouseOver="hoverNav(this)" onClick="clickNav(this)" data-list-index="0" data-linked-class="CitationsContainer"><i class="fa-solid fa-pen-nib"></i><p>Citations</p></div>
+    <div class="NavItem" onMouseOver="hoverNav(this)"onClick="clickNav(this)" data-list-index="1" data-linked-class="LicencesContainer"><i class="fa-solid fa-copyright"></i><p>Licences</p></div>
+    <div class="NavItem" onMouseOver="hoverNav(this)"onClick="clickNav(this)" data-list-index="2" data-linked-class="SBOMContainer"><i class="fa-solid fa-scroll"></i><p>SBOM</p></div>
+</div>
 
-    .LeftPane .Branding {
-        display: flex;
-        flex-direction: row;
-        justify-content: start;
-        align-items: center;
-        padding: 8px;
-    }
-
-    .LeftPane .Branding .Name {
-        color: #d9f8df;
-        margin: 0 8px;
-    }
-
-    .LeftPane .Branding .Tagline {
-        align-self: center;
-        color: #88bf93;
-        font-size: 0.8rem;
-        position: relative;
-        top: 8px;
-        font-style: italic;
-    }
-
+<style>
     .LeftPaneNav {
         width: 100%;
         background: #d9f8df;
@@ -100,6 +70,10 @@
         transition: color ease 150ms;
     }
 
+
+    .LeftPaneNav .NavItem p {
+        color: #0c281e;
+    }
     .LeftPaneNav .HighlightBlock,
     .LeftPaneNav .ActiveBlock {
         height: calc(80% - 4px); /*take into account the padding*/
@@ -118,9 +92,12 @@
         background: #0c281e;
     }
 
-    .LeftPaneNav .NavItem.Active {
-        color: #d9f8df;
+    .LeftPaneNav .NavItem.Active{
         cursor: pointer;
+    }
+
+    .LeftPaneNav .NavItem.Active p, .LeftPaneNav .NavItem.Active i{
+        color: #d9f8df;
     }
 
     .LeftPaneNav .NavItem p {
@@ -137,218 +114,7 @@
     .LeftPaneNav .NavItem > *:nth-child(1) {
         margin-right: 4px;
     }
-
-    .CitationsContainer {
-        max-height: 80%;
-        overflow-y: scroll;
-        -webkit-mask-image: linear-gradient(
-            to bottom,
-            black 90%,
-            transparent 100%
-        );
-        mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
-        animation: fade-in 600ms ease-out 1 forwards;
-    }
-
-    .Citations {
-        padding: 20px;
-        width: 100%;
-        table-layout: auto;
-    }
-
-    .Citations th {
-        color: #779c7e;
-        font-style: italic;
-        padding-bottom: 24px;
-        font-size: 1.2rem;
-    }
-
-    .Citation tr {
-        margin: 4px 0px;
-    }
-
-    .Citation td {
-        max-width: 600px;
-    }
-
-    .Citation .info1 {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .Citation .info1 .info2 {
-        display: flex;
-        flex-direction: row;
-        align-items: baseline;
-    }
-
-    .info2 h1,
-    .info2 h2 {
-        color: #d9f8df;
-        margin: 0;
-    }
-
-    .info2 h1 {
-        font-size: 1.2rem;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        max-width: 70%;
-        font-weight: 400;
-    }
-    .info2 h2 {
-        font-size: 0.8rem;
-        font-style: italic;
-        font-weight: 400;
-    }
-    .info2 .middot {
-        margin: 0 8px;
-    }
-
-    .info1 h3 {
-        margin: 0;
-        color: #a3c6aa;
-        font-size: 0.9rem;
-        font-weight: 400;
-    }
-
-    .Citation .year,
-    .Citation .doi,
-    .Citation .link {
-        text-align: center;
-        color: #779c7e;
-        padding: 0 24px;
-    }
-
-    .Citation .link {
-        cursor: pointer;
-        font-size: 1.2rem;
-        transition: all 150ms ease;
-        height: inherit;
-    }
-
-    a:visited {
-        color: #779c7e;
-    }
-
-    .Citation .link:hover {
-        color: #d9f8df;
-    }
-
-    @media screen and (min-width: 1000px) {
-        .Citation td {
-            max-width: 420px;
-        }
-        .info2 h1 {
-            font-size: 1rem;
-        }
-    }
-
-    @media screen and (min-width: 2500px) {
-        .Citation td {
-            max-width: 700px;
-        }
-        .info2 h1 {
-            font-size: 1.2rem;
-        }
-    }
-
-    .LicencesContainer {
-        height: 80%;
-        width: 100%;
-    }
-    .Hidden {
-        display: none;
-    }
-
-    .SlideInLeft {
-        animation: slide-in-left 150ms ease 1 forwards;
-    }
-
-    .SlideInRight {
-        animation: slide-in-right 150ms ease 1 forwards;
-    }
-    .SlideOutLeft {
-        animation: slide-out-left 150ms ease 1 forwards;
-    }
-    .SlideOutRight {
-        animation: slide-out-right 150ms ease 1 forwards;
-    }
-
-    @keyframes fade-in {
-        0% {
-            opacity: 0;
-        }
-        100% {
-            opacity: 1;
-        }
-    }
-
-    @keyframes slide-in-right {
-        0% {
-            opacity: 0;
-            translate: -150px;
-        }
-        100% {
-            opacity: 1;
-            translate: 0px;
-        }
-    }
-
-    @keyframes slide-in-left {
-        0% {
-            opacity: 0;
-            translate: 150px;
-        }
-        100% {
-            opacity: 1;
-            translate: 0px;
-        }
-    }
-
-    @keyframes slide-out-right {
-        0% {
-            opacity: 1;
-            translate: 0px;
-        }
-        100% {
-            opacity: 0;
-            translate: -150px;
-        }
-    }
-
-    @keyframes slide-out-left {
-        0% {
-            opacity: 1;
-            translate: 0px;
-        }
-        100% {
-            opacity: 0;
-            translate: 150px;
-        }
-    }
 </style>
-
-</head>
-
-
-<body>
-    <div id="BackgroundSphere1"></div>
-    <header class="header">
-</header>
-
-    <div class="LeftPane">
-    <div class="Branding">
-        <h1 class="Name"><i class="fa-solid fa-scale-balanced"></i>FairSECO</h1>
-        <h2 class="Tagline">Tagline.</h2>
-    </div>
-    <div class="LeftPaneNav">
-    <div class="HighlightBlock"></div>
-    <div class="ActiveBlock"></div>
-    <div class="NavItem Active" onMouseOver="hoverNav(this)" onClick="clickNav(this)" data-list-index="0" data-linked-class="CitationsContainer"><i class="fa-solid fa-pen-nib"></i><p>Citations</p></div>
-    <div class="NavItem" onMouseOver="hoverNav(this)"onClick="clickNav(this)" data-list-index="1" data-linked-class="LicencesContainer"><i class="fa-solid fa-copyright"></i><p>Licences</p></div>
-    <div class="NavItem" onMouseOver="hoverNav(this)"onClick="clickNav(this)" data-list-index="2" data-linked-class="SBOMContainer"><i class="fa-solid fa-scroll"></i><p>SBOM</p></div>
-</div>
 <script>
 window.addEventListener('load', 
   function() { 
@@ -411,6 +177,8 @@ function clickNav(ele) {
 }
 
 </script>
+
+
 
     
     
@@ -11241,6 +11009,119 @@ function clickNav(ele) {
     
 </table>
 </div>
+<style>
+    .CitationsContainer {
+        max-height: 80%;
+        overflow-y: scroll;
+        -webkit-mask-image: linear-gradient(
+            to bottom,
+            black 90%,
+            transparent 100%
+        );
+        mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+        animation: fade-in 600ms ease-out 1 forwards;
+    }
+
+    .Citations {
+        padding: 20px;
+        width: 100%;
+        table-layout: auto;
+    }
+
+    .Citations th {
+        color: #779c7e;
+        font-style: italic;
+        padding-bottom: 24px;
+        font-size: 1.2rem;
+    }
+
+    .Citation tr {
+        margin: 4px 0px;
+    }
+
+    .Citation td {
+        max-width: 600px;
+    }
+
+    .Citation .info1 {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .Citation .info1 .info2 {
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+    }
+
+    .info2 h1,
+    .info2 h2 {
+        color: #d9f8df;
+        margin: 0;
+    }
+
+    .info2 h1 {
+        font-size: 1.2rem;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        max-width: 70%;
+        font-weight: 400;
+    }
+    .info2 h2 {
+        font-size: 0.8rem;
+        font-style: italic;
+        font-weight: 400;
+    }
+    .info2 .middot {
+        margin: 0 8px;
+    }
+
+    .info1 h3 {
+        margin: 0;
+        color: #a3c6aa;
+        font-size: 0.9rem;
+        font-weight: 400;
+    }
+
+    .Citation .year,
+    .Citation .doi,
+    .Citation .link {
+        text-align: center;
+        color: #779c7e;
+        padding: 0 24px;
+    }
+
+    .Citation .link {
+        cursor: pointer;
+        font-size: 1.2rem;
+        transition: all 150ms ease;
+        height: inherit;
+    }
+
+
+    .Citation .link:hover {
+        color: #d9f8df;
+    }
+
+    @media screen and (min-width: 1000px) {
+        .Citation td {
+            max-width: 420px;
+        }
+        .info2 h1 {
+            font-size: 1rem;
+        }
+    }
+
+    @media screen and (min-width: 2500px) {
+        .Citation td {
+            max-width: 700px;
+        }
+        .info2 h1 {
+            font-size: 1.2rem;
+        }
+    }
+</style>
 
     <div class="LicencesContainer Hidden">
     <table class="Licences">
@@ -11994,11 +11875,51 @@ which may link to additional resources.</p></td>
         
     </table>
 </div>
+<style>
+    .LicencesContainer {
+        height: 80%;
+        width: 100%;
+    }
+</style>
 
     <div class="SBOMContainer Hidden">
     <h1>Work in Progress</h1>
 </div>
 </div>
+
+<style>
+    .LeftPane {
+        width: 50vw;
+        height: 100vh;
+        padding: 0;
+        margin: 0;
+        background: rgba(15, 45, 30, 0.82);
+        backdrop-filter: blur(30px);
+        overflow: hidden;
+    }
+
+    .LeftPane .Branding {
+        display: flex;
+        flex-direction: row;
+        justify-content: start;
+        align-items: center;
+        padding: 8px;
+    }
+
+    .LeftPane .Branding .Name {
+        color: #d9f8df;
+        margin: 0 8px;
+    }
+
+    .LeftPane .Branding .Tagline {
+        align-self: center;
+        color: #88bf93;
+        font-size: 0.8rem;
+        position: relative;
+        top: 8px;
+        font-style: italic;
+    }
+</style>
 
     
     <footer>
@@ -12201,5 +12122,103 @@ function fairSeco() {
 </script>
  -->
 </body>
+    <style>
+        h1,p {
+            color: #d9f8df;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #b8d7cc;
+            overflow: hidden;
+        }
+
+        #BackgroundSphere1 {
+            height: 100vh;
+            width: 100vh;
+            background-color: #68be9f;
+            position: absolute;
+            bottom: -50vh;
+            left: 25vw;
+            border-radius: 50%;
+            z-index: -2;
+        }
+        a:visited {
+            color: #779c7e;
+        }
+
+
+        .Hidden {
+            display: none;
+        }
+
+        .SlideInLeft {
+            animation: slide-in-left 150ms ease 1 forwards;
+        }
+
+        .SlideInRight {
+            animation: slide-in-right 150ms ease 1 forwards;
+        }
+        .SlideOutLeft {
+            animation: slide-out-left 150ms ease 1 forwards;
+        }
+        .SlideOutRight {
+            animation: slide-out-right 150ms ease 1 forwards;
+        }
+
+        @keyframes fade-in {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slide-in-right {
+            0% {
+                opacity: 0;
+                translate: -150px;
+            }
+            100% {
+                opacity: 1;
+                translate: 0px;
+            }
+        }
+
+        @keyframes slide-in-left {
+            0% {
+                opacity: 0;
+                translate: 150px;
+            }
+            100% {
+                opacity: 1;
+                translate: 0px;
+            }
+        }
+
+        @keyframes slide-out-right {
+            0% {
+                opacity: 1;
+                translate: 0px;
+            }
+            100% {
+                opacity: 0;
+                translate: -150px;
+            }
+        }
+
+        @keyframes slide-out-left {
+            0% {
+                opacity: 1;
+                translate: 0px;
+            }
+            100% {
+                opacity: 0;
+                translate: 150px;
+            }
+        }
+    </style>
 
 </html>

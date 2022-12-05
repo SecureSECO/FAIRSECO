@@ -5,6 +5,79 @@
     <div class="NavItem" onMouseOver="hoverNav(this)"onClick="clickNav(this)" data-list-index="1" data-linked-class="LicencesContainer"><i class="fa-solid fa-copyright"></i><p>Licences</p></div>
     <div class="NavItem" onMouseOver="hoverNav(this)"onClick="clickNav(this)" data-list-index="2" data-linked-class="SBOMContainer"><i class="fa-solid fa-scroll"></i><p>SBOM</p></div>
 </div>
+
+<style>
+    .LeftPaneNav {
+        width: 100%;
+        background: #d9f8df;
+        padding: 8px;
+        border-radius: 8px;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        position: relative;
+        z-index: 0;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .LeftPaneNav .NavItem {
+        margin: 8px 16px;
+        font-size: 1.2rem;
+        color: #0c281e;
+        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+        transition: color ease 150ms;
+    }
+
+
+    .LeftPaneNav .NavItem p {
+        color: #0c281e;
+    }
+    .LeftPaneNav .HighlightBlock,
+    .LeftPaneNav .ActiveBlock {
+        height: calc(80% - 4px); /*take into account the padding*/
+        position: absolute;
+        width: 130px;
+        translate: 6px;
+        z-index: 1;
+        border-radius: 12px;
+        transition: all 300ms ease;
+    }
+
+    .HighlightBlock {
+        background: #abd2c5;
+    }
+    .ActiveBlock {
+        background: #0c281e;
+    }
+
+    .LeftPaneNav .NavItem.Active{
+        cursor: pointer;
+    }
+
+    .LeftPaneNav .NavItem.Active p, .LeftPaneNav .NavItem.Active i{
+        color: #d9f8df;
+    }
+
+    .LeftPaneNav .NavItem p {
+        margin: 0;
+        margin-left: 4px;
+        padding: 0;
+        align-self: center;
+        text-align: center;
+        position: relative;
+        bottom: 1px;
+    }
+
+    /* Styling for the icon */
+    .LeftPaneNav .NavItem > *:nth-child(1) {
+        margin-right: 4px;
+    }
+</style>
 <script>
 window.addEventListener('load', 
   function() { 
@@ -67,3 +140,5 @@ function clickNav(ele) {
 }
 
 </script>
+
+

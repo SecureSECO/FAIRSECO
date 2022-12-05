@@ -11,3 +11,37 @@
     <%- include('licences', {"licences": licences}) %>
     <%- include('SBOM') %>
 </div>
+
+<style>
+    .LeftPane {
+        width: 50vw;
+        height: 100vh;
+        padding: 0;
+        margin: 0;
+        background: rgba(15, 45, 30, 0.82);
+        backdrop-filter: blur(30px);
+        overflow: hidden;
+    }
+
+    .LeftPane .Branding {
+        display: flex;
+        flex-direction: row;
+        justify-content: start;
+        align-items: center;
+        padding: 8px;
+    }
+
+    .LeftPane .Branding .Name {
+        color: #d9f8df;
+        margin: 0 8px;
+    }
+
+    .LeftPane .Branding .Tagline {
+        align-self: center;
+        color: #88bf93;
+        font-size: 0.8rem;
+        position: relative;
+        top: 8px;
+        font-style: italic;
+    }
+</style>
