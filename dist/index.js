@@ -17566,20 +17566,23 @@ const citation_cff_1 = __nccwpck_require__(4208);
 const sbom_1 = __nccwpck_require__(147);
 const log_1 = __nccwpck_require__(5042);
 const git_1 = __nccwpck_require__(6350);
+const qualityscore_1 = __nccwpck_require__(3560);
 function data() {
     return __awaiter(this, void 0, void 0, function* () {
         const output = [];
         const ghinfo = yield (0, git_1.getGithubInfo)();
+        let tortelliniResult;
         try {
-            const tortelliniResult = yield (0, tortellini_1.runTortellini)();
+            tortelliniResult = yield (0, tortellini_1.runTortellini)();
             output.push(tortelliniResult);
         }
         catch (error) {
             (0, log_1.LogMessage)("An error occurred while gathering tortellini data:", log_1.ErrorLevel.err);
             (0, log_1.LogMessage)(error, log_1.ErrorLevel.err);
         }
+        let howfairisResult;
         try {
-            const howfairisResult = yield (0, howfairis_1.runHowfairis)(ghinfo);
+            howfairisResult = yield (0, howfairis_1.runHowfairis)(ghinfo);
             output.push(howfairisResult);
         }
         catch (error) {
@@ -17594,7 +17597,7 @@ function data() {
             (0, log_1.LogMessage)("An error occurred while running searchSECO.", log_1.ErrorLevel.err);
             (0, log_1.LogMessage)(error, log_1.ErrorLevel.err);
         }
-        let cffResult = undefined;
+        let cffResult;
         try {
             cffResult = yield (0, citation_cff_1.getCitationFile)(".");
             output.push(cffResult);
@@ -17626,25 +17629,16 @@ function data() {
             (0, log_1.LogMessage)(error, log_1.ErrorLevel.err);
         }
         try {
-            const cffFile = output[3].ReturnData;
-            if (cffFile.status === "valid") {
-                const citingPapersResult = yield (0, citingPapers_1.runCitingPapers)(cffFile);
-                output.push(citingPapersResult);
+            if (howfairisResult !== undefined && tortelliniResult !== undefined) {
+                const qualityScore = yield (0, qualityscore_1.getQualityScore)(ghinfo, howfairisResult, tortelliniResult);
+                output.push(qualityScore);
             }
             else {
-                throw new Error("Invalid cff File");
+                throw new Error("howfairisResult or tortelliniResult is undefined");
             }
         }
         catch (error) {
-            console.error("Scholarly threw an error:");
-            console.error(error);
-        }
-        try {
-            const SBOMResult = yield (0, sbom_1.runSBOM)();
-            output.push(SBOMResult);
-        }
-        catch (error) {
-            (0, log_1.LogMessage)("SBOM threw an error:", log_1.ErrorLevel.err);
+            (0, log_1.LogMessage)("QualityScore threw an error:", log_1.ErrorLevel.err);
             (0, log_1.LogMessage)(error, log_1.ErrorLevel.err);
         }
         return output;
@@ -19302,6 +19296,307 @@ function calculateProbabiltyOfReference(uniquePapers) {
     return output;
 }
 exports.calculateProbabiltyOfReference = calculateProbabiltyOfReference;
+
+
+/***/ }),
+
+/***/ 3560:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getQualityScore = void 0;
+const gh = __importStar(__nccwpck_require__(5438));
+const fs = __importStar(__nccwpck_require__(7147));
+function getQualityScore(ghInfo, howfairisOutput, licenseInfo) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const fairnessScore = howfairisOutput.ReturnData[0].count * 20;
+        const licenseScore = getLicenseScore(licenseInfo);
+        // Get github issues
+        const issues = yield getIssues(ghInfo);
+        const maintainabilityScore = yield getMaintainabilityScore(issues);
+        const avgSolveTime = getAvgSolveTime(issues);
+        const hasDocs = hasDocumentation();
+        const docsScore = hasDocs ? 100 : 0;
+        // Total quality score
+        const score = fairnessScore * 0.3 +
+            licenseScore * 0.22 +
+            maintainabilityScore * 0.19 +
+            docsScore * 0.1;
+        // Quality score to return
+        const qualityScore = {
+            fairnessScore,
+            licenseScore,
+            maintainabilityScore,
+            hasDocs,
+            score,
+            avgSolveTime,
+        };
+        return {
+            ReturnName: "QualityScore",
+            ReturnData: qualityScore,
+        };
+    });
+}
+exports.getQualityScore = getQualityScore;
+function getLicenseScore(licenseInfo) {
+    const licenseCount = licenseInfo.ReturnData.packages.length;
+    const violations = licenseInfo.ReturnData.violations.length;
+    // Return percentage of correct licenses
+    return (100 * (licenseCount - violations)) / licenseCount;
+}
+function getMaintainabilityScore(issues) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let open = 0;
+        let closed = 0;
+        for (const issue of issues) {
+            if (issue.closed_at === null)
+                open++;
+            else
+                closed++;
+        }
+        // Return percentage of closed issues
+        return (100 * closed) / open;
+    });
+}
+function getAvgSolveTime(issues) {
+    let totalTime = 0;
+    let numberOfIssues = 0;
+    for (const issue of issues) {
+        // Skip unsolved issues
+        if (issue.closed_at === null)
+            continue;
+        // Get created and closed times in milliseconds
+        const created = Date.parse(issue.created_at);
+        const closed = Date.parse(issue.closed_at);
+        // Add solved time in days
+        totalTime += (closed - created) / (1000 * 60 * 60 * 24);
+        numberOfIssues++;
+    }
+    // Return average solve time
+    return totalTime / numberOfIssues;
+}
+function getTestCoverage() {
+    // MIGHTDOSOMETIMEEVER: add coverage
+    return 0;
+}
+function hasDocumentation() {
+    return fs.existsSync("./docs") || fs.existsSync("./documentation");
+}
+function getIssues(ghInfo) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let octokit;
+        try {
+            octokit = gh.getOctokit(ghInfo.GithubToken);
+        }
+        catch (_a) {
+            throw new Error("Error while contacting octokit API, did you supply a valid token?");
+        }
+        // Request issues of the repo
+        const response = yield octokit.request("GET /repos/" + ghInfo.Owner + "/" + ghInfo.Repo + "/issues", {
+            owner: ghInfo.Owner,
+            repo: ghInfo.Repo,
+        });
+        return JSON.parse(response);
+    });
+}
+/*
+
+[
+  {
+    "id": 1,
+    "node_id": "MDU6SXNzdWUx",
+    "url": "https://api.github.com/repos/octocat/Hello-World/issues/1347",
+    "repository_url": "https://api.github.com/repos/octocat/Hello-World",
+    "labels_url": "https://api.github.com/repos/octocat/Hello-World/issues/1347/labels{/name}",
+    "comments_url": "https://api.github.com/repos/octocat/Hello-World/issues/1347/comments",
+    "events_url": "https://api.github.com/repos/octocat/Hello-World/issues/1347/events",
+    "html_url": "https://github.com/octocat/Hello-World/issues/1347",
+    "number": 1347,
+    "state": "open",
+    "title": "Found a bug",
+    "body": "I'm having a problem with this.",
+    "user": {
+      "login": "octocat",
+      "id": 1,
+      "node_id": "MDQ6VXNlcjE=",
+      "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/octocat",
+      "html_url": "https://github.com/octocat",
+      "followers_url": "https://api.github.com/users/octocat/followers",
+      "following_url": "https://api.github.com/users/octocat/following{/other_user}",
+      "gists_url": "https://api.github.com/users/octocat/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/octocat/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/octocat/subscriptions",
+      "organizations_url": "https://api.github.com/users/octocat/orgs",
+      "repos_url": "https://api.github.com/users/octocat/repos",
+      "events_url": "https://api.github.com/users/octocat/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/octocat/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "labels": [
+      {
+        "id": 208045946,
+        "node_id": "MDU6TGFiZWwyMDgwNDU5NDY=",
+        "url": "https://api.github.com/repos/octocat/Hello-World/labels/bug",
+        "name": "bug",
+        "description": "Something isn't working",
+        "color": "f29513",
+        "default": true
+      }
+    ],
+    "assignee": {
+      "login": "octocat",
+      "id": 1,
+      "node_id": "MDQ6VXNlcjE=",
+      "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/octocat",
+      "html_url": "https://github.com/octocat",
+      "followers_url": "https://api.github.com/users/octocat/followers",
+      "following_url": "https://api.github.com/users/octocat/following{/other_user}",
+      "gists_url": "https://api.github.com/users/octocat/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/octocat/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/octocat/subscriptions",
+      "organizations_url": "https://api.github.com/users/octocat/orgs",
+      "repos_url": "https://api.github.com/users/octocat/repos",
+      "events_url": "https://api.github.com/users/octocat/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/octocat/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "assignees": [
+      {
+        "login": "octocat",
+        "id": 1,
+        "node_id": "MDQ6VXNlcjE=",
+        "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/octocat",
+        "html_url": "https://github.com/octocat",
+        "followers_url": "https://api.github.com/users/octocat/followers",
+        "following_url": "https://api.github.com/users/octocat/following{/other_user}",
+        "gists_url": "https://api.github.com/users/octocat/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/octocat/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/octocat/subscriptions",
+        "organizations_url": "https://api.github.com/users/octocat/orgs",
+        "repos_url": "https://api.github.com/users/octocat/repos",
+        "events_url": "https://api.github.com/users/octocat/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/octocat/received_events",
+        "type": "User",
+        "site_admin": false
+      }
+    ],
+    "milestone": {
+      "url": "https://api.github.com/repos/octocat/Hello-World/milestones/1",
+      "html_url": "https://github.com/octocat/Hello-World/milestones/v1.0",
+      "labels_url": "https://api.github.com/repos/octocat/Hello-World/milestones/1/labels",
+      "id": 1002604,
+      "node_id": "MDk6TWlsZXN0b25lMTAwMjYwNA==",
+      "number": 1,
+      "state": "open",
+      "title": "v1.0",
+      "description": "Tracking milestone for version 1.0",
+      "creator": {
+        "login": "octocat",
+        "id": 1,
+        "node_id": "MDQ6VXNlcjE=",
+        "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/octocat",
+        "html_url": "https://github.com/octocat",
+        "followers_url": "https://api.github.com/users/octocat/followers",
+        "following_url": "https://api.github.com/users/octocat/following{/other_user}",
+        "gists_url": "https://api.github.com/users/octocat/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/octocat/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/octocat/subscriptions",
+        "organizations_url": "https://api.github.com/users/octocat/orgs",
+        "repos_url": "https://api.github.com/users/octocat/repos",
+        "events_url": "https://api.github.com/users/octocat/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/octocat/received_events",
+        "type": "User",
+        "site_admin": false
+      },
+      "open_issues": 4,
+      "closed_issues": 8,
+      "created_at": "2011-04-10T20:09:31Z",
+      "updated_at": "2014-03-03T18:58:10Z",
+      "closed_at": "2013-02-12T13:22:01Z",
+      "due_on": "2012-10-09T23:39:01Z"
+    },
+    "locked": true,
+    "active_lock_reason": "too heated",
+    "comments": 0,
+    "pull_request": {
+      "url": "https://api.github.com/repos/octocat/Hello-World/pulls/1347",
+      "html_url": "https://github.com/octocat/Hello-World/pull/1347",
+      "diff_url": "https://github.com/octocat/Hello-World/pull/1347.diff",
+      "patch_url": "https://github.com/octocat/Hello-World/pull/1347.patch"
+    },
+    "closed_at": null,
+    "created_at": "2011-04-22T13:33:48Z",
+    "updated_at": "2011-04-22T13:33:48Z",
+    "closed_by": {
+      "login": "octocat",
+      "id": 1,
+      "node_id": "MDQ6VXNlcjE=",
+      "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/octocat",
+      "html_url": "https://github.com/octocat",
+      "followers_url": "https://api.github.com/users/octocat/followers",
+      "following_url": "https://api.github.com/users/octocat/following{/other_user}",
+      "gists_url": "https://api.github.com/users/octocat/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/octocat/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/octocat/subscriptions",
+      "organizations_url": "https://api.github.com/users/octocat/orgs",
+      "repos_url": "https://api.github.com/users/octocat/repos",
+      "events_url": "https://api.github.com/users/octocat/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/octocat/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "author_association": "COLLABORATOR",
+    "state_reason": "completed"
+  }
+]
+
+*/
 
 
 /***/ }),
