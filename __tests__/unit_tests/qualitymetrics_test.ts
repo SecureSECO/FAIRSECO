@@ -1,9 +1,6 @@
 import { ReturnObject } from "../../src/getdata";
 import { GithubInfo } from "../../src/git";
-import {
-    getQualityScore,
-    QualityScore,
-} from "../../src/resources/qualityscore";
+import { QualityMetrics } from "../../src/resources/qualitymetrics";
 
 // Mock the @actions/github module to replace requests for data in unit tests
 jest.mock("@actions/github", () => {
@@ -66,7 +63,7 @@ test("Test getQualityScore", async () => {
     };
 
     let qualityScore = (await getQualityScore(ghInfo, hfiInput, tortInput))
-        .ReturnData as QualityScore;
+        .ReturnData as QualityMetrics;
 
     expect(qualityScore.fairnessScore).toBeCloseTo(3 * 20);
     expect(qualityScore.licenseScore).toBeCloseTo((100 * (12 - 3)) / 12);

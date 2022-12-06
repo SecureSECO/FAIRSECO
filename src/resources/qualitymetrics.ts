@@ -6,16 +6,30 @@ import * as gh from "@actions/github";
 import * as fs from "fs";
 import * as statusCode from "http-status-codes";
 
-export interface QualityScore {
-    fairnessScore: number;
-    licenseScore: number;
-    maintainabilityScore: number;
-    hasDocs: boolean;
+/** Contains information about the quality of the repository. */
+export interface QualityMetrics {
+    /** The overall score 0-100 */
     score: number;
+    /** The FAIRness score, percent score from howfairis 0-100. */
+    fairnessScore: number;
+    /** The license score, percentage of packages without license violation 0-100. */
+    licenseScore: number;
+    /** The maintability score, percentage of solved issues 0-100. */
+    maintainabilityScore: number;
+    /** Whether documentation has been detected. */
+    hasDocs: boolean;
+    /** Average time in days it took to solve closed github issues. Undefined if no issues have been solved. */
     avgSolveTime: number | undefined;
 }
 
-export async function getQualityScore(
+/**
+ * Finds quality metrics of the repository.
+ * @param ghInfo A {@link git.GithubInfo} containing information about the GitHub repository.
+ * @param howfairisOutput The output from the howfairis module.
+ * @param licenseInfo The output from the tortellini module.
+ * @returns A {@link getdata.ReturnObject} containing a {@link QualityMetrics} object containing quality metrics about the repository.
+ */
+export async function getQualityMetrics(
     ghInfo: GithubInfo,
     howfairisOutput: ReturnObject,
     licenseInfo: ReturnObject
@@ -25,9 +39,7 @@ export async function getQualityScore(
     const licenseScore = getLicenseScore(licenseInfo);
 
     // Get github issues
-    //const issues = await getIssues(ghInfo);
-    const x: any = {};
-    const issues = x.data;
+    const issues = await getIssues(ghInfo);
 
     const maintainabilityScore = await getMaintainabilityScore(issues);
 
@@ -44,21 +56,30 @@ export async function getQualityScore(
         docsScore * 0.12;
 
     // Quality score to return
-    const qualityScore: QualityScore = {
+    const qualityMetrics: QualityMetrics = {
+        score,
         fairnessScore,
         licenseScore,
         maintainabilityScore,
         hasDocs,
-        score,
         avgSolveTime,
     };
 
     return {
-        ReturnName: "QualityScore",
-        ReturnData: qualityScore,
+        ReturnName: "QualityMetrics",
+        ReturnData: qualityMetrics,
     };
 }
 
+/**
+ * Calculates the percentage of license violations. The more violations there are,
+ * the lower the score will be.
+ *
+ * @param licenseInfo The {@link getdata.ReturnObject} containing the (curated)
+ * output from Tortellini.
+ *
+ * @returns Score between 0 and 100 indicating how well licenses correspond with each other.
+ */
 export function getLicenseScore(licenseInfo: ReturnObject): number {
     const licenseCount = (licenseInfo.ReturnData as any).packages.length;
     const violations = (licenseInfo.ReturnData as any).violations.length;
@@ -67,6 +88,14 @@ export function getLicenseScore(licenseInfo: ReturnObject): number {
     return (100 * (licenseCount - violations)) / licenseCount;
 }
 
+/**
+ * Calculates the maintainability of the code, by comparing the number of open
+ * issues with the total number of issues. If the number of open issues is relatively high,
+ * this will result in a lower score.
+ *
+ * @param issues Array of issues from GitHub.
+ * @returns Score between 0 and 100 indicating the maintainability of the code.
+ */
 export async function getMaintainabilityScore(issues: any[]): Promise<number> {
     const total = issues.length;
     // Count amount of closed issues
@@ -82,6 +111,12 @@ export async function getMaintainabilityScore(issues: any[]): Promise<number> {
     return total > 0 ? (100 * closed) / total : 100;
 }
 
+/**
+ * Calculates the average number of days it takes to solve an issue.
+ *
+ * @param issues Array of issues from GitHub.
+ * @returns The average solve time of issues (in days).
+ */
 export function getAvgSolveTime(issues: any[]): number | undefined {
     let totalTime = 0;
     let numberOfIssues = 0;
@@ -103,10 +138,21 @@ export function getAvgSolveTime(issues: any[]): number | undefined {
     return numberOfIssues > 0 ? totalTime / numberOfIssues : undefined;
 }
 
+/**
+ * Checks if the repository has documentation by checking if there is a folder named "docs" or "documentation".
+ *
+ * @returns A boolean indicating the existence of a "docs" or "documentation" folder.
+ */
 export function hasDocumentation(): boolean {
     return fs.existsSync("./docs") || fs.existsSync("./documentation");
 }
 
+/**
+ * Gets issues of the current repository from GitHub.
+ *
+ * @param ghInfo {@link git.GithubInfo} object containing metadata about the current repository.
+ * @returns Array of issue objects.
+ */
 export async function getIssues(ghInfo: GithubInfo): Promise<any[]> {
     // Get octokit
     let octokit: any;
@@ -127,8 +173,10 @@ export async function getIssues(ghInfo: GithubInfo): Promise<any[]> {
         }
     );
 
+    // Check request response code
     const responseCode: number = response.status;
     if (responseCode < 200 || responseCode > 299) {
+        // Not a success code
         LogMessage(
             "Received response " +
                 responseCode.toString() +

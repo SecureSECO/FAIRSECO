@@ -6,7 +6,7 @@ import { getCitationFile, CffObject } from "./resources/citation_cff";
 import { runSBOM } from "./resources/sbom";
 import { ErrorLevel, LogMessage } from "./log";
 import { getGithubInfo, GithubInfo } from "./git";
-import { getQualityScore } from "./resources/qualityscore";
+import { getQualityMetrics } from "./resources/qualitymetrics";
 
 /** An object that contains data gathered by FairSECO. */
 export interface ReturnObject {
@@ -92,17 +92,17 @@ export async function data(): Promise<ReturnObject[]> {
 
     try {
         if (howfairisResult !== undefined && tortelliniResult !== undefined) {
-            const qualityScore = await getQualityScore(
+            const qualityMetrics = await getQualityMetrics(
                 ghinfo,
                 howfairisResult,
                 tortelliniResult
             );
-            output.push(qualityScore);
+            output.push(qualityMetrics);
         } else {
             throw new Error("howfairisResult or tortelliniResult is undefined");
         }
     } catch (error) {
-        LogMessage("QualityScore threw an error:", ErrorLevel.err);
+        LogMessage("QualityMetrics threw an error:", ErrorLevel.err);
         LogMessage(error, ErrorLevel.err);
     }
 

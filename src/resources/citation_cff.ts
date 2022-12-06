@@ -35,7 +35,7 @@ export interface ValidationErrorCffObject {
 /**
  * Reads a CITATION.cff file.
  * @param path Specifies the path to the directory the CITATION.cff file is in.
- * @returns The data from the CITATION.cff file.
+ * @returns A {@link getdata.ReturnObject} containing the data from the CITATION.cff file.
  */
 export async function getCitationFile(path?: string): Promise<ReturnObject> {
     let file: Buffer;
