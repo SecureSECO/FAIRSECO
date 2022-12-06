@@ -20673,6 +20673,8 @@ function getMaintainabilityScore(issues) {
             if (issue.closed_at !== null)
                 closed++;
         }
+        console.log("total = " + total.toString());
+        console.log("total > 0 = " + (total > 0).toString());
         // Return score as percentage of closed issues
         return total > 0 ? (100 * closed) / total : 100;
     });
