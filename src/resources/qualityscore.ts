@@ -1,9 +1,10 @@
 import { ReturnObject } from "../../src/getdata";
 import { GithubInfo } from "../git";
+import { LogMessage, ErrorLevel } from "../../src/log";
 
 import * as gh from "@actions/github";
 import * as fs from "fs";
-import { ErrorLevel, LogMessage } from "../log";
+import * as statusCode from "http-status-codes";
 
 export interface QualityScore {
     fairnessScore: number;
@@ -11,7 +12,7 @@ export interface QualityScore {
     maintainabilityScore: number;
     hasDocs: boolean;
     score: number;
-    avgSolveTime: number;
+    avgSolveTime: number | undefined;
 }
 
 export async function getQualityScore(
@@ -24,7 +25,9 @@ export async function getQualityScore(
     const licenseScore = getLicenseScore(licenseInfo);
 
     // Get github issues
-    const issues = await getIssues(ghInfo);
+    //const issues = await getIssues(ghInfo);
+    const x: any = {};
+    const issues = x.data;
 
     const maintainabilityScore = await getMaintainabilityScore(issues);
 
@@ -33,7 +36,7 @@ export async function getQualityScore(
     const hasDocs = hasDocumentation();
     const docsScore = hasDocs ? 100 : 0;
 
-    // Total quality score
+    // Overall score
     const score =
         fairnessScore * 0.38 +
         licenseScore * 0.27 +
@@ -65,18 +68,18 @@ export function getLicenseScore(licenseInfo: ReturnObject): number {
 }
 
 export async function getMaintainabilityScore(issues: any[]): Promise<number> {
-    let open = 0;
+    const total = issues.length;
+    // Count amount of closed issues
     let closed = 0;
     for (const issue of issues) {
-        if (issue.closed_at === null) open++;
-        else closed++;
+        if (issue.closed_at !== null) closed++;
     }
 
-    // Return percentage of closed issues
-    return (100 * closed) / open;
+    // Return score as percentage of closed issues
+    return total > 0 ? (100 * closed) / total : 100;
 }
 
-export function getAvgSolveTime(issues: any[]): number {
+export function getAvgSolveTime(issues: any[]): number | undefined {
     let totalTime = 0;
     let numberOfIssues = 0;
 
@@ -94,7 +97,7 @@ export function getAvgSolveTime(issues: any[]): number {
     }
 
     // Return average solve time
-    return totalTime / numberOfIssues;
+    return numberOfIssues > 0 ? totalTime / numberOfIssues : undefined;
 }
 
 export function hasDocumentation(): boolean {
@@ -114,12 +117,24 @@ export async function getIssues(ghInfo: GithubInfo): Promise<any[]> {
 
     // Request issues of the repo
     const response = await octokit.request(
-        "GET /repos/" + ghInfo.Owner + "/" + ghInfo.Repo + "/issues",
+        "GET /repos/" + ghInfo.Owner + "/" + ghInfo.Repo + "/issuez",
         {
             owner: ghInfo.Owner,
             repo: ghInfo.Repo,
         }
     );
+
+    const responseCode: number = response.status;
+    if (responseCode < 200 || responseCode > 299) {
+        LogMessage(
+            "Received response " +
+                responseCode.toString() +
+                " (" +
+                statusCode.getStatusText(responseCode) +
+                ") when requesting github issues.",
+            ErrorLevel.warn
+        );
+    }
 
     return response.data;
 }

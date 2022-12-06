@@ -10,16 +10,17 @@ jest.mock("@actions/github", () => {
     const actualModule = jest.requireActual("@actions/github");
 
     // Mock of octokit
+    // Returns array with 1 open issue
     const moctokit = {
-        request: function (): string {
-            return `
-            [
-                {
-                    "closed_at": null,
-                    "created_at": "2011-04-22T13:33:48Z",
-                }
-            ]
-            `;
+        request: function (): any {
+            return {
+                data: [
+                    {
+                        closed_at: null,
+                        created_at: "2011-04-22T13:33:48Z",
+                    },
+                ],
+            };
         },
     };
 
@@ -71,3 +72,5 @@ test("Test getQualityScore", async () => {
     expect(qualityScore.licenseScore).toBeCloseTo((100 * (12 - 3)) / 12);
     expect(qualityScore.hasDocs).toBeTruthy();
 });
+
+describe("Test getLicenseScore");
