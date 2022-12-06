@@ -19352,10 +19352,10 @@ function getQualityScore(ghInfo, howfairisOutput, licenseInfo) {
         const hasDocs = hasDocumentation();
         const docsScore = hasDocs ? 100 : 0;
         // Total quality score
-        const score = fairnessScore * 0.3 +
-            licenseScore * 0.22 +
-            maintainabilityScore * 0.19 +
-            docsScore * 0.1;
+        const score = fairnessScore * 0.38 +
+            licenseScore * 0.27 +
+            maintainabilityScore * 0.23 +
+            docsScore * 0.12;
         // Quality score to return
         const qualityScore = {
             fairnessScore,
@@ -19408,10 +19408,6 @@ function getAvgSolveTime(issues) {
     }
     // Return average solve time
     return totalTime / numberOfIssues;
-}
-function getTestCoverage() {
-    // MIGHTDOSOMETIMEEVER: add coverage
-    return 0;
 }
 function hasDocumentation() {
     return fs.existsSync("./docs") || fs.existsSync("./documentation");
