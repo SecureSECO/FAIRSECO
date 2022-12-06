@@ -112,8 +112,8 @@ export async function getIssues(ghInfo: GithubInfo): Promise<any[]> {
         );
     }
 
-    // Request issues of the repo, is returned as a json string
-    const response: string = await octokit.request(
+    // Request issues of the repo
+    const response = await octokit.request(
         "GET /repos/" + ghInfo.Owner + "/" + ghInfo.Repo + "/issues",
         {
             owner: ghInfo.Owner,
@@ -121,13 +121,5 @@ export async function getIssues(ghInfo: GithubInfo): Promise<any[]> {
         }
     );
 
-    console.log("RESPONSE:\n", response);
-    console.log("POS 1 = {" + response.charAt(1) + "}");
-
-    try {
-        return JSON.parse(response);
-    } catch (error) {
-        LogMessage("JSON.parse error:", ErrorLevel.err);
-        throw new Error(error);
-    }
+    return response.data;
 }
