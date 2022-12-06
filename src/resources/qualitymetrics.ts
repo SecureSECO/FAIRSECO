@@ -4,7 +4,6 @@ import { LogMessage, ErrorLevel } from "../../src/log";
 
 import * as gh from "@actions/github";
 import * as fs from "fs";
-import * as statusCode from "http-status-codes";
 
 /** Contains information about the quality of the repository. */
 export interface QualityMetrics {
@@ -23,20 +22,20 @@ export interface QualityMetrics {
 }
 
 /**
- * Finds quality metrics of the repository.
+ * Finds quality metrics about the repository.
  * @param ghInfo A {@link git.GithubInfo} containing information about the GitHub repository.
  * @param howfairisOutput The output from the howfairis module.
- * @param licenseInfo The output from the tortellini module.
+ * @param tortelliniOutput The output from the tortellini module.
  * @returns A {@link getdata.ReturnObject} containing a {@link QualityMetrics} object containing quality metrics about the repository.
  */
 export async function getQualityMetrics(
     ghInfo: GithubInfo,
     howfairisOutput: ReturnObject,
-    licenseInfo: ReturnObject
+    tortelliniOutput: ReturnObject
 ): Promise<ReturnObject> {
     const fairnessScore = (howfairisOutput.ReturnData as any[])[0].count * 20;
 
-    const licenseScore = getLicenseScore(licenseInfo);
+    const licenseScore = getLicenseScore(tortelliniOutput);
 
     // Get github issues
     const issues = await getIssues(ghInfo);
@@ -85,7 +84,9 @@ export function getLicenseScore(licenseInfo: ReturnObject): number {
     const violations = (licenseInfo.ReturnData as any).violations.length;
 
     // Return percentage of correct licenses
-    return (100 * (licenseCount - violations)) / licenseCount;
+    return licenseCount > 0
+        ? (100 * (licenseCount - violations)) / licenseCount
+        : 100;
 }
 
 /**
@@ -96,16 +97,13 @@ export function getLicenseScore(licenseInfo: ReturnObject): number {
  * @param issues Array of issues from GitHub.
  * @returns Score between 0 and 100 indicating the maintainability of the code.
  */
-export async function getMaintainabilityScore(issues: any[]): Promise<number> {
+export function getMaintainabilityScore(issues: any[]): number {
     const total = issues.length;
     // Count amount of closed issues
     let closed = 0;
     for (const issue of issues) {
-        if (issue.closed_at !== null) closed++;
+        if (issue.closed_at as boolean) closed++;
     }
-
-    console.log("total = " + total.toString());
-    console.log("total > 0 = " + (total > 0).toString());
 
     // Return score as percentage of closed issues
     return total > 0 ? (100 * closed) / total : 100;
@@ -164,28 +162,23 @@ export async function getIssues(ghInfo: GithubInfo): Promise<any[]> {
         );
     }
 
-    // Request issues of the repo
-    const response = await octokit.request(
-        "GET /repos/" + ghInfo.Owner + "/" + ghInfo.Repo + "/issuez",
-        {
-            owner: ghInfo.Owner,
-            repo: ghInfo.Repo,
-        }
-    );
+    console.log("octokit = " + JSON.stringify(octokit as object));
 
-    // Check request response code
-    const responseCode: number = response.status;
-    if (responseCode < 200 || responseCode > 299) {
-        // Not a success code
-        LogMessage(
-            "Received response " +
-                responseCode.toString() +
-                " (" +
-                statusCode.getStatusText(responseCode) +
-                ") when requesting github issues.",
-            ErrorLevel.warn
+    // Request issues of the repo
+    try {
+        const response = await octokit.request(
+            "GET /repos/" + ghInfo.Owner + "/" + ghInfo.Repo + "/issues",
+            {
+                owner: ghInfo.Owner,
+                repo: ghInfo.Repo,
+            }
+        );
+
+        return response.data;
+    } catch (error) {
+        throw new Error(
+            "Error getting issues: " +
+                (error instanceof Error ? error.message : "unknown")
         );
     }
-
-    return response.data;
 }
