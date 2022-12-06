@@ -19341,7 +19341,6 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getIssues = exports.hasDocumentation = exports.getAvgSolveTime = exports.getMaintainabilityScore = exports.getLicenseScore = exports.getQualityScore = void 0;
 const gh = __importStar(__nccwpck_require__(5438));
 const fs = __importStar(__nccwpck_require__(7147));
-const log_1 = __nccwpck_require__(5042);
 function getQualityScore(ghInfo, howfairisOutput, licenseInfo) {
     return __awaiter(this, void 0, void 0, function* () {
         const fairnessScore = howfairisOutput.ReturnData[0].count * 20;
@@ -19427,20 +19426,12 @@ function getIssues(ghInfo) {
         catch (_a) {
             throw new Error("Error while contacting octokit API, did you supply a valid token?");
         }
-        // Request issues of the repo, is returned as a json string
+        // Request issues of the repo
         const response = yield octokit.request("GET /repos/" + ghInfo.Owner + "/" + ghInfo.Repo + "/issues", {
             owner: ghInfo.Owner,
             repo: ghInfo.Repo,
         });
-        console.log("RESPONSE:\n", response);
-        console.log("POS 1 = {" + response.charAt(1) + "}");
-        try {
-            return JSON.parse(response);
-        }
-        catch (error) {
-            (0, log_1.LogMessage)("JSON.parse error:", log_1.ErrorLevel.err);
-            throw new Error(error);
-        }
+        return response.data;
     });
 }
 exports.getIssues = getIssues;
