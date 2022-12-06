@@ -122,6 +122,7 @@ export async function getIssues(ghInfo: GithubInfo): Promise<any[]> {
     );
 
     console.log("RESPONSE:\n", response);
+    console.log("POS 1 = {" + response[1] + "}");
 
     try {
         return JSON.parse(response);

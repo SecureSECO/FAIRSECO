@@ -5,6 +5,7 @@ import {
     QualityScore,
 } from "../../src/resources/qualityscore";
 
+// Mock the @actions/github module to replace requests for data in unit tests
 jest.mock("@actions/github", () => {
     const actualModule = jest.requireActual("@actions/github");
 
