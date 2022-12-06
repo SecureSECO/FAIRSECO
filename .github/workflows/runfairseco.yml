@@ -18,6 +18,7 @@ jobs:
               with:
                   artifact-name: SBOM.spdx # Output is in JSON format
             - uses: ./
+              with: ${{ secrets.GITHUB_TOKEN }}
             - uses: actions/upload-artifact@v3
               with:
                   name: FairSECO Result

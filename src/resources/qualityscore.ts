@@ -34,10 +34,10 @@ export async function getQualityScore(
 
     // Total quality score
     const score =
-        fairnessScore * 0.3 +
-        licenseScore * 0.22 +
-        maintainabilityScore * 0.19 +
-        docsScore * 0.1;
+        fairnessScore * 0.38 +
+        licenseScore * 0.27 +
+        maintainabilityScore * 0.23 +
+        docsScore * 0.12;
 
     // Quality score to return
     const qualityScore: QualityScore = {
@@ -94,11 +94,6 @@ function getAvgSolveTime(issues: any[]): number {
 
     // Return average solve time
     return totalTime / numberOfIssues;
-}
-
-function getTestCoverage(): number {
-    // MIGHTDOSOMETIMEEVER: add coverage
-    return 0;
 }
 
 function hasDocumentation(): boolean {

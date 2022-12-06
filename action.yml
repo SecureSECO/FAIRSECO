@@ -9,7 +9,6 @@ inputs:
     myToken:
         required: true
         description: "Github Token"
-        default: ${{ secrets.GITHUB_TOKEN }}
 runs:
     using: "node16"
     main: "dist/index.js"
