@@ -18847,7 +18847,7 @@ const citation_cff_1 = __nccwpck_require__(4208);
 const sbom_1 = __nccwpck_require__(147);
 const log_1 = __nccwpck_require__(5042);
 const git_1 = __nccwpck_require__(6350);
-const qualityscore_1 = __nccwpck_require__(3560);
+const qualitymetrics_1 = __nccwpck_require__(2829);
 function data() {
     return __awaiter(this, void 0, void 0, function* () {
         const output = [];
@@ -18911,15 +18911,15 @@ function data() {
         }
         try {
             if (howfairisResult !== undefined && tortelliniResult !== undefined) {
-                const qualityScore = yield (0, qualityscore_1.getQualityScore)(ghinfo, howfairisResult, tortelliniResult);
-                output.push(qualityScore);
+                const qualityMetrics = yield (0, qualitymetrics_1.getQualityMetrics)(ghinfo, howfairisResult, tortelliniResult);
+                output.push(qualityMetrics);
             }
             else {
                 throw new Error("howfairisResult or tortelliniResult is undefined");
             }
         }
         catch (error) {
-            (0, log_1.LogMessage)("QualityScore threw an error:", log_1.ErrorLevel.err);
+            (0, log_1.LogMessage)("QualityMetrics threw an error:", log_1.ErrorLevel.err);
             (0, log_1.LogMessage)(error, log_1.ErrorLevel.err);
         }
         return output;
@@ -19678,7 +19678,7 @@ const log_1 = __nccwpck_require__(5042);
 /**
  * Reads a CITATION.cff file.
  * @param path Specifies the path to the directory the CITATION.cff file is in.
- * @returns The data from the CITATION.cff file.
+ * @returns A {@link getdata.ReturnObject} containing the data from the CITATION.cff file.
  */
 function getCitationFile(path) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -20581,7 +20581,7 @@ exports.calculateProbabiltyOfReference = calculateProbabiltyOfReference;
 
 /***/ }),
 
-/***/ 3560:
+/***/ 2829:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -20619,19 +20619,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getIssues = exports.hasDocumentation = exports.getAvgSolveTime = exports.getMaintainabilityScore = exports.getLicenseScore = exports.getQualityScore = void 0;
+exports.getIssues = exports.hasDocumentation = exports.getAvgSolveTime = exports.getMaintainabilityScore = exports.getLicenseScore = exports.getQualityMetrics = void 0;
 const log_1 = __nccwpck_require__(5042);
 const gh = __importStar(__nccwpck_require__(5438));
 const fs = __importStar(__nccwpck_require__(7147));
 const statusCode = __importStar(__nccwpck_require__(2828));
-function getQualityScore(ghInfo, howfairisOutput, licenseInfo) {
+/**
+ * Finds quality metrics of the repository.
+ * @param ghInfo A {@link git.GithubInfo} containing information about the GitHub repository.
+ * @param howfairisOutput The output from the howfairis module.
+ * @param licenseInfo The output from the tortellini module.
+ * @returns A {@link getdata.ReturnObject} containing a {@link QualityMetrics} object containing quality metrics about the repository.
+ */
+function getQualityMetrics(ghInfo, howfairisOutput, licenseInfo) {
     return __awaiter(this, void 0, void 0, function* () {
         const fairnessScore = howfairisOutput.ReturnData[0].count * 20;
         const licenseScore = getLicenseScore(licenseInfo);
         // Get github issues
-        //const issues = await getIssues(ghInfo);
-        const x = {};
-        const issues = x.data;
+        const issues = yield getIssues(ghInfo);
         const maintainabilityScore = yield getMaintainabilityScore(issues);
         const avgSolveTime = getAvgSolveTime(issues);
         const hasDocs = hasDocumentation();
@@ -20642,21 +20647,30 @@ function getQualityScore(ghInfo, howfairisOutput, licenseInfo) {
             maintainabilityScore * 0.23 +
             docsScore * 0.12;
         // Quality score to return
-        const qualityScore = {
+        const qualityMetrics = {
+            score,
             fairnessScore,
             licenseScore,
             maintainabilityScore,
             hasDocs,
-            score,
             avgSolveTime,
         };
         return {
-            ReturnName: "QualityScore",
-            ReturnData: qualityScore,
+            ReturnName: "QualityMetrics",
+            ReturnData: qualityMetrics,
         };
     });
 }
-exports.getQualityScore = getQualityScore;
+exports.getQualityMetrics = getQualityMetrics;
+/**
+ * Calculates the percentage of license violations. The more violations there are,
+ * the lower the score will be.
+ *
+ * @param licenseInfo The {@link getdata.ReturnObject} containing the (curated)
+ * output from Tortellini.
+ *
+ * @returns Score between 0 and 100 indicating how well licenses correspond with each other.
+ */
 function getLicenseScore(licenseInfo) {
     const licenseCount = licenseInfo.ReturnData.packages.length;
     const violations = licenseInfo.ReturnData.violations.length;
@@ -20664,6 +20678,14 @@ function getLicenseScore(licenseInfo) {
     return (100 * (licenseCount - violations)) / licenseCount;
 }
 exports.getLicenseScore = getLicenseScore;
+/**
+ * Calculates the maintainability of the code, by comparing the number of open
+ * issues with the total number of issues. If the number of open issues is relatively high,
+ * this will result in a lower score.
+ *
+ * @param issues Array of issues from GitHub.
+ * @returns Score between 0 and 100 indicating the maintainability of the code.
+ */
 function getMaintainabilityScore(issues) {
     return __awaiter(this, void 0, void 0, function* () {
         const total = issues.length;
@@ -20680,6 +20702,12 @@ function getMaintainabilityScore(issues) {
     });
 }
 exports.getMaintainabilityScore = getMaintainabilityScore;
+/**
+ * Calculates the average number of days it takes to solve an issue.
+ *
+ * @param issues Array of issues from GitHub.
+ * @returns The average solve time of issues (in days).
+ */
 function getAvgSolveTime(issues) {
     let totalTime = 0;
     let numberOfIssues = 0;
@@ -20698,10 +20726,21 @@ function getAvgSolveTime(issues) {
     return numberOfIssues > 0 ? totalTime / numberOfIssues : undefined;
 }
 exports.getAvgSolveTime = getAvgSolveTime;
+/**
+ * Checks if the repository has documentation by checking if there is a folder named "docs" or "documentation".
+ *
+ * @returns A boolean indicating the existence of a "docs" or "documentation" folder.
+ */
 function hasDocumentation() {
     return fs.existsSync("./docs") || fs.existsSync("./documentation");
 }
 exports.hasDocumentation = hasDocumentation;
+/**
+ * Gets issues of the current repository from GitHub.
+ *
+ * @param ghInfo {@link git.GithubInfo} object containing metadata about the current repository.
+ * @returns Array of issue objects.
+ */
 function getIssues(ghInfo) {
     return __awaiter(this, void 0, void 0, function* () {
         // Get octokit
@@ -20717,8 +20756,10 @@ function getIssues(ghInfo) {
             owner: ghInfo.Owner,
             repo: ghInfo.Repo,
         });
+        // Check request response code
         const responseCode = response.status;
         if (responseCode < 200 || responseCode > 299) {
+            // Not a success code
             (0, log_1.LogMessage)("Received response " +
                 responseCode.toString() +
                 " (" +
