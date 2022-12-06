@@ -19341,6 +19341,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getIssues = exports.hasDocumentation = exports.getAvgSolveTime = exports.getMaintainabilityScore = exports.getLicenseScore = exports.getQualityScore = void 0;
 const gh = __importStar(__nccwpck_require__(5438));
 const fs = __importStar(__nccwpck_require__(7147));
+const log_1 = __nccwpck_require__(5042);
 function getQualityScore(ghInfo, howfairisOutput, licenseInfo) {
     return __awaiter(this, void 0, void 0, function* () {
         const fairnessScore = howfairisOutput.ReturnData[0].count * 20;
@@ -19432,7 +19433,13 @@ function getIssues(ghInfo) {
             repo: ghInfo.Repo,
         });
         console.log("RESPONSE:\n", response);
-        return JSON.parse(response);
+        try {
+            return JSON.parse(response);
+        }
+        catch (error) {
+            (0, log_1.LogMessage)("JSON.parse error:", log_1.ErrorLevel.err);
+            throw new Error(error);
+        }
     });
 }
 exports.getIssues = getIssues;
