@@ -3,6 +3,7 @@ import { GithubInfo } from "../git";
 
 import * as gh from "@actions/github";
 import * as fs from "fs";
+import { ErrorLevel, LogMessage } from "../log";
 
 export interface QualityScore {
     fairnessScore: number;
@@ -122,5 +123,10 @@ export async function getIssues(ghInfo: GithubInfo): Promise<any[]> {
 
     console.log("RESPONSE:\n", response);
 
-    return JSON.parse(response);
+    try {
+        return JSON.parse(response);
+    } catch (error) {
+        LogMessage("JSON.parse error:", ErrorLevel.err);
+        throw new Error(error);
+    }
 }

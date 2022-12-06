@@ -5,6 +5,32 @@ import {
     QualityScore,
 } from "../../src/resources/qualityscore";
 
+jest.mock("@actions/github", () => {
+    const actualModule = jest.requireActual("@actions/github");
+
+    // Mock of octokit
+    const moctokit = {
+        request: function (): string {
+            return `
+            [
+                {
+                    "closed_at": null,
+                    "created_at": "2011-04-22T13:33:48Z",
+                }
+            ]
+            `;
+        },
+    };
+
+    return {
+        __esModule: true,
+        ...actualModule,
+        getOctoKit: async () => {
+            return moctokit;
+        },
+    };
+});
+
 test("Test getQualityScore", async () => {
     const ghInfo: GithubInfo = {
         Repo: "FairSECO",
