@@ -19338,7 +19338,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getQualityScore = void 0;
+exports.getIssues = exports.hasDocumentation = exports.getAvgSolveTime = exports.getMaintainabilityScore = exports.getLicenseScore = exports.getQualityScore = void 0;
 const gh = __importStar(__nccwpck_require__(5438));
 const fs = __importStar(__nccwpck_require__(7147));
 function getQualityScore(ghInfo, howfairisOutput, licenseInfo) {
@@ -19378,6 +19378,7 @@ function getLicenseScore(licenseInfo) {
     // Return percentage of correct licenses
     return (100 * (licenseCount - violations)) / licenseCount;
 }
+exports.getLicenseScore = getLicenseScore;
 function getMaintainabilityScore(issues) {
     return __awaiter(this, void 0, void 0, function* () {
         let open = 0;
@@ -19392,6 +19393,7 @@ function getMaintainabilityScore(issues) {
         return (100 * closed) / open;
     });
 }
+exports.getMaintainabilityScore = getMaintainabilityScore;
 function getAvgSolveTime(issues) {
     let totalTime = 0;
     let numberOfIssues = 0;
@@ -19409,9 +19411,11 @@ function getAvgSolveTime(issues) {
     // Return average solve time
     return totalTime / numberOfIssues;
 }
+exports.getAvgSolveTime = getAvgSolveTime;
 function hasDocumentation() {
     return fs.existsSync("./docs") || fs.existsSync("./documentation");
 }
+exports.hasDocumentation = hasDocumentation;
 function getIssues(ghInfo) {
     return __awaiter(this, void 0, void 0, function* () {
         // Get octokit
@@ -19430,6 +19434,7 @@ function getIssues(ghInfo) {
         return JSON.parse(response);
     });
 }
+exports.getIssues = getIssues;
 
 
 /***/ }),
