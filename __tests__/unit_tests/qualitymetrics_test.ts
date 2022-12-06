@@ -33,7 +33,7 @@ jest.mock("@actions/github", () => {
     };
 });
 
-test("Test getQualityScore", async () => {
+test("Test getQualityMetrics", async () => {
     const mockGhInfo: GithubInfo = {
         Repo: "FairSECO",
         GithubToken: "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",

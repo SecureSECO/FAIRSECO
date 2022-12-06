@@ -11,7 +11,7 @@ export interface QualityMetrics {
     score: number;
     /** The FAIRness score, percent score from howfairis 0-100. */
     fairnessScore: number;
-    /** The license score, percentage of packages without license violation 0-100. */
+    /** The license score based on license violations 0-100. */
     licenseScore: number;
     /** The maintability score, percentage of solved issues 0-100. */
     maintainabilityScore: number;
@@ -81,12 +81,18 @@ export async function getQualityMetrics(
  */
 export function getLicenseScore(licenseInfo: ReturnObject): number {
     const licenseCount = (licenseInfo.ReturnData as any).packages.length;
-    const violations = (licenseInfo.ReturnData as any).violations.length;
+    const violationCount = (licenseInfo.ReturnData as any).violations.length;
 
-    // Return percentage of correct licenses
-    return licenseCount > 0
-        ? (100 * (licenseCount - violations)) / licenseCount
-        : 100;
+    // Check if there's no licenses
+    if (licenseCount === 0) {
+        return 100;
+    }
+
+    // Fraction of licenses that are not violated
+    const correctFraction = (licenseCount - violationCount) / licenseCount;
+
+    // When there are more licenses, the same fraction of violations results in a lower score
+    return Math.pow(correctFraction, Math.log2(1 + licenseCount)) * 100;
 }
 
 /**
@@ -161,8 +167,6 @@ export async function getIssues(ghInfo: GithubInfo): Promise<any[]> {
             "Error while contacting octokit API, did you supply a valid token?"
         );
     }
-
-    console.log("octokit = " + JSON.stringify(octokit as object));
 
     // Request issues of the repo
     try {
