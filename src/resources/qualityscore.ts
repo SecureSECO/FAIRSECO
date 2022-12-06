@@ -55,7 +55,7 @@ export async function getQualityScore(
     };
 }
 
-function getLicenseScore(licenseInfo: ReturnObject): number {
+export function getLicenseScore(licenseInfo: ReturnObject): number {
     const licenseCount = (licenseInfo.ReturnData as any).packages.length;
     const violations = (licenseInfo.ReturnData as any).violations.length;
 
@@ -63,7 +63,7 @@ function getLicenseScore(licenseInfo: ReturnObject): number {
     return (100 * (licenseCount - violations)) / licenseCount;
 }
 
-async function getMaintainabilityScore(issues: any[]): Promise<number> {
+export async function getMaintainabilityScore(issues: any[]): Promise<number> {
     let open = 0;
     let closed = 0;
     for (const issue of issues) {
@@ -75,7 +75,7 @@ async function getMaintainabilityScore(issues: any[]): Promise<number> {
     return (100 * closed) / open;
 }
 
-function getAvgSolveTime(issues: any[]): number {
+export function getAvgSolveTime(issues: any[]): number {
     let totalTime = 0;
     let numberOfIssues = 0;
 
@@ -96,11 +96,11 @@ function getAvgSolveTime(issues: any[]): number {
     return totalTime / numberOfIssues;
 }
 
-function hasDocumentation(): boolean {
+export function hasDocumentation(): boolean {
     return fs.existsSync("./docs") || fs.existsSync("./documentation");
 }
 
-async function getIssues(ghInfo: GithubInfo): Promise<any[]> {
+export async function getIssues(ghInfo: GithubInfo): Promise<any[]> {
     // Get octokit
     let octokit: any;
     try {
