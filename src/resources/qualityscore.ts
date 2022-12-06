@@ -120,5 +120,7 @@ export async function getIssues(ghInfo: GithubInfo): Promise<any[]> {
         }
     );
 
+    console.log("RESPONSE:\n", response);
+
     return JSON.parse(response);
 }
