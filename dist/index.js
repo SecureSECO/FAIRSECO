@@ -19433,6 +19433,7 @@ function getIssues(ghInfo) {
             repo: ghInfo.Repo,
         });
         console.log("RESPONSE:\n", response);
+        console.log("POS 1 = {" + response[1] + "}");
         try {
             return JSON.parse(response);
         }
