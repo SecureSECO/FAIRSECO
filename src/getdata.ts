@@ -6,6 +6,7 @@ import { getCitationFile, CffObject } from "./resources/citation_cff";
 import { runSBOM } from "./resources/sbom";
 import { ErrorLevel, LogMessage } from "./log";
 import { getGithubInfo, GithubInfo } from "./git";
+import { getQualityScore } from "./resources/qualityscore";
 
 /** An object that contains data gathered by FairSECO. */
 export interface ReturnObject {
@@ -21,8 +22,9 @@ export async function data(): Promise<ReturnObject[]> {
 
     const ghinfo: GithubInfo = await getGithubInfo();
 
+    let tortelliniResult: ReturnObject | undefined;
     try {
-        const tortelliniResult = await runTortellini();
+        tortelliniResult = await runTortellini();
         output.push(tortelliniResult);
     } catch (error) {
         LogMessage(
@@ -32,8 +34,9 @@ export async function data(): Promise<ReturnObject[]> {
         LogMessage(error, ErrorLevel.err);
     }
 
+    let howfairisResult: ReturnObject | undefined;
     try {
-        const howfairisResult = await runHowfairis(ghinfo);
+        howfairisResult = await runHowfairis(ghinfo);
         output.push(howfairisResult);
     } catch (error) {
         LogMessage(
@@ -54,7 +57,7 @@ export async function data(): Promise<ReturnObject[]> {
         LogMessage(error, ErrorLevel.err);
     }
 
-    let cffResult = undefined;
+    let cffResult: ReturnObject | undefined;
     try {
         cffResult = await getCitationFile(".");
         output.push(cffResult);
@@ -88,23 +91,20 @@ export async function data(): Promise<ReturnObject[]> {
     }
 
     try {
-        const cffFile = output[3].ReturnData as CffObject;
-        if (cffFile.status === "valid") {
-            const citingPapersResult = await runCitingPapers(cffFile);
-            output.push(citingPapersResult);
+        if (howfairisResult !== undefined && tortelliniResult !== undefined) {
+            const qualityScore = await getQualityScore(
+                ghinfo,
+                howfairisResult,
+                tortelliniResult
+            );
+            output.push(qualityScore);
         } else {
-            throw new Error("Invalid cff File");
+            throw new Error("howfairisResult or tortelliniResult is undefined");
         }
     } catch (error) {
-        console.error("Scholarly threw an error:");
-        console.error(error);
-    }
-    try {
-        const SBOMResult = await runSBOM();
-        output.push(SBOMResult);
-    } catch (error) {
-        LogMessage("SBOM threw an error:", ErrorLevel.err);
+        LogMessage("QualityScore threw an error:", ErrorLevel.err);
         LogMessage(error, ErrorLevel.err);
     }
+
     return output;
 }

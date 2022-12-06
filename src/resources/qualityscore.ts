@@ -23,11 +23,11 @@ export async function getQualityScore(
     const licenseScore = getLicenseScore(licenseInfo);
 
     // Get github issues
-    //const issues = await getIssues(ghInfo);
+    const issues = await getIssues(ghInfo);
 
-    const maintainabilityScore = 0; //await getMaintainabilityScore(issues);
+    const maintainabilityScore = await getMaintainabilityScore(issues);
 
-    const avgSolveTime = 0; //getAvgSolveTime(issues);
+    const avgSolveTime = getAvgSolveTime(issues);
 
     const hasDocs = hasDocumentation();
     const docsScore = hasDocs ? 100 : 0;
