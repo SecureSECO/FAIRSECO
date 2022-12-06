@@ -1,11 +1,15 @@
 name: "FairSECO-action"
 description: "GitHub Action that assesses fairness in software"
 author: "Utrecht University"
-inputs: 
+inputs:
     repository:
         required: false
-        description: 'Github Repo running the Fairseco action'
+        description: "Github Repo running the Fairseco action"
         default: ${{ github.repository }}
+    myToken:
+        required: true
+        description: "Github Token"
+        default: ${{ secrets.GITHUB_TOKEN }}
 runs:
     using: "node16"
     main: "dist/index.js"
