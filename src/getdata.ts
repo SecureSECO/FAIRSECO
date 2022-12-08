@@ -70,14 +70,6 @@ export async function data(): Promise<ReturnObject[]> {
     }
 
     try {
-        const SBOMResult = await runSBOM();
-        output.push(SBOMResult);
-    } catch (error) {
-        LogMessage("An error occurred during SBOM generation.", ErrorLevel.err);
-        LogMessage(error, ErrorLevel.err);
-    }
-
-    try {
         const cffFile = cffResult?.ReturnData as CffObject;
         if (cffFile?.status === "valid") {
             const citingPapersResult = await runCitingPapers(cffFile);
