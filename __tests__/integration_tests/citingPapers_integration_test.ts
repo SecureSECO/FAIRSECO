@@ -1,43 +1,76 @@
-import { ReturnObject } from "../getdata";
-import * as dockerExit from "./helperfunctions/docker_exit";
-import YAML from "yaml";
-import * as path_ from "path";
-
-import * as fs from "fs";
+import { setOutput } from "@actions/core";
 import { exec, ExecOptions } from "@actions/exec";
-import { ErrorLevel, LogMessage } from "../log";
+import { ReturnObject } from "../../src/getdata";
+import { CffObject, getError, IncorrectYamlCffObject, MissingCffObject, ValidationErrorCffObject, ValidCffObject } from "../../src/resources/citation_cff";
+import {  mergeDuplicates, runCitingPapers } from "../../src/resources/citingPapers";
+import { Author, Paper, Citations } from "../../src/resources/Paper";
+import { openAlexCitations } from "../../src/resources/openalexAPI";
+import { semanticScholarCitations } from "../../src/resources/semanticscholarAPI";
+import YAML from "yaml";
+import * as fs from "fs";
+import * as path_ from "path";
+import { Console } from "console";
+import { ErrorLevel, LogMessage } from "../../src/log";
+import * as dockerExit from "../../src/resources/helperfunctions/docker_exit";
 
-export type CffObject =
-    | MissingCffObject
-    | IncorrectYamlCffObject
-    | ValidCffObject
-    | ValidationErrorCffObject;
+jest.setTimeout(100000);
 
-export interface MissingCffObject {
-    status: "missing_file";
+test("Check if all sources of citation are correctly used", runCitingPapersIntegration);
+
+async function runCitingPapersIntegration(): Promise<void>{
+    
+    const cffResult = await getCitationFile("./");
+    const cffFile = cffResult.ReturnData as ValidCffObject
+    
+    const authors: Author[] = [];
+    const title: string = cffFile.citation.title;
+    const refTitles: string[] = [];
+    if (cffFile.citation.references !== undefined) {
+        cffFile.citation.references.forEach((element: any) => {
+            if (
+                element.type === "article" ||
+                element.type === "journal-article"
+            )
+                refTitles.push(element.title);
+        });
+    }
+    cffFile.citation.authors.forEach((element: any) => {
+        let familyName = "";
+        let givenNames = "";
+        let orchidId = "";
+        for (const [key, value] of Object.entries(element)) {
+            switch (key) {
+                case "family-names":
+                    familyName = String(value);
+                    break;
+                case "given-names":
+                    givenNames = String(value);
+                    break;
+                case "orcid":
+                    orchidId = String(value);
+                    break;
+            }
+        }
+        authors.push(new Author(givenNames + " " + familyName, orchidId));
+    });
+
+    let output1: Paper[] 
+
+    await semanticScholarCitations(authors, title, refTitles).then(async (outData1) => {
+        await openAlexCitations(authors, title, refTitles).then(async (outData2) => {
+            output1 = mergeDuplicates(outData1, outData2);
+            await runCitingPapers(cffFile).then((outDataReal) => {
+                const output2 = new Citations(output1);
+                expect(output2).toMatchObject(outDataReal.ReturnData);    
+            })
+            
+        })
+    }
+    )
+    
 }
 
-export interface IncorrectYamlCffObject {
-    status: "incorrect_yaml";
-}
-export interface ValidCffObject {
-    status: "valid";
-    citation: any;
-    validation_message: string;
-}
-
-export interface ValidationErrorCffObject {
-    status: "validation_error";
-    citation: any;
-    validation_message: string;
-}
-
-/**
- * Reads a CITATION.cff file.
- * @param path Specifies the path to the directory the CITATION.cff file is in.
- * @returns The data from the CITATION.cff file.
- */
-export async function getCitationFile(path?: string): Promise<ReturnObject> {
+async function getCitationFile(path?: string): Promise<ReturnObject> {
     let file: Buffer;
 
     // Use current directory if none is specified
@@ -150,26 +183,6 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
             ReturnData: returnData,
         };
     }
-}
-
-export const unknownErrorMsg = "Unknown Error";
-
-/**
- * Finds the error when cffconvert returns an error code.
- * @param stderr The stderr output produced by docker.
- * @returns A string showing information about the error.
- */
-export function getError(stderr: string): string {
-    // An error given by cffconvert appears as a line which looks like *Error: *
-    // Find the first line that includes Error: in the first word and return it
-    const lines = stderr.split("\n");
-    for (const x of lines) {
-        const first = x.split(" ")[0];
-        if (first?.includes("Error:")) return x;
-    }
-
-    // No cffconvert error message was found, so the error is unknown.
-    return unknownErrorMsg;
 }
 
 function getLastLine(input: string): string {

@@ -1,7 +1,10 @@
 import { ReturnObject } from "../getdata";
-import { getRepoUrl } from "../git";
+import { GithubInfo } from "../git";
+import * as dockerExit from "./helperfunctions/docker_exit";
+import { ErrorLevel, LogMessage } from "../log";
 
 import { exec, ExecOptions } from "@actions/exec";
+import fs from "fs";
 
 /**
  * This function runs the fairtally docker image on the current repo,
@@ -9,9 +12,9 @@ import { exec, ExecOptions } from "@actions/exec";
  *
  * @returns A {@link action.ReturnObject} containing the result from fairtally.
  */
-export async function runHowfairis(): Promise<ReturnObject> {
-    const gitrepo: string = await getRepoUrl();
-    console.debug("HowFairIs started");
+export async function runHowfairis(ghInfo: GithubInfo): Promise<ReturnObject> {
+    LogMessage("Howfairis started.", ErrorLevel.info);
+
     const cmd = "docker";
     const args = [
         "run",
@@ -21,15 +24,32 @@ export async function runHowfairis(): Promise<ReturnObject> {
         "json",
         "-o",
         "-",
-        gitrepo,
+        ghInfo.FullURL,
     ];
 
+    // Output from the docker container
     let stdout = "";
     let stderr = "";
 
+    try {
+        if (!fs.existsSync("./hfiOutputFiles"))
+            fs.mkdirSync("./hfiOutputFiles/");
+        else
+            LogMessage("Directory hfiOutputFiles already exists!", ErrorLevel.info);
+    } catch {
+        LogMessage("Could not create hfiOutputFiles directory.", ErrorLevel.err);
+    }
+
+    const stdOutStream = fs.createWriteStream("./hfiOutputFiles/hfiOutput.txt");
+    const stdErrStream = fs.createWriteStream("./hfiOutputFiles/hfiError.txt");
+
     const options: ExecOptions = {
         ignoreReturnCode: true,
+        windowsVerbatimArguments: true,
+        outStream: stdOutStream,
+        errStream: stdErrStream,
     };
+
     options.listeners = {
         stdout: (data: Buffer) => {
             stdout += data.toString();
@@ -40,8 +60,19 @@ export async function runHowfairis(): Promise<ReturnObject> {
     };
     const exitCode = await exec(cmd, args, options);
 
+    // Check docker exit code
+    dockerExit.throwError("Howfairis", exitCode);
+
+    // Parse the JSON output
+    let returnData;
+    try {
+        returnData = JSON.parse(stdout);
+    } catch {
+        throw new Error("Run output is not valid JSON");
+    }
+
     return {
         ReturnName: "HowFairIs",
-        ReturnData: JSON.parse(stdout),
+        ReturnData: returnData,
     };
 }

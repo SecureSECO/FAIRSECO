@@ -1,61 +1,64 @@
 import { ReturnObject } from "../getdata";
-import { getRepoUrl } from "../git";
+import { GithubInfo } from "../git";
+import { ErrorLevel, LogMessage } from "../log";
+import { throwDockerError, throwError } from "./helperfunctions/docker_exit";
 
+import * as fs from "fs";
 import { exec, ExecOptions } from "@actions/exec";
-import core from "@actions/core";
 
 /**
  * This function first runs the searchSECO docker and listens to stdout for its output.
  * Then, it tries to parse whatever SearchSECO returned into an {@link Output} object.
- * 
- * **Because the real SearchSECO is currently not available, [a mock](https://hub.docker.com/r/jarnohendriksen/mockseco) was used instead**
- * 
- * The mock simply returns a hard-coded output, that has no relation to the repo it is run on.
- * Calling the docker image works slightly differently then the real SearchSECO. For instance, the mock can't have a custom entrypoint, but SearchSECO requires it.
- * To solve this, the line `const entrypoint = '--entrypoint="./controller/build/searchseco"';` is included in the code. This entrypoint must be added to the args that are passed to docker:
- * ```ts
- * const args = [
-        "run",
-        "--rm",
-        "--name",
-        "searchseco-container",
-        // This is where 'entrypoint' goes
-        "-e",
-        '"github_token=' + ghToken + '"',
-        "-e",
-        '"worker_name=test"',
-        dockerImage,
-        "check",
-        gitrepo,
-    ];
-    ```
  *
- * @returns A {@link action.ReturnObject} containing the name of the module and the object constructed from SearchSECO's output.
+ * @param getRepoUrlFn Here, you can pass a mocked version of the {@link git.getRepoUrl} function. This is needed when testing locally,
+ * since the Github repo url can't be retrieved locally.
+ * @returns A {@link getdata.ReturnObject} containing the name of the module and the object constructed from SearchSECO's output.
  *
  */
-export async function runSearchseco(): Promise<ReturnObject> {
-    const gitrepo: string = await getRepoUrl();
+export async function runSearchseco(ghInfo: GithubInfo): Promise<ReturnObject> {
+    const gitrepo: string = ghInfo.FullURL;
+    const useMock = gitrepo === "https://github.com/QDUNI/FairSECO";
 
-    // Once the real SearchSECO is fully functional again, this should be replaced with 'searchseco/controller'
-    const dockerImage = "jarnohendriksen/mockseco:v1";
+    // Determine which docker image to use
+    const dockerImage = useMock
+        ? "jarnohendriksen/mockseco:v1"
+        : "searchseco/controller";
 
-    // This needs to be added to the docker command (const args) on the line indicated below
-    const entrypoint = '--entrypoint="./controller/build/searchseco"';
+    // The mock can't handle a custom entrypoint, while SearchSECO requires it
+    const entrypoint = useMock
+        ? ""
+        : '--entrypoint="./controller/build/searchseco"';
 
-    // This needs to contain a working Github token, since the real SearchSECO needs it
-    const ghToken = ""; // core.getInput("GITHUB_TOKEN");
+    // The token will be retrieved from the git data collection object once that is merged
+    const ghToken = "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";
 
-    console.debug("SearchSECO started");
-    console.debug(
-        "WARNING: Running a mock of SearchSECO. The output will be incorrect!"
-    );
+    LogMessage("SearchSECO started.", ErrorLevel.info);
+    if (useMock)
+        LogMessage(
+            "Running a mock of SearchSECO. The output will be incorrect!",
+            ErrorLevel.warn
+        );
+
     const cmd = "docker";
-    const args = [
+    const mockArgs = [
         "run",
         "--rm",
         "--name",
         "searchseco-container",
-        // This is where 'entrypoint' goes
+        "-e",
+        '"github_token=' + ghToken + '"',
+        "-e",
+        '"worker_name=test"',
+        dockerImage,
+        "check",
+        gitrepo,
+    ];
+    const realArgs = [
+        "run",
+        "--rm",
+        "--name",
+        "searchseco-container",
+        entrypoint,
         "-e",
         '"github_token=' + ghToken + '"',
         "-e",
@@ -65,11 +68,31 @@ export async function runSearchseco(): Promise<ReturnObject> {
         gitrepo,
     ];
 
+    const args = useMock ? mockArgs : realArgs;
+
+    // Output from the docker container
     let stdout = "";
     let stderr = "";
 
+    try {
+        if (!fs.existsSync("./ssOutputFiles")) fs.mkdirSync("./ssOutputFiles/");
+        else
+            LogMessage(
+                "Directory ssOutputFiles already exists!",
+                ErrorLevel.info
+            );
+    } catch {
+        LogMessage("Could not create ssOutputFiles directory", ErrorLevel.err);
+    }
+
+    const stdOutStream = fs.createWriteStream("./ssOutputFiles/ssOutput.txt");
+    const stdErrStream = fs.createWriteStream("./ssOutputFiles/ssError.txt");
+
     const options: ExecOptions = {
         ignoreReturnCode: true,
+        windowsVerbatimArguments: true,
+        outStream: stdOutStream,
+        errStream: stdErrStream,
     };
 
     // SearchSECO prints its results in the console. The code below copies the
@@ -86,11 +109,8 @@ export async function runSearchseco(): Promise<ReturnObject> {
     // Executes the docker run command
     const exitCode = await exec(cmd, args, options);
 
-    console.debug("Docker running SearchSECO returned " + String(exitCode));
-    console.debug("stdout:");
-    console.debug(stdout);
-    console.debug("stderr:");
-    console.debug(stderr);
+    // Check docker exit code
+    throwError("SearchSECO", exitCode);
 
     // ParseInput expects an array of trimmed lines
     // (i.e. without trailing or leading whitespace)

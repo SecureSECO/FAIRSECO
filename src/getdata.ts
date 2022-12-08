@@ -4,6 +4,8 @@ import { runSearchseco } from "./resources/searchseco";
 import { runCitingPapers } from "./resources/citingPapers";
 import { getCitationFile, CffObject } from "./resources/citation_cff";
 import { runSBOM } from "./resources/sbom";
+import { ErrorLevel, LogMessage } from "./log";
+import { getGithubInfo, GithubInfo } from "./git";
 
 /** An object that contains data gathered by FairSECO. */
 export interface ReturnObject {
@@ -16,58 +18,71 @@ export interface ReturnObject {
 
 export async function data(): Promise<ReturnObject[]> {
     const output: ReturnObject[] = [];
+
+    const ghinfo: GithubInfo = await getGithubInfo();
+
     try {
         const tortelliniResult = await runTortellini();
         output.push(tortelliniResult);
     } catch (error) {
-        console.error("Tortellini threw an error:");
-        console.error(error);
+        LogMessage(
+            "An error occurred while gathering tortellini data:",
+            ErrorLevel.err
+        );
+        LogMessage(error, ErrorLevel.err);
     }
 
     try {
-        const howfairisResult = await runHowfairis();
+        const howfairisResult = await runHowfairis(ghinfo);
         output.push(howfairisResult);
     } catch (error) {
-        console.error("Howfairis threw an error:");
-        console.error(error);
+        LogMessage(
+            "An error occurred while running howfairis.",
+            ErrorLevel.err
+        );
+        LogMessage(error, ErrorLevel.err);
     }
 
     try {
-        const searchsecoResult = await runSearchseco();
+        const searchsecoResult = await runSearchseco(ghinfo);
         output.push(searchsecoResult);
     } catch (error) {
-        console.error("Searchseco threw an error:");
-        console.error(error);
+        LogMessage(
+            "An error occurred while running searchSECO.",
+            ErrorLevel.err
+        );
+        LogMessage(error, ErrorLevel.err);
     }
-
+    let cffResult = undefined;
     try {
-        const cffResult = await getCitationFile("./src/resources");
+        cffResult = await getCitationFile(".");
         output.push(cffResult);
     } catch (error) {
-        console.error("Getting CITATION.cff caused an error:");
+        LogMessage(
+            "An error occurred while fetching CITATION.cff.",
+            ErrorLevel.err
+        );
+        LogMessage(error, ErrorLevel.err);
     }
 
     try {
-        const cffFile = output[3].ReturnData as CffObject;
-        if (cffFile.status === "valid") {
+        const cffFile = cffResult?.ReturnData as CffObject;
+        if (cffFile?.status === "valid") {
             const citingPapersResult = await runCitingPapers(cffFile);
             output.push(citingPapersResult);
+        } else {
+            throw new Error("Invalid CITATION.cff file");
         }
-        else {
-            throw new Error("Invalid cff File");
-        }
-
     } catch (error) {
-        console.error("Scholarly threw an error:");
-        console.error(error);
+        LogMessage("Scholarly threw an error:", ErrorLevel.err);
+        LogMessage(error, ErrorLevel.err);
     }
     try {
         const SBOMResult = await runSBOM();
         output.push(SBOMResult);
     } catch (error) {
-        console.error("SBOM threw an error:");
-
-        console.error(error);
+        LogMessage("SBOM threw an error:", ErrorLevel.err);
+        LogMessage(error, ErrorLevel.err);
     }
     return output;
 }

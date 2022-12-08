@@ -7,6 +7,7 @@ import {
 } from "./helperfunctions/artifact";
 
 import * as input from "./tortellini-input";
+import { ErrorLevel, LogMessage } from "../log";
 
 /**
  * Downloads the artifact that was uploaded by Tortellini, and parses the YAML file.
@@ -23,10 +24,12 @@ export async function runTortellini(
         input.artifactObject
     );
 
-    const fileContents = await getFileFromArtifact(downloadResponse, fileName);
+    const fileContents = getFileFromArtifact(downloadResponse, fileName);
 
-    if (fileContents === "")
+    if (fileContents === "") {
+        LogMessage("Tortellini artifact file appears to be empty.", ErrorLevel.warn);
         return { ReturnName: "Tortellini", ReturnData: {} };
+    }
 
     const obj = YAML.parse(fileContents);
 

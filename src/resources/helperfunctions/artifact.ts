@@ -60,10 +60,10 @@ export async function getArtifactData(
  * @param fileName The name of the file that should be read.
  * @returns The contents of the file.
  */
-export async function getFileFromArtifact(
+export function getFileFromArtifact(
     dlResponse: DownloadResponse,
     fileName: string
-): Promise<string> {
+): string {
     const filePath: string = path.join(dlResponse.downloadPath, fileName);
     const buffer = fs.readFileSync(filePath);
 

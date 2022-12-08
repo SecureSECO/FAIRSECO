@@ -1,39 +1,27 @@
 import { ReturnObject } from "./getdata";
 import YAML from "yaml";
-import fs, { PathLike } from "fs";
+import fs from "fs";
 import { WriteHTML, WriteCSS } from "./webapp";
+import { ErrorLevel, LogMessage } from "./log";
 
 /**
  * Creates reports showing the gathered data in .yml and .html format.
  * @param result The data gathered by FairSECO.
  */
 export async function post(result: ReturnObject[]): Promise<boolean> {
-    createFairSECODir("./.FairSECO/"); // Make sure the output dir exists before we place files in it.
     createReport(result); // Create report.yml file
     await generateHTML(result);
     return true;
 }
 
-function createFairSECODir(path: PathLike): void {
-    // Create dir if not exists
-    console.log("Creating FairSECO directory.");
-    try {
-        fs.mkdirSync(path);
-    } catch {
-        console.log("Folder already exists, skipping");
-    }
-}
-
 // Generate the report of FairSeco
 function createReport(result: ReturnObject[]): void {
-    const fd: number = fs.openSync("./.FairSECO/Report.yml", "w+");
+    LogMessage("FairSECO report:\n" + result, ErrorLevel.info);
     try {
-        console.log(result);
-        fs.writeSync(fd, YAML.stringify(result));
-        console.log("Successfully wrote YML file to dir");
-        fs.closeSync(fd);
+        fs.writeFileSync("./.FairSECO/Report.yml", YAML.stringify(result));
+        LogMessage("Successfully wrote YML file to dir.", ErrorLevel.info);
     } catch {
-        console.error("Error writing yaml file");
+        LogMessage("Error writing YML file.", ErrorLevel.err);
     }
 }
 
@@ -41,11 +29,11 @@ function createReport(result: ReturnObject[]): void {
 async function generateHTML(result: ReturnObject[]): Promise<void> {
     try {
         await WriteHTML(result, "./.FairSECO/index.html");
-        console.log("Successfully wrote HTML to dir");
+        LogMessage("Successfully wrote HTML file to dir.", ErrorLevel.info);
 
         // await WriteCSS("./.FairSECO/style.css");
         // console.log("Successfully wrote CSS to dir");
     } catch {
-        console.error("Error writing HTML file");
+        LogMessage("Error writing HTML file.", ErrorLevel.err);
     }
 }

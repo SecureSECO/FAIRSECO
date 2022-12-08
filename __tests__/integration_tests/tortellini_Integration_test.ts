@@ -21,7 +21,7 @@ jest.mock("../../src/resources/tortellini-input", () => {
         __esModule: true,
         ...actualModule,
         artifactObject: art.testArtifactObject, // Unit testing artifact object
-        destination: "__tests__/.tortellini-unit-test",
+        destination: "__tests__/unit_tests/.tortellini-unit-test",
     };
 });
 

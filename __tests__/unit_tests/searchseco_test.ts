@@ -1,7 +1,8 @@
-import * as ss from "../src/resources/searchseco";
+import * as ss from "../../src/resources/searchseco";
 import YAML from "yaml";
+import { getGithubInfo, GithubInfo } from "../../src/git";
 
-jest.setTimeout(20000);
+jest.setTimeout(100000);
 
 describe("Test getHashIndices", () => {
     test("Single Hash", () => {
@@ -554,11 +555,47 @@ describe("Test parseInput", () => {
             "https://www.url-of-vulnerability.com"
         );
     });
+
+    test("Only Header", () => {
+        const input = [
+            "-----------------------------------------------------------------------------------------------------",
+            'Matched the project at "https://github.com/user/project" against the database.',
+            "-----------------------------------------------------------------------------------------------------",
+            "Summary:",
+            "Methods in checked project: 4",
+            "Matches: 2 (50%)",
+            "Projects found in database:",
+            "Local authors present in matches:",
+            "Authors present in database matches:",
+            "--------------------------------------------------------------------------------------------------------------------------------",
+            "Details of matches found",
+            "--------------------------------------------------------------------------------------------------------------------------------",
+        ];
+
+        const result = ss.parseInput(input);
+
+        expect(result.methods).toEqual([]);
+    });
 });
 
 test("Test runSearchSECO", async () => {
     jest.setTimeout(15000);
-    const result = await ss.runSearchseco();
+
+    const ghInfo: GithubInfo = {
+        Repo: "",
+        GithubToken: "",
+        Owner: "",
+        FullURL: "https://github.com/QDUNI/FairSECO",
+        Stars: 0,
+        Forks: 0,
+        Watched: 0,
+        Visibility: undefined,
+        Readme: "",
+        Badges: [],
+        Contributors: [],
+    };
+
+    const result = await ss.runSearchseco(ghInfo);
 
     // Since the previous tests already check if the data is processed correctly,
     // we only need to check if SearchSECO gets executed at all, and if it can
