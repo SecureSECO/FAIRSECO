@@ -15,12 +15,15 @@ export async function openAlexCitations(
     let output: Paper[] = [];
     let paperIds: string[] = [];
     // find reference titles if neccessary
-    if (firstRefTitles.length === 0)
+    if (firstRefTitles.length === 0){
         paperIds = await getRefTitles(authors, title);
+    }
     else
-        for (const title of firstRefTitles)
+        for (const title of firstRefTitles){
             paperIds.push(await getOpenAlexPaperId(title));
+        }
     for (const paperId of paperIds)
+       
         output = output.concat(await getCitationPapers(paperId));
     return output;
 }
@@ -255,6 +258,8 @@ export async function getRefTitles(
     const probScores: number[] = calculateProbabiltyOfReference(uniquePapers);
     let i = 0;
     uniquePapers.forEach((value, key) => {
+        if (key === undefined)
+            return
         if (probScores[i] > 0.6) output.push(key);
         i++;
     });
