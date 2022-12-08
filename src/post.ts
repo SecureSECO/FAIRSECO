@@ -16,7 +16,7 @@ export async function post(result: ReturnObject[]): Promise<boolean> {
 
 // Generate the report of FairSeco
 function createReport(result: ReturnObject[]): void {
-    LogMessage("FairSECO report:\n" + result, ErrorLevel.info);
+    LogMessage("FairSECO report:\n" + result.toString(), ErrorLevel.info);
     try {
         fs.writeFileSync("./.FairSECO/Report.yml", YAML.stringify(result));
         LogMessage("Successfully wrote YML file to dir.", ErrorLevel.info);
@@ -33,7 +33,8 @@ async function generateHTML(result: ReturnObject[]): Promise<void> {
 
         // await WriteCSS("./.FairSECO/style.css");
         // console.log("Successfully wrote CSS to dir");
-    } catch {
-        LogMessage("Error writing HTML file.", ErrorLevel.err);
+    } catch (err: any) {
+        const errormessage: string = err.message;
+        LogMessage(`Error writing HTML file: ${errormessage}`, ErrorLevel.err);
     }
 }
