@@ -6,6 +6,7 @@ import { getCitationFile, CffObject } from "./resources/citation_cff";
 import { runSBOM } from "./resources/sbom";
 import { ErrorLevel, LogMessage } from "./log";
 import { getGithubInfo, GithubInfo } from "./git";
+import { getQualityMetrics } from "./resources/qualitymetrics";
 
 /** An object that contains data gathered by FairSECO. */
 export interface ReturnObject {
@@ -21,8 +22,9 @@ export async function data(): Promise<ReturnObject[]> {
 
     const ghinfo: GithubInfo = await getGithubInfo();
 
+    let tortelliniResult: ReturnObject | undefined;
     try {
-        const tortelliniResult = await runTortellini();
+        tortelliniResult = await runTortellini();
         output.push(tortelliniResult);
     } catch (error) {
         LogMessage(
@@ -32,8 +34,9 @@ export async function data(): Promise<ReturnObject[]> {
         LogMessage(error, ErrorLevel.err);
     }
 
+    let howfairisResult: ReturnObject | undefined;
     try {
-        const howfairisResult = await runHowfairis(ghinfo);
+        howfairisResult = await runHowfairis(ghinfo);
         output.push(howfairisResult);
     } catch (error) {
         LogMessage(
@@ -53,7 +56,8 @@ export async function data(): Promise<ReturnObject[]> {
         );
         LogMessage(error, ErrorLevel.err);
     }
-    let cffResult = undefined;
+
+    let cffResult: ReturnObject | undefined;
     try {
         cffResult = await getCitationFile(".");
         output.push(cffResult);
@@ -77,12 +81,22 @@ export async function data(): Promise<ReturnObject[]> {
         LogMessage("Scholarly threw an error:", ErrorLevel.err);
         LogMessage(error, ErrorLevel.err);
     }
+
     try {
-        const SBOMResult = await runSBOM();
-        output.push(SBOMResult);
+        if (howfairisResult !== undefined && tortelliniResult !== undefined) {
+            const qualityMetrics = await getQualityMetrics(
+                ghinfo,
+                howfairisResult,
+                tortelliniResult
+            );
+            output.push(qualityMetrics);
+        } else {
+            throw new Error("howfairisResult or tortelliniResult is undefined");
+        }
     } catch (error) {
-        LogMessage("SBOM threw an error:", ErrorLevel.err);
+        LogMessage("QualityMetrics threw an error:", ErrorLevel.err);
         LogMessage(error, ErrorLevel.err);
     }
+
     return output;
 }
