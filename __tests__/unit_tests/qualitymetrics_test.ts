@@ -74,7 +74,7 @@ test("Test getQualityMetrics", async () => {
     ).ReturnData as quality.QualityMetrics;
 
     expect(qualityScore.fairnessScore).toBeCloseTo(3 * 20);
-    expect(qualityScore.licenseScore).toBeCloseTo((100 * (12 - 3)) / 12);
+    expect(qualityScore.licenseScore).toBeCloseTo(34.4882959581638);
     expect(qualityScore.hasDocs).toBeTruthy();
 });
 
@@ -89,7 +89,7 @@ describe("Test getLicenseScore", () => {
         };
 
         expect(quality.getLicenseScore(mockTortelliniOutput)).toBeCloseTo(
-            (100 * (6 - 2)) / 6
+            32.036815280332455
         );
     });
 
