@@ -1,0 +1,112 @@
+<% const howfairis = data.find((ele) => (ele.ReturnName === "HowFairIs"))?.ReturnData[0]; %>
+<div class="RightPane">
+    <div class="RightPaneContainer">
+        <ul class="RightPaneNav">
+            <li class="Active">Fairness</li>
+            <li>Impact</li>
+            <li>Quality</li>
+        </ul>
+        <div class="RightPaneWindow">
+            <%- include('howfairis', {howfairis})%>
+        </div>
+    </div>
+</div>
+
+<style>
+.RightPane{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50vw;
+    height: 100vh;
+    margin: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.RightPaneContainer {
+    height: 87vh;
+    width: 48vw;
+    margin: 0;
+}
+
+.RightPaneNav {
+    display: flex;
+    flex-direction: row;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    clip-path: polygon(0 -100%, 100% -100%, 100% 65%, 0 65%);
+    margin-bottom: -30px;
+}
+
+.RightPaneNav li {
+    background: #D3EEE0;
+
+    backdrop-filter: blur(50px);
+    border-radius: 16px 16px 0 0;
+    padding: 1.3vh 2vw;
+    color: #EAFEED;
+    cursor: pointer;
+    z-index: 3;
+    font-size: 1.2rem;
+    transition: translate 300ms ease;
+    height: 80px;
+}
+
+.RightPaneNav li:hover{
+    translate: 0 -15px;
+    transition: all 300ms ease;
+}
+
+.RightPaneNav li:nth-child(2){
+    background: #729B85;
+    border-radius: 0 16px 0 0;
+    position: relative;
+    z-index: 2;
+}
+
+.RightPaneNav li:nth-child(n+1)::before{
+    content: "";
+    display: block;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left:-20px;
+    width: 40px;
+}
+
+.RightPaneNav li:nth-child(2)::before{
+    background: #729B85;
+}
+.RightPaneNav li:nth-child(3)::before{
+    background: #47715A;
+}
+
+.RightPaneNav li:nth-child(3){
+    background: #47715A;
+    border-radius: 0 16px 0 0;
+    z-index: 1;
+}
+
+.RightPaneNav li.Active{
+    color: #497361;
+    translate: 0 -15px;
+}
+
+.RightPaneWindow {
+    background: rgba(234,254,237, 0.55);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(50px);
+    border-radius: 0px 16px 16px 16px;
+    height: 100%;
+    padding: 8px;
+}
+
+.RightPaneWindow p {
+    color: #0C281E;
+    margin: 0;
+}
+
+</style>
