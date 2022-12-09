@@ -2,6 +2,8 @@ import { ReturnObject } from "../../src/getdata";
 import { GithubInfo } from "../../src/git";
 import * as quality from "../../src/resources/qualitymetrics";
 
+import * as fs from "fs";
+
 // Mock of issues returned by octokit request: 1 open issue
 const mockedOctokitIssues: any[] = [
     {
@@ -73,9 +75,11 @@ test("Test getQualityMetrics", async () => {
         )
     ).ReturnData as quality.QualityMetrics;
 
+    const hasDocs = fs.existsSync("./docs") || fs.existsSync("./documentation");
+
     expect(qualityScore.fairnessScore).toBeCloseTo(3 * 20);
     expect(qualityScore.licenseScore).toBeCloseTo(34.4882959581638);
-    expect(qualityScore.hasDocs).toBeTruthy();
+    expect(qualityScore.hasDocs).toBe(hasDocs);
 });
 
 describe("Test getLicenseScore", () => {
@@ -253,7 +257,10 @@ describe("Test hasDocumentation", () => {
     test("Existing docs folder", () => {
         const result = quality.hasDocumentation();
 
-        expect(result).toBeTruthy();
+        const hasDocs =
+            fs.existsSync("./docs") || fs.existsSync("./documentation");
+
+        expect(result).toBe(hasDocs);
     });
 });
 
