@@ -1,19 +1,87 @@
 <div class="LicencesContainer Hidden">
-    <table class="Licences">
-        <tr>
-            <th>Type</th>
-            <th>Package</th>
-            <th>Rule</th>
-            <th>Message</th>
-        </tr>
+    <h1 class="issuesheader"> Issues detected: <%= licences.violations.length %></h1>
+    <div class="LicencesContainerScroll">
+    
+    <div class="Licenses">
         <% licences.violations.forEach((violation) => { %> 
+    
         <%- include('violation', {"violation": violation})%> 
         <% }) %>
-    </table>
+    </div>
+
+</div>
 </div>
 <style>
     .LicencesContainer {
-        height: 80%;
+        height: 76%;
         width: 100%;
+        
+    }
+
+    .Licenses {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .issuesheader{
+        color:#779C7E;
+        font-size: 24px;
+        margin-bottom: 0px;
+        margin-left: 20px;
+    }
+
+    .LicencesContainerScroll{
+        overflow-y: scroll;
+        height: 93%;
+        padding: 0;
+        margin: 0;
+        -webkit-mask-image: linear-gradient(
+        to bottom,
+        black 90%,
+        transparent 100%
+        );
+        mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+    }
+
+    .Licenses h1 {
+        margin: 5px;
     }
 </style>
+
+<!-- license table  -->
+<!-- 
+border-collapse: collapse;
+padding: 0px;
+margin: 0px;
+display: block; -->
+
+<!-- tbody -->
+<!-- width: 97%;
+display: table;
+margin: auto;
+margin-top: 20px; -->
+
+<!-- tr -->
+<!-- border: 1px solid wheat;
+border-radius: 10px;
+position: relative;
+min-width: fit-content; -->
+
+<script>
+
+let details = document.getElementsByClassName('Arrow')
+
+for (var i = 0; i < details.length; ++i){
+    details[i].addEventListener('click', function(event){
+        var hid = event.target.parentElement.parentElement.parentElement.children[5].hidden;
+        event.target.parentElement.parentElement.parentElement.children[5].hidden = !hid;
+        if (event.target.className == "fa-solid fa-angle-right"){
+            event.target.className = "fa-solid fa-angle-down";
+        } else {
+            event.target.className = "fa-solid fa-angle-right";
+        }
+})
+}
+
+</script>

@@ -6,15 +6,15 @@
         <th>D.O.I.</th>
         <th>Link</th>
     </tr>
-    <% citations?.forEach((citation) => { %>
+    <% citations.forEach((citation) => { %>
         <%- include('citation', {"citation": citation})%>
     <% }) %>
 </table>
 </div>
 <style>
     .CitationsContainer {
-        max-height: 80%;
-        overflow: scroll;
+        max-height: 78%;
+         overflow-y: scroll;
         -webkit-mask-image: linear-gradient(
             to bottom,
             black 90%,
@@ -22,6 +22,8 @@
         );
         mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
         animation: fade-in 600ms ease-out 1 forwards;
+        width: 100%;
+        overflow-x: scroll;
     }
 
     .Citations {
@@ -33,8 +35,11 @@
     .Citations th {
         color: #779c7e;
         font-style: italic;
-        padding-bottom: 24px;
         font-size: 1.2rem;
+        position: sticky;
+        top: 0;
+        background-color: #2f4c3e;
+        padding: 13px 0 24px 0;
     }
 
     .Citation tr {
@@ -102,8 +107,13 @@
     }
 
 
-    .Citation .link:hover {
+    .Citation .link:hover a {
         color: #d9f8df;
+    }
+
+    
+    .Citation .link a {
+        color: #779c7e;
     }
 
     @media screen and (min-width: 1000px) {
