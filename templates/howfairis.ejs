@@ -1,0 +1,72 @@
+
+<% function checkOrCross(x) {
+return x ? '<p><i class="fa-solid fa-check"></i></p>' : '<p><i class="fa-solid fa-x"></i></p>'
+}
+%>
+
+<div class="HowFairIsReport">
+    <h1 class="HowFairIsReportTitle">Fairness Report</h1>
+    <div class="stars">
+        <h2>
+        <% for (let i = 0; i < Math.floor(howfairis.count); i++) { %>
+            <i class="fa-solid fa-star"></i>
+        <% } %>
+        <% if (howfairis.count % 1 > 0) {%>
+            <i class="fa-solid fa-star-half-stroke"></i>
+        <%}%> 
+        <% for (let i = 0; i < (5 - Math.ceil(howfairis.count)); i++) { %>
+            <i class="fa-regular fa-star"></i>
+        <% } %>
+
+        </h2>
+        <h2>
+        <%= `${howfairis.count} / 5` %>
+        </h2>
+
+          <!-- "checklist": false, -->
+          <!-- "citation": false, -->
+          <!-- "count": 2.5, -->
+          <!-- "license": false, -->
+          <!-- "registry": false, -->
+          <!-- "repository": false, -->
+    </div>
+        <div class="checklistcontainer">
+            <div><p>Passed checklist:</p> <%- checkOrCross(howfairis.checklist)%></div>
+            <div><p>Passed citation:</p> <%- checkOrCross(howfairis.citation)%></div>
+            <div><p>Passed license:</p> <%- checkOrCross(howfairis.license)%></div>
+            <div><p>Passed registry:</p> <%- checkOrCross(howfairis.registry)%></div>
+            <div><p>Passed repository:</p> <%- checkOrCross(howfairis.repository)%></div>
+        </div>
+</div>
+
+<style>
+    .HowFairIsReport {
+        color: #0C281E;
+    }
+
+    .HowFairIsReport h1 {
+        color: #0C281E;
+        text-align: center;
+    }
+    .HowFairIsReportTitle{
+        color: 4
+    }
+
+    .HowFairIsReport h2 {
+        text-align: center;
+    }
+    .checklistcontainer{
+        display: flex;
+        flex-direction: column;
+        width: 80%;
+        border: 1px solid #0C281E;
+        padding: 8px;
+        border-radius: 8px;
+        margin: auto;
+    }
+    .checklistcontainer div{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+</style>

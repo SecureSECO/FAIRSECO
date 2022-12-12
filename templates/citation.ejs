@@ -1,0 +1,20 @@
+<tr class="Citation">
+    <td class="info1">
+        <div class="info2">
+            <h1 class="title" data-hover="<%=citation.title%>">
+                <%=citation.title %>
+            </h1>
+            <h2 class="middot">&middot;</h2>
+            <h2 class="authors">
+                <%- citation.authors.length > 0 ? citation.authors.toString() :
+                "Authors not found" %>
+            </h2>
+        </div>
+        <h3 class="description">Collected from <%= citation.database%></h3>
+    </td>
+    <td class="year"><p><%= citation.year %></p></td>
+    <td class="doi"><p><%= citation.doi%></p></td>
+    <td class="link">
+        <a href=""><i class="fa-solid fa-link"></i></a>
+    </td>
+</tr>

@@ -1,0 +1,19 @@
+<div class="LicencesContainer Hidden">
+    <table class="Licences">
+        <tr>
+            <th>Type</th>
+            <th>Package</th>
+            <th>Rule</th>
+            <th>Message</th>
+        </tr>
+        <% licences.violations.forEach((violation) => { %> 
+        <%- include('violation', {"violation": violation})%> 
+        <% }) %>
+    </table>
+</div>
+<style>
+    .LicencesContainer {
+        height: 80%;
+        width: 100%;
+    }
+</style>
