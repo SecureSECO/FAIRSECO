@@ -1,14 +1,12 @@
 <% const howfairis = data.find((ele) => (ele.ReturnName === "HowFairIs"))?.ReturnData[0]; %>
 <div class="RightPane">
     <div class="RightPaneContainer">
-        <ul class="RightPaneNav">
-            <li>Fairness</li>
-            <li>Impact</li>
-            <li>Quality</li>
-            <li class="Active" id="CreateCffTab">Create CFF <a href="#" onclick="closeCreateCffTab()" style="margin-left: 0.7em; color: rgba(15, 45, 30, 0.82)"><i class="fa-solid fa-x"></i></a></li>
-        </ul>
+        <%- include('rightpanenav') %>
         <div class="RightPaneWindow">
-            <%- include('cff')%>
+            <%- include('howfairis', {howfairis})%>
+            <%- include('createcff')%>
+            <%- include('quality') %>
+            <%- include('impact') %>
         </div>
     </div>
 </div>
@@ -30,70 +28,6 @@
     height: 87vh;
     width: 48vw;
     margin: 0;
-}
-
-.RightPaneNav {
-    display: flex;
-    flex-direction: row;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    clip-path: polygon(0 -100%, 100% -100%, 100% 65%, 0 65%);
-    margin-bottom: -30px;
-}
-
-.RightPaneNav li {
-    background: #D3EEE0;
-
-    backdrop-filter: blur(50px);
-    border-radius: 16px 16px 0 0;
-    padding: 1.3vh 2vw;
-    color: #EAFEED;
-    cursor: pointer;
-    z-index: 3;
-    font-size: 1.2rem;
-    transition: translate 300ms ease;
-    height: 80px;
-}
-
-.RightPaneNav li:hover{
-    translate: 0 -15px;
-    transition: all 300ms ease;
-}
-
-.RightPaneNav li:nth-child(2){
-    background: #729B85;
-    border-radius: 0 16px 0 0;
-    position: relative;
-    z-index: 2;
-}
-
-.RightPaneNav li:nth-child(n+1)::before{
-    content: "";
-    display: block;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left:-20px;
-    width: 40px;
-}
-
-.RightPaneNav li:nth-child(2)::before{
-    background: #729B85;
-}
-.RightPaneNav li:nth-child(3)::before{
-    background: #47715A;
-}
-
-.RightPaneNav li:nth-child(3){
-    background: #47715A;
-    border-radius: 0 16px 0 0;
-    z-index: 1;
-}
-
-.RightPaneNav li.Active{
-    color: #497361;
-    translate: 0 -15px;
 }
 
 .RightPaneWindow {

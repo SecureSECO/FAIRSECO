@@ -1,24 +1,28 @@
-<iframe id="Cffinit"
+<iframe class="Cffinit"
 src="https://citation-file-format.github.io/cff-initializer-javascript/#/start"
 title="Create CITATION.CFF file"
 allowfullscreen="false">
 </iframe>
 
 <style>
-    #Cffinit {
+    .Cffinit {
         width: 96%;
         height: 96%;
         border: none;
         margin: 2%;
         border-radius: 16px;
+        display: none;
     }
 </style>
 
 <script>
-    function closeCreateCffTab() {
+    function closeCreateCffTab(event) {
         document.getElementById("CreateCffTab").remove();
-        document.getElementById("Cffinit").remove();
+        document.querySelector(".Cffinit").remove();
 
-        // TODO: show previous tab
+        let tabs = document.getElementById("RightPaneNav").getElementsByTagName("li");
+        tabs[tabs.length-1]?.classList.add("RightPaneNav__Tab--Active");
+        
+        event.stopPropagation();
     }
 </script>

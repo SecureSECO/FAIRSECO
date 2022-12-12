@@ -125,19 +125,19 @@ function hoverNav(ele) {
 
 
 function clickNav(ele) {
-    const spans = ele.parentElement.children
-    for(let i = 1; i<spans.length; i++){
+    const spans = ele.parentElement.children;
+    for(let i = 1; i < spans.length; i++){
         spans[i].classList.remove('Active');
     };
     ele.classList.add('Active');
     const padding = 20;
     const {top, left, width, height} = ele.getBoundingClientRect();
-    const highlightblock =document.querySelector('.ActiveBlock');
+    const highlightblock = document.querySelector('.ActiveBlock');
     const newwidth = Math.ceil(ele.clientWidth);
     highlightblock.style.width = `${newwidth + padding}px`;
     highlightblock.style.translate = `${(left - padding/2) - 8}px`;
 
-    //Animating the tabs to slide in and out from the right direction.
+    // Animating the tabs to slide in and out from the right direction.
     const newTab = document.querySelector("." + ele.dataset.linkedClass)
     if (window.ActiveIndex > ele.dataset.listIndex){
         window.ActiveTab.classList.add("SlideOutLeft")
@@ -1100,40 +1100,195 @@ which may link to additional resources.</p></td>
     
 <div class="RightPane">
     <div class="RightPaneContainer">
-        <ul class="RightPaneNav">
-            <li>Fairness</li>
-            <li>Impact</li>
-            <li>Quality</li>
-            <li class="Active" id="CreateCffTab">Create CFF <a href="#" onclick="closeCffTab()" style="margin-left: 0.7em; color: rgba(15, 45, 30, 0.82)"><i class="fa-solid fa-x"></i></a></li>
-        </ul>
+        <ul id="RightPaneNav">
+    <li class="RightPaneNav__Tab--Active" onClick="clickTab(this)" data-linked-class="HowFairIsReport">Fairness</li>
+    <li onClick="clickTab(this)" data-linked-class="ImpactScore">Impact</li>
+    <li onClick="clickTab(this)" data-linked-class="QualityMetrics">Quality</li>
+    <li onClick="clickTab(this)" data-linked-class="Cffinit" id="CreateCffTab">Create CFF <a href="#" onclick="closeCreateCffTab(event)" style="margin-left: 0.7em; color: rgba(15, 45, 30, 0.82)"><i class="fa-solid fa-x"></i></a></li>
+</ul>
+
+
+<style>
+#RightPaneNav {
+    display: flex;
+    flex-direction: row;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    clip-path: polygon(0 -100%, 100% -100%, 100% 65%, 0 65%);
+    margin-bottom: -30px;
+}
+
+#RightPaneNav li {
+    background: #D3EEE0;
+
+    backdrop-filter: blur(50px);
+    border-radius: 16px 16px 0 0;
+    padding: 1.3vh 2vw;
+    color: #EAFEED;
+    cursor: pointer;
+    z-index: 3;
+    font-size: 1.2rem;
+    transition: translate 300ms ease;
+    height: 80px;
+}
+
+#RightPaneNav li:hover{
+    translate: 0 -15px;
+    transition: all 300ms ease;
+}
+
+#RightPaneNav li:nth-child(2){
+    background: #729B85;
+    border-radius: 0 16px 0 0;
+    position: relative;
+    z-index: 2;
+}
+
+#RightPaneNav li:nth-child(n+1)::before{
+    content: "";
+    display: block;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left:-20px;
+    width: 40px;
+}
+
+#RightPaneNav li:nth-child(2)::before{
+    background: #729B85;
+}
+#RightPaneNav li:nth-child(3)::before{
+    background: #47715A;
+}
+
+#RightPaneNav li:nth-child(3){
+    background: #47715A;
+    border-radius: 0 16px 0 0;
+    z-index: 1;
+}
+
+.RightPaneNav__Tab--Active{
+    color: #497361;
+    translate: 0 -15px;
+}
+</style>
+
+<!-- Script needs to be deferred until after loading the other stuff -->
+<!-- and for some reason you have to put it in a separate file to do that. -->
+<script src="rightpanescript.js" defer></script>
         <div class="RightPaneWindow">
-            <iframe id="Cffinit"
+            
+
+
+<div class="HowFairIsReport">
+    <h1 class="HowFairIsReportTitle">Fairness Report</h1>
+    <div class="stars">
+        <h2>
+        
+         
+        
+            <i class="fa-regular fa-star"></i>
+        
+            <i class="fa-regular fa-star"></i>
+        
+            <i class="fa-regular fa-star"></i>
+        
+            <i class="fa-regular fa-star"></i>
+        
+            <i class="fa-regular fa-star"></i>
+        
+
+        </h2>
+        <h2>
+        0 / 5
+        </h2>
+
+          <!-- "checklist": false, -->
+          <!-- "citation": false, -->
+          <!-- "count": 2.5, -->
+          <!-- "license": false, -->
+          <!-- "registry": false, -->
+          <!-- "repository": false, -->
+    </div>
+        <div class="checklistcontainer">
+            <div><p>Passed checklist:</p> <p><i class="fa-solid fa-x"></i></p></div>
+            <div><p>Passed citation:</p> <p><i class="fa-solid fa-x"></i></p></div>
+            <div><p>Passed license:</p> <p><i class="fa-solid fa-x"></i></p></div>
+            <div><p>Passed registry:</p> <p><i class="fa-solid fa-x"></i></p></div>
+            <div><p>Passed repository:</p> <p><i class="fa-solid fa-x"></i></p></div>
+        </div>
+</div>
+
+<style>
+    .HowFairIsReport {
+        color: #0C281E;
+        display: none;
+    }
+
+    .HowFairIsReport h1 {
+        color: #0C281E;
+        text-align: center;
+    }
+    .HowFairIsReportTitle{
+        color: 4
+    }
+
+    .HowFairIsReport h2 {
+        text-align: center;
+    }
+    .checklistcontainer{
+        display: flex;
+        flex-direction: column;
+        width: 80%;
+        border: 1px solid #0C281E;
+        padding: 8px;
+        border-radius: 8px;
+        margin: auto;
+    }
+    .checklistcontainer div{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+</style>
+
+            <iframe class="Cffinit"
 src="https://citation-file-format.github.io/cff-initializer-javascript/#/start"
 title="Create CITATION.CFF file"
-allowfullscreen="false"
-referrerpolicy="origin-when-cross-origin"">
+allowfullscreen="false">
 </iframe>
 
 <style>
-    #Cffinit {
+    .Cffinit {
         width: 96%;
         height: 96%;
         border: none;
         margin: 2%;
         border-radius: 16px;
+        display: none;
     }
-
 </style>
 
 <script>
-    function closeCffTab() {
+    function closeCreateCffTab(event) {
         document.getElementById("CreateCffTab").remove();
-        document.getElementById("Cffinit").remove();
+        document.querySelector(".Cffinit").remove();
 
-        // TODO: show previous tab
+        let tabs = document.getElementById("RightPaneNav").getElementsByTagName("li");
+        console.log(tabs);
+        tabs[tabs.length-1]?.classList.add("RightPaneNav__Tab--Active");
+        
+        event.stopPropagation();
     }
 </script>
 
+            <div class="QualityMetrics">
+    
+</div>
+            <div class="ImpactScore">
+
+</div>
         </div>
     </div>
 </div>
@@ -1155,70 +1310,6 @@ referrerpolicy="origin-when-cross-origin"">
     height: 87vh;
     width: 48vw;
     margin: 0;
-}
-
-.RightPaneNav {
-    display: flex;
-    flex-direction: row;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    clip-path: polygon(0 -100%, 100% -100%, 100% 65%, 0 65%);
-    margin-bottom: -30px;
-}
-
-.RightPaneNav li {
-    background: #D3EEE0;
-
-    backdrop-filter: blur(50px);
-    border-radius: 16px 16px 0 0;
-    padding: 1.3vh 2vw;
-    color: #EAFEED;
-    cursor: pointer;
-    z-index: 3;
-    font-size: 1.2rem;
-    transition: translate 300ms ease;
-    height: 80px;
-}
-
-.RightPaneNav li:hover{
-    translate: 0 -15px;
-    transition: all 300ms ease;
-}
-
-.RightPaneNav li:nth-child(2){
-    background: #729B85;
-    border-radius: 0 16px 0 0;
-    position: relative;
-    z-index: 2;
-}
-
-.RightPaneNav li:nth-child(n+1)::before{
-    content: "";
-    display: block;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left:-20px;
-    width: 40px;
-}
-
-.RightPaneNav li:nth-child(2)::before{
-    background: #729B85;
-}
-.RightPaneNav li:nth-child(3)::before{
-    background: #47715A;
-}
-
-.RightPaneNav li:nth-child(3){
-    background: #47715A;
-    border-radius: 0 16px 0 0;
-    z-index: 1;
-}
-
-.RightPaneNav li.Active{
-    color: #497361;
-    translate: 0 -15px;
 }
 
 .RightPaneWindow {
@@ -1260,6 +1351,7 @@ referrerpolicy="origin-when-cross-origin"">
         border-radius: 50%;
         z-index: -2;
     }
+    
     a:visited {
         color: #779c7e;
     }
