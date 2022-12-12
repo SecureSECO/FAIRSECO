@@ -5,7 +5,7 @@
     </div>
     <%- include('leftpanenav')%>
     
-    <% const citations = data.find((ele) => (ele.ReturnName === "citingPapers"))?.ReturnData; %>
+    <% const citations = data.find((ele) => (ele.ReturnName === "citingPapers"))?.ReturnData.papers; %>
     <% const licences = data.find((ele) => (ele.ReturnName === "Tortellini"))?.ReturnData; %>
     <%- include('citations', {"citations": citations}) %>
     <%- include('licences', {"licences": licences}) %>
