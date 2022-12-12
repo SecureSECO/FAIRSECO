@@ -19138,7 +19138,7 @@ function post(result) {
 exports.post = post;
 // Generate the report of FairSeco
 function createReport(result) {
-    (0, log_1.LogMessage)("FairSECO report:\n" + result, log_1.ErrorLevel.info);
+    (0, log_1.LogMessage)("FairSECO report:\n" + result.toString(), log_1.ErrorLevel.info);
     try {
         fs_1.default.writeFileSync("./.FairSECO/Report.yml", yaml_1.default.stringify(result));
         (0, log_1.LogMessage)("Successfully wrote YML file to dir.", log_1.ErrorLevel.info);
@@ -19156,8 +19156,9 @@ function generateHTML(result) {
             // await WriteCSS("./.FairSECO/style.css");
             // console.log("Successfully wrote CSS to dir");
         }
-        catch (_a) {
-            (0, log_1.LogMessage)("Error writing HTML file.", log_1.ErrorLevel.err);
+        catch (err) {
+            const errormessage = err.message;
+            (0, log_1.LogMessage)(`Error writing HTML file: ${errormessage}`, log_1.ErrorLevel.err);
         }
     });
 }
