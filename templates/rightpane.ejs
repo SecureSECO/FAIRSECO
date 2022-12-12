@@ -2,12 +2,13 @@
 <div class="RightPane">
     <div class="RightPaneContainer">
         <ul class="RightPaneNav">
-            <li class="Active">Fairness</li>
+            <li>Fairness</li>
             <li>Impact</li>
             <li>Quality</li>
+            <li class="Active" id="CreateCffTab">Create CFF <a href="#" onclick="closeCreateCffTab()" style="margin-left: 0.7em; color: rgba(15, 45, 30, 0.82)"><i class="fa-solid fa-x"></i></a></li>
         </ul>
         <div class="RightPaneWindow">
-            <%- include('howfairis', {howfairis})%>
+            <%- include('cff')%>
         </div>
     </div>
 </div>

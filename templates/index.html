@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    * {
+        box-sizing: border-box;
+        font-family: "Literata", "Serif";
+    }
+</style>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300;0,7..72,400;0,7..72,700;1,7..72,300;1,7..72,400;1,7..72,700&display=swap" rel="stylesheet"> 
+    <script src="https://kit.fontawesome.com/69be2ea766.js" crossorigin="anonymous"></script>
+    <title>FairSECO</title>
+</head>
+
+
+<body>
+
+    <!-- <div id="BackgroundSphere1"></div> -->
+    <div class="LeftPane">
+    <div class="Branding">
+        <h1 class="Name"><i class="fa-solid fa-scale-balanced"></i>FairSECO</h1>
+        <h2 class="Tagline">Tagline.</h2>
+    </div>
+    <div class="LeftPaneNav">
+    <div class="HighlightBlock"></div>
+    <div class="ActiveBlock"></div>
+    <div class="NavItem Active" onMouseOver="hoverNav(this)" onClick="clickNav(this)" data-list-index="0" data-linked-class="CitationsContainer"><i class="fa-solid fa-pen-nib"></i><p>Citations</p></div>
+    <div class="NavItem" onMouseOver="hoverNav(this)"onClick="clickNav(this)" data-list-index="1" data-linked-class="LicencesContainer"><i class="fa-brands fa-creative-commons-pd"></i><p>Licence Violations</p></div>
+    <div class="NavItem" onMouseOver="hoverNav(this)"onClick="clickNav(this)" data-list-index="2" data-linked-class="SBOMContainer"><i class="fa-solid fa-scroll"></i><p>SBOM</p></div>
+</div>
+
+<style>
+    .LeftPaneNav {
+        width: 100%;
+        background: #d9f8df;
+        padding: 8px;
+        border-radius: 8px;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        position: relative;
+        z-index: 0;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .LeftPaneNav .NavItem {
+        margin: 8px 16px;
+        font-size: 1.2rem;
+        color: #0c281e;
+        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+        transition: color ease 150ms;
+    }
+
+
+    .LeftPaneNav .NavItem p {
+        color: #0c281e;
+    }
+    .LeftPaneNav .HighlightBlock,
+    .LeftPaneNav .ActiveBlock {
+        height: calc(80% - 4px); /*take into account the padding*/
+        position: absolute;
+        width: 130px;
+        translate: 6px;
+        z-index: 1;
+        border-radius: 12px;
+        transition: all 300ms ease;
+    }
+
+    .HighlightBlock {
+        background: #abd2c5;
+    }
+    .ActiveBlock {
+        background: #0c281e;
+    }
+
+    .LeftPaneNav .NavItem.Active{
+        cursor: pointer;
+    }
+
+    .LeftPaneNav .NavItem.Active p, .LeftPaneNav .NavItem.Active i{
+        color: #d9f8df;
+    }
+
+    .LeftPaneNav .NavItem p {
+        margin: 0;
+        margin-left: 4px;
+        padding: 0;
+        align-self: center;
+        text-align: center;
+        position: relative;
+        bottom: 1px;
+    }
+
+    /* Styling for the icon */
+    .LeftPaneNav .NavItem > *:nth-child(1) {
+        margin-right: 4px;
+    }
+</style>
+<script>
+window.addEventListener('load', 
+  function() { 
+  window.ActiveTab = document.querySelector(".ActiveTab")
+  window.ActiveIndex = 0
+  }, false);
+
+
+function hoverNav(ele) {
+    const padding = 20;
+    const {top, left, width, height} = ele.getBoundingClientRect();
+    const highlightblock =document.querySelector('.HighlightBlock');
+    const newwidth = Math.ceil(ele.clientWidth);
+    highlightblock.style.width = `${newwidth + padding}px`;
+    highlightblock.style.translate = `${(left - padding/2) - 8}px`;
+}
+
+
+function clickNav(ele) {
+    const spans = ele.parentElement.children
+    for(let i = 1; i<spans.length; i++){
+        spans[i].classList.remove('Active');
+    };
+    ele.classList.add('Active');
+    const padding = 20;
+    const {top, left, width, height} = ele.getBoundingClientRect();
+    const highlightblock =document.querySelector('.ActiveBlock');
+    const newwidth = Math.ceil(ele.clientWidth);
+    highlightblock.style.width = `${newwidth + padding}px`;
+    highlightblock.style.translate = `${(left - padding/2) - 8}px`;
+
+    //Animating the tabs to slide in and out from the right direction.
+    const newTab = document.querySelector("." + ele.dataset.linkedClass)
+    if (window.ActiveIndex > ele.dataset.listIndex){
+        window.ActiveTab.classList.add("SlideOutLeft")
+    }
+    else{
+        window.ActiveTab.classList.add("SlideOutRight")
+    }
+    setTimeout(()=>{
+        window.ActiveTab.classList.remove("SlideOutRight")
+        window.ActiveTab.classList.remove("SlideOutLeft")
+        window.ActiveTab.classList.add("Hidden")
+        window.ActiveTab.classList.remove("ActiveTab")
+    }, 150)
+    setTimeout(()=>{
+        if (window.ActiveIndex > ele.dataset.listIndex){
+            newTab.classList.add("SlideInRight")
+        }
+        else {
+            newTab.classList.add("SlideInLeft")
+        }
+        newTab.classList.remove("Hidden")
+        newTab.classList.remove("SlideOutRight")
+        newTab.classList.remove("SlideOutLeft")
+        newTab.classList.add("ActiveTab")
+        window.ActiveTab = document.querySelector('.ActiveTab');
+        window.ActiveIndex = ele.dataset.listIndex;
+    }, 150)
+}
+
+</script>
+
+
+
+    
+    
+    
+    <div class="CitationsContainer ActiveTab">
+<table class="Citations">
+    <tr>
+        <th>Title, Authors, Description</th>
+        <th>Date</th>
+        <th>D.O.I.</th>
+        <th>Link</th>
+    </tr>
+    
+</table>
+</div>
+<style>
+    .CitationsContainer {
+        max-height: 80%;
+        overflow: scroll;
+        -webkit-mask-image: linear-gradient(
+            to bottom,
+            black 90%,
+            transparent 100%
+        );
+        mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+        animation: fade-in 600ms ease-out 1 forwards;
+    }
+
+    .Citations {
+        padding: 20px;
+        width: 100%;
+        table-layout: auto;
+    }
+
+    .Citations th {
+        color: #779c7e;
+        font-style: italic;
+        padding-bottom: 24px;
+        font-size: 1.2rem;
+    }
+
+    .Citation tr {
+        margin: 4px 0px;
+    }
+
+    .Citation td {
+        max-width: 600px;
+    }
+
+    .Citation .info1 {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .Citation .info1 .info2 {
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+    }
+
+    .info2 h1,
+    .info2 h2 {
+        color: #d9f8df;
+        margin: 0;
+    }
+
+    .info2 h1 {
+        font-size: 1.2rem;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        max-width: 70%;
+        font-weight: 400;
+    }
+    .info2 h2 {
+        font-size: 0.8rem;
+        font-style: italic;
+        font-weight: 400;
+    }
+    .info2 .middot {
+        margin: 0 8px;
+    }
+
+    .info1 h3 {
+        margin: 0;
+        color: #a3c6aa;
+        font-size: 0.9rem;
+        font-weight: 400;
+    }
+
+    .Citation .year,
+    .Citation .doi,
+    .Citation .link {
+        text-align: center;
+        color: #779c7e;
+        padding: 0 24px;
+    }
+
+    .Citation .link {
+        cursor: pointer;
+        font-size: 1.2rem;
+        transition: all 150ms ease;
+        height: inherit;
+    }
+
+
+    .Citation .link:hover {
+        color: #d9f8df;
+    }
+
+    @media screen and (min-width: 1000px) {
+        .Citation td {
+            max-width: 420px;
+        }
+        .info2 h1 {
+            font-size: 1rem;
+        }
+    }
+
+    @media screen and (min-width: 2500px) {
+        .Citation td {
+            max-width: 700px;
+        }
+        .info2 h1 {
+            font-size: 1.2rem;
+        }
+    }
+</style>
+
+    <div class="LicencesContainer Hidden">
+    <table class="Licences">
+        <tr>
+            <th>Type</th>
+            <th>Package</th>
+            <th>Rule</th>
+            <th>Message</th>
+        </tr>
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::fairseco:1.0.0</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::fairseco:1.0.0</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::anymatch:3.1.2</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::anymatch:3.1.2</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::cliui:8.0.1</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::cliui:8.0.1</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::electron-to-chromium:1.4.284</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::electron-to-chromium:1.4.284</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::eslint-plugin-promise:6.1.1</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::eslint-plugin-promise:6.1.1</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::fastq:1.13.0</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::fastq:1.13.0</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::flatted:3.2.7</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::flatted:3.2.7</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::fs.realpath:1.0.0</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::fs.realpath:1.0.0</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::get-caller-file:2.0.5</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::get-caller-file:2.0.5</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::glob:7.2.3</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::glob:7.2.3</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::glob:8.0.3</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::glob:8.0.3</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::glob-parent:5.1.2</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::glob-parent:5.1.2</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::glob-parent:6.0.2</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::glob-parent:6.0.2</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::graceful-fs:4.2.10</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::graceful-fs:4.2.10</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::inflight:1.0.6</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::inflight:1.0.6</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::inherits:2.0.3</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::inherits:2.0.3</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::inherits:2.0.4</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::inherits:2.0.4</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::isexe:2.0.0</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::isexe:2.0.0</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::lru-cache:6.0.0</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::lru-cache:6.0.0</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::make-error:1.3.6</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::make-error:1.3.6</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::minimatch:3.1.2</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::minimatch:3.1.2</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::minimatch:5.1.0</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::minimatch:5.1.0</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::once:1.4.0</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::once:1.4.0</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::picocolors:1.0.0</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::picocolors:1.0.0</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::rimraf:3.0.2</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::rimraf:3.0.2</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::semver:6.3.0</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::semver:6.3.0</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::semver:7.3.8</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::semver:7.3.8</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::signal-exit:3.0.7</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::signal-exit:3.0.7</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::test-exclude:6.0.0</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::test-exclude:6.0.0</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::tslib:1.14.1</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license 0BSD is currently not covered by policy rules. The license was declared in package NPM::tslib:1.14.1</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::v8-to-istanbul:9.0.1</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::v8-to-istanbul:9.0.1</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::which:2.0.2</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::which:2.0.2</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::wrappy:1.0.2</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::wrappy:1.0.2</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::write-file-atomic:4.0.2</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::write-file-atomic:4.0.2</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::y18n:5.0.8</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::y18n:5.0.8</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::yallist:4.0.0</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::yallist:4.0.0</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::yaml:2.1.3</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::yaml:2.1.3</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM::yargs-parser:21.1.1</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::yargs-parser:21.1.1</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+         
+        <tr class="Violation">
+    <td>
+        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
+    </td>
+    <td class="PackageName">
+        <p>NPM:@istanbuljs:load-nyc-config:1.1.0</p>
+    </td>
+    <td class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </td>
+    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM:@istanbuljs:load-nyc-config:1.1.0</p></td>
+    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</p></td>
+</tr>
+ 
+        
+    </table>
+</div>
+<style>
+    .LicencesContainer {
+        height: 80%;
+        width: 100%;
+    }
+</style>
+
+    <div class="SBOMContainer Hidden">
+    <h1>Work in Progress</h1>
+</div>
+</div>
+
+<style>
+    .LeftPane {
+        width: 50vw;
+        height: 100vh;
+        padding: 0;
+        margin: 0;
+        background: rgba(15, 45, 30, 0.82);
+        backdrop-filter: blur(30px);
+        overflow: hidden;
+    }
+
+    .LeftPane .Branding {
+        display: flex;
+        flex-direction: row;
+        justify-content: start;
+        align-items: center;
+        padding: 8px;
+    }
+
+    .LeftPane .Branding .Name {
+        color: #d9f8df;
+        margin: 0 8px;
+    }
+
+    .LeftPane .Branding .Tagline {
+        align-self: center;
+        color: #88bf93;
+        font-size: 0.8rem;
+        position: relative;
+        top: 8px;
+        font-style: italic;
+    }
+</style>
+
+    
+<div class="RightPane">
+    <div class="RightPaneContainer">
+        <ul class="RightPaneNav">
+            <li>Fairness</li>
+            <li>Impact</li>
+            <li>Quality</li>
+            <li class="Active" id="CreateCffTab">Create CFF <a href="#" onclick="closeCffTab()" style="margin-left: 0.7em; color: rgba(15, 45, 30, 0.82)"><i class="fa-solid fa-x"></i></a></li>
+        </ul>
+        <div class="RightPaneWindow">
+            <iframe id="Cffinit"
+src="https://citation-file-format.github.io/cff-initializer-javascript/#/start"
+title="Create CITATION.CFF file"
+allowfullscreen="false"
+referrerpolicy="origin-when-cross-origin"">
+</iframe>
+
+<style>
+    #Cffinit {
+        width: 96%;
+        height: 96%;
+        border: none;
+        margin: 2%;
+        border-radius: 16px;
+    }
+
+</style>
+
+<script>
+    function closeCffTab() {
+        document.getElementById("CreateCffTab").remove();
+        document.getElementById("Cffinit").remove();
+
+        // TODO: show previous tab
+    }
+</script>
+
+        </div>
+    </div>
+</div>
+
+<style>
+.RightPane{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50vw;
+    height: 100vh;
+    margin: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.RightPaneContainer {
+    height: 87vh;
+    width: 48vw;
+    margin: 0;
+}
+
+.RightPaneNav {
+    display: flex;
+    flex-direction: row;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    clip-path: polygon(0 -100%, 100% -100%, 100% 65%, 0 65%);
+    margin-bottom: -30px;
+}
+
+.RightPaneNav li {
+    background: #D3EEE0;
+
+    backdrop-filter: blur(50px);
+    border-radius: 16px 16px 0 0;
+    padding: 1.3vh 2vw;
+    color: #EAFEED;
+    cursor: pointer;
+    z-index: 3;
+    font-size: 1.2rem;
+    transition: translate 300ms ease;
+    height: 80px;
+}
+
+.RightPaneNav li:hover{
+    translate: 0 -15px;
+    transition: all 300ms ease;
+}
+
+.RightPaneNav li:nth-child(2){
+    background: #729B85;
+    border-radius: 0 16px 0 0;
+    position: relative;
+    z-index: 2;
+}
+
+.RightPaneNav li:nth-child(n+1)::before{
+    content: "";
+    display: block;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left:-20px;
+    width: 40px;
+}
+
+.RightPaneNav li:nth-child(2)::before{
+    background: #729B85;
+}
+.RightPaneNav li:nth-child(3)::before{
+    background: #47715A;
+}
+
+.RightPaneNav li:nth-child(3){
+    background: #47715A;
+    border-radius: 0 16px 0 0;
+    z-index: 1;
+}
+
+.RightPaneNav li.Active{
+    color: #497361;
+    translate: 0 -15px;
+}
+
+.RightPaneWindow {
+    background: rgba(234,254,237, 0.55);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(50px);
+    border-radius: 0px 16px 16px 16px;
+    height: 100%;
+    padding: 8px;
+}
+
+.RightPaneWindow p {
+    color: #0C281E;
+    margin: 0;
+}
+
+</style>
+
+</body>
+<style>
+    h1,p {
+        color: #d9f8df;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        background: #b8d7cc;
+        overflow: hidden;
+    }
+
+    #BackgroundSphere1 {
+        height: 100vh;
+        width: 100vh;
+        background-color: #68be9f;
+        position: absolute;
+        bottom: -50vh;
+        left: 25vw;
+        border-radius: 50%;
+        z-index: -2;
+    }
+    a:visited {
+        color: #779c7e;
+    }
+
+
+    .Hidden {
+        display: none;
+    }
+
+    .SlideInLeft {
+        animation: slide-in-left 150ms ease 1 forwards;
+    }
+
+    .SlideInRight {
+        animation: slide-in-right 150ms ease 1 forwards;
+    }
+    .SlideOutLeft {
+        animation: slide-out-left 150ms ease 1 forwards;
+    }
+    .SlideOutRight {
+        animation: slide-out-right 150ms ease 1 forwards;
+    }
+
+    @keyframes fade-in {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes slide-in-right {
+        0% {
+            opacity: 0;
+            translate: -150px;
+        }
+        100% {
+            opacity: 1;
+            translate: 0px;
+        }
+    }
+
+    @keyframes slide-in-left {
+        0% {
+            opacity: 0;
+            translate: 150px;
+        }
+        100% {
+            opacity: 1;
+            translate: 0px;
+        }
+    }
+
+    @keyframes slide-out-right {
+        0% {
+            opacity: 1;
+            translate: 0px;
+        }
+        100% {
+            opacity: 0;
+            translate: -150px;
+        }
+    }
+
+    @keyframes slide-out-left {
+        0% {
+            opacity: 1;
+            translate: 0px;
+        }
+        100% {
+            opacity: 0;
+            translate: 150px;
+        }
+    }
+</style>
+</html>
