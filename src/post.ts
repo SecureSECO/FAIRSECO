@@ -19,6 +19,7 @@ function createReport(result: ReturnObject[]): void {
     LogMessage("FairSECO report:\n" + result.toString(), ErrorLevel.info);
     try {
         fs.writeFileSync("./.FairSECO/Report.yml", YAML.stringify(result));
+        fs.writeFileSync("./.FairSECO/Report.json", JSON.stringify(result));
         LogMessage("Successfully wrote YML file to dir.", ErrorLevel.info);
     } catch {
         LogMessage("Error writing YML file.", ErrorLevel.err);
