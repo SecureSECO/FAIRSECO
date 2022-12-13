@@ -6,10 +6,11 @@ function clickTab(element){
         return;
     }
 
+    activeTab = document.querySelector(".RightPaneNav__Tab--Active");
     activeTab.classList.remove("RightPaneNav__Tab--Active");
     element.classList.add("RightPaneNav__Tab--Active");
 
-    const activePage = document.querySelector("." + activeTab.dataset.linkedClass);
+    const activePage = document.getElementsByClassName(activeTab.dataset.linkedClass)[0];
     activePage.style.display = "none";
     const pageToOpen = document.querySelector("." + element.dataset.linkedClass);
     pageToOpen.style.display = "block";
