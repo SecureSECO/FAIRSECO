@@ -19141,7 +19141,6 @@ function createReport(result) {
     (0, log_1.LogMessage)("FairSECO report:\n" + result.toString(), log_1.ErrorLevel.info);
     try {
         fs_1.default.writeFileSync("./.FairSECO/Report.yml", yaml_1.default.stringify(result));
-        fs_1.default.writeFileSync("./.FairSECO/Report.json", JSON.stringify(result));
         (0, log_1.LogMessage)("Successfully wrote YML file to dir.", log_1.ErrorLevel.info);
     }
     catch (_a) {
@@ -21444,8 +21443,10 @@ function WriteHTML(data, filePath) {
         // );
         // const template = await fs.promises.readFile(templateFilename, "utf8");
         const template = yield ejs_1.default.renderFile("./templates/index.ejs", { data });
+        const template2 = yield ejs_1.default.renderFile("./templates/citationgraph.ejs", { data });
         const app = template.replace("{{node inserts the data here}}", JSON.stringify(data));
         yield fs.promises.writeFile(filePath, app, "utf8");
+        yield fs.promises.writeFile("./.fairSECO/citationgraph.html", template2, "utf8");
     });
 }
 exports.WriteHTML = WriteHTML;
