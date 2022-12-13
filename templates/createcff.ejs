@@ -22,6 +22,8 @@ allowfullscreen="false">
 
         let tabs = document.getElementById("RightPaneNav").getElementsByTagName("li");
         tabs[tabs.length-1]?.classList.add("RightPaneNav__Tab--Active");
+
+        activeTab = tabs[tabs.length-1];
         
         event.stopPropagation();
     }

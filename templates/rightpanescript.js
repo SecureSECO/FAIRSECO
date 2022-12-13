@@ -6,7 +6,7 @@ function clickTab(element){
         return;
     }
 
-    activeTab = document.querySelector(".RightPaneNav__Tab--Active");
+    // activeTab = document.querySelector(".RightPaneNav__Tab--Active");
     activeTab.classList.remove("RightPaneNav__Tab--Active");
     element.classList.add("RightPaneNav__Tab--Active");
 
