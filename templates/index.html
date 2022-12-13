@@ -32,7 +32,7 @@
         <h1 class="Name"><i class="fa-solid fa-scale-balanced"></i>FairSECO</h1>
         <h2 class="Tagline">Tagline.</h2>
     </div>
-    <div class="LeftPaneNav">
+    <div class="LeftPaneNav" onMouseOut="unHoverNav(event)">
     <div class="HighlightBlock"></div>
     <div class="ActiveBlock"></div>
     <div class="NavItem Active" onMouseOver="hoverNav(this)" onClick="clickNav(this)" data-list-index="0" data-linked-class="CitationsContainer"><i class="fa-solid fa-pen-nib"></i><p>Citations</p></div>
@@ -119,22 +119,42 @@ window.addEventListener('load',
   window.ActiveIndex = 0
   }, false);
 
-
-function hoverNav(ele) {
+function moveHighlightBlockTo(ele) {
     const padding = 20;
     const {top, left, width, height} = ele.getBoundingClientRect();
-    const highlightblock =document.querySelector('.HighlightBlock');
+    const highlightblock = document.querySelector('.HighlightBlock');
     const newwidth = Math.ceil(ele.clientWidth);
     highlightblock.style.width = `${newwidth + padding}px`;
     highlightblock.style.translate = `${(left - padding/2) - 8}px`;
 }
 
+function hoverNav(ele) {
+    moveHighlightBlockTo(ele);
+}
+
+function unHoverNav(event) {
+    let isFromNav = false;
+    let ele = event.relatedTarget;
+
+    while (ele && !isFromNav)
+    {
+        isFromNav = ele.classList.contains("LeftPaneNav");
+        ele = ele.parentElement;
+    }
+
+    if (!isFromNav) {
+        moveHighlightBlockTo(document.querySelector(".Active"));
+    }
+}
+
 
 function clickNav(ele) {
-    const spans = ele.parentElement.children;
-    for(let i = 1; i < spans.length; i++){
-        spans[i].classList.remove('Active');
-    };
+    let active = document.querySelector(".Active");
+    if (active === ele) {
+        return;
+    }
+
+    active.classList.remove("Active");
     ele.classList.add('Active');
     const padding = 20;
     const {top, left, width, height} = ele.getBoundingClientRect();
@@ -145,32 +165,32 @@ function clickNav(ele) {
 
     // Animating the tabs to slide in and out from the right direction.
     const newTab = document.querySelector("." + ele.dataset.linkedClass)
-    if (window.ActiveIndex > ele.dataset.listIndex){
-        window.ActiveTab.classList.add("SlideOutLeft")
+    if (window.ActiveIndex > ele.dataset.listIndex) {
+        window.ActiveTab.classList.add("SlideOutLeft");
     }
-    else{
-        window.ActiveTab.classList.add("SlideOutRight")
+    else {
+        window.ActiveTab.classList.add("SlideOutRight");
     }
-    setTimeout(()=>{
-        window.ActiveTab.classList.remove("SlideOutRight")
-        window.ActiveTab.classList.remove("SlideOutLeft")
-        window.ActiveTab.classList.add("Hidden")
-        window.ActiveTab.classList.remove("ActiveTab")
-    }, 150)
-    setTimeout(()=>{
-        if (window.ActiveIndex > ele.dataset.listIndex){
-            newTab.classList.add("SlideInRight")
+    setTimeout(() => {
+        window.ActiveTab.classList.remove("SlideOutRight");
+        window.ActiveTab.classList.remove("SlideOutLeft");
+        window.ActiveTab.classList.add("Hidden");
+        window.ActiveTab.classList.remove("ActiveTab");
+    }, 150);
+    setTimeout(() => {
+        if (window.ActiveIndex > ele.dataset.listIndex) {
+            newTab.classList.add("SlideInRight");
         }
         else {
-            newTab.classList.add("SlideInLeft")
+            newTab.classList.add("SlideInLeft");
         }
-        newTab.classList.remove("Hidden")
-        newTab.classList.remove("SlideOutRight")
-        newTab.classList.remove("SlideOutLeft")
-        newTab.classList.add("ActiveTab")
+        newTab.classList.remove("Hidden");
+        newTab.classList.remove("SlideOutRight");
+        newTab.classList.remove("SlideOutLeft");
+        newTab.classList.add("ActiveTab");
         window.ActiveTab = document.querySelector('.ActiveTab');
         window.ActiveIndex = ele.dataset.listIndex;
-    }, 150)
+    }, 150);
 }
 
 </script>
@@ -5885,9 +5905,9 @@ for (var i = 0; i < details.length; ++i){
 <div class="RightPane">
     <div class="RightPaneContainer">
         <ul id="RightPaneNav">
-    <li class="RightPaneNav__Tab--Active" onClick="clickTab(this)" data-linked-class="HowFairIsReport">Fairness</li>
-    <li onClick="clickTab(this)" data-linked-class="ImpactScore">Impact</li>
-    <li onClick="clickTab(this)" data-linked-class="QualityMetrics">Quality</li>
+    <li class="RightPaneNav__Tab--Active" onClick="clickTab(this)" data-linked-class="HowFairIsReport" style="z-index: 3; color: #497361; background-color: #D3EEE0">Fairness</li>
+    <li onClick="clickTab(this)" data-linked-class="ImpactScore" style="z-index: 2; color: #EAFEED; background-color: #729B85">Impact</li>
+    <li onClick="clickTab(this)" data-linked-class="QualityMetrics" style="z-index: 1; color: #EAFEED; background-color: #47715A">Quality</li>
 </ul>
 
 
@@ -5898,34 +5918,25 @@ for (var i = 0; i < details.length; ++i){
     list-style-type: none;
     margin: 0;
     padding: 0;
-    clip-path: polygon(0 -100%, 100% -100%, 100% 65%, 0 65%);
-    margin-bottom: -30px;
 }
 
 #RightPaneNav li {
-    background: #D3EEE0;
-
+    display: block;
     backdrop-filter: blur(50px);
     border-radius: 16px 16px 0 0;
     padding: 1.3vh 2vw;
-    color: #EAFEED;
     cursor: pointer;
     z-index: 3;
     font-size: 1.2rem;
-    transition: translate 300ms ease;
-    height: 80px;
+    height: 51px;
+    margin-bottom: -1px;
 }
 
 #RightPaneNav li:hover{
+    height: 66px;
+    margin-bottom: -16px;
     translate: 0 -15px;
     transition: all 300ms ease;
-}
-
-#RightPaneNav li:nth-child(2){
-    background: #729B85;
-    border-radius: 0 16px 0 0;
-    position: relative;
-    z-index: 2;
 }
 
 #RightPaneNav li:nth-child(n+1)::before{
@@ -5933,8 +5944,9 @@ for (var i = 0; i < details.length; ++i){
     display: block;
     height: 100%;
     position: absolute;
+    border-radius: 16px 0 0 0;
     top: 0;
-    left:-20px;
+    left: -20px;
     width: 40px;
 }
 
@@ -5944,16 +5956,27 @@ for (var i = 0; i < details.length; ++i){
 #RightPaneNav li:nth-child(3)::before{
     background: #47715A;
 }
-
-#RightPaneNav li:nth-child(3){
-    background: #47715A;
-    border-radius: 0 16px 0 0;
-    z-index: 1;
+#RightPaneNav li:nth-child(4)::before{
+    background:#0c281e;
 }
 
-.RightPaneNav__Tab--Active{
-    color: #497361;
+#RightPaneNav .RightPaneNav__Tab--Active{
+    height: 66px;
+    margin-bottom: -16px;
     translate: 0 -15px;
+}
+
+#RightPaneNav  .RightPaneNav__Tab--Active li:nth-child(1){
+    color: red;
+}
+#RightPaneNav  .RightPaneNav__Tab--Active li:nth-child(2){
+    color: red;
+}
+#RightPaneNav  .RightPaneNav__Tab--Active li:nth-child(3){
+    color: red;
+}
+#RightPaneNav  .RightPaneNav__Tab--Active li:nth-child(4){
+    color: red;
 }
 </style>
 
@@ -5981,6 +6004,8 @@ for (var i = 0; i < details.length; ++i){
     function showTab(tab) {
         tab.classList.add("RightPaneNav__Tab--Active");
         document.querySelector("." + tab.dataset.linkedClass).style.display = "block";
+
+        document.querySelector(".RightPaneWindow").style.backgroundColor = tab.style.backgroundColor;
     }
 </script>
         <div class="RightPaneWindow">
@@ -6084,8 +6109,8 @@ for (var i = 0; i < details.length; ++i){
         document.getElementById("CreateCffTab").remove();
         document.querySelector(".Cffinit").remove();
 
-        let tabs = document.getElementById("RightPaneNav").getElementsByTagName("li");
-        tabs[tabs.length-1]?.classList.add("RightPaneNav__Tab--Active");
+        let tab = document.getElementById("RightPaneNav").getElementsByTagName("li")[0];
+        showTab(tab);
         
         event.stopPropagation();
     }
@@ -6111,15 +6136,16 @@ for (var i = 0; i < details.length; ++i){
         tab.setAttribute("onClick", "clickTab(this)");
         tab.setAttribute("data-linked-class", "Cffinit");
         tab.setAttribute("id", "CreateCffTab");
+        tab.style.zIndex = 0;
+        tab.style.color = "#EAFEED";
+        tab.style.backgroundColor = "#0c281e";
         tab.appendChild(document.createTextNode("Create CFF "));
-        const a = document.createElement("a");
-        a.setAttribute("onClick", "closeCreateCffTab(event)");
-        a.setAttribute("style", "margin-left: 0.7em; color: rgba(15, 45, 30, 0.82)");
         const i = document.createElement("i");
+        i.setAttribute("onClick", "closeCreateCffTab(event)");
+        i.setAttribute("style", "margin-left: 0.7em; color: white");
         i.classList.add("fa-solid");
         i.classList.add("fa-x");
-        a.appendChild(i);
-        tab.appendChild(a);
+        tab.appendChild(i);
         
         document.getElementById("RightPaneNav").appendChild(tab);
         showTab(tab);

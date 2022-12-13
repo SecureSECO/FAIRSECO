@@ -1,7 +1,7 @@
 <ul id="RightPaneNav">
-    <li class="RightPaneNav__Tab--Active" onClick="clickTab(this)" data-linked-class="HowFairIsReport">Fairness</li>
-    <li onClick="clickTab(this)" data-linked-class="ImpactScore">Impact</li>
-    <li onClick="clickTab(this)" data-linked-class="QualityMetrics">Quality</li>
+    <li class="RightPaneNav__Tab--Active" onClick="clickTab(this)" data-linked-class="HowFairIsReport" style="z-index: 3; color: #497361; background-color: #D3EEE0">Fairness</li>
+    <li onClick="clickTab(this)" data-linked-class="ImpactScore" style="z-index: 2; color: #EAFEED; background-color: #729B85">Impact</li>
+    <li onClick="clickTab(this)" data-linked-class="QualityMetrics" style="z-index: 1; color: #EAFEED; background-color: #47715A">Quality</li>
 </ul>
 
 
@@ -12,34 +12,25 @@
     list-style-type: none;
     margin: 0;
     padding: 0;
-    clip-path: polygon(0 -100%, 100% -100%, 100% 65%, 0 65%);
-    margin-bottom: -30px;
 }
 
 #RightPaneNav li {
-    background: #D3EEE0;
-
+    display: block;
     backdrop-filter: blur(50px);
     border-radius: 16px 16px 0 0;
     padding: 1.3vh 2vw;
-    color: #EAFEED;
     cursor: pointer;
     z-index: 3;
     font-size: 1.2rem;
-    transition: translate 300ms ease;
-    height: 80px;
+    height: 51px;
+    margin-bottom: -1px;
 }
 
 #RightPaneNav li:hover{
+    height: 66px;
+    margin-bottom: -16px;
     translate: 0 -15px;
     transition: all 300ms ease;
-}
-
-#RightPaneNav li:nth-child(2){
-    background: #729B85;
-    border-radius: 0 16px 0 0;
-    position: relative;
-    z-index: 2;
 }
 
 #RightPaneNav li:nth-child(n+1)::before{
@@ -47,8 +38,9 @@
     display: block;
     height: 100%;
     position: absolute;
+    border-radius: 16px 0 0 0;
     top: 0;
-    left:-20px;
+    left: -20px;
     width: 40px;
 }
 
@@ -58,16 +50,27 @@
 #RightPaneNav li:nth-child(3)::before{
     background: #47715A;
 }
-
-#RightPaneNav li:nth-child(3){
-    background: #47715A;
-    border-radius: 0 16px 0 0;
-    z-index: 1;
+#RightPaneNav li:nth-child(4)::before{
+    background:#0c281e;
 }
 
-.RightPaneNav__Tab--Active{
-    color: #497361;
+#RightPaneNav .RightPaneNav__Tab--Active{
+    height: 66px;
+    margin-bottom: -16px;
     translate: 0 -15px;
+}
+
+#RightPaneNav  .RightPaneNav__Tab--Active li:nth-child(1){
+    color: red;
+}
+#RightPaneNav  .RightPaneNav__Tab--Active li:nth-child(2){
+    color: red;
+}
+#RightPaneNav  .RightPaneNav__Tab--Active li:nth-child(3){
+    color: red;
+}
+#RightPaneNav  .RightPaneNav__Tab--Active li:nth-child(4){
+    color: red;
 }
 </style>
 
@@ -95,5 +98,7 @@
     function showTab(tab) {
         tab.classList.add("RightPaneNav__Tab--Active");
         document.querySelector("." + tab.dataset.linkedClass).style.display = "block";
+
+        document.querySelector(".RightPaneWindow").style.backgroundColor = tab.style.backgroundColor;
     }
 </script>

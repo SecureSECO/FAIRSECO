@@ -14,8 +14,8 @@
         document.getElementById("CreateCffTab").remove();
         document.querySelector(".Cffinit").remove();
 
-        let tabs = document.getElementById("RightPaneNav").getElementsByTagName("li");
-        tabs[tabs.length-1]?.classList.add("RightPaneNav__Tab--Active");
+        let tab = document.getElementById("RightPaneNav").getElementsByTagName("li")[0];
+        showTab(tab);
         
         event.stopPropagation();
     }
@@ -41,15 +41,16 @@
         tab.setAttribute("onClick", "clickTab(this)");
         tab.setAttribute("data-linked-class", "Cffinit");
         tab.setAttribute("id", "CreateCffTab");
+        tab.style.zIndex = 0;
+        tab.style.color = "#EAFEED";
+        tab.style.backgroundColor = "#0c281e";
         tab.appendChild(document.createTextNode("Create CFF "));
-        const a = document.createElement("a");
-        a.setAttribute("onClick", "closeCreateCffTab(event)");
-        a.setAttribute("style", "margin-left: 0.7em; color: rgba(15, 45, 30, 0.82)");
         const i = document.createElement("i");
+        i.setAttribute("onClick", "closeCreateCffTab(event)");
+        i.setAttribute("style", "margin-left: 0.7em; color: white");
         i.classList.add("fa-solid");
         i.classList.add("fa-x");
-        a.appendChild(i);
-        tab.appendChild(a);
+        tab.appendChild(i);
         
         document.getElementById("RightPaneNav").appendChild(tab);
         showTab(tab);
