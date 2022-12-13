@@ -2,7 +2,6 @@
     <li class="RightPaneNav__Tab--Active" onClick="clickTab(this)" data-linked-class="HowFairIsReport">Fairness</li>
     <li onClick="clickTab(this)" data-linked-class="ImpactScore">Impact</li>
     <li onClick="clickTab(this)" data-linked-class="QualityMetrics">Quality</li>
-    <li onClick="clickTab(this)" data-linked-class="Cffinit" id="CreateCffTab">Create CFF <a href="#" onclick="closeCreateCffTab(event)" style="margin-left: 0.7em; color: rgba(15, 45, 30, 0.82)"><i class="fa-solid fa-x"></i></a></li>
 </ul>
 
 
@@ -72,6 +71,29 @@
 }
 </style>
 
-<!-- Script needs to be deferred until after loading the other stuff -->
-<!-- and for some reason you have to put it in a separate file to do that. -->
-<script src="rightpanescript.js" defer></script>
+<script>
+    function clickTab(tab) {
+        const activeTab = getActiveTab();
+
+        if (tab === activeTab) {
+            return;
+        }
+
+        hideTab(activeTab);
+        showTab(tab);
+    }
+
+    function getActiveTab() {
+        return document.querySelector(".RightPaneNav__Tab--Active");
+    }
+
+    function hideTab(tab) {
+        tab.classList.remove("RightPaneNav__Tab--Active");
+        document.querySelector("." + tab.dataset.linkedClass).style.display = "none";
+    }
+
+    function showTab(tab) {
+        tab.classList.add("RightPaneNav__Tab--Active");
+        document.querySelector("." + tab.dataset.linkedClass).style.display = "block";
+    }
+</script>

@@ -1,9 +1,3 @@
-<iframe class="Cffinit"
-src="https://citation-file-format.github.io/cff-initializer-javascript/#/start"
-title="Create CITATION.CFF file"
-allowfullscreen="false">
-</iframe>
-
 <style>
     .Cffinit {
         width: 96%;
@@ -22,9 +16,42 @@ allowfullscreen="false">
 
         let tabs = document.getElementById("RightPaneNav").getElementsByTagName("li");
         tabs[tabs.length-1]?.classList.add("RightPaneNav__Tab--Active");
-
-        activeTab = tabs[tabs.length-1];
         
         event.stopPropagation();
+    }
+
+    function createCreateCffTab() {
+        let activeTab = getActiveTab();
+        hideTab(activeTab);
+
+        let existingCffTab = document.getElementById("CreateCffTab");
+        if (existingCffTab) {
+            showTab(existingCffTab);
+            return;
+        }
+
+        const frame = document.createElement("iframe");
+        frame.classList.add("Cffinit");
+        frame.setAttribute("src", "https://citation-file-format.github.io/cff-initializer-javascript/#/start");
+        frame.setAttribute("title", "Create CITATION.CFF file");
+        frame.setAttribute("allowFullscreen", "false");
+        document.querySelector(".RightPaneWindow").appendChild(frame);
+
+        const tab = document.createElement("li");
+        tab.setAttribute("onClick", "clickTab(this)");
+        tab.setAttribute("data-linked-class", "Cffinit");
+        tab.setAttribute("id", "CreateCffTab");
+        tab.appendChild(document.createTextNode("Create CFF "));
+        const a = document.createElement("a");
+        a.setAttribute("onClick", "closeCreateCffTab(event)");
+        a.setAttribute("style", "margin-left: 0.7em; color: rgba(15, 45, 30, 0.82)");
+        const i = document.createElement("i");
+        i.classList.add("fa-solid");
+        i.classList.add("fa-x");
+        a.appendChild(i);
+        tab.appendChild(a);
+        
+        document.getElementById("RightPaneNav").appendChild(tab);
+        showTab(tab);
     }
 </script>

@@ -6,7 +6,7 @@
         <th>D.O.I.</th>
         <th>Link</th>
     </tr>
-    <% citations.forEach((citation) => { %>
+    <% citations?.forEach((citation) => { %>
         <%- include('citation', {"citation": citation})%>
     <% }) %>
 </table>
