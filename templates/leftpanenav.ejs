@@ -97,19 +97,19 @@ function hoverNav(ele) {
 
 
 function clickNav(ele) {
-    const spans = ele.parentElement.children
-    for(let i = 1; i<spans.length; i++){
+    const spans = ele.parentElement.children;
+    for(let i = 1; i < spans.length; i++){
         spans[i].classList.remove('Active');
     };
     ele.classList.add('Active');
     const padding = 20;
     const {top, left, width, height} = ele.getBoundingClientRect();
-    const highlightblock =document.querySelector('.ActiveBlock');
+    const highlightblock = document.querySelector('.ActiveBlock');
     const newwidth = Math.ceil(ele.clientWidth);
     highlightblock.style.width = `${newwidth + padding}px`;
     highlightblock.style.translate = `${(left - padding/2) - 8}px`;
 
-    //Animating the tabs to slide in and out from the right direction.
+    // Animating the tabs to slide in and out from the right direction.
     const newTab = document.querySelector("." + ele.dataset.linkedClass)
     if (window.ActiveIndex > ele.dataset.listIndex){
         window.ActiveTab.classList.add("SlideOutLeft")
