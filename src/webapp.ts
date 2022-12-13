@@ -21,12 +21,14 @@ export async function WriteHTML(
 
     // const template = await fs.promises.readFile(templateFilename, "utf8");
     const template = await ejs.renderFile("./templates/index.ejs", { data });
+    const template2 = await ejs.renderFile("./templates/citationgraph.ejs", { data });
     const app = template.replace(
         "{{node inserts the data here}}",
         JSON.stringify(data)
     );
 
     await fs.promises.writeFile(filePath, app, "utf8");
+    await fs.promises.writeFile("./.fairSECO/citationgraph.html", template2, "utf8");
 }
 
 /**
