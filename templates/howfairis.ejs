@@ -30,19 +30,24 @@ return x ? '<p><i class="fa-solid fa-check"></i></p>' : '<p><i class="fa-solid f
           <!-- "registry": false, -->
           <!-- "repository": false, -->
     </div>
-        <div class="checklistcontainer">
+        <div class="ChecklistContainer">
             <div><p>Passed checklist:</p> <%- checkOrCross(howfairis.checklist)%></div>
             <div><p>Passed citation:</p> <%- checkOrCross(howfairis.citation)%></div>
             <div><p>Passed license:</p> <%- checkOrCross(howfairis.license)%></div>
             <div><p>Passed registry:</p> <%- checkOrCross(howfairis.registry)%></div>
             <div><p>Passed repository:</p> <%- checkOrCross(howfairis.repository)%></div>
         </div>
+        <br>
+        <div class="CitationAlert">
+            <%- howfairis.citation ? '' : 'No citation.cff file found. <button onClick="createCreateCffTab()">Create citation.cff file</button>' %>
+        </div>
+        
 </div>
 
 <style>
     .HowFairIsReport {
         color: #0C281E;
-        display: none;
+        display: block;
     }
 
     .HowFairIsReport h1 {
@@ -56,7 +61,7 @@ return x ? '<p><i class="fa-solid fa-check"></i></p>' : '<p><i class="fa-solid f
     .HowFairIsReport h2 {
         text-align: center;
     }
-    .checklistcontainer{
+    .ChecklistContainer{
         display: flex;
         flex-direction: column;
         width: 80%;
@@ -65,9 +70,13 @@ return x ? '<p><i class="fa-solid fa-check"></i></p>' : '<p><i class="fa-solid f
         border-radius: 8px;
         margin: auto;
     }
-    .checklistcontainer div{
+    .ChecklistContainer div{
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+    }
+    .CitationAlert {
+        width: 80%;
+        margin: auto;
     }
 </style>

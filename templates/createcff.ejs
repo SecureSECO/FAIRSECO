@@ -1,9 +1,3 @@
-<iframe class="Cffinit"
-src="https://citation-file-format.github.io/cff-initializer-javascript/#/start"
-title="Create CITATION.CFF file"
-allowfullscreen="false">
-</iframe>
-
 <style>
     .Cffinit {
         width: 96%;
@@ -20,11 +14,42 @@ allowfullscreen="false">
         document.getElementById("CreateCffTab").remove();
         document.querySelector(".Cffinit").remove();
 
-        let tabs = document.getElementById("RightPaneNav").getElementsByTagName("li");
-        tabs[tabs.length-1]?.classList.add("RightPaneNav__Tab--Active");
-
-        activeTab = tabs[tabs.length-1];
+        let tab = document.getElementById("RightPaneNav").getElementsByTagName("li")[0];
+        showTab(tab);
         
         event.stopPropagation();
+    }
+
+    function createCreateCffTab() {
+        let activeTab = getActiveTab();
+        hideTab(activeTab);
+
+        let existingCffTab = document.getElementById("CreateCffTab");
+        if (existingCffTab) {
+            showTab(existingCffTab);
+            return;
+        }
+
+        const frame = document.createElement("iframe");
+        frame.classList.add("Cffinit");
+        frame.setAttribute("src", "https://citation-file-format.github.io/cff-initializer-javascript/#/start");
+        frame.setAttribute("title", "Create CITATION.CFF file");
+        frame.setAttribute("allowFullscreen", "false");
+        document.querySelector(".RightPaneWindow").appendChild(frame);
+
+        const tab = document.createElement("li");
+        tab.setAttribute("onClick", "clickTab(this)");
+        tab.setAttribute("data-linked-class", "Cffinit");
+        tab.setAttribute("id", "CreateCffTab");
+        tab.appendChild(document.createTextNode("Create CFF "));
+        const i = document.createElement("i");
+        i.setAttribute("onClick", "closeCreateCffTab(event)");
+        i.setAttribute("style", "margin-left: 0.7em; color: white");
+        i.classList.add("fa-solid");
+        i.classList.add("fa-x");
+        tab.appendChild(i);
+        
+        document.getElementById("RightPaneNav").appendChild(tab);
+        showTab(tab);
     }
 </script>

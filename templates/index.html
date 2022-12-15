@@ -10,11 +10,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'> -->
+    <!-- <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'> -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300;0,7..72,400;0,7..72,700;1,7..72,300;1,7..72,400;1,7..72,700&display=swap" rel="stylesheet"> 
     <script src="https://kit.fontawesome.com/69be2ea766.js" crossorigin="anonymous"></script>
+    <!-- <script src="https://kit.fontawesome.com/db5b01b4db.js" crossorigin="anonymous"></script> -->
+    <!-- <script src="https://code.jquery.com/jquery-3.5.0.js"></script> -->
+    <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->
     <title>FairSECO</title>
+    <!--  -->
 </head>
 
 
@@ -26,11 +32,11 @@
         <h1 class="Name"><i class="fa-solid fa-scale-balanced"></i>FairSECO</h1>
         <h2 class="Tagline">Tagline.</h2>
     </div>
-    <div class="LeftPaneNav">
+    <div class="LeftPaneNav" onMouseOut="unHoverNav(event)">
     <div class="HighlightBlock"></div>
     <div class="ActiveBlock"></div>
     <div class="NavItem Active" onMouseOver="hoverNav(this)" onClick="clickNav(this)" data-list-index="0" data-linked-class="CitationsContainer"><i class="fa-solid fa-pen-nib"></i><p>Citations</p></div>
-    <div class="NavItem" onMouseOver="hoverNav(this)"onClick="clickNav(this)" data-list-index="1" data-linked-class="LicencesContainer"><i class="fa-brands fa-creative-commons-pd"></i><p>Licence Violations</p></div>
+    <div class="NavItem" onMouseOver="hoverNav(this)"onClick="clickNav(this)" data-list-index="1" data-linked-class="LicencesContainer"><i class="fa-solid fa-copyright"></i><p>Licence Violations</p></div>
     <div class="NavItem" onMouseOver="hoverNav(this)"onClick="clickNav(this)" data-list-index="2" data-linked-class="SBOMContainer"><i class="fa-solid fa-scroll"></i><p>SBOM</p></div>
 </div>
 
@@ -113,22 +119,42 @@ window.addEventListener('load',
   window.ActiveIndex = 0
   }, false);
 
-
-function hoverNav(ele) {
+function moveHighlightBlockTo(ele) {
     const padding = 20;
     const {top, left, width, height} = ele.getBoundingClientRect();
-    const highlightblock =document.querySelector('.HighlightBlock');
+    const highlightblock = document.querySelector('.HighlightBlock');
     const newwidth = Math.ceil(ele.clientWidth);
     highlightblock.style.width = `${newwidth + padding}px`;
     highlightblock.style.translate = `${(left - padding/2) - 8}px`;
 }
 
+function hoverNav(ele) {
+    moveHighlightBlockTo(ele);
+}
+
+function unHoverNav(event) {
+    let isFromNav = false;
+    let ele = event.relatedTarget;
+
+    while (ele && !isFromNav)
+    {
+        isFromNav = ele.classList.contains("LeftPaneNav");
+        ele = ele.parentElement;
+    }
+
+    if (!isFromNav) {
+        moveHighlightBlockTo(document.querySelector(".Active"));
+    }
+}
+
 
 function clickNav(ele) {
-    const spans = ele.parentElement.children;
-    for(let i = 1; i < spans.length; i++){
-        spans[i].classList.remove('Active');
-    };
+    let active = document.querySelector(".Active");
+    if (active === ele) {
+        return;
+    }
+
+    active.classList.remove("Active");
     ele.classList.add('Active');
     const padding = 20;
     const {top, left, width, height} = ele.getBoundingClientRect();
@@ -139,32 +165,32 @@ function clickNav(ele) {
 
     // Animating the tabs to slide in and out from the right direction.
     const newTab = document.querySelector("." + ele.dataset.linkedClass)
-    if (window.ActiveIndex > ele.dataset.listIndex){
-        window.ActiveTab.classList.add("SlideOutLeft")
+    if (window.ActiveIndex > ele.dataset.listIndex) {
+        window.ActiveTab.classList.add("SlideOutLeft");
     }
-    else{
-        window.ActiveTab.classList.add("SlideOutRight")
+    else {
+        window.ActiveTab.classList.add("SlideOutRight");
     }
-    setTimeout(()=>{
-        window.ActiveTab.classList.remove("SlideOutRight")
-        window.ActiveTab.classList.remove("SlideOutLeft")
-        window.ActiveTab.classList.add("Hidden")
-        window.ActiveTab.classList.remove("ActiveTab")
-    }, 150)
-    setTimeout(()=>{
-        if (window.ActiveIndex > ele.dataset.listIndex){
-            newTab.classList.add("SlideInRight")
+    setTimeout(() => {
+        window.ActiveTab.classList.remove("SlideOutRight");
+        window.ActiveTab.classList.remove("SlideOutLeft");
+        window.ActiveTab.classList.add("Hidden");
+        window.ActiveTab.classList.remove("ActiveTab");
+    }, 150);
+    setTimeout(() => {
+        if (window.ActiveIndex > ele.dataset.listIndex) {
+            newTab.classList.add("SlideInRight");
         }
         else {
-            newTab.classList.add("SlideInLeft")
+            newTab.classList.add("SlideInLeft");
         }
-        newTab.classList.remove("Hidden")
-        newTab.classList.remove("SlideOutRight")
-        newTab.classList.remove("SlideOutLeft")
-        newTab.classList.add("ActiveTab")
+        newTab.classList.remove("Hidden");
+        newTab.classList.remove("SlideOutRight");
+        newTab.classList.remove("SlideOutLeft");
+        newTab.classList.add("ActiveTab");
         window.ActiveTab = document.querySelector('.ActiveTab');
         window.ActiveIndex = ele.dataset.listIndex;
-    }, 150)
+    }, 150);
 }
 
 </script>
@@ -187,8 +213,8 @@ function clickNav(ele) {
 </div>
 <style>
     .CitationsContainer {
-        max-height: 80%;
-        overflow: scroll;
+        max-height: 78%;
+         overflow-y: scroll;
         -webkit-mask-image: linear-gradient(
             to bottom,
             black 90%,
@@ -196,6 +222,8 @@ function clickNav(ele) {
         );
         mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
         animation: fade-in 600ms ease-out 1 forwards;
+        width: 100%;
+        overflow-x: scroll;
     }
 
     .Citations {
@@ -207,8 +235,11 @@ function clickNav(ele) {
     .Citations th {
         color: #779c7e;
         font-style: italic;
-        padding-bottom: 24px;
         font-size: 1.2rem;
+        position: sticky;
+        top: 0;
+        background-color: #2f4c3e;
+        padding: 13px 0 24px 0;
     }
 
     .Citation tr {
@@ -276,8 +307,13 @@ function clickNav(ele) {
     }
 
 
-    .Citation .link:hover {
+    .Citation .link:hover a {
         color: #d9f8df;
+    }
+
+    
+    .Citation .link a {
+        color: #779c7e;
     }
 
     @media screen and (min-width: 1000px) {
@@ -300,767 +336,5535 @@ function clickNav(ele) {
 </style>
 
     <div class="LicencesContainer Hidden">
-    <table class="Licences">
-        <tr>
-            <th>Type</th>
-            <th>Package</th>
-            <th>Rule</th>
-            <th>Message</th>
-        </tr>
+    <h1 class="issuesheader"> Issues detected: 39</h1>
+    <div class="LicencesContainerScroll">
+    
+    <div class="Licenses">
          
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
         <p>NPM::fairseco:1.0.0</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::fairseco:1.0.0 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::fairseco:1.0.0</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::anymatch:3.1.2</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::anymatch:3.1.2 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::anymatch:3.1.2</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::cliui:8.0.1</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::cliui:8.0.1 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::cliui:8.0.1</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::electron-to-chromium:1.4.284</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::electron-to-chromium:1.4.284 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::electron-to-chromium:1.4.284</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::eslint-plugin-promise:6.1.1</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::eslint-plugin-promise:6.1.1 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::eslint-plugin-promise:6.1.1</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::fastq:1.13.0</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::fastq:1.13.0 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::fastq:1.13.0</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::flatted:3.2.7</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::flatted:3.2.7 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::flatted:3.2.7</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::fs.realpath:1.0.0</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::fs.realpath:1.0.0 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::fs.realpath:1.0.0</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::get-caller-file:2.0.5</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::get-caller-file:2.0.5 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::get-caller-file:2.0.5</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::glob:7.2.3</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::glob:7.2.3 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::glob:7.2.3</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::glob:8.0.3</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::glob:8.0.3 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::glob:8.0.3</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::glob-parent:5.1.2</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::glob-parent:5.1.2 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::glob-parent:5.1.2</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::glob-parent:6.0.2</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::glob-parent:6.0.2 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::glob-parent:6.0.2</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::graceful-fs:4.2.10</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::graceful-fs:4.2.10 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::graceful-fs:4.2.10</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::inflight:1.0.6</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::inflight:1.0.6 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::inflight:1.0.6</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::inherits:2.0.3</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::inherits:2.0.3 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::inherits:2.0.3</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::inherits:2.0.4</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::inherits:2.0.4 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::inherits:2.0.4</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::isexe:2.0.0</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::isexe:2.0.0 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::isexe:2.0.0</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::lru-cache:6.0.0</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::lru-cache:6.0.0 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::lru-cache:6.0.0</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::make-error:1.3.6</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::make-error:1.3.6 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::make-error:1.3.6</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::minimatch:3.1.2</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::minimatch:3.1.2 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::minimatch:3.1.2</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::minimatch:5.1.0</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::minimatch:5.1.0 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::minimatch:5.1.0</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::once:1.4.0</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::once:1.4.0 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::once:1.4.0</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::picocolors:1.0.0</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::picocolors:1.0.0 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::picocolors:1.0.0</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::rimraf:3.0.2</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::rimraf:3.0.2 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::rimraf:3.0.2</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::semver:6.3.0</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::semver:6.3.0 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::semver:6.3.0</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::semver:7.3.8</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::semver:7.3.8 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::semver:7.3.8</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::signal-exit:3.0.7</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::signal-exit:3.0.7 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::signal-exit:3.0.7</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::test-exclude:6.0.0</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::test-exclude:6.0.0 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::test-exclude:6.0.0</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::tslib:1.14.1</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>0BSD</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license 0BSD is currently not covered by policy rules. The license was declared in package NPM::tslib:1.14.1 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license 0BSD is currently not covered by policy rules. The license was declared in package NPM::tslib:1.14.1</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::v8-to-istanbul:9.0.1</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::v8-to-istanbul:9.0.1 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::v8-to-istanbul:9.0.1</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::which:2.0.2</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::which:2.0.2 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::which:2.0.2</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::wrappy:1.0.2</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::wrappy:1.0.2 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::wrappy:1.0.2</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::write-file-atomic:4.0.2</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::write-file-atomic:4.0.2 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::write-file-atomic:4.0.2</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::y18n:5.0.8</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::y18n:5.0.8 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::y18n:5.0.8</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::yallist:4.0.0</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::yallist:4.0.0 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::yallist:4.0.0</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::yaml:2.1.3</p>
-    </td>
-    <td class="Rule">
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::yaml:2.1.3 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+ 
+         
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::yaml:2.1.3</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
- 
-         
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
+    </div> 
+    <div class="PackageName">
         <p>NPM::yargs-parser:21.1.1</p>
-    </td>
-    <td class="Rule">
-        <p>
-            
-            Unhandled_license
-        </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM::yargs-parser:21.1.1</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::yargs-parser:21.1.1 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
  
          
-        <tr class="Violation">
-    <td>
-        <h1><i class="fa-solid fa-circle-exclamation"></i></h1>
-    </td>
-    <td class="PackageName">
-        <p>NPM:@istanbuljs:load-nyc-config:1.1.0</p>
-    </td>
-    <td class="Rule">
+    
+        <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
         <p>
             
             Unhandled_license
         </p>
-    </td>
-    <td class="Message"><p>The license ISC is currently not covered by policy rules. The license was declared in package NPM:@istanbuljs:load-nyc-config:1.1.0</p></td>
-    <td class="Howtofix"><p>A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</p></td>
-</tr>
+    </div> 
+    <div class="PackageName">
+        <p>NPM:@istanbuljs:load-nyc-config:1.1.0</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" id="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">how to solve:</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM:@istanbuljs:load-nyc-config:1.1.0 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+
+<style>
+    .ViolationDetailsHeader {
+        font-weight: bold;
+        color: #D9F8DF;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        color: #779C7E;
+        font-size: 12px;
+        
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        color: #779C7E;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
  
         
-    </table>
+    </div>
+
+</div>
 </div>
 <style>
     .LicencesContainer {
-        height: 80%;
+        height: 76%;
         width: 100%;
+        
+    }
+
+    .Licenses {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .issuesheader{
+        color:#779C7E;
+        font-size: 24px;
+        margin-bottom: 0px;
+        margin-left: 20px;
+    }
+
+    .LicencesContainerScroll{
+        overflow-y: scroll;
+        height: 93%;
+        padding: 0;
+        margin: 0;
+        -webkit-mask-image: linear-gradient(
+        to bottom,
+        black 90%,
+        transparent 100%
+        );
+        mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+    }
+
+    .Licenses h1 {
+        margin: 5px;
     }
 </style>
+
+<!-- license table  -->
+<!-- 
+border-collapse: collapse;
+padding: 0px;
+margin: 0px;
+display: block; -->
+
+<!-- tbody -->
+<!-- width: 97%;
+display: table;
+margin: auto;
+margin-top: 20px; -->
+
+<!-- tr -->
+<!-- border: 1px solid wheat;
+border-radius: 10px;
+position: relative;
+min-width: fit-content; -->
+
+<script>
+
+let details = document.getElementsByClassName('Arrow')
+
+for (var i = 0; i < details.length; ++i){
+    details[i].addEventListener('click', function(event){
+        var hid = event.target.parentElement.parentElement.parentElement.children[5].hidden;
+        event.target.parentElement.parentElement.parentElement.children[5].hidden = !hid;
+        if (event.target.className == "fa-solid fa-angle-right"){
+            event.target.className = "fa-solid fa-angle-down";
+        } else {
+            event.target.className = "fa-solid fa-angle-right";
+        }
+})
+}
+
+</script>
 
     <div class="SBOMContainer Hidden">
     <h1>Work in Progress</h1>
 </div>
+    <div class="footer">
+    <p>Tool developed by students of Utrecht University, </br>
+        in collaboration with the Netherlands eScience Center </br>
+        ⓒ 2022</br>
+        </p>
+</div>
+
+<style>
+    .footer {
+        text-align: center;
+        display: block;
+        font-size: 12px;
+        font-style: italic;
+        color: #88BF93;
+        position: fixed;
+        bottom: 0;
+        margin: auto;
+        width: 100%;
+    }
+</style>
+
 </div>
 
 <style>
@@ -1104,7 +5908,6 @@ which may link to additional resources.</p></td>
     <li class="RightPaneNav__Tab--Active" onClick="clickTab(this)" data-linked-class="HowFairIsReport">Fairness</li>
     <li onClick="clickTab(this)" data-linked-class="ImpactScore">Impact</li>
     <li onClick="clickTab(this)" data-linked-class="QualityMetrics">Quality</li>
-    <li onClick="clickTab(this)" data-linked-class="Cffinit" id="CreateCffTab">Create CFF <a href="#" onclick="closeCreateCffTab(event)" style="margin-left: 0.7em; color: rgba(15, 45, 30, 0.82)"><i class="fa-solid fa-x"></i></a></li>
 </ul>
 
 
@@ -1115,34 +5918,26 @@ which may link to additional resources.</p></td>
     list-style-type: none;
     margin: 0;
     padding: 0;
-    clip-path: polygon(0 -100%, 100% -100%, 100% 65%, 0 65%);
-    margin-bottom: -30px;
 }
 
 #RightPaneNav li {
-    background: #D3EEE0;
-
+    display: block;
     backdrop-filter: blur(50px);
     border-radius: 16px 16px 0 0;
     padding: 1.3vh 2vw;
-    color: #EAFEED;
     cursor: pointer;
     z-index: 3;
     font-size: 1.2rem;
-    transition: translate 300ms ease;
-    height: 80px;
+    height: 51px;
+    margin-bottom: -1px;
+    color: #EAFEED;
 }
 
 #RightPaneNav li:hover{
+    height: 66px;
+    margin-bottom: -16px;
     translate: 0 -15px;
     transition: all 300ms ease;
-}
-
-#RightPaneNav li:nth-child(2){
-    background: #729B85;
-    border-radius: 0 16px 0 0;
-    position: relative;
-    z-index: 2;
 }
 
 #RightPaneNav li:nth-child(n+1)::before{
@@ -1150,9 +5945,27 @@ which may link to additional resources.</p></td>
     display: block;
     height: 100%;
     position: absolute;
+    border-radius: 16px 0 0 0;
     top: 0;
-    left:-20px;
+    left: -20px;
     width: 40px;
+}
+#RightPaneNav li:nth-child(1) {
+    color: #497361;
+    background: #D3EEE0;
+    z-index: 3;
+}
+#RightPaneNav li:nth-child(2) {
+    background: #729B85;
+    z-index: 2;
+}
+#RightPaneNav li:nth-child(3) {
+    background: #47715A;
+    z-index: 1;
+}
+#RightPaneNav li:nth-child(4){
+    background: #0c281e;
+    z-index: 0;
 }
 
 #RightPaneNav li:nth-child(2)::before{
@@ -1161,22 +5974,43 @@ which may link to additional resources.</p></td>
 #RightPaneNav li:nth-child(3)::before{
     background: #47715A;
 }
-
-#RightPaneNav li:nth-child(3){
-    background: #47715A;
-    border-radius: 0 16px 0 0;
-    z-index: 1;
+#RightPaneNav li:nth-child(4)::before{
+    background: #0c281e;
 }
 
-.RightPaneNav__Tab--Active{
-    color: #497361;
+#RightPaneNav .RightPaneNav__Tab--Active{
+    height: 66px;
+    margin-bottom: -16px;
     translate: 0 -15px;
 }
 </style>
 
-<!-- Script needs to be deferred until after loading the other stuff -->
-<!-- and for some reason you have to put it in a separate file to do that. -->
-<script src="rightpanescript.js" defer></script>
+<script>
+    function clickTab(tab) {
+        const activeTab = getActiveTab();
+
+        if (tab === activeTab) {
+            return;
+        }
+
+        hideTab(activeTab);
+        showTab(tab);
+    }
+
+    function getActiveTab() {
+        return document.querySelector(".RightPaneNav__Tab--Active");
+    }
+
+    function hideTab(tab) {
+        tab.classList.remove("RightPaneNav__Tab--Active");
+        document.querySelector("." + tab.dataset.linkedClass).style.display = "none";
+    }
+
+    function showTab(tab) {
+        tab.classList.add("RightPaneNav__Tab--Active");
+        document.querySelector("." + tab.dataset.linkedClass).style.display = "block";
+    }
+</script>
         <div class="RightPaneWindow">
             
 
@@ -1211,19 +6045,24 @@ which may link to additional resources.</p></td>
           <!-- "registry": false, -->
           <!-- "repository": false, -->
     </div>
-        <div class="checklistcontainer">
+        <div class="ChecklistContainer">
             <div><p>Passed checklist:</p> <p><i class="fa-solid fa-x"></i></p></div>
             <div><p>Passed citation:</p> <p><i class="fa-solid fa-x"></i></p></div>
             <div><p>Passed license:</p> <p><i class="fa-solid fa-x"></i></p></div>
             <div><p>Passed registry:</p> <p><i class="fa-solid fa-x"></i></p></div>
             <div><p>Passed repository:</p> <p><i class="fa-solid fa-x"></i></p></div>
         </div>
+        <br>
+        <div class="CitationAlert">
+            No citation.cff file found. <button onClick="createCreateCffTab()">Create citation.cff file</button>
+        </div>
+        
 </div>
 
 <style>
     .HowFairIsReport {
         color: #0C281E;
-        display: none;
+        display: block;
     }
 
     .HowFairIsReport h1 {
@@ -1237,7 +6076,7 @@ which may link to additional resources.</p></td>
     .HowFairIsReport h2 {
         text-align: center;
     }
-    .checklistcontainer{
+    .ChecklistContainer{
         display: flex;
         flex-direction: column;
         width: 80%;
@@ -1246,20 +6085,18 @@ which may link to additional resources.</p></td>
         border-radius: 8px;
         margin: auto;
     }
-    .checklistcontainer div{
+    .ChecklistContainer div{
         display: flex;
         flex-direction: row;
         justify-content: space-between;
     }
+    .CitationAlert {
+        width: 80%;
+        margin: auto;
+    }
 </style>
 
-            <iframe class="Cffinit"
-src="https://citation-file-format.github.io/cff-initializer-javascript/#/start"
-title="Create CITATION.CFF file"
-allowfullscreen="false">
-</iframe>
-
-<style>
+            <style>
     .Cffinit {
         width: 96%;
         height: 96%;
@@ -1275,12 +6112,43 @@ allowfullscreen="false">
         document.getElementById("CreateCffTab").remove();
         document.querySelector(".Cffinit").remove();
 
-        let tabs = document.getElementById("RightPaneNav").getElementsByTagName("li");
-        tabs[tabs.length-1]?.classList.add("RightPaneNav__Tab--Active");
-
-        activeTab = tabs[tabs.length-1];
+        let tab = document.getElementById("RightPaneNav").getElementsByTagName("li")[0];
+        showTab(tab);
         
         event.stopPropagation();
+    }
+
+    function createCreateCffTab() {
+        let activeTab = getActiveTab();
+        hideTab(activeTab);
+
+        let existingCffTab = document.getElementById("CreateCffTab");
+        if (existingCffTab) {
+            showTab(existingCffTab);
+            return;
+        }
+
+        const frame = document.createElement("iframe");
+        frame.classList.add("Cffinit");
+        frame.setAttribute("src", "https://citation-file-format.github.io/cff-initializer-javascript/#/start");
+        frame.setAttribute("title", "Create CITATION.CFF file");
+        frame.setAttribute("allowFullscreen", "false");
+        document.querySelector(".RightPaneWindow").appendChild(frame);
+
+        const tab = document.createElement("li");
+        tab.setAttribute("onClick", "clickTab(this)");
+        tab.setAttribute("data-linked-class", "Cffinit");
+        tab.setAttribute("id", "CreateCffTab");
+        tab.appendChild(document.createTextNode("Create CFF "));
+        const i = document.createElement("i");
+        i.setAttribute("onClick", "closeCreateCffTab(event)");
+        i.setAttribute("style", "margin-left: 0.7em; color: white");
+        i.classList.add("fa-solid");
+        i.classList.add("fa-x");
+        tab.appendChild(i);
+        
+        document.getElementById("RightPaneNav").appendChild(tab);
+        showTab(tab);
     }
 </script>
 
