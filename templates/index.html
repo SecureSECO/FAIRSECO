@@ -5902,12 +5902,13 @@ for (var i = 0; i < details.length; ++i){
 </style>
 
     
+
 <div class="RightPane">
     <div class="RightPaneContainer">
         <ul id="RightPaneNav">
     <li class="RightPaneNav__Tab--Active" onClick="clickTab(this)" data-linked-class="HowFairIsReport">Fairness</li>
     <li onClick="clickTab(this)" data-linked-class="ImpactScore">Impact</li>
-    <li onClick="clickTab(this)" data-linked-class="QualityMetrics">Quality</li>
+    <li onClick="clickTab(this)" data-linked-class="Quality">Quality</li>
 </ul>
 
 
@@ -6152,9 +6153,127 @@ for (var i = 0; i < details.length; ++i){
     }
 </script>
 
-            <div class="QualityMetrics">
-    
+            <div class="Quality">
+    <h1>Quality Score</h1>
+        <div class="QualityMeter">
+            <div class="QualityMeter__Bar">
+                <div class="QualityMeter__Score">69</div>
+                <div class="QualityMeter__Text">good
+                </div>
+            </div>
+            <div class="QualityMeter__Circle"></div>
+        </div>
+        <div class="QualityMetrics">
+    </div>    
 </div>
+
+<style>
+
+.Quality {
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    display: none;
+}
+
+.Quality h1{
+    color: #0C281E;
+    text-align: center;
+}
+
+.QualityMeter {
+    width: 20vw;
+    height: 10vw;
+    margin: auto;
+    margin-top: 4%;
+}
+
+.QualityMeter__Bar {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: green; /* For browsers that do not support gradients */
+    background: conic-gradient(
+        from -90deg at bottom,
+        #2D4B3D 0deg, #2D4B3D 43.5deg,
+        #D3EEE0 43.5deg, #D3EEE0 45.5deg,
+        #3A9068 45.5deg, #3A9068 89deg,
+        #D3EEE0 89deg, #D3EEE0 91deg,
+        #4BB784 91deg, #4BB784 134.5deg,
+        #D3EEE0 134.5deg, #D3EEE0 136.5deg,
+        #36DDA1 136.5deg, #36DDA1 180deg
+    );
+    border-radius: 50% 50% 50% 50% / 100% 100% 0% 0%;
+}
+.QualityMeter__Bar::before {
+    z-index: 2;
+    content: "";
+    position: absolute;
+    width: 18vw;
+    height: 9vw;
+    bottom: 0;
+    left: 5%;
+    border-radius: 50% 50% 50% 50% / 100% 100% 0% 0%;
+    background-color: #D3EEE0;
+}
+
+.QualityMeter__Circle {
+    z-index: 3;
+    position: relative;
+    width: 2vw;
+    height: 2vw;
+    top: -1vw;
+    left: 9vw;
+    border-radius: 50%;
+    background-color: green;
+    transform: translate(
+        5.33979208959524vw,
+        -7.8572654556083386vw
+    );
+}
+.QualityMeter__Circle::before {
+    z-index: 4;
+    content: "";
+    position: absolute;
+    width: 1vw;
+    height: 1vw;
+    top: 25%;
+    left: 25%;
+    margin-right: -10vw;
+    margin-bottom: -10vw;
+    border-radius: 50%;
+    background-color: #D3EEE0;
+}
+
+.QualityMeter__Score {
+    z-index: 5;
+    position: absolute;
+    font-size: 3.5rem;
+    color: #0C281E;
+    bottom: 1rem;
+    text-align: center;
+    width: 100%;
+    font-weight: bold;
+}
+
+.QualityMeter__Text {
+    z-index: 5;
+    position: absolute;
+    font-size: 1.2rem;
+    color: #0C281E;
+    bottom: 0;
+    text-align: center;
+    width: 100%;
+}
+
+.QualityMetrics {
+    margin: auto;
+    margin-top: 4%;
+    width: 60%;
+    height: 30%;
+    background-color: red;
+}
+</style>
             <div class="ImpactScore">
 
 </div>

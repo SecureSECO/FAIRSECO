@@ -1,11 +1,12 @@
 <% const howfairis = data.find((ele) => (ele.ReturnName === "HowFairIs"))?.ReturnData[0]; %>
+<% const quality = {score: 69}; %>
 <div class="RightPane">
     <div class="RightPaneContainer">
         <%- include('rightpanenav') %>
         <div class="RightPaneWindow">
             <%- include('howfairis', {howfairis})%>
             <%- include('createcff')%>
-            <%- include('quality') %>
+            <%- include('quality', {quality}) %>
             <%- include('impact') %>
         </div>
     </div>
