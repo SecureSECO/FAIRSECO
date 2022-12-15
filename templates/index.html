@@ -5905,9 +5905,9 @@ for (var i = 0; i < details.length; ++i){
 <div class="RightPane">
     <div class="RightPaneContainer">
         <ul id="RightPaneNav">
-    <li class="RightPaneNav__Tab--Active" onClick="clickTab(this)" data-linked-class="HowFairIsReport" style="z-index: 3; color: #497361; background-color: #D3EEE0">Fairness</li>
-    <li onClick="clickTab(this)" data-linked-class="ImpactScore" style="z-index: 2; color: #EAFEED; background-color: #729B85">Impact</li>
-    <li onClick="clickTab(this)" data-linked-class="QualityMetrics" style="z-index: 1; color: #EAFEED; background-color: #47715A">Quality</li>
+    <li class="RightPaneNav__Tab--Active" onClick="clickTab(this)" data-linked-class="HowFairIsReport">Fairness</li>
+    <li onClick="clickTab(this)" data-linked-class="ImpactScore">Impact</li>
+    <li onClick="clickTab(this)" data-linked-class="QualityMetrics">Quality</li>
 </ul>
 
 
@@ -5930,6 +5930,7 @@ for (var i = 0; i < details.length; ++i){
     font-size: 1.2rem;
     height: 51px;
     margin-bottom: -1px;
+    color: #EAFEED;
 }
 
 #RightPaneNav li:hover{
@@ -5949,6 +5950,23 @@ for (var i = 0; i < details.length; ++i){
     left: -20px;
     width: 40px;
 }
+#RightPaneNav li:nth-child(1) {
+    color: #497361;
+    background: #D3EEE0;
+    z-index: 3;
+}
+#RightPaneNav li:nth-child(2) {
+    background: #729B85;
+    z-index: 2;
+}
+#RightPaneNav li:nth-child(3) {
+    background: #47715A;
+    z-index: 1;
+}
+#RightPaneNav li:nth-child(4){
+    background: #0c281e;
+    z-index: 0;
+}
 
 #RightPaneNav li:nth-child(2)::before{
     background: #729B85;
@@ -5957,26 +5975,13 @@ for (var i = 0; i < details.length; ++i){
     background: #47715A;
 }
 #RightPaneNav li:nth-child(4)::before{
-    background:#0c281e;
+    background: #0c281e;
 }
 
 #RightPaneNav .RightPaneNav__Tab--Active{
     height: 66px;
     margin-bottom: -16px;
     translate: 0 -15px;
-}
-
-#RightPaneNav  .RightPaneNav__Tab--Active li:nth-child(1){
-    color: red;
-}
-#RightPaneNav  .RightPaneNav__Tab--Active li:nth-child(2){
-    color: red;
-}
-#RightPaneNav  .RightPaneNav__Tab--Active li:nth-child(3){
-    color: red;
-}
-#RightPaneNav  .RightPaneNav__Tab--Active li:nth-child(4){
-    color: red;
 }
 </style>
 
@@ -6004,8 +6009,6 @@ for (var i = 0; i < details.length; ++i){
     function showTab(tab) {
         tab.classList.add("RightPaneNav__Tab--Active");
         document.querySelector("." + tab.dataset.linkedClass).style.display = "block";
-
-        document.querySelector(".RightPaneWindow").style.backgroundColor = tab.style.backgroundColor;
     }
 </script>
         <div class="RightPaneWindow">
@@ -6136,9 +6139,6 @@ for (var i = 0; i < details.length; ++i){
         tab.setAttribute("onClick", "clickTab(this)");
         tab.setAttribute("data-linked-class", "Cffinit");
         tab.setAttribute("id", "CreateCffTab");
-        tab.style.zIndex = 0;
-        tab.style.color = "#EAFEED";
-        tab.style.backgroundColor = "#0c281e";
         tab.appendChild(document.createTextNode("Create CFF "));
         const i = document.createElement("i");
         i.setAttribute("onClick", "closeCreateCffTab(event)");
