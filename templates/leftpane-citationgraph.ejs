@@ -3,15 +3,10 @@
         <h1 class="Name"><i class="fa-solid fa-scale-balanced"></i>FairSECO</h1>
         <h2 class="Tagline">Tagline.</h2>
     </div>
-    <%- include('leftpanenav')%>
-    
-    <% const citations = data.find((ele) => (ele.ReturnName === "citingPapers"))?.ReturnData.papers; %>
-    <% const licences = data.find((ele) => (ele.ReturnName === "Tortellini"))?.ReturnData; %>
-    <%- include('citations', {"citations": citations}) %>
-    <%- include('licences', {"licences": licences}) %>
-    <%- include('SBOM') %>
-    <%- include('footer') %>
-
+    </div class="CitationgraphInfo">
+        <h1 class="Title"><i class="fa-solid fa-scale-balanced"></i>Citations Graph View</h1>
+        <hr/>
+    </div>
 </div>
 
 <style>
@@ -23,6 +18,7 @@
         background: rgba(15, 45, 30, 0.82);
         backdrop-filter: blur(30px);
         overflow: hidden;
+        position: absolute;
     }
 
     .LeftPane .Branding {
@@ -45,5 +41,23 @@
         position: relative;
         top: 8px;
         font-style: italic;
+    }
+
+    .LeftPane .CitationgraphInfo {
+        display: flex;
+        flex-direction: row;
+        justify-content: start;
+        align-items: center;
+        padding: 8px;
+        z-index: 0;
+    }
+
+    .LeftPane .CitationgraphInfo .Title {
+        color: #d9f8df;
+        margin: 0 8px;
+    }
+
+    .LeftPane .CitationgraphInfo .hr {
+            border-top: #0c281e 2px solid;
     }
 </style>

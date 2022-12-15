@@ -45,7 +45,6 @@ class starField {
         this.links = links;
         this.fieldIndexMap = fieldIndexMap;
     }
-
 }
 
 function renderStarField() {
@@ -120,18 +119,19 @@ function renderStarField() {
     
     var clickedNodes = [];
     var connectedNodesClick = [];
+    var isZoomed = false;
 
     nodeWrapper
         .on("mouseenter", function (d) {
             var connectedNodes = [];
             var nodes = clickedNodes.concat([d]);
             if (d.id > input.uniqueFields.length) {
-                var html =  input.papers[d.id - input.uniqueFields.length].title
+                var html =  "<h3>" + input.papers[d.id - input.uniqueFields.length].title + "</h3>"
                 tooltip.transition()
                     .duration(300)
                     .style("opacity", 1); // show the tooltip
                 if(input.papers[d.id - input.uniqueFields.length].year !== null){
-                    html += "<hr/>" + input.papers[d.id - input.uniqueFields.length].year
+                    html += "<hr/><h3>" + input.papers[d.id - input.uniqueFields.length].year + "</h3>"
                 }
                 var x = d3.event.pageX - d3.select('.tooltip').node().offsetWidth - 5    
                 var chartMiddle = ((chartWidth - d3.select('.tooltip').node().offsetWidth) / 2)
@@ -143,7 +143,7 @@ function renderStarField() {
                 }
                 else{
                     tooltip.html(html)
-                    .style("left", (d3.event.pageX - d3.select('.tooltip').node().offsetWidth + chartMiddle + 5) + "px")
+                    .style("left", (d3.event.pageX - d3.select('.tooltip').node().offsetWidth + 335) + "px")
                     .style("top", (d3.event.pageY - d3.select('.tooltip').node().offsetHeight) + "px");       
                 }
             }
@@ -231,8 +231,20 @@ function renderStarField() {
                 });
         })
         .on("click", function (d) {
-            if (d.id > input.uniqueFields.length && input.papers[d.id - input.uniqueFields.length].url !== null)
-                window.open(input.papers[d.id - input.uniqueFields.length].url);
+            if (d.id > input.uniqueFields.length && input.papers[d.id - input.uniqueFields.length].url !== null) {
+                clickedNodes = [d];
+                connectedNodesClick = [];
+                // zoom in on node
+                var scaleZoom = 5;
+                svg.transition()
+                    .duration(750)
+                    .call(zoom_handler.transform,
+                        d3.zoomIdentity
+                            .translate(chartWidth * 0.5 - scaleZoom * d.x,
+                                chartHeight * 0.35 - scaleZoom * d.y)
+                            .scale(scaleZoom));
+                setTimeout(() => { isZoomed = true; }, 1000);
+            }
             else if (d.id < input.uniqueFields.length && !clickedNodes.includes(d)) {
                 var newConnectedNodesClick = [];
                 clickedNodes.push(d);
@@ -275,9 +287,37 @@ function renderStarField() {
                         else
                             return "1px";
                 });
-            }
+            };
+            d3.event.stopPropagation();
         })
-    
+
+    d3.select("body").on("click", function () {
+        clickedNodes = [];
+        connectedNodesClick = [];
+        link.transition()
+            .duration(300)
+            .style("stroke-width", function (l) {
+                if (clickedNodes.includes(l.target) && connectedNodesClick.includes(l.source))
+                    return "2px";
+                else
+                    return "0.5px";
+            });
+        node.transition()
+            .duration(300)
+            .style("stroke", function (d2) {
+                if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2))
+                        return "rgb(77, 77, 77)";
+                    else
+                        return "white";
+            })
+            .style("stroke-width", function (d2) {
+                if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2))
+                        return "2px";
+                    else
+                        return "1px";
+            });  
+    })
+
     //zoom actions
     var zoom_handler = d3.zoom()
         .on("zoom", zoom_actions);
@@ -285,7 +325,15 @@ function renderStarField() {
     zoom_handler(svg);
     
     function zoom_actions(){
-        g.attr("transform", d3.event.transform)
+        g.attr("transform", d3.event.transform);
+        if (isZoomed) {
+            isZoomed = false;
+            clickedNodes = [];
+            node.transition()
+                .duration(300)
+                .style("stroke", "white")
+                .style("stroke-width", "1px");
+        }
     }
     
 
@@ -309,3 +357,4 @@ function renderStarField() {
 }
 
 renderStarField();
+
