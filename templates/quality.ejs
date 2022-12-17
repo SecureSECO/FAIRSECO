@@ -1,20 +1,30 @@
 <div class="Quality">
     <h1>Quality Score</h1>
-        <div class="QualityMeter">
-            <div class="QualityMeter__Bar">
-                <div class="QualityMeter__Score"><%- Math.floor(quality.score) %></div>
-                <div class="QualityMeter__Text"><%-
-                    (() => {
-                        if (quality.score < 25) return "awful";
-                        else if (quality.score < 50) return "bad";
-                        else if (quality.score < 75) return "good";
-                        else return "splendid!";
-                    })() %>
-                </div>
+    <div class="QualityMeter">
+        <div class="QualityMeter__Bar">
+            <div class="QualityMeter__Score"><%- Math.floor(quality.score) %></div>
+            <div class="QualityMeter__Text"><%-
+                (() => {
+                    if (quality.score < 25) return "awful";
+                    else if (quality.score < 50) return "bad";
+                    else if (quality.score < 75) return "good";
+                    else return "splendid!";
+                })() %>
             </div>
-            <div class="QualityMeter__Circle"></div>
         </div>
-        <div class="QualityMetrics">
+        <div class="QualityMeter__Circle"></div>
+    </div>
+    <div class="QualityMetrics">
+        <div class="QualityMetrics__ScoreMetric" id="QualityFairness">
+            <div class="QualityMetrics__ScoreMetric__Image"></div>
+            <div class="QualityMetrics__ScoreMetric__Bar">
+                <div class="QualityMetrics__ScoreMetric__Bar__Start"></div>
+                <div class="QualityMetrics__ScoreMetric__Bar__End"></div>
+                <h2>
+                    <%- Math.floor(quality.fairnessScore) %>%   
+                </h2>
+            </div>
+        </div>
     </div>    
 </div>
 
@@ -30,20 +40,21 @@
 .Quality h1{
     color: #0C281E;
     text-align: center;
+    margin: 2vw;
+    font-size: 2vw;
 }
 
 .QualityMeter {
     width: 20vw;
     height: 10vw;
     margin: auto;
-    margin-top: 4%;
 }
 
 .QualityMeter__Bar {
     position: relative;
     width: 100%;
     height: 100%;
-    background-color: green; /* For browsers that do not support gradients */
+    background-color: green; <%# For browsers that do not support gradients %>
     background: conic-gradient(
         from -90deg at bottom,
         #2D4B3D 0deg, #2D4B3D 43.5deg,
@@ -120,8 +131,81 @@
 .QualityMetrics {
     margin: auto;
     margin-top: 4%;
-    width: 60%;
-    height: 30%;
+    width: 70%;
+    height: calc(100% - 4vw - 2vw*1.488 - 10vw - 8%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.QualityMetrics__ScoreMetric {
+    margin: auto;
+    width: 100%;
+    height: 20%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.QualityMetrics__ScoreMetric__Image {
+    height: 100%;
+    width: 15%;
     background-color: red;
+}
+.QualityMetrics__ScoreMetric__Bar {
+    height: 60%;
+    width: 85%;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.QualityMetrics__ScoreMetric__Bar__Start {
+    height: 100%;
+    width: 90%;
+    margin: auto;
+    border-top: 2px solid #0C281E;
+    border-bottom: 2px solid #0C281E;
+}
+.QualityMetrics__ScoreMetric__Bar__End {
+    height: 100%;
+    width: 10%;
+    margin: auto;
+    border: 2px outset #0C281E;
+    border-left-style: none;
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+}
+.QualityMetrics__ScoreMetric__Bar h2 {
+    position: absolute;
+    margin: auto;
+    margin-left: 20%;
+    color: white;
+}
+
+<%
+const scoreMetricBarSplit = 90;
+function scoreMetricBarStartPercentage(score) {
+    return score / scoreMetricBarSplit * 100;
+}
+function scoreMetricBarEndPercentage(score) {
+    return (score - scoreMetricBarSplit) / (100 - scoreMetricBarSplit) * 100;
+}
+%>
+
+#QualityFairness .QualityMetrics__ScoreMetric__Bar__Start {
+    background-color: gray; <%# For browsers that do not support gradients %>
+    background: linear-gradient(
+        to right,
+        green 0% <%- scoreMetricBarStartPercentage(quality.fairnessScore) %>%,
+        gray <%- scoreMetricBarStartPercentage(quality.fairnessScore) %>% 100%
+    );
+}
+#QualityFairness .QualityMetrics__ScoreMetric__Bar__End {
+    background-color: gray; <%# For browsers that do not support gradients %>
+    background: linear-gradient(
+        to right,
+        green 0% <%- scoreMetricBarEndPercentage(quality.fairnessScore) %>%,
+        gray <%- scoreMetricBarEndPercentage(quality.fairnessScore) %>% 100%
+    );
 }
 </style>
