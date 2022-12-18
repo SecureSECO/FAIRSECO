@@ -16,16 +16,56 @@
     </div>
     <div class="QualityMetrics">
         <div class="QualityMetrics__ScoreMetric" id="QualityFairness">
-            <div class="QualityMetrics__ScoreMetric__Image"></div>
+            <div class="QualityMetrics__ScoreMetric__Logo">
+                <div></div>
+                <p>Fairness</p>
+            </div>
             <div class="QualityMetrics__ScoreMetric__Bar">
                 <div class="QualityMetrics__ScoreMetric__Bar__Start"></div>
+                <div class="QualityMetrics__ScoreMetric__Bar__Middle"></div>
                 <div class="QualityMetrics__ScoreMetric__Bar__End"></div>
-                <h2>
-                    <%- Math.floor(quality.fairnessScore) %>%   
-                </h2>
+                <h2><%- Math.floor(quality.fairnessScore) %>%</h2>
             </div>
         </div>
-    </div>    
+        <div class="QualityMetrics__ScoreMetric" id="QualityLicenses">
+            <div class="QualityMetrics__ScoreMetric__Logo">
+                <div></div>
+                <p>Licenses</p>
+            </div>
+            <div class="QualityMetrics__ScoreMetric__Bar">
+                <div class="QualityMetrics__ScoreMetric__Bar__Start"></div>
+                <div class="QualityMetrics__ScoreMetric__Bar__Middle"></div>
+                <div class="QualityMetrics__ScoreMetric__Bar__End"></div>
+                <h2><%- Math.floor(quality.licenseScore) %>%</h2>
+            </div>
+        </div>
+        <div class="QualityMetrics__ScoreMetric" id="QualityMaintainability">
+            <div class="QualityMetrics__ScoreMetric__Logo">
+                <div></div>
+                <p>Maintainability</p>
+            </div>
+            <div class="QualityMetrics__ScoreMetric__Bar">
+                <div class="QualityMetrics__ScoreMetric__Bar__Start"></div>
+                <div class="QualityMetrics__ScoreMetric__Bar__Middle"></div>
+                <div class="QualityMetrics__ScoreMetric__Bar__End"></div>
+                <h2><%- Math.floor(quality.maintainabilityScore) %>%</h2>
+            </div>
+        </div>
+        <p>
+            Has documentation:
+            <%- quality.hasDocs %>
+        </p>
+        <p>
+            Average time to solve issues: <%-
+            (() => {
+                if(!quality.avgSolveTime) return "-";
+                else {
+                    let days = Math.ceil(quality.avgSolveTime);
+                    return days.toString() + (days === 1 ? " day" : " days");
+                }
+            })() %>
+        </p>
+    </div>
 </div>
 
 <style>
@@ -141,19 +181,25 @@
 .QualityMetrics__ScoreMetric {
     margin: auto;
     width: 100%;
-    height: 20%;
+    height: 15%;
     display: flex;
     flex-direction: row;
     justify-content: center;
 }
-.QualityMetrics__ScoreMetric__Image {
+.QualityMetrics__ScoreMetric__Logo {
     height: 100%;
-    width: 15%;
+    width: 20%;
+    text-align: center;
+}
+.QualityMetrics__ScoreMetric__Logo div {
+    margin: auto;
+    height: 3vw;
+    width: 3vw;
     background-color: red;
 }
 .QualityMetrics__ScoreMetric__Bar {
     height: 60%;
-    width: 85%;
+    width: 80%;
     margin: auto;
     display: flex;
     flex-direction: row;
@@ -161,7 +207,16 @@
 }
 .QualityMetrics__ScoreMetric__Bar__Start {
     height: 100%;
-    width: 90%;
+    width: 10%;
+    margin: auto;
+    border: 2px outset #0C281E;
+    border-right-style: none;
+    border-top-left-radius: 50%;
+    border-bottom-left-radius: 50%;
+}
+.QualityMetrics__ScoreMetric__Bar__Middle {
+    height: 100%;
+    width: 80%;
     margin: auto;
     border-top: 2px solid #0C281E;
     border-bottom: 2px solid #0C281E;
@@ -175,37 +230,91 @@
     border-top-right-radius: 50%;
     border-bottom-right-radius: 50%;
 }
+.QualityMetrics__ScoreMetric__Bar div {
+    background-color: gray; <%# For browsers that do not support gradients %>
+}
 .QualityMetrics__ScoreMetric__Bar h2 {
     position: absolute;
     margin: auto;
-    margin-left: 20%;
     color: white;
 }
 
 <%
-const scoreMetricBarSplit = 90;
+const scoreMetricBarEndsSize = 10;
 function scoreMetricBarStartPercentage(score) {
-    return score / scoreMetricBarSplit * 100;
+    return score / scoreMetricBarEndsSize * 100;
+}
+function scoreMetricBarMiddlePercentage(score) {
+    return (score - scoreMetricBarEndsSize) / (100 - scoreMetricBarEndsSize - scoreMetricBarEndsSize) * 100;
 }
 function scoreMetricBarEndPercentage(score) {
-    return (score - scoreMetricBarSplit) / (100 - scoreMetricBarSplit) * 100;
+    return (score - (100 - scoreMetricBarEndsSize)) / scoreMetricBarEndsSize * 100;
 }
 %>
 
 #QualityFairness .QualityMetrics__ScoreMetric__Bar__Start {
-    background-color: gray; <%# For browsers that do not support gradients %>
     background: linear-gradient(
         to right,
         green 0% <%- scoreMetricBarStartPercentage(quality.fairnessScore) %>%,
         gray <%- scoreMetricBarStartPercentage(quality.fairnessScore) %>% 100%
     );
 }
+#QualityFairness .QualityMetrics__ScoreMetric__Bar__Middle {
+    background: linear-gradient(
+        to right,
+        green 0% <%- scoreMetricBarMiddlePercentage(quality.fairnessScore) %>%,
+        gray <%- scoreMetricBarMiddlePercentage(quality.fairnessScore) %>% 100%
+    );
+}
 #QualityFairness .QualityMetrics__ScoreMetric__Bar__End {
-    background-color: gray; <%# For browsers that do not support gradients %>
     background: linear-gradient(
         to right,
         green 0% <%- scoreMetricBarEndPercentage(quality.fairnessScore) %>%,
         gray <%- scoreMetricBarEndPercentage(quality.fairnessScore) %>% 100%
+    );
+}
+
+#QualityLicenses .QualityMetrics__ScoreMetric__Bar__Start {
+    background: linear-gradient(
+        to right,
+        green 0% <%- scoreMetricBarStartPercentage(quality.licenseScore) %>%,
+        gray <%- scoreMetricBarStartPercentage(quality.licenseScore) %>% 100%
+    );
+}
+#QualityLicenses .QualityMetrics__ScoreMetric__Bar__Middle {
+    background: linear-gradient(
+        to right,
+        green 0% <%- scoreMetricBarMiddlePercentage(quality.licenseScore) %>%,
+        gray <%- scoreMetricBarMiddlePercentage(quality.licenseScore) %>% 100%
+    );
+}
+#QualityLicenses .QualityMetrics__ScoreMetric__Bar__End {
+    background: linear-gradient(
+        to right,
+        green 0% <%- scoreMetricBarEndPercentage(quality.licenseScore) %>%,
+        gray <%- scoreMetricBarEndPercentage(quality.licenseScore) %>% 100%
+    );
+}
+
+#QualityMaintainability .QualityMetrics__ScoreMetric__Bar__Start {
+    background: linear-gradient(
+        to right,
+        green 0% <%- scoreMetricBarStartPercentage(quality.maintainabilityScore) %>%,
+        gray <%- scoreMetricBarStartPercentage(quality.maintainabilityScore) %>% 100%
+    );
+}
+#QualityMaintainability .QualityMetrics__ScoreMetric__Bar__Middle {
+    background: linear-gradient(
+        to right,
+        green 0% <%- scoreMetricBarMiddlePercentage(quality.maintainabilityScore) %>%,
+        gray <%- scoreMetricBarMiddlePercentage(quality.maintainabilityScore) %>% 100%
+    );
+}
+#QualityMaintainability .QualityMetrics__ScoreMetric__Bar__End {
+    background: linear-gradient(
+        to right,
+        green 0% <%- scoreMetricBarEndPercentage(quality.maintainabilityScore) %>%,
+        gray <%- scoreMetricBarEndPercentage(quality.maintainabilityScore) %>% 100%
     );
 }
 </style>
