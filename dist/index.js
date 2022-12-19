@@ -20544,20 +20544,19 @@ function getQualityMetrics(ghInfo, howfairisOutput, tortelliniOutput) {
         const issues = yield getIssues(ghInfo);
         const maintainabilityScore = yield getMaintainabilityScore(issues);
         const avgSolveTime = getAvgSolveTime(issues);
-        const hasDocs = hasDocumentation();
-        const docsScore = hasDocs ? 100 : 0;
+        const documentationScore = hasDocumentation() ? 100 : 0;
         // Overall score
-        const score = fairnessScore * 0.38 +
+        const score = Math.round(fairnessScore * 0.38 +
             licenseScore * 0.27 +
             maintainabilityScore * 0.23 +
-            docsScore * 0.12;
+            documentationScore * 0.12);
         // Quality score to return
         const qualityMetrics = {
             score,
             fairnessScore,
             licenseScore,
             maintainabilityScore,
-            hasDocs,
+            documentationScore,
             avgSolveTime,
         };
         return {
@@ -20586,7 +20585,7 @@ function getLicenseScore(licenseInfo) {
     // Fraction of licenses that are not violated
     const correctFraction = (licenseCount - violationCount) / licenseCount;
     // When there are more licenses, the same fraction of violations results in a lower score
-    return Math.pow(correctFraction, Math.log2(1 + licenseCount)) * 100;
+    return Math.round(Math.pow(correctFraction, Math.log2(1 + licenseCount)) * 100);
 }
 exports.getLicenseScore = getLicenseScore;
 /**
@@ -20606,7 +20605,7 @@ function getMaintainabilityScore(issues) {
             closed++;
     }
     // Return score as percentage of closed issues
-    return total > 0 ? (100 * closed) / total : 100;
+    return total > 0 ? Math.round((100 * closed) / total) : 100;
 }
 exports.getMaintainabilityScore = getMaintainabilityScore;
 /**
@@ -20629,14 +20628,15 @@ function getAvgSolveTime(issues) {
         totalTime += (closed - created) / (1000 * 60 * 60 * 24);
         numberOfIssues++;
     }
-    // Return average solve time
-    return numberOfIssues > 0 ? totalTime / numberOfIssues : undefined;
+    // Return average solve time (rounded up to next day)
+    return numberOfIssues > 0 ? Math.round(totalTime / numberOfIssues) : undefined;
 }
 exports.getAvgSolveTime = getAvgSolveTime;
 /**
- * Checks if the repository has documentation by checking if there is a folder named "docs" or "documentation".
+ * Checks if the repository has documentation by checking if there is a directory
+ * named "docs" or "documentation" in the root of the repositiory.
  *
- * @returns A boolean indicating the existence of a "docs" or "documentation" folder.
+ * @returns A boolean indicating the existence of a "docs" or "documentation" directory.
  */
 function hasDocumentation() {
     return fs.existsSync("./docs") || fs.existsSync("./documentation");

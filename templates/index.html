@@ -5902,7 +5902,6 @@ for (var i = 0; i < details.length; ++i){
 </style>
 
     
-
 <div class="RightPane">
     <div class="RightPaneContainer">
         <ul id="RightPaneNav">
@@ -6075,7 +6074,7 @@ for (var i = 0; i < details.length; ++i){
     .HowFairIsReport h2 {
         text-align: center;
     }
-    .ChecklistContainer{
+    .ChecklistContainer {
         display: flex;
         flex-direction: column;
         width: 80%;
@@ -6084,7 +6083,10 @@ for (var i = 0; i < details.length; ++i){
         border-radius: 8px;
         margin: auto;
     }
-    .ChecklistContainer div{
+    .ChecklistContainer p {
+        margin: 2px;
+    }
+    .ChecklistContainer div {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -6163,47 +6165,53 @@ for (var i = 0; i < details.length; ++i){
     </div>
     <div class="QualityMetrics">
         <div class="QualityMetrics__ScoreMetric" id="QualityFairness">
-            <div class="QualityMetrics__ScoreMetric__Logo">
-                <div></div>
-                <p>Fairness</p>
+            <i class="fa-solid fa-scale-balanced"></i>
+            <div class="QualityMetrics__ScoreMetric__BarContainer">
+                <h2>Fairness</h2>
+                <div class="QualityMetrics__ScoreMetric__BarContainer__Bar">
+                    <div class="QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground"></div>
+                </div>
+                <p>Percentage of Fairness criteria met</p>
             </div>
-            <div class="QualityMetrics__ScoreMetric__Bar">
-                <div class="QualityMetrics__ScoreMetric__Bar__Start"></div>
-                <div class="QualityMetrics__ScoreMetric__Bar__Middle"></div>
-                <div class="QualityMetrics__ScoreMetric__Bar__End"></div>
-                <h2>80%</h2>
-            </div>
+            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>80%</h2></div>
         </div>
         <div class="QualityMetrics__ScoreMetric" id="QualityLicenses">
-            <div class="QualityMetrics__ScoreMetric__Logo">
-                <div></div>
-                <p>Licenses</p>
+            <i class="fa-brands fa-creative-commons"></i>
+            <div class="QualityMetrics__ScoreMetric__BarContainer">
+                <h2>Licenses</h2>
+                <div class="QualityMetrics__ScoreMetric__BarContainer__Bar">
+                    <div class="QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground"></div>
+                </div>
+                <p>Correct usage of licenses (no violations)</p>
             </div>
-            <div class="QualityMetrics__ScoreMetric__Bar">
-                <div class="QualityMetrics__ScoreMetric__Bar__Start"></div>
-                <div class="QualityMetrics__ScoreMetric__Bar__Middle"></div>
-                <div class="QualityMetrics__ScoreMetric__Bar__End"></div>
-                <h2>94%</h2>
-            </div>
+            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>94%</h2></div>
         </div>
         <div class="QualityMetrics__ScoreMetric" id="QualityMaintainability">
-            <div class="QualityMetrics__ScoreMetric__Logo">
-                <div></div>
-                <p>Maintainability</p>
+            <i class="fa-solid fa-wrench"></i>
+            <div class="QualityMetrics__ScoreMetric__BarContainer">
+                <h2>Maintainability</h2>
+                <div class="QualityMetrics__ScoreMetric__BarContainer__Bar">
+                    <div class="QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground"></div>
+                </div>
+                <p>Percentage of closed issues</p>
             </div>
-            <div class="QualityMetrics__ScoreMetric__Bar">
-                <div class="QualityMetrics__ScoreMetric__Bar__Start"></div>
-                <div class="QualityMetrics__ScoreMetric__Bar__Middle"></div>
-                <div class="QualityMetrics__ScoreMetric__Bar__End"></div>
-                <h2>8%</h2>
+            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>8%</h2></div>
+        </div>
+        <div class="QualityMetrics__ScoreMetric" id="QualityDocumentation">
+            <i class="fa-solid fa-file-lines"></i>
+            <div class="QualityMetrics__ScoreMetric__BarContainer">
+                <h2>Documentation</h2>
+                <div class="QualityMetrics__ScoreMetric__BarContainer__Bar">
+                    <div class="QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground"></div>
+                </div>
+                <p>Whether there is a documentation directory</p>
             </div>
+            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>100%</h2></div>
         </div>
         <p>
-            Has documentation:
-            true
-        </p>
-        <p>
-            Average time to solve issues: 32 days
+            <i class="fa-regular fa-clock"></i>
+            Average time to solve issues: 
+            1 day
         </p>
     </div>
 </div>
@@ -6218,9 +6226,9 @@ for (var i = 0; i < details.length; ++i){
 }
 
 .Quality h1 {
-    color: #0C281E;
+    color: #204f35;
     text-align: center;
-    margin: 2vw;
+    margin: 4%;
     font-size: 2vw;
 }
 
@@ -6234,7 +6242,7 @@ for (var i = 0; i < details.length; ++i){
     position: relative;
     width: 100%;
     height: 100%;
-    background-color: green; 
+    background-color: #3A9068; 
     background: conic-gradient(
         from -90deg at bottom,
         #2D4B3D 0deg, #2D4B3D 43.5deg,
@@ -6267,10 +6275,10 @@ for (var i = 0; i < details.length; ++i){
     top: -1vw;
     left: 9vw;
     border-radius: 50%;
-    background-color: green;
+    background-color: #4BB784;
     transform: translate(
-        5.389055016704188vw,
-        -7.82355967747006vw
+        5.33979208959524vw,
+        -7.8572654556083386vw
     );
 }
 .QualityMeter__Circle::before {
@@ -6290,19 +6298,18 @@ for (var i = 0; i < details.length; ++i){
 .QualityMeter__Score {
     z-index: 5;
     position: absolute;
-    font-size: 3.5rem;
-    color: #0C281E;
+    font-size: 3.5vw;
+    color: #204f35;
     bottom: 1rem;
     text-align: center;
     width: 100%;
     font-weight: bold;
 }
-
 .QualityMeter__Text {
     z-index: 5;
     position: absolute;
-    font-size: 1.2rem;
-    color: #0C281E;
+    font-size: 1.2vw;
+    color: #5a9575;
     bottom: 0;
     text-align: center;
     width: 100%;
@@ -6312,7 +6319,7 @@ for (var i = 0; i < details.length; ++i){
     margin: auto;
     margin-top: 4%;
     width: 70%;
-    height: calc(100% - 4vw - 2vw*1.488 - 10vw - 8%);
+    height: calc(100% - 8% - 2vw*1.488 - 10vw - 8%);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -6321,128 +6328,74 @@ for (var i = 0; i < details.length; ++i){
 .QualityMetrics__ScoreMetric {
     margin: auto;
     width: 100%;
-    height: 15%;
+    height: 20%;
     display: flex;
     flex-direction: row;
     justify-content: center;
+    align-items: center;
 }
-.QualityMetrics__ScoreMetric__Logo {
-    height: 100%;
-    width: 20%;
-    text-align: center;
-}
-.QualityMetrics__ScoreMetric__Logo div {
+.QualityMetrics__ScoreMetric i {
     margin: auto;
-    height: 3vw;
-    width: 3vw;
-    background-color: red;
+    font-size: 1.5vw;
+    color: #204f35;
 }
-.QualityMetrics__ScoreMetric__Bar {
-    height: 40%;
+.QualityMetrics__ScoreMetric__BarContainer {
+    height: 100%;
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-content: center;
+}
+.QualityMetrics__ScoreMetric__BarContainer h2 {
+    margin: 0;
+    margin-bottom: 2px;
+    font-size: 1vw;
+    color: #204f35;
+}
+.QualityMetrics__ScoreMetric__BarContainer p {
+    margin-top: 2px !important;
+    margin-bottom: calc(0.25vw * 1.488) !important;
+    font-size: 0.75vw;
+    color: #204f35;
+}
+.QualityMetrics__ScoreMetric__BarContainer__Bar {
+    height: 30%;
     width: 100%;
     margin: auto;
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: left;
+    align-content: center;
+    background-color: #B8D7CC;
+    border-radius: 4vw;
 }
-.QualityMetrics__ScoreMetric__Bar__Start {
+.QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
     height: 100%;
+    border-radius: 4vw;
+}
+.QualityMetrics__ScoreMetric__Percentage {
     width: 10%;
-    margin: auto;
-    border: 2px outset #0C281E;
-    border-right-style: none;
-    border-top-left-radius: 50%;
-    border-bottom-left-radius: 50%;
+    margin-left: 3%;
+    color: #204f35;
+    font-size: 0.75vw;
 }
-.QualityMetrics__ScoreMetric__Bar__Middle {
-    height: 100%;
+
+#QualityFairness .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
     width: 80%;
-    margin: auto;
-    border-top: 2px solid #0C281E;
-    border-bottom: 2px solid #0C281E;
+    background-color: #60415F;
 }
-.QualityMetrics__ScoreMetric__Bar__End {
-    height: 100%;
-    width: 10%;
-    margin: auto;
-    border: 2px outset #0C281E;
-    border-left-style: none;
-    border-top-right-radius: 50%;
-    border-bottom-right-radius: 50%;
+#QualityLicenses .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
+    width: 94%;
+    background-color: #894586;
 }
-.QualityMetrics__ScoreMetric__Bar div {
-    background-color: gray; 
+#QualityMaintainability .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
+    width: 8%;
+    background-color: #A95F94;
 }
-.QualityMetrics__ScoreMetric__Bar h2 {
-    margin: auto;
-}
-
-
-
-#QualityFairness .QualityMetrics__ScoreMetric__Bar__Start {
-    background: linear-gradient(
-        to right,
-        green 0% 800%,
-        gray 800% 100%
-    );
-}
-#QualityFairness .QualityMetrics__ScoreMetric__Bar__Middle {
-    background: linear-gradient(
-        to right,
-        green 0% 87.5%,
-        gray 87.5% 100%
-    );
-}
-#QualityFairness .QualityMetrics__ScoreMetric__Bar__End {
-    background: linear-gradient(
-        to right,
-        green 0% -100%,
-        gray -100% 100%
-    );
-}
-
-#QualityLicenses .QualityMetrics__ScoreMetric__Bar__Start {
-    background: linear-gradient(
-        to right,
-        green 0% 940%,
-        gray 940% 100%
-    );
-}
-#QualityLicenses .QualityMetrics__ScoreMetric__Bar__Middle {
-    background: linear-gradient(
-        to right,
-        green 0% 105%,
-        gray 105% 100%
-    );
-}
-#QualityLicenses .QualityMetrics__ScoreMetric__Bar__End {
-    background: linear-gradient(
-        to right,
-        green 0% 40%,
-        gray 40% 100%
-    );
-}
-
-#QualityMaintainability .QualityMetrics__ScoreMetric__Bar__Start {
-    background: linear-gradient(
-        to right,
-        green 0% 80%,
-        gray 80% 100%
-    );
-}
-#QualityMaintainability .QualityMetrics__ScoreMetric__Bar__Middle {
-    background: linear-gradient(
-        to right,
-        green 0% -2.5%,
-        gray -2.5% 100%
-    );
-}
-#QualityMaintainability .QualityMetrics__ScoreMetric__Bar__End {
-    background: linear-gradient(
-        to right,
-        green 0% -819.9999999999999%,
-        gray -819.9999999999999% 100%
-    );
+#QualityDocumentation .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
+    width: 100%;
+    background-color: #D991C5;
 }
 </style>
             <div class="ImpactScore">
@@ -6482,7 +6435,6 @@ for (var i = 0; i < details.length; ++i){
 
 .RightPaneWindow p {
     color: #0C281E;
-    margin: 0;
 }
 
 </style>
