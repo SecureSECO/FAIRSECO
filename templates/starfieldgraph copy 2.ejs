@@ -1,4 +1,88 @@
-'use strict'
+<h1 class="StarfieldGraphTitle">Starfield Graph</h1>
+<div id="mainContainer">\this is the mainContainer<svg id="svgChart"></svg></div>
+
+<style>
+    .StarfieldGraphTitle{
+        color: black;
+        color: #0C281E;
+        text-align: center;
+    }
+    body, div.tooltip {
+            background-color: lightblue;
+        }
+    h1 {
+        text-align: center;
+        color: darkblue;
+        font-family: 'Literata', sans-serif;
+    }
+    hr{
+        border-top: #0c281e 2px solid;
+    }
+    h3{
+        text-align: left;
+        font-size: 0.7rem;
+        color: #0c281e;
+        font-family: 'Literata', serif ;
+    }
+    #mainContainer {
+        text-align: center;
+    }
+
+    /* SVG */
+    #svgchart {
+        background-color: white;
+    }
+
+    .node {
+        stroke: #fff;
+        stroke-width: 1px;
+    }
+
+    .links {
+        stroke: rgb(77, 77, 77);
+        stroke-width: 0.5px;
+    }
+    div.tooltip {
+        position: absolute;
+        text-align: left;
+        padding: 12px;
+        background: rgba(234,254,237, 0.55);
+        -webkit-backdrop-filter: blur(50px);
+        backdrop-filter: blur(50px);
+        font: 8px 'Literata', serif;
+        text-align: left;
+        font-weight: bold;
+        border-radius: 8px;
+        pointer-events: none; /* keep the mouseover when over the tooltip */
+        word-wrap: break-word;
+        max-width: 280px;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    }
+
+    .label {
+        color: white;
+        display: flex;
+        font: 7px "Literata", serif;
+        font-style: italic;
+        text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        width: 60px;
+        height: 60px;
+    }
+
+    #footer {
+    color: black;
+    text-align: center;
+    }
+    #footer a{
+        color: blue;
+    }
+</style>
+
+<script>
+    'use strict'
 class link {
     source; // string
     target; // string
@@ -45,6 +129,7 @@ class starField {
         this.links = links;
         this.fieldIndexMap = fieldIndexMap;
     }
+
 }
 
 function renderStarField() {
@@ -119,19 +204,18 @@ function renderStarField() {
     
     var clickedNodes = [];
     var connectedNodesClick = [];
-    var isZoomed = false;
 
     nodeWrapper
         .on("mouseenter", function (d) {
             var connectedNodes = [];
             var nodes = clickedNodes.concat([d]);
             if (d.id > input.uniqueFields.length) {
-                var html =  "<h3>" + input.papers[d.id - input.uniqueFields.length].title + "</h3>"
+                var html =  input.papers[d.id - input.uniqueFields.length].title
                 tooltip.transition()
                     .duration(300)
                     .style("opacity", 1); // show the tooltip
                 if(input.papers[d.id - input.uniqueFields.length].year !== null){
-                    html += "<hr/><h3>" + input.papers[d.id - input.uniqueFields.length].year + "</h3>"
+                    html += "<hr/>" + input.papers[d.id - input.uniqueFields.length].year
                 }
                 var x = d3.event.pageX - d3.select('.tooltip').node().offsetWidth - 5    
                 var chartMiddle = ((chartWidth - d3.select('.tooltip').node().offsetWidth) / 2)
@@ -143,7 +227,7 @@ function renderStarField() {
                 }
                 else{
                     tooltip.html(html)
-                    .style("left", (d3.event.pageX - d3.select('.tooltip').node().offsetWidth + 335) + "px")
+                    .style("left", (d3.event.pageX - d3.select('.tooltip').node().offsetWidth + chartMiddle + 5) + "px")
                     .style("top", (d3.event.pageY - d3.select('.tooltip').node().offsetHeight) + "px");       
                 }
             }
@@ -230,32 +314,9 @@ function renderStarField() {
                             return "1px";
                 });
         })
-        .on("click", function (d) {    
-            // d3.selectAll("#body.leftpane-citationgraph.CitationgraphInfo.CitationsContainer ActiveTab.Citations.Citation")
-            //     .style("display", "");
-            const citations =  d3.select("body").select(".LeftPane").select(".CitationgraphInfo").select(".CitationsContainer").select(".Citations").select("tbody").selectAll(".Citation");
-            citations.style("visibility", "hidden");
-            citations.style("visibility", function(d){
-                const description = d.info1.description // cannot find property info1
-                if(description === "Collected from SemanticScholar"){
-                    return "visible"
-                }
-                //    .filter(d => d.info1.description === "Collected from SemanticScholar")
-            });
-            if (d.id > input.uniqueFields.length && input.papers[d.id - input.uniqueFields.length].url !== null) {
-                clickedNodes = [d];
-                connectedNodesClick = [];
-                // zoom in on node
-                var scaleZoom = 5;
-                svg.transition()
-                    .duration(750)
-                    .call(zoom_handler.transform,
-                        d3.zoomIdentity
-                            .translate(chartWidth * 0.5 - scaleZoom * d.x,
-                                chartHeight * 0.35 - scaleZoom * d.y)
-                            .scale(scaleZoom));
-                setTimeout(() => { isZoomed = true; }, 1000);
-            }
+        .on("click", function (d) {
+            if (d.id > input.uniqueFields.length && input.papers[d.id - input.uniqueFields.length].url !== null)
+                window.open(input.papers[d.id - input.uniqueFields.length].url);
             else if (d.id < input.uniqueFields.length && !clickedNodes.includes(d)) {
                 var newConnectedNodesClick = [];
                 clickedNodes.push(d);
@@ -298,38 +359,9 @@ function renderStarField() {
                         else
                             return "1px";
                 });
-            };
-            d3.event.stopPropagation();
-
+            }
         })
-
-    d3.select("body").on("click", function () {
-        clickedNodes = [];
-        connectedNodesClick = [];
-        link.transition()
-            .duration(300)
-            .style("stroke-width", function (l) {
-                if (clickedNodes.includes(l.target) && connectedNodesClick.includes(l.source))
-                    return "2px";
-                else
-                    return "0.5px";
-            });
-        node.transition()
-            .duration(300)
-            .style("stroke", function (d2) {
-                if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2))
-                        return "rgb(77, 77, 77)";
-                    else
-                        return "white";
-            })
-            .style("stroke-width", function (d2) {
-                if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2))
-                        return "2px";
-                    else
-                        return "1px";
-            });  
-    })
-
+    
     //zoom actions
     var zoom_handler = d3.zoom()
         .on("zoom", zoom_actions);
@@ -337,15 +369,7 @@ function renderStarField() {
     zoom_handler(svg);
     
     function zoom_actions(){
-        g.attr("transform", d3.event.transform);
-        if (isZoomed) {
-            isZoomed = false;
-            clickedNodes = [];
-            node.transition()
-                .duration(300)
-                .style("stroke", "white")
-                .style("stroke-width", "1px");
-        }
+        g.attr("transform", d3.event.transform)
     }
     
 
@@ -369,4 +393,4 @@ function renderStarField() {
 }
 
 renderStarField();
-
+</script>

@@ -3,9 +3,13 @@
         <h1 class="Name"><i class="fa-solid fa-scale-balanced"></i>FairSECO</h1>
         <h2 class="Tagline">Tagline.</h2>
     </div>
-    </div class="CitationgraphInfo">
+    <hr/>
+    <div class="Citationgraph">
         <h1 class="Title"><i class="fa-solid fa-scale-balanced"></i>Citations Graph View</h1>
-        <hr/>
+    </div> 
+    <div class="CitationgraphInfo">
+        <% const citations = data.find((ele) => (ele.ReturnName === "citingPapers"))?.ReturnData.papers; %>
+        <%- include('citations-citationgraph', {"citations": citations}) %>
     </div>
 </div>
 
@@ -18,6 +22,7 @@
         background: rgba(15, 45, 30, 0.82);
         backdrop-filter: blur(30px);
         overflow: hidden;
+        z-index: 1;
         position: absolute;
     }
 
@@ -43,21 +48,35 @@
         font-style: italic;
     }
 
+    .LeftPane .Citationgraph {
+        display: flex;
+        flex-direction: row;
+        justify-content: start;
+        align-items: center;
+        padding: 8px;
+    }
+
+    .LeftPane .Citationgraph .Title {
+        color: #d9f8df;
+        margin: 0 8px;
+        font-style: italic;
+    }
+
+    
+    .LeftPane .hr {
+        border-top: #0c281e 2px solid;
+        margin-left: 8px;
+    }
+
     .LeftPane .CitationgraphInfo {
         display: flex;
         flex-direction: row;
         justify-content: start;
         align-items: center;
         padding: 8px;
-        z-index: 0;
     }
 
-    .LeftPane .CitationgraphInfo .Title {
-        color: #d9f8df;
-        margin: 0 8px;
-    }
 
-    .LeftPane .CitationgraphInfo .hr {
-            border-top: #0c281e 2px solid;
-    }
+
+
 </style>

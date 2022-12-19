@@ -82,6 +82,7 @@
     </head>
     <body>
          <%- include('leftpane-citationgraph', {"data": data}) %>
-         <%- include('starfieldgraph', {"data": data}) %>
+        <div id="mainContainer"><svg id="svgChart"></svg></div>
+        <script src="./starField.js"></script>
     </body>
 </html>
