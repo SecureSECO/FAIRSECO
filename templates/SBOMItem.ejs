@@ -1,0 +1,18 @@
+<% let graph = new Map(grapharr); %>
+<% 
+//console.log(graph)
+%>
+<div class=<%-(lastItem ? "\"SBOMItem LastChild\"" : "\"SBOMItem\"") %>>
+    <div class="SBOMParent">
+        <p><i class="fa-solid fa-square-plus"></i></p><p><span class="SBOMSPDX"><%-parent%></span></p><p><span class="SBOMPackageName"><%- graph.get(parent).name%></span></p>
+    </div>
+    <div class="SBOMChildList">
+        <% 
+        let children = graph.get(parent).children;
+        //console.log(children);%>
+        <% children.forEach((child, i, arr) => { 
+        %>
+            <%- include('SBOMItem', {"grapharr": grapharr, parent: child, lastItem: (i == arr.length - 1)})%>
+        <%})%>
+    </div>
+</div>

@@ -1,3 +1,99 @@
+<%
+class Node {
+      constructor(id, name, parents, children) {
+        this.id = id;
+        this.name = name;
+        this.parents = parents;
+        this.children = children;
+      }
+}
+
+let graph = new Map()
+
+function updateArrInObj(obj, key, item){
+        obj[key] += item
+        return obj
+}
+
+SBOM.packages.forEach((p) => {
+        if (graph.get(p.SPDXID) === undefined){
+                graph.set(p.SPDXID, new Node(p.SPDXID, p.name, [], [])
+        )}
+})
+
+SBOM.relationships.forEach((rel) => {
+if (rel.relationshipType === "CONTAINS") {
+        if (graph.get(rel.spdxElementId) === undefined){
+                console.log("making new one")
+                graph.set(rel.spdxElementId, new Node(rel.spdxElementId, "Your Project", [], [])
+        )}
+        if (graph.get(rel.relatedSpdxElement) === undefined){
+                console.log("making new two")
+                graph.set(rel.relatedSpdxElement, new Node(rel.relatedSpdxElement,"", [], [])
+        )}
+        let newParent = graph.get(rel.spdxElementId)
+        newParent.children.push(rel.relatedSpdxElement)
+        let newChild = graph.get(rel.relatedSpdxElement)
+        newChild.parents.push(rel.spdxElementId)
+        graph.set(
+            rel.spdxElementId, newParent
+        )
+        graph.set(
+            rel.relatedSpdxElement, newChild
+        )
+    }
+})
+let rootelem = graph.keys().next().value
+while (graph.get(rootelem).parents.length){
+    rootelem = graph.get(rootelem).parents[0]
+}
+%>
 <div class="SBOMContainer Hidden">
-    <h1>Work in Progress</h1>
+    <%- include('SBOMItem', {"grapharr": Array.from(graph), parent: rootelem, lastItem : false})%>
 </div>
+
+<style>
+.SBOMContainer{
+    padding: 16px;
+    overflow-y: scroll;
+    height: 70%;
+}
+
+.SBOMItem {
+    position: relative;
+}
+
+.SBOMParent {
+    border: 2px #779C7E solid;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 4px 8px;
+    max-width: 40vw;
+    margin: 4px;
+    position: relative;
+}
+
+.SBOMChildList > .SBOMItem::before{
+    content: "├";
+    color: #779C7E;
+    left: -30px;
+    top: -15px;
+    font-size: 3rem;
+    position: absolute;
+}
+
+.SBOMChildList > .SBOMItem.LastChild::before{
+    content: "└";
+}
+
+.SBOMChildList {
+    margin-left: 36px;
+}
+
+.SBOMParent p {
+    margin: 8px 0;
+    padding: 0;
+}
+</style>
