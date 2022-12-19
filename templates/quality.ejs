@@ -51,10 +51,18 @@
                 <h2><%- Math.floor(quality.maintainabilityScore) %>%</h2>
             </div>
         </div>
-        <p>
-            Has documentation:
-            <%- quality.hasDocs %>
-        </p>
+        <div class="QualityMetrics__ScoreMetric" id="QualityDocumentation">
+            <div class="QualityMetrics__ScoreMetric__Logo">
+                <div></div>
+                <p>Documentation</p>
+            </div>
+            <div class="QualityMetrics__ScoreMetric__Bar">
+                <div class="QualityMetrics__ScoreMetric__Bar__Start"></div>
+                <div class="QualityMetrics__ScoreMetric__Bar__Middle"></div>
+                <div class="QualityMetrics__ScoreMetric__Bar__End"></div>
+                <h2><%- Math.floor(quality.documentationScore) %>%</h2>
+            </div>
+        </div>
         <p>
             Average time to solve issues: <%-
             (() => {
@@ -313,6 +321,28 @@ function scoreMetricBarEndPercentage(score) {
         to right,
         green 0% <%- scoreMetricBarEndPercentage(quality.maintainabilityScore) %>%,
         gray <%- scoreMetricBarEndPercentage(quality.maintainabilityScore) %>% 100%
+    );
+}
+
+#QualityDocumentation .QualityMetrics__ScoreMetric__Bar__Start {
+    background: linear-gradient(
+        to right,
+        green 0% <%- scoreMetricBarStartPercentage(quality.documentationScore) %>%,
+        gray <%- scoreMetricBarStartPercentage(quality.documentationScore) %>% 100%
+    );
+}
+#QualityDocumentation .QualityMetrics__ScoreMetric__Bar__Middle {
+    background: linear-gradient(
+        to right,
+        green 0% <%- scoreMetricBarMiddlePercentage(quality.documentationScore) %>%,
+        gray <%- scoreMetricBarMiddlePercentage(quality.documentationScore) %>% 100%
+    );
+}
+#QualityDocumentation .QualityMetrics__ScoreMetric__Bar__End {
+    background: linear-gradient(
+        to right,
+        green 0% <%- scoreMetricBarEndPercentage(quality.documentationScore) %>%,
+        gray <%- scoreMetricBarEndPercentage(quality.documentationScore) %>% 100%
     );
 }
 </style>

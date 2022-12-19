@@ -79,7 +79,7 @@ test("Test getQualityMetrics", async () => {
 
     expect(qualityScore.fairnessScore).toBeCloseTo(3 * 20);
     expect(qualityScore.licenseScore).toBeCloseTo(34.4882959581638);
-    expect(qualityScore.hasDocs).toBe(hasDocs);
+    expect(qualityScore.documentationScore).toBe(hasDocs ? 100 : 0);
 });
 
 describe("Test getLicenseScore", () => {

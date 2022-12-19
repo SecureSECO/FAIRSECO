@@ -1,6 +1,5 @@
 import { ReturnObject } from "../../src/getdata";
 import { GithubInfo } from "../git";
-import { LogMessage, ErrorLevel } from "../../src/log";
 
 import * as gh from "@actions/github";
 import * as fs from "fs";
@@ -15,8 +14,8 @@ export interface QualityMetrics {
     licenseScore: number;
     /** The maintability score, percentage of solved issues 0-100. */
     maintainabilityScore: number;
-    /** Whether documentation has been detected. */
-    hasDocs: boolean;
+    /** The documentation score, 100 if documentation has been detected, 0 otherwise. */
+    documentationScore: number;
     /** Average time in days it took to solve closed github issues. Undefined if no issues have been solved. */
     avgSolveTime: number | undefined;
 }
@@ -44,15 +43,14 @@ export async function getQualityMetrics(
 
     const avgSolveTime = getAvgSolveTime(issues);
 
-    const hasDocs = hasDocumentation();
-    const docsScore = hasDocs ? 100 : 0;
+    const documentationScore = hasDocumentation() ? 100 : 0;
 
     // Overall score
     const score =
         fairnessScore * 0.38 +
         licenseScore * 0.27 +
         maintainabilityScore * 0.23 +
-        docsScore * 0.12;
+        documentationScore * 0.12;
 
     // Quality score to return
     const qualityMetrics: QualityMetrics = {
@@ -60,7 +58,7 @@ export async function getQualityMetrics(
         fairnessScore,
         licenseScore,
         maintainabilityScore,
-        hasDocs,
+        documentationScore,
         avgSolveTime,
     };
 
