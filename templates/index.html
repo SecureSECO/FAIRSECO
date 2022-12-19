@@ -5829,12 +5829,14 @@ let details = document.getElementsByClassName('Arrow')
 
 for (var i = 0; i < details.length; ++i){
     details[i].addEventListener('click', function(event){
-        var hid = event.target.parentElement.parentElement.parentElement.children[5].hidden;
-        event.target.parentElement.parentElement.parentElement.children[5].hidden = !hid;
         if (event.target.className == "fa-solid fa-angle-right"){
             event.target.className = "fa-solid fa-angle-down";
-        } else {
-            event.target.className = "fa-solid fa-angle-right";
+            var hid = event.target.parentElement.parentElement.parentElement.children[5].hidden;
+            event.target.parentElement.parentElement.parentElement.children[5].hidden = !hid;
+        } else if (event.target.className == "fa-solid fa-angle-down") {
+            event.target.className = "fa-solid fa-angle-right"
+            var hid = event.target.parentElement.parentElement.parentElement.children[5].hidden;
+            event.target.parentElement.parentElement.parentElement.children[5].hidden = !hid;
         }
 })
 }
@@ -5905,7 +5907,7 @@ for (var i = 0; i < details.length; ++i){
 <div class="RightPane">
     <div class="RightPaneContainer">
         <ul id="RightPaneNav">
-    <li class="RightPaneNav__Tab--Active" onClick="clickTab(this)" data-linked-class="HowFairIsReport">Fairness</li>
+    <li class="RightPaneNav__Tab--Active" onClick="clickTab(this)" data-linked-class="HowFairIsReport">FAIRness</li>
     <li onClick="clickTab(this)" data-linked-class="ImpactScore">Impact</li>
     <li onClick="clickTab(this)" data-linked-class="Quality">Quality</li>
 </ul>
@@ -6014,7 +6016,7 @@ for (var i = 0; i < details.length; ++i){
 
 
 <div class="HowFairIsReport">
-    <h1 class="HowFairIsReportTitle">Fairness Report</h1>
+    <h1 class="HowFairIsReportTitle">FAIRness Report</h1>
     <div class="stars">
         <h2>
         
@@ -6035,24 +6037,43 @@ for (var i = 0; i < details.length; ++i){
         <h2>
         0 / 5
         </h2>
-
-          <!-- "checklist": false, -->
-          <!-- "citation": false, -->
-          <!-- "count": 2.5, -->
-          <!-- "license": false, -->
-          <!-- "registry": false, -->
-          <!-- "repository": false, -->
     </div>
         <div class="ChecklistContainer">
-            <div><p>Passed checklist:</p> <p><i class="fa-solid fa-x"></i></p></div>
-            <div><p>Passed citation:</p> <p><i class="fa-solid fa-x"></i></p></div>
-            <div><p>Passed license:</p> <p><i class="fa-solid fa-x"></i></p></div>
-            <div><p>Passed registry:</p> <p><i class="fa-solid fa-x"></i></p></div>
-            <div><p>Passed repository:</p> <p><i class="fa-solid fa-x"></i></p></div>
+            <span onClick="togglePanel(this)">
+                <p><i class="fa-solid fa-arrow-up-from-bracket"></i> Passed registry</p> <p><i class="fa-solid fa-x"></i></p>
+            </span>
+            <div class="ChecklistContainer__Panel">
+                Whether your software is registered in a public registry, so that it is easily <b>F</b>indable.
+            </div>
+            <span onClick="togglePanel(this)">
+                <p><i class="fa-solid fa-code-fork"></i> Passed repository</p><p><i class="fa-solid fa-x"></i></p>
+            </span>
+            <div class="ChecklistContainer__Panel">
+                Whether your repository is public, so that your software is <b>A</b>ccessible.
+            </div>
+            <span onClick="togglePanel(this)">
+                <p><i class="fa-solid fa-list-check"></i> Passed checklist</p> <p><i class="fa-solid fa-x"></i></p>
+            </span>
+            <div class="ChecklistContainer__Panel">
+                Whether you have used a software quality checklist, so that your software is <b>I</b>nteroperable.
+            </div>
+            <span onClick="togglePanel(this)">
+                <p><i class="fa-solid fa-quote-right"></i> Passed citation</p> <p><i class="fa-solid fa-x"></i></p>
+            </span>
+            <div class="ChecklistContainer__Panel">
+                Whether your repository contains a citation file, so that your software is <b>R</b>eusable.
+                <button onClick="createCreateCffTab()">Create citation.cff file</button>
+            </div>
+            <span onClick="togglePanel(this)">
+                <p><i class="fa-solid fa-copyright"></i> Passed license</p> <p><i class="fa-solid fa-x"></i></p>
+            </span>
+            <div class="ChecklistContainer__Panel">
+                Whether you have a license file in your repository, so that your software is correctly <b>R</b>euasable.
+            </div>
         </div>
         <br>
         <div class="CitationAlert">
-            No citation.cff file found. <button onClick="createCreateCffTab()">Create citation.cff file</button>
+            
         </div>
         
 </div>
@@ -6060,6 +6081,7 @@ for (var i = 0; i < details.length; ++i){
 <style>
     .HowFairIsReport {
         color: #0C281E;
+        font-size: 1vw;
         display: block;
     }
 
@@ -6074,29 +6096,67 @@ for (var i = 0; i < details.length; ++i){
     .HowFairIsReport h2 {
         text-align: center;
     }
+
     .ChecklistContainer {
         display: flex;
         flex-direction: column;
-        width: 80%;
+        width: 70%;
         border: 1px solid #0C281E;
         padding: 8px;
+        padding-top: 0;
         border-radius: 8px;
         margin: auto;
     }
     .ChecklistContainer p {
-        margin: 2px;
+        margin: 0;
     }
-    .ChecklistContainer div {
+    .ChecklistContainer span {
         display: flex;
+        margin-top: 8px;
+        width: 100%;
+        padding: 1%;
         flex-direction: row;
         justify-content: space-between;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.4s;
     }
+    .ChecklistContainer span:hover{
+        background-color: #abd2c5;
+    }
+    .ChecklistContainer__PanelHead--Active {
+        background-color: #abd2c5;
+        border-bottom-left-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+    }
+
     .CitationAlert {
-        width: 80%;
+        width: 70%;
         margin: auto;
+    }
+
+    .ChecklistContainer__Panel {
+        padding: 0 18px;
+        background-color: rgb(240, 240, 240);
+        height: 0;
+        overflow: hidden;
+        transition: height 0.2s ease-out;
+        border-radius: 0 0 8px 8px;
     }
 </style>
 
+<script>
+    function togglePanel(head) {
+        head.classList.toggle("ChecklistContainer__PanelHead--Active");
+        var panel = head.nextElementSibling;
+
+        if (panel.style.height) {
+            panel.style.height = null;
+        } else {
+            panel.style.height = panel.scrollHeight.toString() + "px";
+        }
+    }
+</script>
             <style>
     .Cffinit {
         width: 96%;
@@ -6176,7 +6236,7 @@ for (var i = 0; i < details.length; ++i){
             <div class="QualityMetrics__ScoreMetric__Percentage"><h2>80%</h2></div>
         </div>
         <div class="QualityMetrics__ScoreMetric" id="QualityLicenses">
-            <i class="fa-brands fa-creative-commons"></i>
+            <i class="fa-solid fa-copyright"></i>
             <div class="QualityMetrics__ScoreMetric__BarContainer">
                 <h2>Licenses</h2>
                 <div class="QualityMetrics__ScoreMetric__BarContainer__Bar">
@@ -6360,7 +6420,7 @@ for (var i = 0; i < details.length; ++i){
     color: #204f35;
 }
 .QualityMetrics__ScoreMetric__BarContainer__Bar {
-    height: 30%;
+    height: 20%;
     width: 100%;
     margin: auto;
     display: flex;
