@@ -36,20 +36,6 @@ jest.mock("@actions/github", () => {
 });
 
 test("Test getQualityMetrics", async () => {
-    const mockGhInfo: GithubInfo = {
-        Repo: "FairSECO",
-        GithubToken: "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",
-        Owner: "QDUNI",
-        FullURL: "https://github.com/QDUNI/FairSECO",
-        Stars: 0,
-        Forks: 0,
-        Watched: 0,
-        Visibility: undefined,
-        Readme: "",
-        Badges: [],
-        Contributors: [],
-    };
-
     const mockHowfairisOutput: ReturnObject = {
         ReturnName: "Howfairis",
         ReturnData: [
@@ -69,17 +55,18 @@ test("Test getQualityMetrics", async () => {
 
     let qualityScore = (
         await quality.getQualityMetrics(
-            mockGhInfo,
+            {} as unknown as GithubInfo,
             mockHowfairisOutput,
             mockTortelliniOutput
         )
     ).ReturnData as quality.QualityMetrics;
 
-    const hasDocs = fs.existsSync("./docs") || fs.existsSync("./documentation");
+    const hasDocs =
+        fs.existsSync("./docs") || fs.existsSync("./documentation");
 
-    expect(qualityScore.fairnessScore).toBeCloseTo(3 * 20);
-    expect(qualityScore.licenseScore).toBeCloseTo(34.4882959581638);
-    expect(qualityScore.hasDocs).toBe(hasDocs);
+    expect(qualityScore.fairnessScore).toBe(60);
+    expect(qualityScore.licenseScore).toBe(34);
+    expect(qualityScore.documentationScore).toBe(hasDocs ? 100 : 0);
 });
 
 describe("Test getLicenseScore", () => {
@@ -92,9 +79,7 @@ describe("Test getLicenseScore", () => {
             },
         };
 
-        expect(quality.getLicenseScore(mockTortelliniOutput)).toBeCloseTo(
-            32.036815280332455
-        );
+        expect(quality.getLicenseScore(mockTortelliniOutput)).toBe(32);
     });
 
     test("No violations", () => {
@@ -106,7 +91,7 @@ describe("Test getLicenseScore", () => {
             },
         };
 
-        expect(quality.getLicenseScore(mockTortelliniOutput)).toBeCloseTo(100);
+        expect(quality.getLicenseScore(mockTortelliniOutput)).toBe(100);
     });
 
     test("100% violations", () => {
@@ -118,7 +103,7 @@ describe("Test getLicenseScore", () => {
             },
         };
 
-        expect(quality.getLicenseScore(mockTortelliniOutput)).toBeCloseTo(0);
+        expect(quality.getLicenseScore(mockTortelliniOutput)).toBe(0);
     });
 
     test("No packages", () => {
@@ -130,7 +115,7 @@ describe("Test getLicenseScore", () => {
             },
         };
 
-        expect(quality.getLicenseScore(mockTortelliniOutput)).toBeCloseTo(100);
+        expect(quality.getLicenseScore(mockTortelliniOutput)).toBe(100);
     });
 });
 
@@ -148,9 +133,7 @@ describe("Test getMaintainabilityScore", () => {
             },
         ];
 
-        expect(quality.getMaintainabilityScore(mockIssues)).toBeCloseTo(
-            (100 * 2) / 3
-        );
+        expect(quality.getMaintainabilityScore(mockIssues)).toBe(67);
     });
 
     test("No solved issues", () => {
@@ -163,7 +146,7 @@ describe("Test getMaintainabilityScore", () => {
             },
         ];
 
-        expect(quality.getMaintainabilityScore(mockIssues)).toBeCloseTo(0);
+        expect(quality.getMaintainabilityScore(mockIssues)).toBe(0);
     });
 
     test("Only solved issues", () => {
@@ -173,13 +156,13 @@ describe("Test getMaintainabilityScore", () => {
             },
         ];
 
-        expect(quality.getMaintainabilityScore(mockIssues)).toBeCloseTo(100);
+        expect(quality.getMaintainabilityScore(mockIssues)).toBe(100);
     });
 
     test("No issues", () => {
         const mockIssues: any[] = [];
 
-        expect(quality.getMaintainabilityScore(mockIssues)).toBeCloseTo(100);
+        expect(quality.getMaintainabilityScore(mockIssues)).toBe(100);
     });
 });
 
@@ -194,7 +177,7 @@ describe("Test getAvgSolveTime", () => {
 
         const result = quality.getAvgSolveTime(mockIssues);
 
-        expect(result).toBeCloseTo(3);
+        expect(result).toBe(3);
     });
 
     test("Two Closed Issues", () => {
@@ -211,7 +194,7 @@ describe("Test getAvgSolveTime", () => {
 
         const result = quality.getAvgSolveTime(mockIssues);
 
-        expect(result).toBeCloseTo(5);
+        expect(result).toBe(5);
     });
 
     test("No Issues", () => {
@@ -249,7 +232,7 @@ describe("Test getAvgSolveTime", () => {
 
         const result = quality.getAvgSolveTime(mockIssues);
 
-        expect(result).toBeCloseTo(7);
+        expect(result).toBe(7);
     });
 });
 
@@ -264,24 +247,8 @@ describe("Test hasDocumentation", () => {
     });
 });
 
-describe("Test getIssues", () => {
-    test("Correct Token", async () => {
-        const mockGhInfo: GithubInfo = {
-            Repo: "FairSECO",
-            GithubToken: "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",
-            Owner: "QDUNI",
-            FullURL: "https://github.com/QDUNI/FairSECO",
-            Stars: 0,
-            Forks: 0,
-            Watched: 0,
-            Visibility: undefined,
-            Readme: "",
-            Badges: [],
-            Contributors: [],
-        };
+test("Test getIssues", async () => {
+    const result = await quality.getIssues({} as unknown as GithubInfo);
 
-        const result = await quality.getIssues(mockGhInfo);
-
-        expect(result).toEqual(mockedOctokitIssues);
-    });
+    expect(result).toEqual(mockedOctokitIssues);
 });

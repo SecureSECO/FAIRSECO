@@ -1,13 +1,15 @@
 import { ReturnObject } from "../../src/getdata";
 import { GithubInfo } from "../git";
-import { LogMessage, ErrorLevel } from "../../src/log";
 
 import * as gh from "@actions/github";
 import * as fs from "fs";
 
-/** Contains information about the quality of the repository. */
+/**
+ * Contains information about the quality of the repository.
+ * The reported values are whole numbers.
+*/
 export interface QualityMetrics {
-    /** The overall score 0-100 */
+    /** The overall score 0-100 as a whole number */
     score: number;
     /** The FAIRness score, percent score from howfairis 0-100. */
     fairnessScore: number;
@@ -15,8 +17,8 @@ export interface QualityMetrics {
     licenseScore: number;
     /** The maintability score, percentage of solved issues 0-100. */
     maintainabilityScore: number;
-    /** Whether documentation has been detected. */
-    hasDocs: boolean;
+    /** The documentation score, 100 if documentation has been detected, 0 otherwise. */
+    documentationScore: number;
     /** Average time in days it took to solve closed github issues. Undefined if no issues have been solved. */
     avgSolveTime: number | undefined;
 }
@@ -44,15 +46,15 @@ export async function getQualityMetrics(
 
     const avgSolveTime = getAvgSolveTime(issues);
 
-    const hasDocs = hasDocumentation();
-    const docsScore = hasDocs ? 100 : 0;
+    const documentationScore = hasDocumentation() ? 100 : 0;
 
     // Overall score
-    const score =
+    const score = Math.round(
         fairnessScore * 0.38 +
         licenseScore * 0.27 +
         maintainabilityScore * 0.23 +
-        docsScore * 0.12;
+        documentationScore * 0.12
+    );
 
     // Quality score to return
     const qualityMetrics: QualityMetrics = {
@@ -60,7 +62,7 @@ export async function getQualityMetrics(
         fairnessScore,
         licenseScore,
         maintainabilityScore,
-        hasDocs,
+        documentationScore,
         avgSolveTime,
     };
 
@@ -80,8 +82,8 @@ export async function getQualityMetrics(
  * @returns Score between 0 and 100 indicating how well licenses correspond with each other.
  */
 export function getLicenseScore(licenseInfo: ReturnObject): number {
-    const licenseCount = (licenseInfo.ReturnData as any).packages.length;
-    const violationCount = (licenseInfo.ReturnData as any).violations.length;
+    const licenseCount : number = (licenseInfo.ReturnData as any).packages.length;
+    const violationCount : number = (licenseInfo.ReturnData as any).violations.length;
 
     // Check if there's no licenses
     if (licenseCount === 0) {
@@ -92,7 +94,7 @@ export function getLicenseScore(licenseInfo: ReturnObject): number {
     const correctFraction = (licenseCount - violationCount) / licenseCount;
 
     // When there are more licenses, the same fraction of violations results in a lower score
-    return Math.pow(correctFraction, Math.log2(1 + licenseCount)) * 100;
+    return Math.round(Math.pow(correctFraction, Math.log2(1 + licenseCount)) * 100);
 }
 
 /**
@@ -112,7 +114,7 @@ export function getMaintainabilityScore(issues: any[]): number {
     }
 
     // Return score as percentage of closed issues
-    return total > 0 ? (100 * closed) / total : 100;
+    return total > 0 ? Math.round((100 * closed) / total) : 100;
 }
 
 /**
@@ -138,14 +140,15 @@ export function getAvgSolveTime(issues: any[]): number | undefined {
         numberOfIssues++;
     }
 
-    // Return average solve time
-    return numberOfIssues > 0 ? totalTime / numberOfIssues : undefined;
+    // Return average solve time (rounded up to next day)
+    return numberOfIssues > 0 ? Math.round(totalTime / numberOfIssues) : undefined;
 }
 
 /**
- * Checks if the repository has documentation by checking if there is a folder named "docs" or "documentation".
+ * Checks if the repository has documentation by checking if there is a directory
+ * named "docs" or "documentation" in the root of the repositiory.
  *
- * @returns A boolean indicating the existence of a "docs" or "documentation" folder.
+ * @returns A boolean indicating the existence of a "docs" or "documentation" directory.
  */
 export function hasDocumentation(): boolean {
     return fs.existsSync("./docs") || fs.existsSync("./documentation");

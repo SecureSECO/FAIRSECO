@@ -5907,7 +5907,7 @@ for (var i = 0; i < details.length; ++i){
         <ul id="RightPaneNav">
     <li class="RightPaneNav__Tab--Active" onClick="clickTab(this)" data-linked-class="HowFairIsReport">Fairness</li>
     <li onClick="clickTab(this)" data-linked-class="ImpactScore">Impact</li>
-    <li onClick="clickTab(this)" data-linked-class="QualityMetrics">Quality</li>
+    <li onClick="clickTab(this)" data-linked-class="Quality">Quality</li>
 </ul>
 
 
@@ -5926,16 +5926,14 @@ for (var i = 0; i < details.length; ++i){
     border-radius: 16px 16px 0 0;
     padding: 1.3vh 2vw;
     cursor: pointer;
-    z-index: 3;
     font-size: 1.2rem;
-    height: 51px;
-    margin-bottom: -1px;
+    height: 50px;
     color: #EAFEED;
 }
 
 #RightPaneNav li:hover{
-    height: 66px;
-    margin-bottom: -16px;
+    height: 65px;
+    margin-bottom: -15px;
     translate: 0 -15px;
     transition: all 300ms ease;
 }
@@ -5979,8 +5977,8 @@ for (var i = 0; i < details.length; ++i){
 }
 
 #RightPaneNav .RightPaneNav__Tab--Active{
-    height: 66px;
-    margin-bottom: -16px;
+    height: 65px;
+    margin-bottom: -15px;
     translate: 0 -15px;
 }
 </style>
@@ -6076,7 +6074,7 @@ for (var i = 0; i < details.length; ++i){
     .HowFairIsReport h2 {
         text-align: center;
     }
-    .ChecklistContainer{
+    .ChecklistContainer {
         display: flex;
         flex-direction: column;
         width: 80%;
@@ -6085,7 +6083,10 @@ for (var i = 0; i < details.length; ++i){
         border-radius: 8px;
         margin: auto;
     }
-    .ChecklistContainer div{
+    .ChecklistContainer p {
+        margin: 2px;
+    }
+    .ChecklistContainer div {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -6152,9 +6153,251 @@ for (var i = 0; i < details.length; ++i){
     }
 </script>
 
-            <div class="QualityMetrics">
-    
+            <div class="Quality">
+    <h1>Quality Score</h1>
+    <div class="QualityMeter">
+        <div class="QualityMeter__Bar">
+            <div class="QualityMeter__Score">69</div>
+            <div class="QualityMeter__Text">good
+            </div>
+        </div>
+        <div class="QualityMeter__Circle"></div>
+    </div>
+    <div class="QualityMetrics">
+        <div class="QualityMetrics__ScoreMetric" id="QualityFairness">
+            <i class="fa-solid fa-scale-balanced"></i>
+            <div class="QualityMetrics__ScoreMetric__BarContainer">
+                <h2>Fairness</h2>
+                <div class="QualityMetrics__ScoreMetric__BarContainer__Bar">
+                    <div class="QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground"></div>
+                </div>
+                <p>Percentage of Fairness criteria met</p>
+            </div>
+            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>80%</h2></div>
+        </div>
+        <div class="QualityMetrics__ScoreMetric" id="QualityLicenses">
+            <i class="fa-brands fa-creative-commons"></i>
+            <div class="QualityMetrics__ScoreMetric__BarContainer">
+                <h2>Licenses</h2>
+                <div class="QualityMetrics__ScoreMetric__BarContainer__Bar">
+                    <div class="QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground"></div>
+                </div>
+                <p>Correct usage of licenses (no violations)</p>
+            </div>
+            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>94%</h2></div>
+        </div>
+        <div class="QualityMetrics__ScoreMetric" id="QualityMaintainability">
+            <i class="fa-solid fa-wrench"></i>
+            <div class="QualityMetrics__ScoreMetric__BarContainer">
+                <h2>Maintainability</h2>
+                <div class="QualityMetrics__ScoreMetric__BarContainer__Bar">
+                    <div class="QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground"></div>
+                </div>
+                <p>Percentage of closed issues</p>
+            </div>
+            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>8%</h2></div>
+        </div>
+        <div class="QualityMetrics__ScoreMetric" id="QualityDocumentation">
+            <i class="fa-solid fa-file-lines"></i>
+            <div class="QualityMetrics__ScoreMetric__BarContainer">
+                <h2>Documentation</h2>
+                <div class="QualityMetrics__ScoreMetric__BarContainer__Bar">
+                    <div class="QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground"></div>
+                </div>
+                <p>Whether there is a documentation directory</p>
+            </div>
+            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>100%</h2></div>
+        </div>
+        <p>
+            <i class="fa-regular fa-clock"></i>
+            Average time to solve issues: 
+            1 day
+        </p>
+    </div>
 </div>
+
+<style>
+
+.Quality {
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    display: none;
+}
+
+.Quality h1 {
+    color: #204f35;
+    text-align: center;
+    margin: 4%;
+    font-size: 2vw;
+}
+
+.QualityMeter {
+    width: 20vw;
+    height: 10vw;
+    margin: auto;
+}
+
+.QualityMeter__Bar {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #3A9068; 
+    background: conic-gradient(
+        from -90deg at bottom,
+        #2D4B3D 0deg, #2D4B3D 43.5deg,
+        #D3EEE0 43.5deg, #D3EEE0 45.5deg,
+        #3A9068 45.5deg, #3A9068 89deg,
+        #D3EEE0 89deg, #D3EEE0 91deg,
+        #4BB784 91deg, #4BB784 134.5deg,
+        #D3EEE0 134.5deg, #D3EEE0 136.5deg,
+        #36DDA1 136.5deg, #36DDA1 180deg
+    );
+    border-radius: 50% 50% 50% 50% / 100% 100% 0% 0%;
+}
+.QualityMeter__Bar::before {
+    z-index: 2;
+    content: "";
+    position: absolute;
+    width: 18vw;
+    height: 9vw;
+    bottom: 0;
+    left: 5%;
+    border-radius: 50% 50% 50% 50% / 100% 100% 0% 0%;
+    background-color: #D3EEE0;
+}
+
+.QualityMeter__Circle {
+    z-index: 3;
+    position: relative;
+    width: 2vw;
+    height: 2vw;
+    top: -1vw;
+    left: 9vw;
+    border-radius: 50%;
+    background-color: #4BB784;
+    transform: translate(
+        5.33979208959524vw,
+        -7.8572654556083386vw
+    );
+}
+.QualityMeter__Circle::before {
+    z-index: 4;
+    content: "";
+    position: absolute;
+    width: 1vw;
+    height: 1vw;
+    top: 25%;
+    left: 25%;
+    margin-right: -10vw;
+    margin-bottom: -10vw;
+    border-radius: 50%;
+    background-color: #D3EEE0;
+}
+
+.QualityMeter__Score {
+    z-index: 5;
+    position: absolute;
+    font-size: 3.5vw;
+    color: #204f35;
+    bottom: 1rem;
+    text-align: center;
+    width: 100%;
+    font-weight: bold;
+}
+.QualityMeter__Text {
+    z-index: 5;
+    position: absolute;
+    font-size: 1.2vw;
+    color: #5a9575;
+    bottom: 0;
+    text-align: center;
+    width: 100%;
+}
+
+.QualityMetrics {
+    margin: auto;
+    margin-top: 4%;
+    width: 70%;
+    height: calc(100% - 8% - 2vw*1.488 - 10vw - 8%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.QualityMetrics__ScoreMetric {
+    margin: auto;
+    width: 100%;
+    height: 20%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.QualityMetrics__ScoreMetric i {
+    margin: auto;
+    font-size: 1.5vw;
+    color: #204f35;
+}
+.QualityMetrics__ScoreMetric__BarContainer {
+    height: 100%;
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-content: center;
+}
+.QualityMetrics__ScoreMetric__BarContainer h2 {
+    margin: 0;
+    margin-bottom: 2px;
+    font-size: 1vw;
+    color: #204f35;
+}
+.QualityMetrics__ScoreMetric__BarContainer p {
+    margin-top: 2px !important;
+    margin-bottom: calc(0.25vw * 1.488) !important;
+    font-size: 0.75vw;
+    color: #204f35;
+}
+.QualityMetrics__ScoreMetric__BarContainer__Bar {
+    height: 30%;
+    width: 100%;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-content: center;
+    background-color: #B8D7CC;
+    border-radius: 4vw;
+}
+.QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
+    height: 100%;
+    border-radius: 4vw;
+}
+.QualityMetrics__ScoreMetric__Percentage {
+    width: 10%;
+    margin-left: 3%;
+    color: #204f35;
+    font-size: 0.75vw;
+}
+
+#QualityFairness .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
+    width: 80%;
+    background-color: #60415F;
+}
+#QualityLicenses .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
+    width: 94%;
+    background-color: #894586;
+}
+#QualityMaintainability .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
+    width: 8%;
+    background-color: #A95F94;
+}
+#QualityDocumentation .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
+    width: 100%;
+    background-color: #D991C5;
+}
+</style>
             <div class="ImpactScore">
 
 </div>
@@ -6192,7 +6435,6 @@ for (var i = 0; i < details.length; ++i){
 
 .RightPaneWindow p {
     color: #0C281E;
-    margin: 0;
 }
 
 </style>
