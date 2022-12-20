@@ -235,7 +235,8 @@ function renderStarField() {
         .on("click", function (d) {    
             // d3.selectAll("#body.leftpane-citationgraph.CitationgraphInfo.CitationsContainer ActiveTab.Citations.Citation")
             //     .style("display", "");
-            const citationTable = d3.select("body").select(".LeftPane").select(".CitationgraphInfo").select(".CitationsContainer").select(".Citations")
+            const citationContainer = d3.select("body").select(".LeftPane").select(".CitationgraphInfo").select(".CitationsContainer");
+            // const citationTable = d3.select("body").select(".LeftPane").select(".CitationgraphInfo").select(".CitationsContainer").select(".Citations");
             // const citations =  d3.select("body").select(".LeftPane").select(".CitationgraphInfo").select(".CitationsContainer").select(".Citations").select("tbody").selectAll(".Citation");
             // citations.style("visibility", "hidden");
             // const description = citations.selectAll(".info1").selectAll(".description");
@@ -245,15 +246,16 @@ function renderStarField() {
             //     return d3.select(this).text().includes("OpenAlex");
             // })
             // .style("visibility", "visible");
-            citationTable.selectAll(".Citation").remove();
+            // citationTable.remove()
+            citationContainer.selectAll(".Citation").remove();
 
             if (d.id > input.uniqueFields.length) {
-                var html =  "<h3>" + input.papers[d.id - input.uniqueFields.length].title + "</h3>"
+                var html =  "<h3>Title</h3><h2>" + input.papers[d.id - input.uniqueFields.length].title + "</h2>"
                 if(input.papers[d.id - input.uniqueFields.length].year !== null){
-                    html += "<hr/><h3>" + input.papers[d.id - input.uniqueFields.length].year + "</h3>"
+                    html += "<h3>Year</h3><h2>" + input.papers[d.id - input.uniqueFields.length].year + "</h2>"
                 }
-                citationTable
-                    .append("tr")
+                citationContainer
+                    .append("div")
                     .classed("Citation", true)
                     .html(html)
             }

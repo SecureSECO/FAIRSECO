@@ -7,6 +7,7 @@
     <div class="Citationgraph">
         <h1 class="Title"><i class="fa-solid fa-scale-balanced"></i>Citations Graph View</h1>
     </div> 
+    <hr/>
     <div class="CitationgraphInfo">
         <% const citations = data.find((ele) => (ele.ReturnName === "citingPapers"))?.ReturnData.papers; %>
         <%- include('citations-citationgraph', {"citations": citations}) %>
@@ -63,11 +64,6 @@
     }
 
     
-    .LeftPane .hr {
-        border-top: #0c281e 2px solid;
-        margin-left: 8px;
-    }
-
     .LeftPane .CitationgraphInfo {
         display: flex;
         flex-direction: row;

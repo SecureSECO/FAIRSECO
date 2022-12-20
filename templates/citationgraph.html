@@ -12,11 +12,20 @@
         }
         hr{
             border-top: #0c281e 2px solid;
+            background: rgba(15, 45, 30, 0.82);
+            backdrop-filter: blur(30px);
         }
+        h2{
+            text-align: left;
+            font-size: 1.3rem;
+            color: #D9F8DF;
+            font-family: 'Literata', serif ;
+        }
+
         h3{
             text-align: left;
-            font-size: 0.7rem;
-            color: #0c281e;
+            font-size: 0.9rem;            
+            color: #779C7E;
             font-family: 'Literata', serif ;
         }
         #mainContainer {
@@ -91,22 +100,14 @@
     <div class="Citationgraph">
         <h1 class="Title"><i class="fa-solid fa-scale-balanced"></i>Citations Graph View</h1>
     </div> 
+    <hr/>
     <div class="CitationgraphInfo">
         
         <div class="CitationsContainer ActiveTab">
-<table class="Citations">
-    <tr>
-        <th>Title, Authors, Description</th>
-        <th>Date</th>
-        <th>D.O.I.</th>
-        <th>Link</th>
-    </tr>
-</table>
 </div>
 <style>
     .CitationsContainer {
         max-height: 78%;
-         overflow-y: scroll;
         -webkit-mask-image: linear-gradient(
             to bottom,
             black 90%,
@@ -115,97 +116,7 @@
         mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
         animation: fade-in 600ms ease-out 1 forwards;
         width: 100%;
-        overflow-x: scroll;
-    }
-
-    .Citations {
-        padding: 20px;
-        width: 100%;
-        table-layout: auto;
-    }
-
-    .Citations th {
-        color: #779c7e;
-        font-style: italic;
-        font-size: 1.2rem;
-        position: sticky;
-        top: 0;
-        background-color: #2f4c3e;
-        padding: 13px 0 24px 0;
-    }
-
-    .Citation tr {
-        margin: 4px 0px;
-    }
-
-    .Citation td {
-        max-width: 600px;
-    }
-
-    .Citation .info1 {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .Citation .info1 .info2 {
-        display: flex;
-        flex-direction: row;
-        align-items: baseline;
-    }
-
-    .info2 h1,
-    .info2 h2 {
-        color: #d9f8df;
-        margin: 0;
-    }
-
-    .info2 h1 {
-        font-size: 1.2rem;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        max-width: 70%;
-        font-weight: 400;
-    }
-    .info2 h2 {
-        font-size: 0.8rem;
-        font-style: italic;
-        font-weight: 400;
-    }
-    .info2 .middot {
-        margin: 0 8px;
-    }
-
-    .info1 h3 {
-        margin: 0;
-        color: #a3c6aa;
-        font-size: 0.9rem;
-        font-weight: 400;
-    }
-
-    .Citation .year,
-    .Citation .doi,
-    .Citation .link {
-        text-align: center;
-        color: #779c7e;
-        padding: 0 24px;
-    }
-
-    .Citation .link {
-        cursor: pointer;
-        font-size: 1.2rem;
-        transition: all 150ms ease;
-        height: inherit;
-    }
-
-
-    .Citation .link:hover a {
-        color: #d9f8df;
-    }
-
-    
-    .Citation .link a {
-        color: #779c7e;
+        padding: 8px;
     }
 
     @media screen and (min-width: 1000px) {
@@ -280,11 +191,6 @@
     }
 
     
-    .LeftPane .hr {
-        border-top: #0c281e 2px solid;
-        margin-left: 8px;
-    }
-
     .LeftPane .CitationgraphInfo {
         display: flex;
         flex-direction: row;
