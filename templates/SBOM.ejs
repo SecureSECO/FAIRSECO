@@ -48,6 +48,20 @@ while (graph.get(rootelem).parents.length){
     rootelem = graph.get(rootelem).parents[0]
 }
 %>
+
+
+<script>
+function expandItem(ele){
+    console.log(ele);
+    Array.from(ele.children).forEach(e => {
+        e.classList.toggle("Hidden");
+    });
+    let sbomitem = ele.parentElement.parentElement.parentElement;
+    sbomitem.classList.toggle("Expanded");
+    let childrenSection = sbomitem.children[1];
+    childrenSection.classList.toggle("Hidden");
+}
+</script>
 <div class="SBOMContainer Hidden">
     <%- include('SBOMItem', {"grapharr": Array.from(graph), parent: rootelem, lastItem : false})%>
 </div>
@@ -61,6 +75,15 @@ while (graph.get(rootelem).parents.length){
     mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
 }
 
+.ButtonAndSPDX {
+display: flex;
+flex-direction: row;
+}
+
+.SBOMSPDX{
+    margin: 0px 8px;
+}
+
 .SBOMItem {
     position: relative;
 }
@@ -72,7 +95,7 @@ while (graph.get(rootelem).parents.length){
     flex-direction: row;
     justify-content: space-between;
     padding: 4px 8px;
-    max-width: 40vw;
+    max-width: 48vw;
     margin: 4px;
     position: relative;
 }
@@ -86,9 +109,22 @@ while (graph.get(rootelem).parents.length){
     position: absolute;
 }
 
+.SBOMItem .SBOMItem.Expanded > .SBOMChildList::before {
+    content: " ";
+    height: 100%;
+    border-left: 4px #779C7E solid;
+    left: -18px;
+    top: 40px;
+    font-size: 3rem;
+    position: absolute;
+}
+
 .SBOMChildList > .SBOMItem.LastChild::before{
     content: "└";
 }
+/* .SBOMChildList > .SBOMItem.Expanded::before{ */
+/*     content: "└"; */
+/* } */
 
 .SBOMChildList {
     margin-left: 36px;
