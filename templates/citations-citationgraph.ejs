@@ -6,11 +6,6 @@
         <th>D.O.I.</th>
         <th>Link</th>
     </tr>
-    <% 
-        //const filtered_citations = citations.filter(citation => citation.fields.includes("Geology"))
-        citations.forEach((citation) => { %>
-        <%- include('citation', {"citation": citation})%>
-    <% }) %>
 </table>
 </div>
 <style>
@@ -42,10 +37,6 @@
         top: 0;
         background-color: #2f4c3e;
         padding: 13px 0 24px 0;
-    }
-
-    .Citation {
-        visibility: hidden;
     }
 
     .Citation tr {
