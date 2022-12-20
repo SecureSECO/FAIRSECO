@@ -27,12 +27,12 @@
     <div class="Licensetype"><p><%= violation.license%></p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -45,101 +45,3 @@
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>

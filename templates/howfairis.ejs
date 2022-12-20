@@ -24,43 +24,43 @@ return x ? '<p><i class="fa-solid fa-check"></i></p>' : '<p><i class="fa-solid f
         </h2>
     </div>
         <div class="ChecklistContainer">
-            <span onClick="togglePanel(this)">
+            <div onClick="togglePanel(this)">
                 <p><i class="fa-solid fa-arrow-up-from-bracket"></i> Passed registry</p> <%- checkOrCross(howfairis.registry)%>
-            </span>
-            <div class="ChecklistContainer__Panel">
+            </div>
+            <div>
                 Whether your software is registered in a public registry, so that it is easily <b>F</b>indable.
+                <a href="https://fair-software.eu/recommendations/registry" target="_blank">Read more</a>
             </div>
-            <span onClick="togglePanel(this)">
+            <div onClick="togglePanel(this)">
                 <p><i class="fa-solid fa-code-fork"></i> Passed repository</p><%- checkOrCross(howfairis.repository)%>
-            </span>
-            <div class="ChecklistContainer__Panel">
+            </div>
+            <div>
                 Whether your repository is public, so that your software is <b>A</b>ccessible.
+                <a href="https://fair-software.eu/recommendations/repository" target="_blank">Read more</a>
             </div>
-            <span onClick="togglePanel(this)">
+            <div onClick="togglePanel(this)">
                 <p><i class="fa-solid fa-list-check"></i> Passed checklist</p> <%- checkOrCross(howfairis.checklist)%>
-            </span>
-            <div class="ChecklistContainer__Panel">
+            </div>
+            <div>
                 Whether you have used a software quality checklist, so that your software is <b>I</b>nteroperable.
+                <a href="https://fair-software.eu/recommendations/checklist" target="_blank">Read more</a>
             </div>
-            <span onClick="togglePanel(this)">
+            <div onClick="togglePanel(this)">
                 <p><i class="fa-solid fa-quote-right"></i> Passed citation</p> <%- checkOrCross(howfairis.citation)%>
-            </span>
-            <div class="ChecklistContainer__Panel">
+            </div>
+            <div>
                 Whether your repository contains a citation file, so that your software is <b>R</b>eusable.
-                <%- howfairis.citation ? '' : '<button onClick="createCreateCffTab()">Create citation.cff file</button>' %>
+                <a href="https://fair-software.eu/recommendations/citation" target="_blank">Read more</a>
+                <%- howfairis.citation ? '' : ' <button onClick="createCreateCffTab()">Create citation.cff file</button>' %>
             </div>
-            <span onClick="togglePanel(this)">
+            <div onClick="togglePanel(this)">
                 <p><i class="fa-solid fa-copyright"></i> Passed license</p> <%- checkOrCross(howfairis.license)%>
-            </span>
-            <div class="ChecklistContainer__Panel">
+            </div>
+            <div>
                 Whether you have a license file in your repository, so that your software is correctly <b>R</b>euasable.
+                <a href="https://fair-software.eu/recommendations/license" target="_blank">Read more</a>
             </div>
         </div>
-        <br>
-        <div class="CitationAlert">
-            
-        </div>
-        
 </div>
 
 <style>
@@ -73,9 +73,6 @@ return x ? '<p><i class="fa-solid fa-check"></i></p>' : '<p><i class="fa-solid f
     .HowFairIsReport h1 {
         color: #0C281E;
         text-align: center;
-    }
-    .HowFairIsReportTitle{
-        color: 4
     }
 
     .HowFairIsReport h2 {
@@ -95,7 +92,8 @@ return x ? '<p><i class="fa-solid fa-check"></i></p>' : '<p><i class="fa-solid f
     .ChecklistContainer p {
         margin: 0;
     }
-    .ChecklistContainer span {
+
+    .ChecklistContainer div:nth-child(2n-1){ <%# Panel Heads %>
         display: flex;
         margin-top: 8px;
         width: 100%;
@@ -106,27 +104,22 @@ return x ? '<p><i class="fa-solid fa-check"></i></p>' : '<p><i class="fa-solid f
         cursor: pointer;
         transition: 0.4s;
     }
-    .ChecklistContainer span:hover{
+    .ChecklistContainer div:nth-child(2n-1):hover{ <%# Panel Heads %>
         background-color: #abd2c5;
     }
-    .ChecklistContainer__PanelHead--Active {
-        background-color: #abd2c5;
-        border-bottom-left-radius: 0 !important;
-        border-bottom-right-radius: 0 !important;
-    }
-
-    .CitationAlert {
-        width: 70%;
-        margin: auto;
-    }
-
-    .ChecklistContainer__Panel {
+    .ChecklistContainer div:nth-child(2n){ <%# Panels %>
         padding: 0 18px;
         background-color: rgb(240, 240, 240);
         height: 0;
         overflow: hidden;
         transition: height 0.2s ease-out;
         border-radius: 0 0 8px 8px;
+    }
+
+    .ChecklistContainer__PanelHead--Active {
+        background-color: #abd2c5;
+        border-bottom-left-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
     }
 </style>
 
@@ -138,7 +131,7 @@ return x ? '<p><i class="fa-solid fa-check"></i></p>' : '<p><i class="fa-solid f
         if (panel.style.height) {
             panel.style.height = null;
         } else {
-            panel.style.height = panel.scrollHeight.toString() + "px";
+            panel.style.height = (panel.scrollHeight + 5).toString() + "px";
         }
     }
 </script>

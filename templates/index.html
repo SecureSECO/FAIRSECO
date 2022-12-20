@@ -1,11 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<style>
-    * {
-        box-sizing: border-box;
-        font-family: "Literata", "Serif";
-    }
-</style>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -20,24 +14,30 @@
     <!-- <script src="https://code.jquery.com/jquery-3.5.0.js"></script> -->
     <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->
     <title>FairSECO</title>
+    <style>
+    * {
+        box-sizing: border-box;
+        font-family: "Literata", "Serif";
+    }
+</style>
     <!--  -->
 </head>
 
 
 <body>
-
+    
     <!-- <div id="BackgroundSphere1"></div> -->
     <div class="LeftPane">
     <div class="Branding">
-        <h1 class="Name"><i class="fa-solid fa-scale-balanced"></i>FairSECO</h1>
-        <h2 class="Tagline">Tagline.</h2>
+        <h1 class="Name"><i class="fa-solid fa-scale-balanced"></i>FAIRSECO</h1>
+        <h2 class="Tagline">FAIR is fair.</h2>
     </div>
     <div class="LeftPaneNav" onMouseOut="unHoverNav(event)">
     <div class="HighlightBlock"></div>
     <div class="ActiveBlock"></div>
     <div class="NavItem Active" onMouseOver="hoverNav(this)" onClick="clickNav(this)" data-list-index="0" data-linked-class="CitationsContainer"><i class="fa-solid fa-pen-nib"></i><p>Citations</p></div>
-    <div class="NavItem" onMouseOver="hoverNav(this)"onClick="clickNav(this)" data-list-index="1" data-linked-class="LicencesContainer"><i class="fa-solid fa-copyright"></i><p>Licence Violations</p></div>
-    <div class="NavItem" onMouseOver="hoverNav(this)"onClick="clickNav(this)" data-list-index="2" data-linked-class="SBOMContainer"><i class="fa-solid fa-scroll"></i><p>SBOM</p></div>
+    <div class="NavItem" onMouseOver="hoverNav(this)" onClick="clickNav(this)" data-list-index="1" data-linked-class="LicencesContainer"><i class="fa-solid fa-copyright"></i><p>Licence Violations</p></div>
+    <div class="NavItem" onMouseOver="hoverNav(this)" onClick="clickNav(this)" data-list-index="2" data-linked-class="SBOMContainer"><i class="fa-solid fa-scroll"></i><p>SBOM</p></div>
 </div>
 
 <style>
@@ -338,11 +338,9 @@ function clickNav(ele) {
     <div class="LicencesContainer Hidden">
     <h1 class="issuesheader"> Issues detected: 39</h1>
     <div class="LicencesContainerScroll">
-    
-    <div class="Licenses">
-         
-    
-        <div class="Violation">
+        <div class="Licenses">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -361,12 +359,12 @@ function clickNav(ele) {
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -380,108 +378,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -500,12 +399,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -519,108 +418,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -639,12 +439,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -658,108 +458,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -778,12 +479,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -797,108 +498,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -917,12 +519,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -936,108 +538,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -1056,12 +559,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -1075,108 +578,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -1195,12 +599,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -1214,108 +618,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -1334,12 +639,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -1353,108 +658,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -1473,12 +679,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -1492,108 +698,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -1612,12 +719,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -1631,108 +738,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -1751,12 +759,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -1770,108 +778,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -1890,12 +799,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -1909,108 +818,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -2029,12 +839,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -2048,108 +858,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -2168,12 +879,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -2187,108 +898,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -2307,12 +919,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -2326,108 +938,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -2446,12 +959,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -2465,108 +978,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -2585,12 +999,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -2604,108 +1018,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -2724,12 +1039,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -2743,108 +1058,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -2863,12 +1079,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -2882,108 +1098,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -3002,12 +1119,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -3021,108 +1138,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -3141,12 +1159,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -3160,108 +1178,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -3280,12 +1199,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -3299,108 +1218,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -3419,12 +1239,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -3438,108 +1258,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -3558,12 +1279,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -3577,108 +1298,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -3697,12 +1319,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -3716,108 +1338,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -3836,12 +1359,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -3855,108 +1378,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -3975,12 +1399,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -3994,108 +1418,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -4114,12 +1439,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -4133,108 +1458,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -4253,12 +1479,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -4272,108 +1498,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -4392,12 +1519,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>0BSD</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -4411,108 +1538,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -4531,12 +1559,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -4550,108 +1578,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -4670,12 +1599,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -4689,108 +1618,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -4809,12 +1639,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -4828,108 +1658,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -4948,12 +1679,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -4967,108 +1698,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -5087,12 +1719,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -5106,108 +1738,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -5226,12 +1759,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -5245,108 +1778,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -5365,12 +1799,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -5384,108 +1818,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -5504,12 +1839,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -5523,108 +1858,9 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-         
-    
-        <div class="Violation">
+             
+            <div class="Violation">
     <div class="Arrow">
         <h1><i class="fa-solid fa-angle-right"></i></h1>
     </div>
@@ -5643,12 +1879,12 @@ which may link to additional resources.</div>
     <div class="Licensetype"><p>ISC</p>
     </div>
 
-    <div class="ViolationDetails" id="ViolationDetails" hidden>
+    <div class="ViolationDetails" hidden>
         <div class="ViolationDetailsHeader">
             <div class="space1"></div>
-            <div class="issue">issue</div>
+            <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">how to solve:</div>
+            <div class="howToSolve">How to solve:</div>
         </div>
         
         <div class="ViolationsContent">
@@ -5662,115 +1898,15 @@ which may link to additional resources.</div>
         
         
 </div>
-
-<style>
-    .ViolationDetailsHeader {
-        font-weight: bold;
-        color: #D9F8DF;
-    }
-
-    .space3 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .message {
-        display: inline-block;
-        width: 43%;
-        color: #779C7E;
-        font-size: 12px;
-        
-    }
-
-    .space4 {
-        display: inline-block;
-        width: 10%;
-    }
-
-    .howToFix {
-        display: inline-block;
-        width: 40%;
-        text-align: right;
-        color: #779C7E;
-        font-size: 12px;
-    }
-
-    .space1 {
-        display: inline-block;
-        width: 5%;
-    }
-
-    .issue {
-        display: inline-block;
-        width: 30%;
-        font-size: 14px;
-    }
-
-    .space2 {
-        display: inline-block;
-        width: 27%;
-    }
-
-    .howToSolve {
-        display: inline-block;
-        width: 36%;
-        text-align: right;
-        font-size: 14px;
-    }
-
-    .Violation {
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        margin: 8px;
-        padding: 5px;
-    }
-    
-    .Arrow {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-        text-align: center;
-    }
-
-    .Warning {
-        display: inline-block;
-        width: 5%;
-        font-size: 11px;
-    }
-
-    .Rule {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-    }
-
-    .PackageName {
-        display: inline-block;
-        width: 48%;
-        font-size: 16px;
-    }
-
-    .Licensetype {
-        display: inline-block;
-        width: 15%;
-        font-size: 16px;
-    }
-
-    .Licensetype p {
-        text-align: right;
-    }
-</style>
  
-        
+            
+        </div>
     </div>
-
-</div>
 </div>
 <style>
     .LicencesContainer {
         height: 76%;
         width: 100%;
-        
     }
 
     .Licenses {
@@ -5801,6 +1937,104 @@ which may link to additional resources.</div>
 
     .Licenses h1 {
         margin: 5px;
+    }
+    
+    .ViolationDetailsHeader {
+        font-weight: bold;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        font-size: 12px;
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        color: #D9F8DF;
+        background-color: #47715A;
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+    .Arrow i:hover {
+        color: #b8d7cc;
+        cursor: pointer;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
     }
 </style>
 
@@ -5847,9 +2081,9 @@ for (var i = 0; i < details.length; ++i){
     <h1>Work in Progress</h1>
 </div>
     <div class="footer">
-    <p>Tool developed by students of Utrecht University, </br>
-        in collaboration with the Netherlands eScience Center </br>
-        ⓒ 2022</br>
+    <p>Tool developed by students of Utrecht University, <br>
+        in collaboration with the Netherlands eScience Center <br>
+        ⓒ 2022
         </p>
 </div>
 
@@ -5933,14 +2167,14 @@ for (var i = 0; i < details.length; ++i){
     color: #EAFEED;
 }
 
-#RightPaneNav li:hover{
+#RightPaneNav li:hover {
     height: 65px;
     margin-bottom: -15px;
     translate: 0 -15px;
     transition: all 300ms ease;
 }
 
-#RightPaneNav li:nth-child(n+1)::before{
+#RightPaneNav li:nth-child(n+1)::before {
     content: "";
     display: block;
     height: 100%;
@@ -5963,22 +2197,22 @@ for (var i = 0; i < details.length; ++i){
     background: #47715A;
     z-index: 1;
 }
-#RightPaneNav li:nth-child(4){
+#RightPaneNav li:nth-child(4) {
     background: #0c281e;
     z-index: 0;
 }
 
-#RightPaneNav li:nth-child(2)::before{
+#RightPaneNav li:nth-child(2)::before {
     background: #729B85;
 }
-#RightPaneNav li:nth-child(3)::before{
+#RightPaneNav li:nth-child(3)::before {
     background: #47715A;
 }
-#RightPaneNav li:nth-child(4)::before{
+#RightPaneNav li:nth-child(4)::before {
     background: #0c281e;
 }
 
-#RightPaneNav .RightPaneNav__Tab--Active{
+#RightPaneNav .RightPaneNav__Tab--Active {
     height: 65px;
     margin-bottom: -15px;
     translate: 0 -15px;
@@ -6039,43 +2273,43 @@ for (var i = 0; i < details.length; ++i){
         </h2>
     </div>
         <div class="ChecklistContainer">
-            <span onClick="togglePanel(this)">
+            <div onClick="togglePanel(this)">
                 <p><i class="fa-solid fa-arrow-up-from-bracket"></i> Passed registry</p> <p><i class="fa-solid fa-x"></i></p>
-            </span>
-            <div class="ChecklistContainer__Panel">
+            </div>
+            <div>
                 Whether your software is registered in a public registry, so that it is easily <b>F</b>indable.
+                <a href="https://fair-software.eu/recommendations/registry" target="_blank">Read more</a>
             </div>
-            <span onClick="togglePanel(this)">
+            <div onClick="togglePanel(this)">
                 <p><i class="fa-solid fa-code-fork"></i> Passed repository</p><p><i class="fa-solid fa-x"></i></p>
-            </span>
-            <div class="ChecklistContainer__Panel">
+            </div>
+            <div>
                 Whether your repository is public, so that your software is <b>A</b>ccessible.
+                <a href="https://fair-software.eu/recommendations/repository" target="_blank">Read more</a>
             </div>
-            <span onClick="togglePanel(this)">
+            <div onClick="togglePanel(this)">
                 <p><i class="fa-solid fa-list-check"></i> Passed checklist</p> <p><i class="fa-solid fa-x"></i></p>
-            </span>
-            <div class="ChecklistContainer__Panel">
+            </div>
+            <div>
                 Whether you have used a software quality checklist, so that your software is <b>I</b>nteroperable.
+                <a href="https://fair-software.eu/recommendations/checklist" target="_blank">Read more</a>
             </div>
-            <span onClick="togglePanel(this)">
+            <div onClick="togglePanel(this)">
                 <p><i class="fa-solid fa-quote-right"></i> Passed citation</p> <p><i class="fa-solid fa-x"></i></p>
-            </span>
-            <div class="ChecklistContainer__Panel">
+            </div>
+            <div>
                 Whether your repository contains a citation file, so that your software is <b>R</b>eusable.
-                <button onClick="createCreateCffTab()">Create citation.cff file</button>
+                <a href="https://fair-software.eu/recommendations/citation" target="_blank">Read more</a>
+                 <button onClick="createCreateCffTab()">Create citation.cff file</button>
             </div>
-            <span onClick="togglePanel(this)">
+            <div onClick="togglePanel(this)">
                 <p><i class="fa-solid fa-copyright"></i> Passed license</p> <p><i class="fa-solid fa-x"></i></p>
-            </span>
-            <div class="ChecklistContainer__Panel">
+            </div>
+            <div>
                 Whether you have a license file in your repository, so that your software is correctly <b>R</b>euasable.
+                <a href="https://fair-software.eu/recommendations/license" target="_blank">Read more</a>
             </div>
         </div>
-        <br>
-        <div class="CitationAlert">
-            
-        </div>
-        
 </div>
 
 <style>
@@ -6088,9 +2322,6 @@ for (var i = 0; i < details.length; ++i){
     .HowFairIsReport h1 {
         color: #0C281E;
         text-align: center;
-    }
-    .HowFairIsReportTitle{
-        color: 4
     }
 
     .HowFairIsReport h2 {
@@ -6110,7 +2341,8 @@ for (var i = 0; i < details.length; ++i){
     .ChecklistContainer p {
         margin: 0;
     }
-    .ChecklistContainer span {
+
+    .ChecklistContainer div:nth-child(2n-1){ 
         display: flex;
         margin-top: 8px;
         width: 100%;
@@ -6121,27 +2353,22 @@ for (var i = 0; i < details.length; ++i){
         cursor: pointer;
         transition: 0.4s;
     }
-    .ChecklistContainer span:hover{
+    .ChecklistContainer div:nth-child(2n-1):hover{ 
         background-color: #abd2c5;
     }
-    .ChecklistContainer__PanelHead--Active {
-        background-color: #abd2c5;
-        border-bottom-left-radius: 0 !important;
-        border-bottom-right-radius: 0 !important;
-    }
-
-    .CitationAlert {
-        width: 70%;
-        margin: auto;
-    }
-
-    .ChecklistContainer__Panel {
+    .ChecklistContainer div:nth-child(2n){ 
         padding: 0 18px;
         background-color: rgb(240, 240, 240);
         height: 0;
         overflow: hidden;
         transition: height 0.2s ease-out;
         border-radius: 0 0 8px 8px;
+    }
+
+    .ChecklistContainer__PanelHead--Active {
+        background-color: #abd2c5;
+        border-bottom-left-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
     }
 </style>
 
@@ -6153,64 +2380,123 @@ for (var i = 0; i < details.length; ++i){
         if (panel.style.height) {
             panel.style.height = null;
         } else {
-            panel.style.height = panel.scrollHeight.toString() + "px";
+            panel.style.height = (panel.scrollHeight + 5).toString() + "px";
         }
     }
 </script>
             <style>
+    .CreateCffContainer {
+        width: 100%;
+        height: 100%;
+        display: none;
+    }
+
     .Cffinit {
         width: 96%;
         height: 96%;
         border: none;
         margin: 2%;
         border-radius: 16px;
-        display: none;
+    }
+    
+    .CffinitPopup {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgb(0,0,0);
+        background-color: rgba(0,0,0,0.3);
+        border-radius: 16px;
+    }
+    
+    .CffinitPopup > div {
+        width: 80%;
+        margin: 20% auto;
+        padding: 3% 5%;
+        background-color: #fefefe;
+        border-radius: 100vw;
+        border: 1px solid #888;
+    }
+    .CffinitPopup > div > span {
+        color: #aaa;
+        float: right;
+        font-size: 2vw;
+        font-weight: bold;
+    }
+    .CffinitPopup > div > span:hover {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
     }
 </style>
 
 <script>
     function closeCreateCffTab(event) {
         document.getElementById("CreateCffTab").remove();
-        document.querySelector(".Cffinit").remove();
-
+        document.querySelector(".CreateCffContainer").remove();
+        
         let tab = document.getElementById("RightPaneNav").getElementsByTagName("li")[0];
         showTab(tab);
         
         event.stopPropagation();
     }
-
+    
     function createCreateCffTab() {
         let activeTab = getActiveTab();
         hideTab(activeTab);
-
+        
         let existingCffTab = document.getElementById("CreateCffTab");
         if (existingCffTab) {
             showTab(existingCffTab);
             return;
         }
 
+        const container = document.createElement("div");
+        container.classList.add("CreateCffContainer");
+        
+        const popup = document.createElement("div");
+        popup.classList.add("CffinitPopup");
+        popup.onclick = function () {
+            popup.style.display = "none";
+        };
+        const popupContent = document.createElement("div");
+        const popupClose = document.createElement("span");
+        popupClose.innerHTML = "&times;";
+        popupContent.appendChild(popupClose);
+        const popupText = document.createElement("p");
+        popupText.innerHTML = `Here you can fill out information about the project to generate a CITATION.cff file.
+            After downloading the file, you should put it in the root of the repository, so others
+            can easily cite your software correctly.`;
+        popupContent.appendChild(popupText);
+        popup.appendChild(popupContent);
+        
         const frame = document.createElement("iframe");
         frame.classList.add("Cffinit");
         frame.setAttribute("src", "https://citation-file-format.github.io/cff-initializer-javascript/#/start");
         frame.setAttribute("title", "Create CITATION.CFF file");
         frame.setAttribute("allowFullscreen", "false");
-        document.querySelector(".RightPaneWindow").appendChild(frame);
-
+        
+        container.appendChild(popup);
+        container.appendChild(frame);
+        document.querySelector(".RightPaneWindow").appendChild(container);
+        
         const tab = document.createElement("li");
         tab.setAttribute("onClick", "clickTab(this)");
-        tab.setAttribute("data-linked-class", "Cffinit");
+        tab.setAttribute("data-linked-class", "CreateCffContainer");
         tab.setAttribute("id", "CreateCffTab");
         tab.appendChild(document.createTextNode("Create CFF "));
-        const i = document.createElement("i");
-        i.setAttribute("onClick", "closeCreateCffTab(event)");
-        i.setAttribute("style", "margin-left: 0.7em; color: white");
-        i.classList.add("fa-solid");
-        i.classList.add("fa-x");
-        tab.appendChild(i);
+        const tabClose = document.createElement("i");
+        tabClose.setAttribute("onClick", "closeCreateCffTab(event)");
+        tabClose.setAttribute("style", "margin-left: 0.7em; color: white");
+        tabClose.classList.add("fa-solid");
+        tabClose.classList.add("fa-x");
+        tab.appendChild(tabClose);
         
         document.getElementById("RightPaneNav").appendChild(tab);
         showTab(tab);
     }
+
 </script>
 
             <div class="Quality">
@@ -6499,104 +2785,105 @@ for (var i = 0; i < details.length; ++i){
 
 </style>
 
-</body>
-<style>
-    h1,p {
-        color: #d9f8df;
-    }
-
-    body {
-        margin: 0;
-        padding: 0;
-        background: #b8d7cc;
-        overflow: hidden;
-    }
-
-    #BackgroundSphere1 {
-        height: 100vh;
-        width: 100vh;
-        background-color: #68be9f;
-        position: absolute;
-        bottom: -50vh;
-        left: 25vw;
-        border-radius: 50%;
-        z-index: -2;
-    }
     
-    a:visited {
-        color: #779c7e;
-    }
-
-
-    .Hidden {
-        display: none;
-    }
-
-    .SlideInLeft {
-        animation: slide-in-left 150ms ease 1 forwards;
-    }
-
-    .SlideInRight {
-        animation: slide-in-right 150ms ease 1 forwards;
-    }
-    .SlideOutLeft {
-        animation: slide-out-left 150ms ease 1 forwards;
-    }
-    .SlideOutRight {
-        animation: slide-out-right 150ms ease 1 forwards;
-    }
-
-    @keyframes fade-in {
-        0% {
-            opacity: 0;
+    <style>
+        h1,p {
+            color: #d9f8df;
         }
-        100% {
-            opacity: 1;
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background: #b8d7cc;
+            overflow: hidden;
         }
-    }
-
-    @keyframes slide-in-right {
-        0% {
-            opacity: 0;
-            translate: -150px;
+        
+        #BackgroundSphere1 {
+            height: 100vh;
+            width: 100vh;
+            background-color: #68be9f;
+            position: absolute;
+            bottom: -50vh;
+            left: 25vw;
+            border-radius: 50%;
+            z-index: -2;
         }
-        100% {
-            opacity: 1;
-            translate: 0px;
+        
+        a:visited {
+            color: #779c7e;
         }
-    }
-
-    @keyframes slide-in-left {
-        0% {
-            opacity: 0;
-            translate: 150px;
+        
+        
+        .Hidden {
+            display: none;
         }
-        100% {
-            opacity: 1;
-            translate: 0px;
+        
+        .SlideInLeft {
+            animation: slide-in-left 150ms ease 1 forwards;
         }
-    }
-
-    @keyframes slide-out-right {
-        0% {
-            opacity: 1;
-            translate: 0px;
+        
+        .SlideInRight {
+            animation: slide-in-right 150ms ease 1 forwards;
         }
-        100% {
-            opacity: 0;
-            translate: -150px;
+        .SlideOutLeft {
+            animation: slide-out-left 150ms ease 1 forwards;
         }
-    }
-
-    @keyframes slide-out-left {
-        0% {
-            opacity: 1;
-            translate: 0px;
+        .SlideOutRight {
+            animation: slide-out-right 150ms ease 1 forwards;
         }
-        100% {
-            opacity: 0;
-            translate: 150px;
+        
+        @keyframes fade-in {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
         }
-    }
-</style>
+        
+        @keyframes slide-in-right {
+            0% {
+                opacity: 0;
+                translate: -150px;
+            }
+            100% {
+                opacity: 1;
+                translate: 0px;
+            }
+        }
+        
+        @keyframes slide-in-left {
+            0% {
+                opacity: 0;
+                translate: 150px;
+            }
+            100% {
+                opacity: 1;
+                translate: 0px;
+            }
+        }
+        
+        @keyframes slide-out-right {
+            0% {
+                opacity: 1;
+                translate: 0px;
+            }
+            100% {
+                opacity: 0;
+                translate: -150px;
+            }
+        }
+        
+        @keyframes slide-out-left {
+            0% {
+                opacity: 1;
+                translate: 0px;
+            }
+            100% {
+                opacity: 0;
+                translate: 150px;
+            }
+        }
+    </style>
+</body>
 </html>

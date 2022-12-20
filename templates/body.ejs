@@ -1,105 +1,106 @@
 <body>
-
+    
     <!-- <div id="BackgroundSphere1"></div> -->
     <%- include('leftpane', {"data": data}) %>
     <%- include('rightpane', {"data": data})%>
-</body>
-<style>
-    h1,p {
-        color: #d9f8df;
-    }
-
-    body {
-        margin: 0;
-        padding: 0;
-        background: #b8d7cc;
-        overflow: hidden;
-    }
-
-    #BackgroundSphere1 {
-        height: 100vh;
-        width: 100vh;
-        background-color: #68be9f;
-        position: absolute;
-        bottom: -50vh;
-        left: 25vw;
-        border-radius: 50%;
-        z-index: -2;
-    }
     
-    a:visited {
-        color: #779c7e;
-    }
-
-
-    .Hidden {
-        display: none;
-    }
-
-    .SlideInLeft {
-        animation: slide-in-left 150ms ease 1 forwards;
-    }
-
-    .SlideInRight {
-        animation: slide-in-right 150ms ease 1 forwards;
-    }
-    .SlideOutLeft {
-        animation: slide-out-left 150ms ease 1 forwards;
-    }
-    .SlideOutRight {
-        animation: slide-out-right 150ms ease 1 forwards;
-    }
-
-    @keyframes fade-in {
-        0% {
-            opacity: 0;
+    <style>
+        h1,p {
+            color: #d9f8df;
         }
-        100% {
-            opacity: 1;
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background: #b8d7cc;
+            overflow: hidden;
         }
-    }
-
-    @keyframes slide-in-right {
-        0% {
-            opacity: 0;
-            translate: -150px;
+        
+        #BackgroundSphere1 {
+            height: 100vh;
+            width: 100vh;
+            background-color: #68be9f;
+            position: absolute;
+            bottom: -50vh;
+            left: 25vw;
+            border-radius: 50%;
+            z-index: -2;
         }
-        100% {
-            opacity: 1;
-            translate: 0px;
+        
+        a:visited {
+            color: #779c7e;
         }
-    }
-
-    @keyframes slide-in-left {
-        0% {
-            opacity: 0;
-            translate: 150px;
+        
+        
+        .Hidden {
+            display: none;
         }
-        100% {
-            opacity: 1;
-            translate: 0px;
+        
+        .SlideInLeft {
+            animation: slide-in-left 150ms ease 1 forwards;
         }
-    }
-
-    @keyframes slide-out-right {
-        0% {
-            opacity: 1;
-            translate: 0px;
+        
+        .SlideInRight {
+            animation: slide-in-right 150ms ease 1 forwards;
         }
-        100% {
-            opacity: 0;
-            translate: -150px;
+        .SlideOutLeft {
+            animation: slide-out-left 150ms ease 1 forwards;
         }
-    }
-
-    @keyframes slide-out-left {
-        0% {
-            opacity: 1;
-            translate: 0px;
+        .SlideOutRight {
+            animation: slide-out-right 150ms ease 1 forwards;
         }
-        100% {
-            opacity: 0;
-            translate: 150px;
+        
+        @keyframes fade-in {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
         }
-    }
-</style>
+        
+        @keyframes slide-in-right {
+            0% {
+                opacity: 0;
+                translate: -150px;
+            }
+            100% {
+                opacity: 1;
+                translate: 0px;
+            }
+        }
+        
+        @keyframes slide-in-left {
+            0% {
+                opacity: 0;
+                translate: 150px;
+            }
+            100% {
+                opacity: 1;
+                translate: 0px;
+            }
+        }
+        
+        @keyframes slide-out-right {
+            0% {
+                opacity: 1;
+                translate: 0px;
+            }
+            100% {
+                opacity: 0;
+                translate: -150px;
+            }
+        }
+        
+        @keyframes slide-out-left {
+            0% {
+                opacity: 1;
+                translate: 0px;
+            }
+            100% {
+                opacity: 0;
+                translate: 150px;
+            }
+        }
+    </style>
+</body>
