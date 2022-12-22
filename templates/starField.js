@@ -232,28 +232,18 @@ function renderStarField() {
                             return "1px";
                 });
         })
-        .on("click", function (d) {    
-            // d3.selectAll("#body.leftpane-citationgraph.CitationgraphInfo.CitationsContainer ActiveTab.Citations.Citation")
-            //     .style("display", "");
+        .on("click", function (d) {   
             const citationContainer = d3.select("body").select(".LeftPane").select(".CitationgraphInfo").select(".CitationsContainer");
-            // const citationTable = d3.select("body").select(".LeftPane").select(".CitationgraphInfo").select(".CitationsContainer").select(".Citations");
-            // const citations =  d3.select("body").select(".LeftPane").select(".CitationgraphInfo").select(".CitationsContainer").select(".Citations").select("tbody").selectAll(".Citation");
-            // citations.style("visibility", "hidden");
-            // const description = citations.selectAll(".info1").selectAll(".description");
-            // // description.style("visibility", "visible");
-            // description.filter(function(){
-            //     // return /Collected from SemanticScholar/.test(d3.select(this).text());
-            //     return d3.select(this).text().includes("OpenAlex");
-            // })
-            // .style("visibility", "visible");
-            // citationTable.remove()
+            // make sure previous generated Citation is removed
             citationContainer.selectAll(".Citation").remove();
 
+            // nodes that aren't fields
             if (d.id > input.uniqueFields.length) {
                 var html =  "<h3>Title</h3><h2>" + input.papers[d.id - input.uniqueFields.length].title + "</h2>"
                 if(input.papers[d.id - input.uniqueFields.length].year !== null){
                     html += "<h3>Year</h3><h2>" + input.papers[d.id - input.uniqueFields.length].year + "</h2>"
                 }
+                // add Citation element and append html to show data of citation
                 citationContainer
                     .append("div")
                     .classed("Citation", true)
