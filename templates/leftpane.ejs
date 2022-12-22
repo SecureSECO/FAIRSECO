@@ -7,9 +7,10 @@
     
     <% const citations = data.find((ele) => (ele.ReturnName === "citingPapers"))?.ReturnData.papers; %>
     <% const licences = data.find((ele) => (ele.ReturnName === "Tortellini"))?.ReturnData; %>
+    <% const sbom = data.find((ele) => (ele.ReturnName === "SBOM"))?.ReturnData; %>
     <%- include('citations', {"citations": citations}) %>
     <%- include('licences', {"licences": licences}) %>
-    <%- include('SBOM') %>
+    <%- include('SBOM', {"SBOM": sbom}) %>
     <%- include('footer') %>
 
 </div>

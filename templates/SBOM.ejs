@@ -1,3 +1,133 @@
+<%
+
+// Node in the tree view
+class Node {
+      constructor(id, name, parents, children) {
+        this.id = id;
+        this.name = name;
+        this.parents = parents;
+        this.children = children;
+      }
+}
+
+let graph = new Map()
+
+// First for each package get their name and make a node. (We'll miss the root node, so we'll need to do that as well later.)
+SBOM.packages.forEach((p) => {
+        if (graph.get(p.SPDXID) === undefined){
+                graph.set(p.SPDXID, new Node(p.SPDXID, p.name, [], []));
+        }
+})
+
+// Now we iterate over all the relationships and ensure that each node has the appropriate parent and children.
+SBOM.relationships.forEach((rel) => {
+if (rel.relationshipType === "CONTAINS") {
+        if (graph.get(rel.spdxElementId) === undefined){
+                graph.set(rel.spdxElementId, new Node(rel.spdxElementId, "Your Project", [], []));
+        }
+        if (graph.get(rel.relatedSpdxElement) === undefined){
+                graph.set(rel.relatedSpdxElement, new Node(rel.relatedSpdxElement,"", [], []));
+        }
+        let newParent = graph.get(rel.spdxElementId)
+        newParent.children.push(rel.relatedSpdxElement)
+        let newChild = graph.get(rel.relatedSpdxElement)
+        newChild.parents.push(rel.spdxElementId)
+        graph.set(
+            rel.spdxElementId, newParent
+        )
+        graph.set(
+            rel.relatedSpdxElement, newChild
+        )
+    }
+})
+
+// To begin our tree, we need to find the root. We pick the first node and ascend the parents until we find the root element.
+let rootelem = graph.keys().next().value;
+while (graph.get(rootelem).parents.length){
+    rootelem = graph.get(rootelem).parents[0];
+}
+%>
+
+
+<script>
+function expandItem(ele){
+    console.log(ele);
+    Array.from(ele.children).forEach(e => {
+        e.classList.toggle("Hidden");
+    });
+    let sbomitem = ele.parentElement.parentElement.parentElement;
+    sbomitem.classList.toggle("Expanded");
+    let childrenSection = sbomitem.children[1];
+    childrenSection.classList.toggle("Hidden");
+}
+</script>
 <div class="SBOMContainer Hidden">
-    <h1>Work in Progress</h1>
+    <%- include('SBOMItem', {"grapharr": Array.from(graph), parent: rootelem, lastItem : false})%>
 </div>
+
+<style>
+.SBOMContainer{
+    padding: 16px;
+    overflow-y: scroll;
+    height: 70%;
+    -webkit-mask-image: linear-gradient( to bottom, black 90%, transparent 100% );
+    mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+}
+
+.ButtonAndSPDX {
+display: flex;
+flex-direction: row;
+}
+
+.SBOMSPDX{
+    margin: 0px 8px;
+}
+
+.SBOMItem {
+    position: relative;
+}
+
+.SBOMParent {
+    border: 2px #779C7E solid;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 4px 8px;
+    max-width: 48vw;
+    margin: 4px;
+    position: relative;
+}
+
+.SBOMChildList > .SBOMItem::before{
+    content: "├";
+    color: #779C7E;
+    left: -30px;
+    top: -15px;
+    font-size: 3rem;
+    position: absolute;
+}
+
+.SBOMItem .SBOMItem.Expanded > .SBOMChildList::before {
+    content: " ";
+    height: 100%;
+    border-left: 4px #779C7E solid;
+    left: -18px;
+    top: 40px;
+    font-size: 3rem;
+    position: absolute;
+}
+
+.SBOMChildList > .SBOMItem.LastChild::before{
+    content: "└";
+}
+
+.SBOMChildList {
+    margin-left: 36px;
+}
+
+.SBOMParent p {
+    margin: 8px 0;
+    padding: 0;
+}
+</style>
