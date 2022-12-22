@@ -1,0 +1,6 @@
+<div class="SearchSeco__Method<%- !method.vulnerable ? ' SearchSeco__Method--NotVulnerable' : '' %>">
+    <h2><%- method.data.name %> (<%- method.data.file %>:<%- method.data.line %>)<%- method.vulnerable ? ' <i class="fa-solid fa-file-circle-exclamation"></i>' : '' %></h2> Matches: <%- method.matches.length %>
+    <% for (const match of method.matches) { %>
+        <%- include('searchseco-match', {"match": match}); %>
+    <% } %>
+</div>

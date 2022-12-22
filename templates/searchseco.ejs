@@ -1,12 +1,65 @@
-<div class="SearchSeco Hidden">
-    SearchSECO
-</div>
+<%
+    searchseco.methods = searchseco.methods.sort((a, b) => { return b.matches.length - a.matches.length; });
+    for (let i = 0; i < searchseco.methods.length; i++) {
+        let method = searchseco.methods[i];
 
+        for (const match of method.matches) {
+            if (match.vuln.code != -1) {
+                method.vulnerable = true;
+                break;
+            }
+        }
+    }
+%>
+
+<div class="SearchSeco Hidden">
+    <div class="SearchSeco__Nav">
+        <button class="SearchSeco__Nav__Tab" onClick="searchSecoShowMethods()" data-linked-class="SearchSeco__Methods"><i class="fa-solid fa-file-code"></i> Methods</button>
+        <button class="SearchSeco__Nav__Tab" data-linked-class="SearchSeco__Projects"><i class="fa-solid fa-box-archive"></i> Projects</button>
+        <button class="SearchSeco__Nav__Tab" onClick="searchSecoShowVulnerableMethods()" data-linked-class="SearchSeco__Vulnerabilities"><i class="fa-solid fa-file-circle-exclamation"></i> Vulnerabilities</button>
+    </div>
+    <div class="SearchSeco__Methods">
+        <% for (const method of searchseco.methods) { %>
+        <%- include('searchseco-method', { "method": method }); %>
+        <% } %>
+    </div>
+    <div class="SearchSeco__Projects">
+        
+    </div>
+</div>
 
 <style>
     .SearchSeco {
         width: 100%;
+        height: 76%;
+        -webkit-mask-image: linear-gradient( to bottom, black 90%, transparent 100% );
+        mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+        overflow-y: scroll;
+    }
+
+    .SearchSeco__Methods {
+        width: 100%;
         height: 100%;
-        background-color: blue;
+    }
+    .SearchSeco__Method {
+        width: 90%;
+        color: white;
+    }
+    .SearchSeco__Methods--HideNonVulnerable > .SearchSeco__Method--NotVulnerable {
+        display: none
+    }
+
+    .SearchSeco__Match {
+        
     }
 </style>
+
+<script>
+    function searchSecoShowVulnerableMethods() {
+        document.querySelector(".SearchSeco__Methods").classList.add("SearchSeco__Methods--HideNonVulnerable");
+    }
+
+    function searchSecoShowMethods() {
+        document.querySelector(".SearchSeco__Methods").classList.remove("SearchSeco__Methods--HideNonVulnerable");
+    }
+</script>
