@@ -1,3 +1,26 @@
-<div class="SearchSeco__Match">
-    <h3><%- match.data.name %> (<%- match.data.file %>:<%- match.data.line %>)<%- match.vulnerable ? ' <i class="fa-solid fa-file-circle-exclamation"></i>' : '' %></h3>
+<div class="SearchSeco__Match SearchSeco__ArrowOwner">
+    <div class="SearchSeco__Match__Header">
+        <h2>
+            <i class="fa-solid fa-angle-right" onClick="searchSecoClickArrow(event)"></i><%- match.data.project %> -> <%- match.data.name %> (<%- match.data.file %>:<%- match.data.line %>)
+        </h2>
+        <%- match.vuln.code !== -1 ? '<span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability reported</span>' : '' %>
+    </div>
+    <div class="SearchSeco__ArrowTarget" hidden>
+        <% if (match.vuln.code !== -1) { %>
+            <br>
+            <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability <%- match.vuln.code %> reported: <a href="<%- match.vuln.url %>"><%- match.vuln.url %></a></span> 
+            <br>
+            <br>
+        <% } %>
+        <% if (match.data.authors.length > 0) { %>
+            Authors: 
+            <ul>
+                <% for (const author of match.data.authors) { %>
+                    <li><%- author %></li>
+                <% } %>
+            </ul>
+        <% } else { %>
+            Authors unknown
+        <% } %>
+    </div>
 </div>
