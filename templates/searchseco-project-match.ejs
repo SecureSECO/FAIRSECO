@@ -1,11 +1,5 @@
-<div class="SearchSeco__Match<%- match.vuln.code === -1 ? ' SearchSeco--NotVulnerable' : '' %>">
-    <div class="SearchSeco__Match__Header">
-        <h2>Project: <%- match.data.project %></h2>
-        <%- match.vuln.code !== -1 ? '<span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability reported</span>' : '' %>
-    </div>
-    Method: <%- match.data.name %> (<%- match.data.file %>:<%- match.data.line %>)
-    <br>
-    <%- ((authors) => {
+<%
+    function showAuthors(authors) {
         if (authors.length === 0) {
             return "Authors unknown"
         } else if (authors.length === 1) {
@@ -17,7 +11,18 @@
             }
             return str + authors[authors.length - 1];
         }
-    })(match.data.authors) %>
+    }
+%>
+<div class="SearchSeco__Match<%- match.vuln.code === -1 ? ' SearchSeco--NotVulnerable' : '' %>">
+    <div class="SearchSeco__Match__Header">
+        <h2><%- match.data.name %> (<%- match.data.file %>:<%- match.data.line %>)</h2>
+        <%- match.vuln.code !== -1 ? '<span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability reported</span>' : '' %>
+    </div>
+    <%- showAuthors(match.data.authors)%>
+    <br>
+    <br>
+    <h3>Matches your <%- yourMethod.data.name %> (<%- yourMethod.data.file %>:<%- yourMethod.data.line %>)</h3>
+    <%- showAuthors(yourMethod.data.authors) %>
     <% if (match.vuln.code !== -1) { %>
         <br>
         <br>

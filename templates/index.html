@@ -13244,125 +13244,201 @@ flex-direction: row;
     
 
 <div class="SearchSeco Hidden">
+    <h1>Total matches: 3</h1>
     <div class="SearchSeco__Nav">
-        <button class="SearchSeco__Nav__Tab" onClick="searchSecoShowMethods()" data-linked-class="SearchSeco__Methods"><i class="fa-solid fa-file-code"></i> Methods</button>
-        <button class="SearchSeco__Nav__Tab" data-linked-class="SearchSeco__Projects"><i class="fa-solid fa-box-archive"></i> Projects</button>
-        <button class="SearchSeco__Nav__Tab" onClick="searchSecoShowVulnerableMethods()" data-linked-class="SearchSeco__Vulnerabilities"><i class="fa-solid fa-file-circle-exclamation"></i> Vulnerabilities</button>
+        <button class="SearchSeco__Nav__Button--Active" id="SearchSeco__MethodsButton" onClick="searchsecoShowMethods()" data-linked-class="SearchSeco__Methods"><i class="fa-solid fa-file-code"></i> Methods</button>
+        <button id="SearchSeco__ProjectsButton" onClick="searchsecoShowProjects()" data-linked-class="SearchSeco__Projects"><i class="fa-solid fa-box-archive"></i> Projects</button>
+        <div style="display: flex; flex-direction: row; align-items: center">
+            <input type="checkbox" id="SearchSeco_ToggleShowVulnerable" onclick="searchsecoToggleShowVulnerabilities()">
+            <label for="SearchSeco_ToggleShowVulnerable">Show vulnerabilities only<br>2 matches / 1 method / 2 projects</label>
+        </div>
     </div>
-    <div class="SearchSeco__Methods">
-        <h1>2 of your methods found matches</h1>
-        <p>Showing vulnerable methods only (1)</p>
+    <div class="SearchSeco__List SearchSeco__MethodList">
+        <p>2 of your methods found matches</p>
+
         
-        <div class="SearchSeco__Method SearchSeco__ArrowOwner">
-    <div class="SearchSeco__Method__Header">
-        <div class="SearchSeco__Method__Header__Start">
+        <div class="SearchSeco__ListObject SearchSeco__ArrowOwner">
+    <div class="SearchSeco__ListObject__Header">
+        <div class="SearchSeco__ListObject__Header__Start">
             <h1>
                 <i class="fa-solid fa-angle-right" onClick="searchSecoClickArrow(event)"></i>parseInput (searchseco.ts:110)
             </h1>
-            <span><i class="fa-solid fa-file-circle-exclamation"></i> Vulnerable</span>
-            2 matches
+            <p>
+                <span><i class="fa-solid fa-file-circle-exclamation"></i> Vulnerable</span>
+                2 matches
+            </p>
         </div>
         Author: Quinn Donkers
     </div>
-    <div class="SearchSeco__Method__MatchList SearchSeco__ArrowTarget" hidden>
+    <div class="SearchSeco__ListObject__MatchList SearchSeco__ArrowTarget" hidden>
         
-        <div class="SearchSeco__Match SearchSeco__ArrowOwner">
+        <div class="SearchSeco__Match">
     <div class="SearchSeco__Match__Header">
-        <h2>
-            <i class="fa-solid fa-angle-right" onClick="searchSecoClickArrow(event)"></i>SearchSECOController -> parseInput (parse.cpp:33)
-        </h2>
+        <h2>Project: SearchSECOController</h2>
         <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability reported</span>
     </div>
-    <div class="SearchSeco__ArrowTarget" hidden>
-        
-            <br>
-            <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability 123 reported: <a href="https://www.url-of-vulnerability.com">https://www.url-of-vulnerability.com</a></span> 
-            <br>
-            <br>
-        
-        
-            Authors: 
-            <ul>
-                
-                    <li>Rowin Schouten</li>
-                
-                    <li>Tjibbe Bolhuis</li>
-                
-            </ul>
-        
-    </div>
+    Method: parseInput (parse.cpp:33)
+    <br>
+    Authors: Rowin Schouten, Tjibbe Bolhuis
+    
+        <br>
+        <br>
+        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability 123 reported: <a href="https://www.url-of-vulnerability.com">https://www.url-of-vulnerability.com</a></span> 
+    
 </div>
         
-        <div class="SearchSeco__Match SearchSeco__ArrowOwner">
+        <div class="SearchSeco__Match">
     <div class="SearchSeco__Match__Header">
-        <h2>
-            <i class="fa-solid fa-angle-right" onClick="searchSecoClickArrow(event)"></i>TrustSECO -> Parse (parser.cs:39)
-        </h2>
+        <h2>Project: TrustSECO</h2>
         <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability reported</span>
     </div>
-    <div class="SearchSeco__ArrowTarget" hidden>
-        
-            <br>
-            <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability 246 reported: <a href="https://www.url-of-vulnerability.com">https://www.url-of-vulnerability.com</a></span> 
-            <br>
-            <br>
-        
-        
-            Authors: 
-            <ul>
-                
-                    <li>Bram Lankhorst</li>
-                
-                    <li>Valia Bykova</li>
-                
-            </ul>
-        
-    </div>
+    Method: Parse (parser.cs:39)
+    <br>
+    Authors: Bram Lankhorst, Valia Bykova
+    
+        <br>
+        <br>
+        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability 246 reported: <a href="https://www.url-of-vulnerability.com">https://www.url-of-vulnerability.com</a></span> 
+    
 </div>
         
     </div>
 </div>
         
-        <div class="SearchSeco__Method SearchSeco__ArrowOwner SearchSeco__Method--NotVulnerable">
-    <div class="SearchSeco__Method__Header">
-        <div class="SearchSeco__Method__Header__Start">
+        <div class="SearchSeco__ListObject SearchSeco__ArrowOwner SearchSeco--NotVulnerable">
+    <div class="SearchSeco__ListObject__Header">
+        <div class="SearchSeco__ListObject__Header__Start">
             <h1>
                 <i class="fa-solid fa-angle-right" onClick="searchSecoClickArrow(event)"></i>getMethodInfo (searchseco.ts:180)
             </h1>
-            
-            1 match
+            <p>
+                
+                1 match
+            </p>
         </div>
         Author: Bart Hageman
     </div>
-    <div class="SearchSeco__Method__MatchList SearchSeco__ArrowTarget" hidden>
+    <div class="SearchSeco__ListObject__MatchList SearchSeco__ArrowTarget" hidden>
         
-        <div class="SearchSeco__Match SearchSeco__ArrowOwner">
+        <div class="SearchSeco__Match SearchSeco--NotVulnerable">
     <div class="SearchSeco__Match__Header">
-        <h2>
-            <i class="fa-solid fa-angle-right" onClick="searchSecoClickArrow(event)"></i>searchseco-output-parser -> getInfo (parseOutput.js:88)
-        </h2>
+        <h2>Project: searchseco-output-parser</h2>
         
     </div>
-    <div class="SearchSeco__ArrowTarget" hidden>
-        
-        
-            Authors: 
-            <ul>
-                
-                    <li>Alina Aydin</li>
-                
-                    <li>Jarno Hendriksen</li>
-                
-            </ul>
-        
-    </div>
+    Method: getInfo (parseOutput.js:88)
+    <br>
+    Authors: Alina Aydin, Jarno Hendriksen
+    
 </div>
         
     </div>
 </div>
         
     </div>
-    <div class="SearchSeco__Projects">
+    <div class="SearchSeco__List SearchSeco__ProjectList" hidden>
+        <p>Your methods found matches with 3 projects</p>
+
+        
+        <div class="SearchSeco__ListObject SearchSeco__ArrowOwner">
+    <div class="SearchSeco__ListObject__Header">
+        <div class="SearchSeco__ListObject__Header__Start">
+            <h1>
+                <i class="fa-solid fa-angle-right" onClick="searchSecoClickArrow(event)"></i>SearchSECOController
+            </h1>
+            <p>
+                <span><i class="fa-solid fa-file-circle-exclamation"></i> Vulnerable   </span>
+                1 match
+            </p>
+        </div>
+    </div>
+    <div class="SearchSeco__ListObject__MatchList SearchSeco__ArrowTarget" hidden>
+        
+        
+<div class="SearchSeco__Match">
+    <div class="SearchSeco__Match__Header">
+        <h2>parseInput (parse.cpp:33)</h2>
+        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability reported</span>
+    </div>
+    Authors: Rowin Schouten, Tjibbe Bolhuis
+    <br>
+    <br>
+    <h3>Matches your parseInput (searchseco.ts:110)</h3>
+    Author: Quinn Donkers
+    
+        <br>
+        <br>
+        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability 123 reported: <a href="https://www.url-of-vulnerability.com">https://www.url-of-vulnerability.com</a></span> 
+    
+</div>
+        
+    </div>
+</div>
+        
+        <div class="SearchSeco__ListObject SearchSeco__ArrowOwner">
+    <div class="SearchSeco__ListObject__Header">
+        <div class="SearchSeco__ListObject__Header__Start">
+            <h1>
+                <i class="fa-solid fa-angle-right" onClick="searchSecoClickArrow(event)"></i>TrustSECO
+            </h1>
+            <p>
+                <span><i class="fa-solid fa-file-circle-exclamation"></i> Vulnerable   </span>
+                1 match
+            </p>
+        </div>
+    </div>
+    <div class="SearchSeco__ListObject__MatchList SearchSeco__ArrowTarget" hidden>
+        
+        
+<div class="SearchSeco__Match">
+    <div class="SearchSeco__Match__Header">
+        <h2>Parse (parser.cs:39)</h2>
+        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability reported</span>
+    </div>
+    Authors: Bram Lankhorst, Valia Bykova
+    <br>
+    <br>
+    <h3>Matches your parseInput (searchseco.ts:110)</h3>
+    Author: Quinn Donkers
+    
+        <br>
+        <br>
+        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability 246 reported: <a href="https://www.url-of-vulnerability.com">https://www.url-of-vulnerability.com</a></span> 
+    
+</div>
+        
+    </div>
+</div>
+        
+        <div class="SearchSeco__ListObject SearchSeco__ArrowOwner SearchSeco--NotVulnerable">
+    <div class="SearchSeco__ListObject__Header">
+        <div class="SearchSeco__ListObject__Header__Start">
+            <h1>
+                <i class="fa-solid fa-angle-right" onClick="searchSecoClickArrow(event)"></i>searchseco-output-parser
+            </h1>
+            <p>
+                
+                1 match
+            </p>
+        </div>
+    </div>
+    <div class="SearchSeco__ListObject__MatchList SearchSeco__ArrowTarget" hidden>
+        
+        
+<div class="SearchSeco__Match SearchSeco--NotVulnerable">
+    <div class="SearchSeco__Match__Header">
+        <h2>getInfo (parseOutput.js:88)</h2>
+        
+    </div>
+    Authors: Alina Aydin, Jarno Hendriksen
+    <br>
+    <br>
+    <h3>Matches your getMethodInfo (searchseco.ts:180)</h3>
+    Author: Bart Hageman
+    
+</div>
+        
+    </div>
+</div>
         
     </div>
 </div>
@@ -13370,31 +13446,51 @@ flex-direction: row;
 <style>
     .SearchSeco {
         width: 100%;
-        height: 76%;
+        height: 70%;
         -webkit-mask-image: linear-gradient( to bottom, black 90%, transparent 100% );
         mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
         overflow: hidden scroll;
         word-break: break-word;
     }
+    .SearchSeco--HideNonVulnerable .SearchSeco--NotVulnerable {
+        display: none;
+    }
 
-    .SearchSeco__Methods {
+    .SearchSeco__Nav {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-left: 1%;
+    }
+    .SearchSeco__Nav > * {
+        margin-right: 0.6vw;
+        font-size: 1vw;
+    }
+    .SearchSeco__Nav button {
+        padding: 0.5vw;
+    }
+    .SearchSeco__Nav__Button--Active {
+        background-color: lightgreen;
+    }
+    .SearchSeco__Nav input {
+        width: 1.15vw;
+        height: 1.15vw;
+    }
+    .SearchSeco__Nav label {
+        color: #D9F8DF;
+        font-size: 0.8vw;
+        margin-left: 0.4vw;
+    }
+
+    .SearchSeco__List {
         width: 98%;
         margin: 1%;
     }
-    .SearchSeco__Methods--HideNonVulnerable > .SearchSeco__Method--NotVulnerable {
-        display: none
-    }
-    .SearchSeco__Methods > p {
-        display: none
-    }
-    .SearchSeco__Methods--HideNonVulnerable > p {
-        display: block
-    }
-    .SearchSeco__Methods h1 {
-        font-size: 1.75vw;
+    .SearchSeco__List h1 {
+        font-size: 1.7vw;
     }
 
-    .SearchSeco__Method__Header {
+    .SearchSeco__ListObject__Header {
         color: #D9F8DF;
         font-size: 0.9vw;
         background-color: #47715A;
@@ -13405,7 +13501,7 @@ flex-direction: row;
         margin-top: 5px;
         margin-bottom: 5px;
     }
-    .SearchSeco__Method__Header__Start {
+    .SearchSeco__ListObject__Header__Start {
         width: 100%;
         display: flex;
         flex-direction: row;
@@ -13413,35 +13509,35 @@ flex-direction: row;
         align-items: center;
         flex-wrap: wrap;
     }
-    .SearchSeco__Method__Header h1 {
+    .SearchSeco__ListObject__Header h1 {
         font-size: 1.2vw;
     }
-    .SearchSeco__Method__Header h1 i {
+    .SearchSeco__ListObject__Header h1 i {
         font-size: 1.5vw;
         width: 1.8vw;
         margin-left: -1.8vw;
         text-align: center;
     }
-    .SearchSeco__Method__Header h1 i:hover {
+    .SearchSeco__ListObject__Header h1 i:hover {
         color: #b8d7cc;
         cursor: pointer;
     }
-    .SearchSeco__Method__Header span {
+    .SearchSeco__ListObject__Header span {
+        margin-right: 1.5vw;
         color: yellow;
     }
-    .SearchSeco__Method__MatchList {
+    .SearchSeco__ListObject__MatchList {
         width: 95%;
         margin-left: 5%;
     }
 
     .SearchSeco__Match {
         color: #D9F8DF;
-        font-size: 0.75vw;
+        font-size: 0.85vw;
         background-color: #47715A;
         border: 1px solid #779C7E;
         border-radius: 7px;
         padding: 5px;
-        padding-left: calc(1.8vw + 5px);
         margin-top: 5px;
         margin-bottom: 5px;
     }
@@ -13459,25 +13555,39 @@ flex-direction: row;
     .SearchSeco__Match__Header h2 {
         font-size: 1vw;
     }
-    .SearchSeco__Match__Header h2 i {
-        font-size: 1.25vw;
-        width: 1.5vw;
-        margin-left: -1.5vw;
-        text-align: center;
+    .SearchSeco__Match h3 {
+        font-size: 0.9vw;
     }
-    .SearchSeco__Match__Header h2 i:hover {
-        color: #b8d7cc;
-        cursor: pointer;
+    .SearchSeco__Match a {
+        color: greenyellow;
     }
 </style>
 
 <script>
-    function searchSecoShowVulnerableMethods() {
-        document.querySelector(".SearchSeco__Methods").classList.add("SearchSeco__Methods--HideNonVulnerable");
+    const searchseco = document.querySelector(".SearchSeco");
+    const searchsecoMethodsButton = document.getElementById("SearchSeco__MethodsButton");
+    const searchsecoProjectsButton = document.getElementById("SearchSeco__ProjectsButton");
+    const searchsecoMethodList = document.querySelector(".SearchSeco__MethodList");
+    const searchsecoProjectList = document.querySelector(".SearchSeco__ProjectList");
+
+    function searchsecoToggleShowVulnerabilities() {
+        searchseco.classList.toggle("SearchSeco--HideNonVulnerable");
     }
 
-    function searchSecoShowMethods() {
-        document.querySelector(".SearchSeco__Methods").classList.remove("SearchSeco__Methods--HideNonVulnerable");
+    function searchsecoShowMethods() {
+        searchsecoProjectList.hidden = true;
+        searchsecoMethodList.hidden = false;
+        
+        searchsecoProjectsButton.classList.remove("SearchSeco__Nav__Button--Active");
+        searchsecoMethodsButton.classList.add("SearchSeco__Nav__Button--Active");
+    }
+
+    function searchsecoShowProjects() {
+        searchsecoMethodList.hidden = true;
+        searchsecoProjectList.hidden = false;
+        
+        searchsecoMethodsButton.classList.remove("SearchSeco__Nav__Button--Active");
+        searchsecoProjectsButton.classList.add("SearchSeco__Nav__Button--Active");
     }
 
     function searchSecoClickArrow(event) {
