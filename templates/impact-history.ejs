@@ -1,0 +1,153 @@
+<%
+    const count = history.length;
+
+    const quality = history[count - 1].quality;
+    const citations = history[count - 1].citations;
+    const fairness = history[count - 1].fairness;
+    const matches = history[count - 1].matches;
+
+    const qualityChange = count <= 1 ? quality : quality - history[count - 2].quality;
+    const citationsChange = count <= 1 ? citations : citations - history[count - 2].citations;
+    const fairnessChange = count <= 1 ? fairness : fairness - history[count - 2].fairness;
+    const matchesChange = count <= 1 ? matches : matches - history[count - 2].matches;
+
+    function showChange(change) {
+        return change >= 0 ? "+" + change : change;
+    }
+%>
+
+<div class="ImpactHistory">
+    <h1>Impact History</h1>
+    <h2>Overview</h2>
+    <div class="ImpactHistory__Overview">
+        <div>
+            <h3>Quality Score</h3>
+            <%- quality %>%
+            <div>
+                <b><%- showChange(qualityChange) %>%</b><br>since last time
+            </div>
+        </div>
+        <div>
+            <h3>Citations</h3>
+            <%- citations %>
+            <div>
+                <b><%- showChange(citationsChange) %></b><br>since last time
+            </div>
+        </div>
+        <div>
+            <h3>FAIRness</h3>
+            <% for (let i = 0; i < Math.floor(fairness); i++) { %>
+                <i class="fa-solid fa-star"></i>
+            <% } %>
+            <% if (fairness % 1 > 0) {%>
+                <i class="fa-solid fa-star-half-stroke"></i>
+            <%}%> 
+            <% for (let i = 0; i < (5 - Math.ceil(fairness)); i++) { %>
+                <i class="fa-regular fa-star"></i>
+            <% } %>
+            <div>
+                <b><%- showChange(fairnessChange) %> <i class="fa-solid fa-star"></i></b><br>since last time
+            </div>
+        </div>
+        <div>
+            <h3>Method Matches</h3>
+            <%- matches %>
+            <div>
+                <b><%- showChange(matchesChange) %></b><br>since last time
+            </div>
+        </div>
+    </div>
+    <div class="ImpactHistory__QualityFairness">
+        <div>
+            <h2>Quality Score</h2>
+            <div></div>
+        </div>
+        <div>
+            <h2>FAIRness</h2>
+            <div></div>
+        </div>
+    </div>
+    <h2>Citations</h2>
+    <div class="ImpactHistory__Citations"></div>
+    <h2>Method Matches</h2>
+    <div class="ImpactHistory__Matches"></div>
+</div>
+
+
+<style>
+.ImpactHistory {
+    display: none;
+    width: 85%;
+    height: 100%;
+    margin: auto;
+}
+.ImpactHistory h1 {
+    color: #0C281E;
+    text-align: center;
+    margin: 2.5%;
+    font-size: 2vw;
+}
+.ImpactHistory h2 {
+    color: #0C281E;
+    font-size: 1.1vw;
+    margin-bottom: 0.3vw;
+}
+
+.ImpactHistory__Overview {
+    width: 100%;
+    margin-top: 0.75vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    font-size: 0.9vw;
+}
+.ImpactHistory__Overview > div {
+    width: 8vw;
+    height: 8vw;
+    border: 2px solid #5a9575;
+    border-radius: 16px;
+    text-align: center;
+}
+.ImpactHistory__Overview > div > h3 {
+    color: #0C281E;
+    font-size: 0.85vw;
+    margin-top: 0.35vw;
+    margin-bottom: 0;
+}
+.ImpactHistory__Overview > div > div {
+    width: 100%;
+    color: #5a9575;
+    border-top: 1px solid #5a9575;
+    padding-top: 0.5vw;
+}
+.ImpactHistory__Overview > div > div b {
+    font-size: 1.4vw;
+    color: #0C281E;
+}
+
+.ImpactHistory__QualityFairness {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.ImpactHistory__QualityFairness > div {
+    width: 50%;
+}
+.ImpactHistory__QualityFairness > div > div {
+    width: 95%;
+    height: 8vw;
+    background-color: lightblue;
+}
+
+.ImpactHistory__Citations {
+    width: 100%;
+    height: 5vw;
+    background-color: lightblue;
+}
+.ImpactHistory__Matches {
+    width: 100%;
+    height: 5vw;
+    background-color: lightblue;
+}
+</style>
