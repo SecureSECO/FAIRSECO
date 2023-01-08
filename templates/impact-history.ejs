@@ -1,5 +1,7 @@
 <%
     const count = history.length;
+    
+    const date = history[count- 1].date;
 
     const quality = history[count - 1].quality;
     const citations = history[count - 1].citations;
@@ -60,11 +62,50 @@
     <div class="ImpactHistory__QualityFairness">
         <div>
             <h2>Quality Score</h2>
-            <div></div>
+            <div>
+                <div class="ImpactHistory__QualityFairness__LeftAxis">
+                    <div style="margin-top: -0.4vw;">100</div>
+                    <div style="margin-top: 0.4vw;"> 90</div>
+                    <div style="margin-top: 1.2vw;"> 80</div>
+                    <div style="margin-top: 2vw;"> 70</div>
+                    <div style="margin-top: 2.8vw;"> 60</div>
+                    <div style="margin-top: 3.6vw;"> 50</div>
+                    <div style="margin-top: 4.4vw;"> 40</div>
+                    <div style="margin-top: 5.2vw;"> 30</div>
+                    <div style="margin-top: 6vw;"> 20</div>
+                    <div style="margin-top: 6.8vw;"> 10</div>
+                    <div style="margin-top: 7.6vw;"> 0</div>
+                </div>
+                <div class="ImpactHistory__QualityFairness__Graph">
+                    <% for (const data of history) { %>
+                        <div style="height:<%- data.quality %>%;">
+                            <p><%- data.quality %>%</p>
+                            <div><%- data.date %></div>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
         </div>
         <div>
             <h2>FAIRness</h2>
-            <div></div>
+            <div>
+                <div class="ImpactHistory__QualityFairness__LeftAxis">
+                    <div style="margin-top: -0.4vw;">5</div>
+                    <div style="margin-top: 1.2vw;"> 4</div>
+                    <div style="margin-top: 2.8vw;"> 3</div>
+                    <div style="margin-top: 4.4vw;"> 2</div>
+                    <div style="margin-top: 6vw;"> 1</div>
+                    <div style="margin-top: 7.6vw;"> 0</div>
+                </div>
+                <div class="ImpactHistory__QualityFairness__Graph">
+                    <% for (const data of history) { %>
+                        <div style="height:<%- data.fairness * 20 %>%;">
+                            <p><%- data.fairness %></p>
+                            <div><%- data.date %></div>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
         </div>
     </div>
     <h2>Citations</h2>
@@ -89,7 +130,7 @@
 }
 .ImpactHistory h2 {
     color: #0C281E;
-    font-size: 1.1vw;
+    font-size: 1vw;
     margin-bottom: 0.3vw;
 }
 
@@ -134,10 +175,62 @@
 .ImpactHistory__QualityFairness > div {
     width: 50%;
 }
-.ImpactHistory__QualityFairness > div > div {
-    width: 95%;
+.ImpactHistory__QualityFairness > div > h2 {
+    margin-bottom: 1vw;
+}
+.ImpactHistory__QualityFairness__LeftAxis > div {
+    position: absolute;
+    width: 2vw;
+    text-align: right;
+    margin-left: -0.9vw;
+    font-size: 0.55vw;
+}
+.ImpactHistory__QualityFairness__Graph {
+    width: calc(95% - 2vw);
+    margin-left: 2vw;
     height: 8vw;
-    background-color: lightblue;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+.ImpactHistory__QualityFairness__Graph > div {
+    position: relative;
+    background-color: #60415F;
+    text-align: center;
+    width: <%- 80 / count %>%;
+}
+.ImpactHistory__QualityFairness__Graph > div > div {
+    display: none;
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 50%;
+    width: 6vw;
+    margin-left: -3vw;
+    background-color: white;
+    border-radius: 8px;
+    font-size: 0.9vw;
+    text-align: center;
+}
+.ImpactHistory__QualityFairness__Graph > div > div:after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -6px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent transparent white transparent;
+}
+.ImpactHistory__QualityFairness__Graph > div:hover {
+    background-color: #6E4B6D;
+}
+.ImpactHistory__QualityFairness__Graph > div:hover > div {
+    display: block;
+}
+.ImpactHistory__QualityFairness__Graph div p {
+    font-size: 0.7vw;
+    margin-top: -1.3vw;
 }
 
 .ImpactHistory__Citations {
