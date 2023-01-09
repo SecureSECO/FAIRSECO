@@ -12,6 +12,10 @@
                     else return "perfect!";
                 })() %>
             </div>
+            <div class="QualityMeter__Numbers">
+                <span class="QualityMeter__Zero">0</span>
+                <span class="QualityMeter__Hundred">100</span>
+            </div>
         </div>
         <div class="QualityMeter__Circle"></div>
     </div>
@@ -78,7 +82,7 @@
 }
 
 .Quality h1 {
-    color: #204f35;
+    color: #0C281E;
     text-align: center;
     margin: 4%;
     font-size: 2vw;
@@ -171,6 +175,24 @@
     bottom: 0;
     text-align: center;
     width: 100%;
+}
+
+.QualityMeter__Numbers {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    margin-left: 0.2vw;
+    color: #0C281E;
+}
+
+.QualityMeter__Zero {
+    position: absolute;
+    left: 0;
+}
+
+.QualityMeter__Hundred {
+    position: absolute;
+    right: 0;
 }
 
 .QualityMetrics {
