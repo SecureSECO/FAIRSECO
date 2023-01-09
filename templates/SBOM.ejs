@@ -1,4 +1,4 @@
-<%-
+<%
 
 // Node in the tree view
 class Node {
@@ -65,7 +65,9 @@ function expandItem(ele){
 }
 </script>
 <div class="SBOMContainer Hidden">
-    <%- if (SBOM.packages.length > 0) { include('SBOMItem', {"grapharr": Array.from(graph), parent: rootelem, lastItem : false}) }%>
+    <% if (SBOM.packages.length > 0) { %>
+    <%- include('SBOMItem', {"grapharr": Array.from(graph), parent: rootelem, lastItem : false})%>
+    <% } %>
 </div>
 
 <style>
