@@ -37,16 +37,17 @@
 
         /* SVG */
         #svgchart {
-            background-color: white;
+            background-color: #D3ECDE;
         }
 
         .node {
-            stroke: #fff;
+            fill: #164434;
+            stroke: #D3ECDE;
             stroke-width: 1px;
         }
 
         .links {
-            stroke: rgb(77, 77, 77);
+            stroke: #538475;
             stroke-width: 0.5px;
         }
         div.tooltip {
@@ -93,15 +94,15 @@
         <script src="https://marvl.infotech.monash.edu/webcola/cola.min.js"></script>
     </head>
     <body>
-         <div class="LeftPane">
-    <div class="Branding">
-        <h1 class="Name"><i class="fa-solid fa-scale-balanced"></i>FairSECO</h1>
-        <h2 class="Tagline">Tagline.</h2>
-    </div>
-    <hr/>
-    <div class="Citationgraph">
-        <h1 class="Title"><i class="fa-solid fa-scale-balanced"></i>Citations Graph View</h1>
-    </div> 
+        <div class="LeftPane">
+            <div class="Branding">
+                <h1 class="Name"><i class="fa-solid fa-scale-balanced"></i>FairSECO</h1>
+                <h2 class="Tagline">Tagline.</h2>
+            </div>
+        <hr/>
+        <div class="Citationgraph">
+            <h1 class="Title"><i class="fa-solid fa-scale-balanced"></i>Citations Graph View</h1>
+        </div> 
     <hr/>
     <div class="CitationgraphInfo">
         
@@ -110,15 +111,17 @@
 <style>
     .CitationsContainer {
         max-height: 78%;
-        -webkit-mask-image: linear-gradient(
+        /*-webkit-mask-image: linear-gradient(
             to bottom,
             black 90%,
             transparent 100%
         );
-        mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+        mask-image: linear-gradient(to bottom, black 90%, transparent 100%);*/
         animation: fade-in 600ms ease-out 1 forwards;
         width: 100%;
         padding: 8px;
+        height: 70vh;
+        overflow-y: auto;
     }
 
     @media screen and (min-width: 1000px) {
@@ -150,7 +153,7 @@
         padding: 0;
         margin: 0;
         background: rgba(15, 45, 30, 0.82);
-        backdrop-filter: blur(30px);
+        /*backdrop-filter: blur(30px);*/
         overflow: hidden;
         z-index: 1;
         position: absolute;
@@ -201,9 +204,35 @@
         padding: 8px;
     }
 
+    .LeftPane a {
+        display:inline-flex;
+        margin-top: 10px;
+        background-color:#D9F8DF;
+        text-decoration-line: none;
+        padding: 10px;
+        text-align: left;
+        font-size: 1.3rem;
+        color:rgba(15, 45, 30, 0.82);
+        font-family: 'Literata', serif ;
+        border-radius: 8px;
+    }
 
+    .listedPaper {
+        display: inline-flexbox;
+    }
 
+    .listedPaper h2{
+        color: #D3ECDE;
+        width: 30vw;
+        float: left;
+    }
 
+    .listedPaper h3{
+        font-size: 1.3rem;
+        color: #D3ECDE;
+        font-family: 'Literata', serif ;
+        float: right;
+    }
 </style>
 
          

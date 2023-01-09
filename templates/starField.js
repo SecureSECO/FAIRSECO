@@ -127,83 +127,99 @@ function renderStarField() {
         .on("mouseenter", function (d) {
             var connectedNodesHover = [];
             var nodes = clickedNodes.concat([d]);
-            if (d.id > input.uniqueFields.length) {
-                var html =  "<h3>" + input.papers[d.id - input.uniqueFields.length].title + "</h3>"
-                tooltip.transition()
-                    .duration(300)
-                    .style("opacity", 1); // show the tooltip
-                if(input.papers[d.id - input.uniqueFields.length].year !== null){
-                    html += "<hr/><h3>" + input.papers[d.id - input.uniqueFields.length].year + "</h3>"
-                }
-                var x = d3.event.pageX - d3.select('.tooltip').node().offsetWidth - 5    
-                var chartMiddle = ((chartWidth - d3.select('.tooltip').node().offsetWidth) / 2)
-                //html += "\nx: \n" + x + "offsetwidt: \n" +  chartmiddle
-                if(x < chartMiddle){
-                    tooltip.html(html)
-                    .style("left", (d3.event.pageX - d3.select('.tooltip').node().offsetWidth - 5) + "px")
-                    .style("top", (d3.event.pageY - d3.select('.tooltip').node().offsetHeight) + "px");
-                }
-                else{
-                    tooltip.html(html)
-                    .style("left", (d3.event.pageX - d3.select('.tooltip').node().offsetWidth + 335) + "px")
-                    .style("top", (d3.event.pageY - d3.select('.tooltip').node().offsetHeight) + "px");       
-                }
-            }
-            link.each(function (l) {
-                if (d == l.source || d == l.target) {
-                    connectedNodesHover.push(l.source);
-                    connectedNodesHover.push(l.target);
-                }
-            })
-                .transition()
-                .duration(300)
-                .style("stroke-width", function (l) {
-                    if (clickedNodes.length > 0) {
-                        if (d.id < input.uniqueFields.length && connectedNodesClick.includes(l.source) && connectedNodesHover.includes(l.source) && (nodes.includes(l.target))) 
-                            return "2px";
-                        else if (d.id < input.uniqueFields.length && connectedNodesClick.includes(l.source) && (nodes.includes(l.target))) 
-                            return "1px";
-                        else
-                            return "0.5px";
+            if (!isZoomed) {
+                if (d.id > input.uniqueFields.length) {
+                    var html = "<h3>" + input.papers[d.id - input.uniqueFields.length].title + "</h3>"
+                    tooltip.transition()
+                        .duration(300)
+                        .style("opacity", 1); // show the tooltip
+                    if (input.papers[d.id - input.uniqueFields.length].year !== null) {
+                        html += "<hr/><h3>" + input.papers[d.id - input.uniqueFields.length].year + "</h3>"
+                    }
+                    var x = d3.event.pageX - d3.select('.tooltip').node().offsetWidth - 5
+                    var chartMiddle = ((chartWidth - d3.select('.tooltip').node().offsetWidth) / 2)
+                    //html += "\nx: \n" + x + "offsetwidt: \n" +  chartmiddle
+                    if (x < chartMiddle) {
+                        tooltip.html(html)
+                            .style("left", (d3.event.pageX - d3.select('.tooltip').node().offsetWidth - 5) + "px")
+                            .style("top", (d3.event.pageY - d3.select('.tooltip').node().offsetHeight) + "px");
                     }
                     else {
-                        if (nodes.includes(l.source) || nodes.includes(l.target)) {
-                            return "2px";
-                        }
-                        else
-                            return "0.5px";
+                        tooltip.html(html)
+                            .style("left", (d3.event.pageX - d3.select('.tooltip').node().offsetWidth + 335) + "px")
+                            .style("top", (d3.event.pageY - d3.select('.tooltip').node().offsetHeight) + "px");
                     }
-                });
-            node.transition()
-                .duration(300)
-                .style("stroke", function (d2) {
-                    if (clickedNodes.length > 0) {
-                        if (nodes.includes(d2) || (connectedNodesClick.includes(d2) ))
-                            return "rgb(77, 77, 77)";
-                        else
-                            return "white";
-                    }
-                    else {
-                        if (connectedNodesHover.includes(d2))
-                            return "rgb(77, 77, 77)";
-                        else
-                            return "white";
+                }
+                link.each(function (l) {
+                    if (d == l.source || d == l.target) {
+                        connectedNodesHover.push(l.source);
+                        connectedNodesHover.push(l.target);
                     }
                 })
-                .style("stroke-width", function (d2) {
-                    if (clickedNodes.length > 0) {
-                        if (nodes.includes(d2) || (connectedNodesClick.includes(d2) && connectedNodesHover.includes(d2)))
-                            return "2px";
-                        else
-                            return "1px";
-                    }
-                    else {
-                        if (connectedNodesHover.includes(d2))
-                            return "2px";
-                        else
-                            return "1px";
-                    }
-                });
+                    .transition()
+                    .duration(300)
+                    .style("stroke-width", function (l) {
+                        if (clickedNodes.length > 0) {
+                            if (d.id < input.uniqueFields.length && connectedNodesClick.includes(l.source) && connectedNodesHover.includes(l.source) && (nodes.includes(l.target)))
+                                return "1.5px";
+                            else if (d.id < input.uniqueFields.length && connectedNodesClick.includes(l.source) && (nodes.includes(l.target)))
+                                return "1px";
+                            else
+                                return "0.5px";
+                        }
+                        else {
+                            if (nodes.includes(l.source) || nodes.includes(l.target)) {
+                                return "1.5px";
+                            }
+                            else
+                                return "0.5px";
+                        }
+                    });
+                node.transition()
+                    .duration(300)
+                    .style("stroke", function (d2) {
+                        if (clickedNodes.length > 0) {
+                            if (nodes.includes(d2) || (connectedNodesClick.includes(d2)))
+                                return "#538475";
+                            else
+                                return "#D3ECDE";
+                        }
+                        else {
+                            if (connectedNodesHover.includes(d2))
+                                return "#538475";
+                            else
+                                return "#D3ECDE";
+                        }
+                    })
+                    .style("stroke-width", function (d2) {
+                        if (clickedNodes.length > 0) {
+                            if (nodes.includes(d2) || (connectedNodesClick.includes(d2) && connectedNodesHover.includes(d2)))
+                                return "1.5px";
+                            else
+                                return "1px";
+                        }
+                        else {
+                            if (connectedNodesHover.includes(d2))
+                                return "1.5px";
+                            else
+                                return "1px";
+                        }
+                    })
+                    .style("fill", function (d2) {
+                        if (clickedNodes.length > 0) {
+                            if (nodes.includes(d2) || (connectedNodesClick.includes(d2) && connectedNodesHover.includes(d2)))
+                                return "#164434";
+                            else
+                                return "#648579";
+                        }
+                        else {
+                            if (connectedNodesHover.includes(d2))
+                                return "#164434";
+                            else
+                                return "#648579";
+                        }
+                    });
+            }
         })
         .on("mouseleave", function (d) {
             tooltip.transition()
@@ -213,7 +229,7 @@ function renderStarField() {
                 .duration(300)
                 .style("stroke-width", function (l) {
                     if (clickedNodes.includes(l.target) && connectedNodesClick.includes(l.source))
-                        return "2px";
+                        return "1.5px";
                     else
                         return "0.5px";
                 });
@@ -221,15 +237,21 @@ function renderStarField() {
                 .duration(300)
                 .style("stroke", function (d2) {
                     if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2))
-                            return "rgb(77, 77, 77)";
-                        else
-                            return "white";
+                        return "#538475";
+                    else
+                        return "#D3ECDE";
                 })
                 .style("stroke-width", function (d2) {
                     if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2))
-                            return "2px";
-                        else
-                            return "1px";
+                        return "1.5px";
+                    else
+                        return "1px";
+                })
+                .style("fill", function (d2) {
+                    if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2) || clickedNodes == 0)
+                        return "#164434";
+                    else
+                        return "#648579";
                 });
         })
         .on("click", function (d) {   
@@ -238,32 +260,47 @@ function renderStarField() {
             citationContainer.selectAll(".Citation").remove();
 
             // nodes that aren't fields
-            if (d.id > input.uniqueFields.length) {
+            if (d.id > input.uniqueFields.length && !isZoomed) {
                 var html =  "<h3>Title</h3><h2>" + input.papers[d.id - input.uniqueFields.length].title + "</h2>"
-                if(input.papers[d.id - input.uniqueFields.length].year !== null){
+                if(input.papers[d.id - input.uniqueFields.length].year !== null)
                     html += "<h3>Year</h3><h2>" + input.papers[d.id - input.uniqueFields.length].year + "</h2>"
+                
+                if (input.papers[d.id - input.uniqueFields.length].authors.length > 0) {
+                    html += "<h3>Authors</h3>";
+                    for (let i = 0; i < input.papers[d.id - input.uniqueFields.length].authors.length || i < 4; i++)
+                        html += "<h2>" + input.papers[d.id - input.uniqueFields.length].authors[i].name + "</h2>";
                 }
+                else 
+                    html += "<h3>Authors</h3><h2> No known authors. </h2>";
+                
+                html += "<h3>Fields</h3>";
+                input.papers[d.id - input.uniqueFields.length].fields.forEach(field => {
+                    html += "<h2>" + field + "</h2>";
+                });
+                if (input.papers[d.id - input.uniqueFields.length].url !== null)
+                    html += "<a href=" + input.papers[d.id - input.uniqueFields.length].url + ">Link to Paper</a>";
+
                 // add Citation element and append html to show data of citation
                 citationContainer
                     .append("div")
                     .classed("Citation", true)
                     .html(html)
-            }
-          
-            if (d.id > input.uniqueFields.length && input.papers[d.id - input.uniqueFields.length].url !== null) {
+                
+                //handle zoom event
                 clickedNodes = [d];
                 connectedNodesClick = [];
                 // zoom in on node
-                var scaleZoom = 5;
+                var scaleZoom = 15;
                 svg.transition()
                     .duration(750)
                     .call(zoom_handler.transform,
                         d3.zoomIdentity
                             .translate(chartWidth * 0.5 - scaleZoom * d.x,
-                                chartHeight * 0.35 - scaleZoom * d.y)
+                                chartHeight * 0.5 - scaleZoom * d.y)
                             .scale(scaleZoom));
                 setTimeout(() => { isZoomed = true; }, 1000);
             }
+            // selected node is a field that is not alrady connected
             else if (d.id < input.uniqueFields.length && !clickedNodes.includes(d)) {
                 var newConnectedNodesClick = [];
                 clickedNodes.push(d);
@@ -280,6 +317,15 @@ function renderStarField() {
                     });
                 }
                 connectedNodesClick = newConnectedNodesClick;
+                var html = "<h2>Selected Papers</h2>";
+                connectedNodesClick.forEach(ele => {
+                    html += "<div class=listedPaper> <h2>" + input.papers[ele.id - input.uniqueFields.length].title + "</h2> <h3>" + input.papers[ele.id - input.uniqueFields.length].numberOfCitations + "</h3></div>";
+                });
+                citationContainer
+                    .append("div")
+                    .classed("Citation", true)
+                    .html(html)
+
             }
             else if (d.id < input.uniqueFields.length && clickedNodes.includes(d)) {
                 clickedNodes = [];
@@ -288,24 +334,24 @@ function renderStarField() {
                 .duration(300)
                 .style("stroke-width", function (l) {
                     if (clickedNodes.includes(l.target) && connectedNodesClick.includes(l.source))
-                        return "2px";
+                        return "1.5px";
                     else
                         return "0.5px";
                 });
-            node.transition()
-                .duration(300)
-                .style("stroke", function (d2) {
-                    if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2))
-                            return "rgb(77, 77, 77)";
+                node.transition()
+                    .duration(300)
+                    .style("stroke", function (d2) {
+                        if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2))
+                            return "#538475";
                         else
-                            return "white";
-                })
-                .style("stroke-width", function (d2) {
-                    if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2))
-                            return "2px";
+                            return "#D3ECDE";
+                    })
+                    .style("stroke-width", function (d2) {
+                        if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2))
+                            return "1.5px";
                         else
                             return "1px";
-                });
+                    });
             };
             d3.event.stopPropagation();
 
@@ -318,7 +364,7 @@ function renderStarField() {
             .duration(300)
             .style("stroke-width", function (l) {
                 if (clickedNodes.includes(l.target) && connectedNodesClick.includes(l.source))
-                    return "2px";
+                    return "1.5px";
                 else
                     return "0.5px";
             });
@@ -326,15 +372,21 @@ function renderStarField() {
             .duration(300)
             .style("stroke", function (d2) {
                 if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2))
-                        return "rgb(77, 77, 77)";
+                        return "#538475";
                     else
-                        return "white";
+                        return "#D3ECDE";
             })
             .style("stroke-width", function (d2) {
                 if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2))
-                        return "2px";
+                        return "1.5px";
                     else
                         return "1px";
+            })
+            .style("fill", function (d2) {
+                if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2) || clickedNodes == 0)
+                    return "#164434";
+                else
+                    return "#648579";
             });  
     })
 
@@ -351,8 +403,9 @@ function renderStarField() {
             clickedNodes = [];
             node.transition()
                 .duration(300)
-                .style("stroke", "white")
-                .style("stroke-width", "1px");
+                .style("stroke", "#D3ECDE")
+                .style("stroke-width", "1px")
+                .style("fill", "#164434");
         }
     }
     
