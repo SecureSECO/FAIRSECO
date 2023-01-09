@@ -1,0 +1,2 @@
+[command]"C:\Program Files\Docker\Docker\resources\bin\docker.exe" run --rm -v C:\Users\jarno\Documents\GitHub\FairSECO\__tests__\unit_tests\citation_files\no-message:/app citationcff/cffconvert --validate
+ValueError: Unable to identify the schema version. Required key 'cff-version' seems to be missing.

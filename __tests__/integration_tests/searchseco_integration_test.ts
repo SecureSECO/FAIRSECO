@@ -1,5 +1,5 @@
 import { exec, ExecOptions } from "@actions/exec";
-import { getGithubInfo, getRepoUrl, GithubInfo } from "../../src/git";
+import { getGithubInfo, getRepoUrl, GithubInfo } from "../../src/resources/git";
 import {
     getHashIndices,
     getMatches,

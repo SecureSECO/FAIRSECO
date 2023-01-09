@@ -5,7 +5,7 @@ import {
     getFileFromArtifact,
 } from "./helperfunctions/artifact";
 import * as artifact from "@actions/artifact";
-import { ErrorLevel, LogMessage } from "../log";
+import { ErrorLevel, LogMessage } from "../errorhandling/log";
 
 /**
  * This function downloads the artifact created by the SBOM action,

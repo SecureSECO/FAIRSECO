@@ -1,10 +1,10 @@
 // Test if our openAlexCitations and semanticScholarCitations function work correctly:
 // so if the conversion to an array of journals works correctly
 // We do this with a JSON schema that determines how the JSON output of the citations should look like
-import { openAlexCitations } from "../../src/resources/openalexAPI";
-import { semanticScholarCitations } from "../../src/resources/semanticscholarAPI";
+import { openAlexCitations } from "../../src/resources/citations/APIs/openalexAPI";
+import { semanticScholarCitations } from "../../src/resources/citations/APIs/semanticscholarAPI";
 import { matchers } from "jest-json-schema";
-import { Author } from "../../src/resources/Paper";
+import { Author } from "../../src/resources/citations/Paper";
 
 expect.extend(matchers);
 jest.setTimeout(30000);

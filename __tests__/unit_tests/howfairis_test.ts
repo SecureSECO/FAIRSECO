@@ -4,7 +4,7 @@
 import { runHowfairis } from "../../src/resources/howfairis";
 import { ReturnObject } from "../../src/getdata";
 import { matchers } from "jest-json-schema";
-import { getGithubInfo } from "../../src/git";
+import { getGithubInfo } from "../../src/resources/git";
 expect.extend(matchers);
 jest.setTimeout(30000);
 

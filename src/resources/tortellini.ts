@@ -7,7 +7,7 @@ import {
 } from "./helperfunctions/artifact";
 
 import * as input from "./tortellini-input";
-import { ErrorLevel, LogMessage } from "../log";
+import { ErrorLevel, LogMessage } from "../errorhandling/log";
 
 /**
  * Downloads the artifact that was uploaded by Tortellini, and parses the YAML file.

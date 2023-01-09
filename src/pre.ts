@@ -1,5 +1,5 @@
 import * as core from "@actions/core";
-import { createLogFile, ErrorLevel, LogMessage } from "./log";
+import { createLogFile, ErrorLevel, LogMessage } from "./errorhandling/log";
 import fs, { PathLike } from "fs";
 
 /**

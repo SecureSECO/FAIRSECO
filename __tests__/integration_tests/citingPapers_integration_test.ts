@@ -2,16 +2,16 @@ import { setOutput } from "@actions/core";
 import { exec, ExecOptions } from "@actions/exec";
 import { ReturnObject } from "../../src/getdata";
 import { CffObject, getError, IncorrectYamlCffObject, MissingCffObject, ValidationErrorCffObject, ValidCffObject } from "../../src/resources/citation_cff";
-import {  mergeDuplicates, runCitingPapers } from "../../src/resources/citingPapers";
-import { Author, Paper, Citations } from "../../src/resources/Paper";
-import { openAlexCitations } from "../../src/resources/openalexAPI";
-import { semanticScholarCitations } from "../../src/resources/semanticscholarAPI";
+import {  mergeDuplicates, runCitingPapers } from "../../src/resources/citations/citingPapers";
+import { Author, Paper, Citations } from "../../src/resources/citations/Paper";
+import { openAlexCitations } from "../../src/resources/citations/APIs/openalexAPI";
+import { semanticScholarCitations } from "../../src/resources/citations/APIs/semanticscholarAPI";
 import YAML from "yaml";
 import * as fs from "fs";
 import * as path_ from "path";
 import { Console } from "console";
-import { ErrorLevel, LogMessage } from "../../src/log";
-import * as dockerExit from "../../src/resources/helperfunctions/docker_exit";
+import { ErrorLevel, LogMessage } from "../../src/errorhandling/log";
+import * as dockerExit from "../../src/errorhandling/docker_exit";
 
 jest.setTimeout(100000);
 

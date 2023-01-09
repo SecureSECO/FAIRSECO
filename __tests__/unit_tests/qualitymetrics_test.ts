@@ -1,5 +1,5 @@
 import { ReturnObject } from "../../src/getdata";
-import { GithubInfo } from "../../src/git";
+import { GithubInfo } from "../../src/resources/git";
 import * as quality from "../../src/resources/qualitymetrics";
 
 import * as fs from "fs";

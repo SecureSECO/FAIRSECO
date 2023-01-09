@@ -1,5 +1,5 @@
-import { MetaDataPaper } from "../../src/resources/Paper";
-import { calculateProbabiltyOfReference } from "../../src/resources/probability";
+import { MetaDataPaper } from "../../src/resources/citations/Paper";
+import { calculateProbabiltyOfReference } from "../../src/resources/citations/probability";
 
 test("empty map is handeled properly, returns empty array", () => {
     expect(calculateProbabiltyOfReference(new Map())).toStrictEqual([]);
