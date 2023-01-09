@@ -254,13 +254,20 @@ function renderStarField() {
                         return "#648579";
                 });
         })
-        .on("click", function (d) {   
-            const citationContainer = d3.select("body").select(".LeftPane").select(".CitationgraphInfo").select(".CitationsContainer");
+        .on("click", function (d) {
+            
+            
+            //remove help page
+            const help = d3.select("body").select(".LeftPane").select(".HelpInfo");
+            help.remove();
+            
             // make sure previous generated Citation is removed
+            const citationContainer = d3.select("body").select(".LeftPane").select(".CitationgraphInfo").select(".CitationsContainer");
             citationContainer.selectAll(".Citation").remove();
 
             // nodes that aren't fields
             if (d.id > input.uniqueFields.length && !isZoomed) {
+                citationContainer.select()
                 var html =  "<h3>Title</h3><h2>" + input.papers[d.id - input.uniqueFields.length].title + "</h2>"
                 if(input.papers[d.id - input.uniqueFields.length].year !== null)
                     html += "<h3>Year</h3><h2>" + input.papers[d.id - input.uniqueFields.length].year + "</h2>"
@@ -317,10 +324,11 @@ function renderStarField() {
                     });
                 }
                 connectedNodesClick = newConnectedNodesClick;
-                var html = "<h2>Selected Papers</h2>";
+                var html = "<div class=listedPapersContainer> <div class=listedPaper> <h2>Selected Papers</h2> <h3>Citations</h3> </div>";
                 connectedNodesClick.forEach(ele => {
                     html += "<div class=listedPaper> <h2>" + input.papers[ele.id - input.uniqueFields.length].title + "</h2> <h3>" + input.papers[ele.id - input.uniqueFields.length].numberOfCitations + "</h3></div>";
                 });
+                html+= "</div>";
                 citationContainer
                     .append("div")
                     .classed("Citation", true)
