@@ -1,0 +1,68 @@
+<%
+    function maxStep(value, stepSize) {
+        return Math.ceil(value / stepSize) * stepSize;
+    }
+
+    function minStep(value, stepSize, max) {
+        if (max / stepSize <= 5) {
+            return 0;
+        } else {
+            return Math.floor(value / stepSize) * stepSize;
+        }
+    }
+
+    let min = Infinity;
+    let max = -Infinity;
+    for (const data of history) {
+        min = Math.min(min, data[field]);
+        max = Math.max(max, data[field]);
+    }
+
+    let step = 1;
+    let nextStep = 5;
+    let increaseIndex = 0;
+
+    let newMax = maxStep(max, 5);
+    let newMin = minStep(min, 5, newMax);
+
+    const stepIncrease = [2, 2.5, 2];
+
+    while ((newMax - newMin) / step > 5) {
+        step = nextStep;
+        nextStep *= stepIncrease[increaseIndex];
+        increaseIndex = (increaseIndex + 1) % 3;
+
+        const max1 = maxStep(max, step);
+        const min1 = minStep(min, step, max1);
+        const max2 = maxStep(max, nextStep);
+        const min2 = minStep(min, nextStep, max2);
+
+        if((max1 - min1) <= (max2 - min2)) {
+            newMin = min1;
+            newMax = max1;
+        } else {
+            newMin = min2;
+            newMax = max2;
+        }
+    }
+
+    const difference = newMax - newMin;
+%>
+
+<div>
+    <div class="ImpactHistory__Graphs__LeftAxis"> <%
+        for (let i = newMin; i <= newMax; i += step) { %>
+            <div style="margin-top: <%- (i - newMin) * -18 / difference + 17.1 %>vh;"><%- i %></div>
+        <% } %>
+    </div>
+    <div class="ImpactHistory__Graphs__Graph"> <%
+        let i = 0;
+        for (const data of history) { %>
+            <div onMouseEnter="impactHistoryHoverData(<%- i %>)" onMouseLeave="impactHistoryUnhoverData(<%- i %>)" style="height:<%- Math.max(1, (data[field] - newMin) * 100 / (newMax - newMin)) %>%;">
+                <p><%- data[field] %></p>
+                <div><%- data.date %></div>
+            </div>
+            <% i++;
+        } %>
+    </div>
+</div>
