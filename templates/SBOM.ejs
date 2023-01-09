@@ -65,7 +65,7 @@ function expandItem(ele){
 }
 </script>
 <div class="SBOMContainer Hidden">
-    <%- include('SBOMItem', {"grapharr": Array.from(graph), parent: rootelem, lastItem : false})%>
+    <%- if (SBOM.packages.length > 0) { include('SBOMItem', {"grapharr": Array.from(graph), parent: rootelem, lastItem : false}) }%>
 </div>
 
 <style>
