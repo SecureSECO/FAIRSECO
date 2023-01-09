@@ -13,14 +13,14 @@ class Node {
 let graph = new Map()
 
 // First for each package get their name and make a node. (We'll miss the root node, so we'll need to do that as well later.)
-SBOM.packages.forEach((p) => {
+SBOM.packages?.forEach((p) => {
         if (graph.get(p.SPDXID) === undefined){
                 graph.set(p.SPDXID, new Node(p.SPDXID, p.name, [], []));
         }
 })
 
 // Now we iterate over all the relationships and ensure that each node has the appropriate parent and children.
-SBOM.relationships.forEach((rel) => {
+SBOM.relationships?.forEach((rel) => {
 if (rel.relationshipType === "CONTAINS") {
         if (graph.get(rel.spdxElementId) === undefined){
                 graph.set(rel.spdxElementId, new Node(rel.spdxElementId, "Your Project", [], []));
@@ -62,7 +62,9 @@ function expandItem(ele){
 }
 </script>
 <div class="SBOMContainer Hidden">
+    <% if (!rootelem ==  undefined) { %>
     <%- include('SBOMItem', {"grapharr": Array.from(graph), parent: rootelem, lastItem : false})%>
+    <% } %>
 </div>
 
 <style>
