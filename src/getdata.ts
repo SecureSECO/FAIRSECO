@@ -81,6 +81,14 @@ export async function data(): Promise<ReturnObject[]> {
         LogMessage("Scholarly threw an error:", ErrorLevel.err);
         LogMessage(error, ErrorLevel.err);
     }
+    
+    try {
+        const SBOMResult = await runSBOM();
+        output.push(SBOMResult);
+    } catch (error) {
+        LogMessage("An error occurred during SBOM generation.", ErrorLevel.err);
+        LogMessage(error, ErrorLevel.err);
+    }
 
     try {
         if (howfairisResult !== undefined && tortelliniResult !== undefined) {
