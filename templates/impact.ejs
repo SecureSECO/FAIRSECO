@@ -40,6 +40,50 @@ function getAuthors(proj){
     return authors;
 }
 
+const labels = [
+    "Computer Science",
+    "Medicine",
+    "Chemistry",
+    "Biology",
+    "Material Science",
+    "Physics",
+    "Geology",
+    "Psychology",
+    "Art",
+    "History",
+    "Sociology",
+    "Business",
+    "Political Science",
+    "Economy",
+    "Philosophy",
+    "Mathematics",
+    "Engineering",
+    "Environmental Science"
+]
+
+function getChartData(labels) {
+    // Initialize dict
+    let fieldCount = {};
+
+    for (const label of labels){
+        fieldCount[label] = 0;
+    }
+
+    for (const paper of pp.papers){
+        for(const field of paper.fields){
+            fieldCount[field]++;
+        }
+    }
+
+    let data = [];
+
+    for (const label of labels){
+        data.push(fieldCount[label]);
+    }
+
+    return data.map(x => x == 0 ? null : x);
+}
+
 %>
 
 <div class="ImpactScore">
@@ -124,11 +168,11 @@ const data = {
     labels: labels,
     datasets: [
         {
-        data: genData(),
-        borderColor: "rgb(170, 85, 183)",
-        backgroundColor: "rgba(175, 102, 186, 0.4)",
-        pointBackgroundColor: "rgb(175, 102, 186)"
-    }]
+            data: [<%- getChartData(labels) %>],
+            borderColor: "rgb(170, 85, 183)",
+            backgroundColor: "rgba(175, 102, 186, 0.4)",
+            pointBackgroundColor: "rgb(175, 102, 186)"
+        }]
 };
 
 // comp sc, med, chem, bio, material sc, phys, geo, psych, art, hist, soc, busin, pol sc, econ, phil, math, eng, env sc, 
@@ -140,8 +184,7 @@ const config = {
     responsive: true,
     spanGaps: true,
     plugins: {
-        legend: false,
-        tooltip: false
+        legend: false
     },
     scale: {
         ticks: {
