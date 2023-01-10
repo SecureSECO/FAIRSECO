@@ -1,4 +1,4 @@
-<div class="Quality">
+<div class="Quality" hidden>
     <h1>Quality Score</h1>
     <div class="QualityMeter">
         <div class="QualityMeter__Bar">
@@ -78,7 +78,6 @@
     width: 100%;
     height: 100%;
     border-radius: 16px;
-    display: none;
 }
 
 .Quality h1 {
@@ -264,17 +263,21 @@
 #QualityFairness .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
     width: <%- quality?.fairnessScore %>%;
     background-color: #60415F;
+    filter: brightness(<%- 1 + 1.25 * quality.fairnessScore / 100 %>);
 }
 #QualityLicenses .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
-    width: <%- quality?.licenseScore %>%;
-    background-color: #894586;
+    width: <%- quality.licenseScore %>%;
+    background-color: #60415F;
+    filter: brightness(<%- 1 + 1.25 * quality.licenseScore / 100 %>);
 }
 #QualityMaintainability .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
-    width: <%- quality?.maintainabilityScore %>%;
-    background-color: #A95F94;
+    width: <%- quality.maintainabilityScore %>%;
+    background-color: #60415F;
+    filter: brightness(<%- 1 + 1.25 * quality.maintainabilityScore / 100 %>);
 }
 #QualityDocumentation .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
-    width: <%- quality?.documentationScore %>%;
-    background-color: #D991C5;
+    width: <%- quality.documentationScore %>%;
+    background-color: #60415F;
+    filter: brightness(<%- 1 + 1.25 * quality.documentationScore / 100 %>);
 }
 </style>
