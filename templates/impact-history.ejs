@@ -178,11 +178,21 @@
     align-items: flex-end;
 }
 .ImpactHistory__Graphs__Graph > div {
-    position: relative;
-    background-color: #60415F;
     text-align: center;
     transition: background-color 0.1s ease-out;
     width: <%- 80 / count %>%;
+}
+.ImpactHistory__Graphs > div:nth-child(1) .ImpactHistory__Graphs__Graph > div {
+    background-color: #60415F;
+}
+.ImpactHistory__Graphs > div:nth-child(2) .ImpactHistory__Graphs__Graph > div {
+    background-color: #894586;
+}
+.ImpactHistory__Graphs > div:nth-child(3) .ImpactHistory__Graphs__Graph > div {
+    background-color: #A95F94;
+}
+.ImpactHistory__Graphs > div:nth-child(4) .ImpactHistory__Graphs__Graph > div {
+    background-color: #D991C5;
 }
 .ImpactHistory__Graphs__Graph > div > div {
     display: none;
@@ -194,7 +204,6 @@
     background-color: white;
     border-radius: 8px;
     font-size: 0.9vw;
-    text-align: center;
 }
 .ImpactHistory__Graphs__Graph > div > div:after {
     content: "";
@@ -209,18 +218,18 @@
 .ImpactHistory__Graphs__Graph > div:hover > div {
     display: block;
 }
-.ImpactHistory__Graphs__Graph div p {
-    font-size: 0.7vw;
-    margin-top: -1.3vw;
-    transition: color 0.1s ease-out, font-size 0.1s ease-out, margin-top 0.1s ease-out;
+.ImpactHistory__Graphs__Graph > div span {
+    display: none;
+    font-size: 1.2vw;
+    width: 10vw;
+    margin-left: calc(50% - 5vw);
+    margin-top: -2vw;
 }
 .ImpactHistory__Graphs__Graph > .ImpactHistory__HoveredData {
-    background-color: #90628F;
+    filter: brightness(1.2);
 }
-.ImpactHistory__Graphs__Graph > .ImpactHistory__HoveredData p {
-    color: #90628F;
-    font-size: 1.2vw;
-    margin-top: -1.85vw;
+.ImpactHistory__Graphs__Graph > .ImpactHistory__HoveredData span {
+    display: block;
 }
 </style>
 

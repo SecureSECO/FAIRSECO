@@ -14357,17 +14357,17 @@ flex-direction: row;
     </div>
     <div class="ImpactHistory__Graphs__Graph"> 
             <div onMouseEnter="impactHistoryHoverData(0)" onMouseLeave="impactHistoryUnhoverData(0)" style="height:20%;">
-                <p>62</p>
+                <span>62</span>
                 <div>25/12/2022</div>
             </div>
             
             <div onMouseEnter="impactHistoryHoverData(1)" onMouseLeave="impactHistoryUnhoverData(1)" style="height:40%;">
-                <p>64</p>
+                <span>64</span>
                 <div>01/01/2023</div>
             </div>
             
             <div onMouseEnter="impactHistoryHoverData(2)" onMouseLeave="impactHistoryUnhoverData(2)" style="height:90%;">
-                <p>69</p>
+                <span>69</span>
                 <div>08/01/2023</div>
             </div>
             
@@ -14396,17 +14396,17 @@ flex-direction: row;
     </div>
     <div class="ImpactHistory__Graphs__Graph"> 
             <div onMouseEnter="impactHistoryHoverData(0)" onMouseLeave="impactHistoryUnhoverData(0)" style="height:60%;">
-                <p>3</p>
+                <span>3</span>
                 <div>25/12/2022</div>
             </div>
             
             <div onMouseEnter="impactHistoryHoverData(1)" onMouseLeave="impactHistoryUnhoverData(1)" style="height:60%;">
-                <p>3</p>
+                <span>3</span>
                 <div>01/01/2023</div>
             </div>
             
             <div onMouseEnter="impactHistoryHoverData(2)" onMouseLeave="impactHistoryUnhoverData(2)" style="height:80%;">
-                <p>4</p>
+                <span>4</span>
                 <div>08/01/2023</div>
             </div>
             
@@ -14432,17 +14432,17 @@ flex-direction: row;
     </div>
     <div class="ImpactHistory__Graphs__Graph"> 
             <div onMouseEnter="impactHistoryHoverData(0)" onMouseLeave="impactHistoryUnhoverData(0)" style="height:1%;">
-                <p>901</p>
+                <span>901</span>
                 <div>25/12/2022</div>
             </div>
             
             <div onMouseEnter="impactHistoryHoverData(1)" onMouseLeave="impactHistoryUnhoverData(1)" style="height:16.666666666666668%;">
-                <p>925</p>
+                <span>925</span>
                 <div>01/01/2023</div>
             </div>
             
             <div onMouseEnter="impactHistoryHoverData(2)" onMouseLeave="impactHistoryUnhoverData(2)" style="height:89.33333333333333%;">
-                <p>1034</p>
+                <span>1034</span>
                 <div>08/01/2023</div>
             </div>
             
@@ -14472,17 +14472,17 @@ flex-direction: row;
     </div>
     <div class="ImpactHistory__Graphs__Graph"> 
             <div onMouseEnter="impactHistoryHoverData(0)" onMouseLeave="impactHistoryUnhoverData(0)" style="height:60%;">
-                <p>15</p>
+                <span>15</span>
                 <div>25/12/2022</div>
             </div>
             
             <div onMouseEnter="impactHistoryHoverData(1)" onMouseLeave="impactHistoryUnhoverData(1)" style="height:72%;">
-                <p>18</p>
+                <span>18</span>
                 <div>01/01/2023</div>
             </div>
             
             <div onMouseEnter="impactHistoryHoverData(2)" onMouseLeave="impactHistoryUnhoverData(2)" style="height:92%;">
-                <p>23</p>
+                <span>23</span>
                 <div>08/01/2023</div>
             </div>
             
@@ -14574,11 +14574,21 @@ flex-direction: row;
     align-items: flex-end;
 }
 .ImpactHistory__Graphs__Graph > div {
-    position: relative;
-    background-color: #60415F;
     text-align: center;
     transition: background-color 0.1s ease-out;
     width: 26.666666666666668%;
+}
+.ImpactHistory__Graphs > div:nth-child(1) .ImpactHistory__Graphs__Graph > div {
+    background-color: #60415F;
+}
+.ImpactHistory__Graphs > div:nth-child(2) .ImpactHistory__Graphs__Graph > div {
+    background-color: #894586;
+}
+.ImpactHistory__Graphs > div:nth-child(3) .ImpactHistory__Graphs__Graph > div {
+    background-color: #A95F94;
+}
+.ImpactHistory__Graphs > div:nth-child(4) .ImpactHistory__Graphs__Graph > div {
+    background-color: #D991C5;
 }
 .ImpactHistory__Graphs__Graph > div > div {
     display: none;
@@ -14590,7 +14600,6 @@ flex-direction: row;
     background-color: white;
     border-radius: 8px;
     font-size: 0.9vw;
-    text-align: center;
 }
 .ImpactHistory__Graphs__Graph > div > div:after {
     content: "";
@@ -14605,18 +14614,18 @@ flex-direction: row;
 .ImpactHistory__Graphs__Graph > div:hover > div {
     display: block;
 }
-.ImpactHistory__Graphs__Graph div p {
-    font-size: 0.7vw;
-    margin-top: -1.3vw;
-    transition: color 0.1s ease-out, font-size 0.1s ease-out, margin-top 0.1s ease-out;
+.ImpactHistory__Graphs__Graph > div span {
+    display: none;
+    font-size: 1.2vw;
+    width: 10vw;
+    margin-left: calc(50% - 5vw);
+    margin-top: -2vw;
 }
 .ImpactHistory__Graphs__Graph > .ImpactHistory__HoveredData {
-    background-color: #90628F;
+    filter: brightness(1.2);
 }
-.ImpactHistory__Graphs__Graph > .ImpactHistory__HoveredData p {
-    color: #90628F;
-    font-size: 1.2vw;
-    margin-top: -1.85vw;
+.ImpactHistory__Graphs__Graph > .ImpactHistory__HoveredData span {
+    display: block;
 }
 </style>
 
