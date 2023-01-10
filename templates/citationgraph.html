@@ -18,8 +18,8 @@
         <h2 class="Tagline">Tagline.</h2>
     </div>
     <div class="Buttons">
-        <button type="button">Back to FAIRSECO</button>
-        <button type="button">? Help</button>
+        <button type="button"><span>Back to FAIRSECO</span></button>
+        <button type="button"><span>Help</span></button>
     </div>
     <hr/>
     <div class="Citationgraph">
@@ -135,7 +135,13 @@
         margin-left: 0 8px;
     }
 
-    .LeftPane .Buttons .button{
+    .LeftPane .Buttons button{
+        color: #0C281E;
+
+    }
+
+    .LeftPane .Buttons button:hover{
+        /* color:#0c281e; */
     }
     
 
@@ -165,6 +171,7 @@
         font-family: 'Literata', serif ;
         padding: 8px;
         margin: 0 8px;
+        list-style-type: none;
     }
 
     .LeftPane .HelpInfo h1{

@@ -208,13 +208,13 @@ function renderStarField() {
                     .style("fill", function (d2) {
                         if (clickedNodes.length > 0) {
                             if (nodes.includes(d2) || (connectedNodesClick.includes(d2) && connectedNodesHover.includes(d2)))
-                                return "#164434";
+                                return "#0c271d";
                             else
                                 return "#648579";
                         }
                         else {
                             if (connectedNodesHover.includes(d2))
-                                return "#164434";
+                                return "#0c271d";
                             else
                                 return "#648579";
                         }
@@ -249,7 +249,7 @@ function renderStarField() {
                 })
                 .style("fill", function (d2) {
                     if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2) || clickedNodes == 0)
-                        return "#164434";
+                        return "#0c271d";
                     else
                         return "#648579";
                 });
@@ -392,9 +392,9 @@ function renderStarField() {
             })
             .style("fill", function (d2) {
                 if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2) || clickedNodes == 0)
-                    return "#164434";
+                    return "#123b2c";
                 else
-                    return "#648579";
+                    return "#6e9184";
             });  
     })
 
@@ -413,7 +413,7 @@ function renderStarField() {
                 .duration(300)
                 .style("stroke", "#D3ECDE")
                 .style("stroke-width", "1px")
-                .style("fill", "#164434");
+                .style("fill", "#0c271d");
         }
     }
     
