@@ -16827,8 +16827,8 @@ flex-direction: row;
     <h1>Quality Score</h1>
     <div class="QualityMeter">
         <div class="QualityMeter__Bar">
-            <div class="QualityMeter__Score">13</div>
-            <div class="QualityMeter__Text">awful
+            <div class="QualityMeter__Score">80</div>
+            <div class="QualityMeter__Text">splendid!
             </div>
         </div>
         <div class="QualityMeter__Circle"></div>
@@ -16843,7 +16843,7 @@ flex-direction: row;
                 </div>
                 <p>Percentage of Fairness criteria met</p>
             </div>
-            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>0%</h2></div>
+            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>80%</h2></div>
         </div>
         <div class="QualityMetrics__ScoreMetric" id="QualityLicenses">
             <i class="fa-solid fa-copyright"></i>
@@ -16854,7 +16854,7 @@ flex-direction: row;
                 </div>
                 <p>Correct usage of licenses (no violations)</p>
             </div>
-            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>47%</h2></div>
+            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>70%</h2></div>
         </div>
         <div class="QualityMetrics__ScoreMetric" id="QualityMaintainability">
             <i class="fa-solid fa-wrench"></i>
@@ -16865,7 +16865,7 @@ flex-direction: row;
                 </div>
                 <p>Percentage of closed issues</p>
             </div>
-            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>0%</h2></div>
+            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>80%</h2></div>
         </div>
         <div class="QualityMetrics__ScoreMetric" id="QualityDocumentation">
             <i class="fa-solid fa-file-lines"></i>
@@ -16876,7 +16876,7 @@ flex-direction: row;
                 </div>
                 <p>Whether there is a documentation directory</p>
             </div>
-            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>0%</h2></div>
+            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>100%</h2></div>
         </div>
         <p>
             <i class="fa-regular fa-clock"></i>
@@ -16945,10 +16945,10 @@ flex-direction: row;
     top: -1vw;
     left: 9vw;
     border-radius: 50%;
-    background-color: #2D4B3D;
+    background-color: #36DDA1;
     transform: translate(
-        -8.718668943997821vw,
-        -3.7729049610304153vw
+        7.685661446562001vw,
+        -5.583959896778493vw
     );
 }
 .QualityMeter__Circle::before {
@@ -17052,19 +17052,19 @@ flex-direction: row;
 }
 
 #QualityFairness .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
-    width: 0%;
+    width: 80%;
     background-color: #60415F;
 }
 #QualityLicenses .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
-    width: 47%;
+    width: 70%;
     background-color: #894586;
 }
 #QualityMaintainability .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
-    width: 0%;
+    width: 80%;
     background-color: #A95F94;
 }
 #QualityDocumentation .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
-    width: 0%;
+    width: 100%;
     background-color: #D991C5;
 }
 </style>
@@ -17088,7 +17088,7 @@ flex-direction: row;
                 </div>
                 <div class="Impact__Row__Block">
                     <p>The most notable of which was</p>
-                    <div class="Row__PaperTitle">Simulating Lagrangian Subgrid‐Scale Dispersion on Neutral Surfaces in the Ocean</div>
+                    <div class="Row__PaperTitle" style="font-size:0.8rem">Simulating Lagrangian Subgrid‐Scale Dispersion on Neutral Surfaces in the Ocean</div>
                     <p>from Journal of Advances in Modeling Earth Systems</p>
                 </div>
             </div>
@@ -17108,7 +17108,7 @@ flex-direction: row;
                 </div>
                 <div class="Impact__Row__Block">
                     <p>The most notable of which was</p>
-                    <div class="Row__PaperTitle">SearchSECOController</div>
+                    <div class="Row__PaperTitle" style="font-size:1.75rem">SearchSECOController</div>
                     <p>by Rowin Schouten, Tjibbe Bolhuis</p>
                 </div>
             </div>
@@ -17129,38 +17129,22 @@ function genData(){
 }
 
 const labels = [
-    "Computer Science",
-    "Medicine",
-    "Chemistry",
-    "Biology",
-    "Material Science",
-    "Physics",
-    "Geology",
-    "Psychology",
-    "Art",
-    "History",
-    "Sociology",
-    "Business",
-    "Political Science",
-    "Economy",
-    "Philosophy",
-    "Mathematics",
-    "Engineering",
-    "Environmental Science"
+    "Humanities" ,
+    "Social Sciences",
+    "Natural Sciences",
+    "Formal Sciences",
+    "Applied Sciences"
 ]
 const data = {
     labels: labels,
     datasets: [
         {
-            label: "data",
-            data: [,,4,10,,11,48,,,2,1,,,,,3,,],
+            data: [0,5,41,8,54],
             borderColor: "rgb(170, 85, 183)",
             backgroundColor: "rgba(175, 102, 186, 0.4)",
             pointBackgroundColor: "rgb(175, 102, 186)"
         }]
 };
-
-// comp sc, med, chem, bio, material sc, phys, geo, psych, art, hist, soc, busin, pol sc, econ, phil, math, eng, env sc, 
 
 const config = {
   type: 'radar',
@@ -17176,8 +17160,8 @@ const config = {
             callback: function() {return ""},
             backdropColor: "rgba(0, 0, 0, 0)"
         },
-        pointLabels: {
-            display: 'auto'
+        pointLabels:{
+            fontSize: 16
         }
     }
   }
@@ -17219,7 +17203,6 @@ new Chart("Citations__RadarChart", config);
 }
 
 .Impact__Row__Block .Row__PaperTitle {
-    font-size: 0.759493670886076vw;
     font-weight: bold;
     margin: 0.25vw;
     max-width: 15vw;
@@ -17243,15 +17226,8 @@ new Chart("Citations__RadarChart", config);
     margin: 0.25vw;
 }
 
-.Chart__Container {
-    width: 15vw;
-    height: 15vw;
-    margin: auto;
-}
-
-.Chart__Container canvas {
-    width: 100%;
-    height: 100%;
+#Citations__RadarChart {
+    margin: 5px;
 }
 
 </style>

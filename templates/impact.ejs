@@ -12,8 +12,13 @@ const mostNotableJournal = pp.papers[0].journal;
 
 const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 
-function setFontSizeTitle(){
-    return clamp(60/mostNotableTitle.length, 0.65, 2).toString() + "vw";
+function setFontSize(text){
+    return clamp(35/text.length, 0.8, 2).toString() + "rem";
+}
+
+function getJournal(paper){
+    if (paper.journal) return paper.journal;
+    else return "unknown journal";
 }
 
 const uniqueProjects = getProjects();
@@ -62,26 +67,17 @@ const labels = [
 ]
 
 function getChartData(labels) {
-    // Initialize dict
-    let fieldCount = {};
-
-    for (const label of labels){
-        fieldCount[label] = 0;
-    }
-
-    for (const paper of pp.papers){
-        for(const field of paper.fields){
-            fieldCount[field]++;
-        }
-    }
-
     let data = [];
 
-    for (const label of labels){
-        data.push(fieldCount[label]);
-    }
+    let disc = pp.disciplines;
 
-    return data.map(x => x == 0 ? null : x);
+    data.push(disc["Humanities"] || 0);
+    data.push(disc["Social Sciences"] || 0);
+    data.push(disc["Natural Sciences"] || 0);
+    data.push(disc["Formal Sciences"] || 0);
+    data.push(disc["Applied Sciences"] || 0);
+
+    return data;
 }
 
 %>
@@ -104,8 +100,8 @@ function getChartData(labels) {
                 </div>
                 <div class="Impact__Row__Block">
                     <p>The most notable of which was</p>
-                    <div class="Row__PaperTitle"><%- pp.papers[0].title %></div>
-                    <p>from <%- pp.papers[0].journal %></p>
+                    <div class="Row__PaperTitle" style="font-size:<%- setFontSize(mostNotableTitle) %>"><%- pp.papers[0].title %></div>
+                    <p>from <%- getJournal(pp.papers[0]) %></p>
                 </div>
             </div>
         </div>
@@ -124,7 +120,7 @@ function getChartData(labels) {
                 </div>
                 <div class="Impact__Row__Block">
                     <p>The most notable of which was</p>
-                    <div class="Row__PaperTitle"><%- uniqueProjects[0].project %></div>
+                    <div class="Row__PaperTitle" style="font-size:<%- setFontSize(uniqueProjects[0].project) %>"><%- uniqueProjects[0].project %></div>
                     <p>by <%- getAuthors(uniqueProjects[0]) %></p>
                 </div>
             </div>
@@ -145,24 +141,11 @@ function genData(){
 }
 
 const labels = [
-    "Computer Science",
-    "Medicine",
-    "Chemistry",
-    "Biology",
-    "Material Science",
-    "Physics",
-    "Geology",
-    "Psychology",
-    "Art",
-    "History",
-    "Sociology",
-    "Business",
-    "Political Science",
-    "Economy",
-    "Philosophy",
-    "Mathematics",
-    "Engineering",
-    "Environmental Science"
+    "Humanities" ,
+    "Social Sciences",
+    "Natural Sciences",
+    "Formal Sciences",
+    "Applied Sciences"
 ]
 const data = {
     labels: labels,
@@ -174,8 +157,6 @@ const data = {
             pointBackgroundColor: "rgb(175, 102, 186)"
         }]
 };
-
-// comp sc, med, chem, bio, material sc, phys, geo, psych, art, hist, soc, busin, pol sc, econ, phil, math, eng, env sc, 
 
 const config = {
   type: 'radar',
@@ -191,8 +172,8 @@ const config = {
             callback: function() {return ""},
             backdropColor: "rgba(0, 0, 0, 0)"
         },
-        pointLabels: {
-            display: 'auto'
+        pointLabels:{
+            fontSize: 16
         }
     }
   }
@@ -234,7 +215,6 @@ new Chart("Citations__RadarChart", config);
 }
 
 .Impact__Row__Block .Row__PaperTitle {
-    font-size: <%- setFontSizeTitle() %>;
     font-weight: bold;
     margin: 0.25vw;
     max-width: 15vw;
@@ -258,15 +238,8 @@ new Chart("Citations__RadarChart", config);
     margin: 0.25vw;
 }
 
-.Chart__Container {
-    width: 15vw;
-    height: 15vw;
-    margin: auto;
-}
-
-.Chart__Container canvas {
-    width: 100%;
-    height: 100%;
+#Citations__RadarChart {
+    margin: 5px;
 }
 
 </style>

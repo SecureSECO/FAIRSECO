@@ -34920,11 +34920,11 @@
     {
         "ReturnName": "QualityMetrics",
         "ReturnData": {
-            "score": 13,
-            "fairnessScore": 0,
-            "licenseScore": 47,
-            "maintainabilityScore": 0,
-            "documentationScore": 0
+            "score": 80,
+            "fairnessScore": 80,
+            "licenseScore": 70,
+            "maintainabilityScore": 80,
+            "documentationScore": 100
         }
     }
 ]
