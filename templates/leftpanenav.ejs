@@ -1,9 +1,10 @@
-<div class="LeftPaneNav">
+<div class="LeftPaneNav" onMouseOut="unHoverNav(event)">
     <div class="HighlightBlock"></div>
     <div class="ActiveBlock"></div>
     <div class="NavItem Active" onMouseOver="hoverNav(this)" onClick="clickNav(this)" data-list-index="0" data-linked-class="CitationsContainer"><i class="fa-solid fa-pen-nib"></i><p>Citations</p></div>
-    <div class="NavItem" onMouseOver="hoverNav(this)"onClick="clickNav(this)" data-list-index="1" data-linked-class="LicencesContainer"><i class="fa-solid fa-copyright"></i><p>Licence Violations</p></div>
-    <div class="NavItem" onMouseOver="hoverNav(this)"onClick="clickNav(this)" data-list-index="2" data-linked-class="SBOMContainer"><i class="fa-solid fa-scroll"></i><p>SBOM</p></div>
+    <div class="NavItem" onMouseOver="hoverNav(this)" onClick="clickNav(this)" data-list-index="1" data-linked-class="LicencesContainer"><i class="fa-solid fa-copyright"></i><p>Licence Violations</p></div>
+    <div class="NavItem" onMouseOver="hoverNav(this)" onClick="clickNav(this)" data-list-index="2" data-linked-class="SBOMContainer"><i class="fa-solid fa-scroll"></i><p>SBOM</p></div>
+    <div class="NavItem" onMouseOver="hoverNav(this)" onClick="clickNav(this)" data-list-index="3" data-linked-class="SearchSeco"><i class="fa-solid fa-file-code"></i><p>SearchSECO</p></div>
 </div>
 
 <style>
@@ -85,22 +86,42 @@ window.addEventListener('load',
   window.ActiveIndex = 0
   }, false);
 
-
-function hoverNav(ele) {
+function moveHighlightBlockTo(ele) {
     const padding = 20;
     const {top, left, width, height} = ele.getBoundingClientRect();
-    const highlightblock =document.querySelector('.HighlightBlock');
+    const highlightblock = document.querySelector('.HighlightBlock');
     const newwidth = Math.ceil(ele.clientWidth);
     highlightblock.style.width = `${newwidth + padding}px`;
     highlightblock.style.translate = `${(left - padding/2) - 8}px`;
 }
 
+function hoverNav(ele) {
+    moveHighlightBlockTo(ele);
+}
+
+function unHoverNav(event) {
+    let isFromNav = false;
+    let ele = event.relatedTarget;
+
+    while (ele && !isFromNav)
+    {
+        isFromNav = ele.classList.contains("LeftPaneNav");
+        ele = ele.parentElement;
+    }
+
+    if (!isFromNav) {
+        moveHighlightBlockTo(document.querySelector(".Active"));
+    }
+}
+
 
 function clickNav(ele) {
-    const spans = ele.parentElement.children;
-    for(let i = 1; i < spans.length; i++){
-        spans[i].classList.remove('Active');
-    };
+    let active = document.querySelector(".Active");
+    if (active === ele) {
+        return;
+    }
+
+    active.classList.remove("Active");
     ele.classList.add('Active');
     const padding = 20;
     const {top, left, width, height} = ele.getBoundingClientRect();
@@ -111,32 +132,32 @@ function clickNav(ele) {
 
     // Animating the tabs to slide in and out from the right direction.
     const newTab = document.querySelector("." + ele.dataset.linkedClass)
-    if (window.ActiveIndex > ele.dataset.listIndex){
-        window.ActiveTab.classList.add("SlideOutLeft")
+    if (window.ActiveIndex > ele.dataset.listIndex) {
+        window.ActiveTab.classList.add("SlideOutLeft");
     }
-    else{
-        window.ActiveTab.classList.add("SlideOutRight")
+    else {
+        window.ActiveTab.classList.add("SlideOutRight");
     }
-    setTimeout(()=>{
-        window.ActiveTab.classList.remove("SlideOutRight")
-        window.ActiveTab.classList.remove("SlideOutLeft")
-        window.ActiveTab.classList.add("Hidden")
-        window.ActiveTab.classList.remove("ActiveTab")
-    }, 150)
-    setTimeout(()=>{
-        if (window.ActiveIndex > ele.dataset.listIndex){
-            newTab.classList.add("SlideInRight")
+    setTimeout(() => {
+        window.ActiveTab.classList.remove("SlideOutRight");
+        window.ActiveTab.classList.remove("SlideOutLeft");
+        window.ActiveTab.classList.add("Hidden");
+        window.ActiveTab.classList.remove("ActiveTab");
+    }, 150);
+    setTimeout(() => {
+        if (window.ActiveIndex > ele.dataset.listIndex) {
+            newTab.classList.add("SlideInRight");
         }
         else {
-            newTab.classList.add("SlideInLeft")
+            newTab.classList.add("SlideInLeft");
         }
-        newTab.classList.remove("Hidden")
-        newTab.classList.remove("SlideOutRight")
-        newTab.classList.remove("SlideOutLeft")
-        newTab.classList.add("ActiveTab")
+        newTab.classList.remove("Hidden");
+        newTab.classList.remove("SlideOutRight");
+        newTab.classList.remove("SlideOutLeft");
+        newTab.classList.add("ActiveTab");
         window.ActiveTab = document.querySelector('.ActiveTab');
         window.ActiveIndex = ele.dataset.listIndex;
-    }, 150)
+    }, 150);
 }
 
 </script>

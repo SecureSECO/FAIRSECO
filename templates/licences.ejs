@@ -1,21 +1,17 @@
 <div class="LicencesContainer Hidden">
     <h1 class="issuesheader"> Issues detected: <%= licences.violations.length %></h1>
     <div class="LicencesContainerScroll">
-    
-    <div class="Licenses">
-        <% licences.violations.forEach((violation) => { %> 
-    
-        <%- include('violation', {"violation": violation})%> 
-        <% }) %>
+        <div class="Licenses">
+            <% licences.violations.forEach((violation) => { %> 
+            <%- include('violation', {"violation": violation})%> 
+            <% }) %>
+        </div>
     </div>
-
-</div>
 </div>
 <style>
     .LicencesContainer {
         height: 76%;
         width: 100%;
-        
     }
 
     .Licenses {
@@ -47,6 +43,103 @@
     .Licenses h1 {
         margin: 5px;
     }
+    
+    .ViolationDetailsHeader {
+        font-weight: bold;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        font-size: 12px;
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        color: #D9F8DF;
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+    .Arrow i:hover {
+        color: #b8d7cc;
+        cursor: pointer;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
 </style>
 
 <!-- license table  -->
@@ -74,12 +167,14 @@ let details = document.getElementsByClassName('Arrow')
 
 for (var i = 0; i < details.length; ++i){
     details[i].addEventListener('click', function(event){
-        var hid = event.target.parentElement.parentElement.parentElement.children[5].hidden;
-        event.target.parentElement.parentElement.parentElement.children[5].hidden = !hid;
         if (event.target.className == "fa-solid fa-angle-right"){
             event.target.className = "fa-solid fa-angle-down";
-        } else {
-            event.target.className = "fa-solid fa-angle-right";
+            var hid = event.target.parentElement.parentElement.parentElement.children[5].hidden;
+            event.target.parentElement.parentElement.parentElement.children[5].hidden = !hid;
+        } else if (event.target.className == "fa-solid fa-angle-down") {
+            event.target.className = "fa-solid fa-angle-right"
+            var hid = event.target.parentElement.parentElement.parentElement.children[5].hidden;
+            event.target.parentElement.parentElement.parentElement.children[5].hidden = !hid;
         }
 })
 }
