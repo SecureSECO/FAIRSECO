@@ -80,6 +80,7 @@
         mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
         overflow: hidden scroll;
         word-break: break-word;
+        padding: 16px;
     }
     .SearchSeco--HideNonVulnerable .SearchSeco--NotVulnerable {
         display: none;
@@ -97,9 +98,18 @@
     }
     .SearchSeco__Nav button {
         padding: 0.5vw;
+        border: 1px solid #779C7E;
+        background: transparent;
+        border-radius: 8px;
+        color: #D9F8DF;
+        cursor: pointer;
+        transition: all 300ms ease;
     }
-    .SearchSeco__Nav__Button--Active {
-        background-color: lightgreen;
+    .SearchSeco__Nav button.SearchSeco__Nav__Button--Active {
+        background: #D9F8DF;
+        color: #0C281E;
+        border: 1px solid #D9F8DF;
+
     }
     .SearchSeco__Nav input {
         width: 1.15vw;
@@ -121,11 +131,11 @@
 
     .SearchSeco__ListObject__Header {
         color: #D9F8DF;
-        font-size: 0.9vw;
-        background-color: #47715A;
+        font-size: 0.8rem;
+        /* background-color: #47715A; */
         border: 1px solid #779C7E;
         border-radius: 7px;
-        padding: 5px;
+        padding: 8px;
         padding-left: calc(1.8vw + 5px);
         margin-top: 5px;
         margin-bottom: 5px;
@@ -139,7 +149,10 @@
         flex-wrap: wrap;
     }
     .SearchSeco__ListObject__Header h1 {
-        font-size: 1.2vw;
+        font-size: 1.1rem;
+    }
+    .SearchSeco__ListObject__Header p, .SearchSeco__ListObject__Header h1 {
+        margin: 0;
     }
     .SearchSeco__ListObject__Header h1 i {
         font-size: 1.5vw;
@@ -153,7 +166,7 @@
     }
     .SearchSeco__ListObject__Header span {
         margin-right: 1.5vw;
-        color: yellow;
+        color: #fcec69;
     }
     .SearchSeco__ListObject__MatchList {
         width: 95%;
@@ -162,16 +175,17 @@
 
     .SearchSeco__Match {
         color: #D9F8DF;
-        font-size: 0.85vw;
-        background-color: #47715A;
+        font-size: 0.7rem;
+        /* background-color: #47715A; */
         border: 1px solid #779C7E;
         border-radius: 7px;
-        padding: 5px;
+        padding: 12px;
         margin-top: 5px;
         margin-bottom: 5px;
     }
     .SearchSeco__Match span {
-        color: yellow;
+        /* color: yellow; */
+        color: #fcec69;
     }
     .SearchSeco__Match__Header {
         width: 100%;
@@ -182,13 +196,15 @@
         flex-wrap: wrap;
     }
     .SearchSeco__Match__Header h2 {
-        font-size: 1vw;
+        font-size: 1rem;
+        margin: 0;
     }
     .SearchSeco__Match h3 {
-        font-size: 0.9vw;
+        font-size: 0.9rem;
+        margin: 0;
     }
     .SearchSeco__Match a {
-        color: greenyellow;
+        color: #D9F8DF; 
     }
 </style>
 

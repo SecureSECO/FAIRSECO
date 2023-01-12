@@ -1,8 +1,8 @@
 <div class="LicencesContainer Hidden">
-    <h1 class="issuesheader"> Issues detected: <%= licences.violations.length %></h1>
+    <h1 class="issuesheader"> Issues detected: <%= licences.violations?.length %></h1>
     <div class="LicencesContainerScroll">
         <div class="Licenses">
-            <% licences.violations.forEach((violation) => { %> 
+            <% licences.violations?.forEach((violation) => { %> 
             <%- include('violation', {"violation": violation})%> 
             <% }) %>
         </div>
@@ -96,7 +96,6 @@
 
     .Violation {
         color: #D9F8DF;
-        background-color: #47715A;
         border: 1px solid #779C7E;
         border-radius: 7px;
         margin: 8px;

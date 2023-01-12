@@ -1,6 +1,6 @@
 
 <% function checkOrCross(x) {
-return x ? '<p><i class="fa-solid fa-check"></i></p>' : '<p><i class="fa-solid fa-x"></i></p>'
+return x ? '<p>Yes</p>' : '<p>No</p>'
 }
 %>
 
@@ -25,49 +25,52 @@ return x ? '<p><i class="fa-solid fa-check"></i></p>' : '<p><i class="fa-solid f
     </div>
         <div class="ChecklistContainer">
             <div onClick="togglePanel(this)">
-                <p><i class="fa-solid fa-arrow-up-from-bracket"></i> Passed registry</p> <%- checkOrCross(howfairis.registry)%>
+                <p><i class="fa-solid fa-arrow-up-from-bracket"></i>Registered in public repository?</p> <%- checkOrCross(howfairis.registry)%>
             </div>
             <div>
                 Whether your software is registered in a public registry, so that it is easily <b>F</b>indable.
                 <a href="https://fair-software.eu/recommendations/registry" target="_blank">Read more</a>
             </div>
             <div onClick="togglePanel(this)">
-                <p><i class="fa-solid fa-code-fork"></i> Passed repository</p><%- checkOrCross(howfairis.repository)%>
+                <p><i class="fa-solid fa-code-fork"></i>Repository is public?</p><%- checkOrCross(howfairis.repository)%>
             </div>
             <div>
                 Whether your repository is public, so that your software is <b>A</b>ccessible.
                 <a href="https://fair-software.eu/recommendations/repository" target="_blank">Read more</a>
             </div>
             <div onClick="togglePanel(this)">
-                <p><i class="fa-solid fa-list-check"></i> Passed checklist</p> <%- checkOrCross(howfairis.checklist)%>
+                <p><i class="fa-solid fa-list-check"></i>Using a quality checklist?</p> <%- checkOrCross(howfairis.checklist)%>
             </div>
             <div>
-                Whether you have used a software quality checklist, so that your software is <b>I</b>nteroperable.
+                Whether your project uses a software quality checklist, so that your software is <b>I</b>nteroperable.
                 <a href="https://fair-software.eu/recommendations/checklist" target="_blank">Read more</a>
             </div>
             <div onClick="togglePanel(this)">
-                <p><i class="fa-solid fa-quote-right"></i> Passed citation</p> <%- checkOrCross(howfairis.citation)%>
+                <p><i class="fa-solid fa-quote-right"></i>Citation file present?</p> <%- checkOrCross(howfairis.citation)%>
             </div>
             <div>
-                Whether your repository contains a citation file, so that your software is <b>R</b>eusable.
-                <a href="https://fair-software.eu/recommendations/citation" target="_blank">Read more</a>
-                <%- howfairis.citation ? '' : ' <button onClick="createCreateCffTab()">Create citation.cff file</button>' %>
+                <p>Whether your repository contains a citation file, so that your software is <b>R</b>eusable.
+                <a href="https://fair-software.eu/recommendations/citation" target="_blank">Read more.</a>
+                <%- howfairis.citation ? '' : ' Need help creating a CFF File? <a href = "https://citation-file-format.github.io/cff-initializer-javascript/#/start">This tool can help.</a>' %>
+                </p>
             </div>
             <div onClick="togglePanel(this)">
-                <p><i class="fa-solid fa-copyright"></i> Passed license</p> <%- checkOrCross(howfairis.license)%>
+                <p><i class="fa-solid fa-copyright"></i>License file present?</p> <%- checkOrCross(howfairis.license)%>
             </div>
             <div>
                 Whether you have a license file in your repository, so that your software is correctly <b>R</b>euasable.
                 <a href="https://fair-software.eu/recommendations/license" target="_blank">Read more</a>
             </div>
         </div>
+        <h4>Click on a checklist item to learn more about it.</h4>
 </div>
 
 <style>
+
     .HowFairIsReport {
         color: #0C281E;
-        font-size: 1vw;
-        display: block;
+        max-height: 90%;
+        overflow-y: scroll;
     }
 
     .HowFairIsReport h1 {
@@ -76,6 +79,11 @@ return x ? '<p><i class="fa-solid fa-check"></i></p>' : '<p><i class="fa-solid f
     }
 
     .HowFairIsReport h2 {
+        text-align: center;
+    }
+    .HowFairIsReport h4 {
+        font-weight: 400;
+        font-style: italic;
         text-align: center;
     }
 
@@ -92,12 +100,18 @@ return x ? '<p><i class="fa-solid fa-check"></i></p>' : '<p><i class="fa-solid f
     .ChecklistContainer p {
         margin: 0;
     }
+    .ChecklistContainer p i{
+        margin: 0px 8px;
+        width: 1rem;
+        text-align: center;
+    }
 
     .ChecklistContainer div:nth-child(2n-1){ <%# Panel Heads %>
         display: flex;
         margin-top: 8px;
         width: 100%;
         padding: 1%;
+        font-size: 1.2rem;
         flex-direction: row;
         justify-content: space-between;
         border-radius: 8px;
@@ -108,18 +122,16 @@ return x ? '<p><i class="fa-solid fa-check"></i></p>' : '<p><i class="fa-solid f
         background-color: #abd2c5;
     }
     .ChecklistContainer div:nth-child(2n){ <%# Panels %>
-        padding: 0 18px;
-        background-color: rgb(240, 240, 240);
+        padding: 0px 16px;
         height: 0;
+        opacity: 0;
+        font-size: 1rem;
         overflow: hidden;
-        transition: height 0.2s ease-out;
-        border-radius: 0 0 8px 8px;
+        transition: all 0.2s ease-out;
     }
 
     .ChecklistContainer__PanelHead--Active {
         background-color: #abd2c5;
-        border-bottom-left-radius: 0 !important;
-        border-bottom-right-radius: 0 !important;
     }
 </style>
 
@@ -130,8 +142,12 @@ return x ? '<p><i class="fa-solid fa-check"></i></p>' : '<p><i class="fa-solid f
 
         if (panel.style.height) {
             panel.style.height = null;
+            panel.style.opacity = 0;
+            panel.style.padding = "0px 16px";
         } else {
-            panel.style.height = (panel.scrollHeight + 5).toString() + "px";
+            panel.style.height = (panel.scrollHeight + 5 + 24).toString() + "px";
+            panel.style.opacity = 1
+            panel.style.padding = "16px 16px";
         }
     }
 </script>
