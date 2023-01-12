@@ -4,7 +4,7 @@
 import { runHowfairis } from "../../src/resources/howfairis";
 import { ReturnObject } from "../../src/getdata";
 import { matchers } from "jest-json-schema";
-import { getGithubInfo } from "../../src/git";
+import { getGithubInfo, GithubInfo } from "../../src/git";
 expect.extend(matchers);
 jest.setTimeout(30000);
 
@@ -75,9 +75,23 @@ test("that output json matches the schema", async () => {
         },
     };
 
+    const mockGHInfo : GithubInfo = {
+        Repo: "",
+        GithubToken: "",
+        Owner: "",
+        FullURL: "https://github.com/QDUNI/FairSECO",
+        Stars: 0,
+        Forks: 0,
+        Watched: 0,
+        Visibility: undefined,
+        Readme: "",
+        Badges: [],
+        Contributors: []
+    }
+
     //Run Howfairis and check if output JSON matches with the predefined schema
     const outputmodule: ReturnObject = await runHowfairis(
-        await getGithubInfo()
+        mockGHInfo
     );
     expect(outputmodule).toMatchSchema(schema);
 });
