@@ -1,3 +1,10 @@
+/**
+ * This module contains functions that are called after the main program is done, like
+ * creating the output files.
+ * 
+ * @module
+ */
+
 import { ReturnObject } from "./getdata";
 import YAML from "yaml";
 import fs from "fs";

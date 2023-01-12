@@ -1,3 +1,9 @@
+/** 
+ * This module contains a function that retrieves the artifact from [sbom-action](https://github.com/anchore/sbom-action) and parses the data to JSON.
+ * 
+ * @module
+ */
+
 import { ReturnObject } from "../getdata";
 import {
     Artifact,

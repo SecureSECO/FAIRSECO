@@ -1,7 +1,13 @@
+/**
+ * This module contains functions for logging program output.
+ * 
+ * @module
+ */
+
 import fs from "fs";
 
 /**
- * Enum describing the severity of an error when logged by {@link LogMessage}. Can be info, warn, and err
+ * Enum describing the severity of an error when logged by {@link LogMessage}.
  */
 export enum ErrorLevel {
     info,
@@ -11,9 +17,6 @@ export enum ErrorLevel {
 
 /**
  * Logs an error or information message to console and appends the message to the log file.
- *
- * @remarks
- * This function will only log the stack trace for errors if the verbose flag is set. (Once we implement the verbose flag)
  *
  * @param content - The string or error to be printed.
  * @param level - Severity of the error as an {@link ErrorLevel}.
@@ -40,7 +43,9 @@ export function LogMessage(content: string | Error, level: ErrorLevel): void {
 }
 
 /**
- * Creates the log file on disk.
+ * Creates the log file.
+ * 
+ * Path: `.FairSECO/program.log`
  */
 export function createLogFile(): void {
     // Open the log file

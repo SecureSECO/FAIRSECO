@@ -1,3 +1,9 @@
+/**
+ * This module contains a function that runs the [fairtally](https://github.com/fair-software/fairtally) Docker image and parses it to JSON.
+ * 
+ * @module
+ */
+
 import { ReturnObject } from "../getdata";
 import { GithubInfo } from "./git";
 import * as dockerExit from "../errorhandling/docker_exit";

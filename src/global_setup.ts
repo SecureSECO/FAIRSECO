@@ -1,3 +1,9 @@
+/**
+ * This module sets up the folders and files that are needed for the unit tests.
+ * 
+ * @module
+ */
+
 import { createFairSECODir } from "./pre";
 import { createLogFile } from "./errorhandling/log";
 

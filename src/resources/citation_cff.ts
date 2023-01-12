@@ -7,6 +7,23 @@ import * as fs from "fs";
 import { exec, ExecOptions } from "@actions/exec";
 import { ErrorLevel, LogMessage } from "../errorhandling/log";
 
+/**
+ * A CFFObject can be one of the following interfaces:
+ * 
+ * #### MssingCffObject
+ * There is no CITATION.cff file present in the root of the repository.
+ * 
+ * #### IncorrectYamlCffObject
+ * The CITATION.cff file is not formatted correctly. I.e. it is not a valid .yaml file
+ * 
+ * #### ValidationErrorCffObject
+ * There is a CITATION.cff file that is properly formatted, but the data is incorrect or missing.
+ * 
+ * #### ValidCffObject
+ * The CITATION.cff file is completely valid.
+ * 
+ * @module
+ */
 export type CffObject =
     | MissingCffObject
     | IncorrectYamlCffObject

@@ -1,10 +1,23 @@
+/**
+ * This module contains functions for finding papers that cite a piece of research software, making use of Semantic Scholar.
+ * <br>The main function to be used by other modules is {@link semanticScholarCitations}.
+ * 
+ * @module
+ */
+
 import fetch from "node-fetch";
 import { Author, Paper, MetaDataPaper } from "../Paper";
 import { ErrorLevel, LogMessage } from "../../../errorhandling/log";
 import { calculateProbabiltyOfReference } from "../probability";
+
 /**
- *
- * @returns array containing the list of papers citing the giving piece of research software.
+ * Finds papers citing the given piece of research software using Semantic Scholar.
+ * 
+ * @param authors An array containing the authors of the software.
+ * @param title The title of the software.
+ * @param firstRefTitles Titles of known papers of the software.
+ * 
+ * @returns An array containing the list of papers citing the given piece of software.
  */
 export async function semanticScholarCitations(
     authors: Author[],
@@ -26,8 +39,11 @@ export async function semanticScholarCitations(
 }
 
 /**
- *
- * @returns array containing the list of papers citing the giving paperId.
+ * Finds papers citing a given paper.
+ * 
+ * @param paperId The {@link https://api.semanticscholar.org/api-docs/graph#tag/Paper-Data/operation/get_graph_get_paper | Semantic Scholar paper id} corresponding to the paper.
+ * 
+ * @returns An array of papers citing the given paper.
  */
 export async function getCitationPapers(paperId: string): Promise<Paper[]> {
     // prepare query strings
@@ -133,8 +149,12 @@ export async function getCitationPapers(paperId: string): Promise<Paper[]> {
 }
 
 /**
+ * Finds papers that are likely reference papers of a piece of research software.
  *
- * @returns and array of titles that are probably reference papers for the piece of software
+ * @param authors The authors of the software.
+ * @param title The title of the software.
+ * 
+ * @returns An Array of titles of reference papers for the given piece of software.
  */
 export async function getRefTitles(
     authors: Author[],
@@ -219,8 +239,11 @@ export async function getRefTitles(
 }
 
 /**
+ * Finds the {@link https://api.semanticscholar.org/api-docs/graph#tag/Paper-Data/operation/get_graph_get_paper | Semantic Scholar paper id} of a paper.
+ * 
+ * @param title The title of the paper.
  *
- * @returns the unqiue id of a paper from Semantic Scholar
+ * @returns The {@link https://api.semanticscholar.org/api-docs/graph#tag/Paper-Data/operation/get_graph_get_paper | Semantic Scholar paper id} of a paper.
  */
 export async function getSemanticScholarPaperId(
     title: string

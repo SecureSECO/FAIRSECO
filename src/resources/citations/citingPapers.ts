@@ -1,3 +1,9 @@
+/**
+ * Module containing functions for finding unique papers that cite a piece of research software.
+ * 
+ * @module
+ */
+
 import { ReturnObject } from "../../getdata";
 import { semanticScholarCitations } from "./APIs/semanticscholarAPI";
 import { openAlexCitations } from "./APIs/openalexAPI";
@@ -5,8 +11,11 @@ import { Author, Paper, Citations } from "./Paper";
 import { ValidCffObject } from "../citation_cff";
 
 /**
- *
- * @returns returnObject containing unique papers citing the software repository
+ * Finds papers citing a piece of research software, given the citation.cff file of its repository.
+ * 
+ * @param cffFile The information from the citation.cff file.
+ * 
+ * @returns A `ReturnObject` containing unique papers citing the software.
  */
 export async function runCitingPapers(
     cffFile: ValidCffObject
@@ -63,11 +72,15 @@ export async function runCitingPapers(
 }
 
 /**
+ * Merges two sources of papers into one.
+ * 
+ * @remarks Splitting this process over three foreach calls and three maps ensures an O(n) runtime, instead of O(n<sup>2</sup>).
+ * 
+ * @param array1 The first array of papers.
+ * @param array2 The second array of papers.
  *
- * @returns array containing all the unique papers with the comined meta-data from both sources is it is listed by both databases
- * This function stores all papers in a map with the DOI identifier as key, if the map already contains a paper with it's DOI it combines it into one making sure no meta-data is lost
- * it then does the same for the pmid identifier and pmcid identifier. Splitting this function over three foreach calls and three maps ensures an O(n) runtime, instead an O(n^2)
- */
+ * @returns An array of all the unique papers with the combined metadata from both sources.
+*/
 export function mergeDuplicates(array1: Paper[], array2: Paper[]): Paper[] {
     let totalArray: Paper[] = array1.concat(array2);
     const doiMap: Map<string, Paper> = new Map();

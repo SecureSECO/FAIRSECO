@@ -1,3 +1,9 @@
+/**
+ * This module contains a function that retrieves the artifact from Tortellini and filters the data.
+ * 
+ * @module
+ */
+
 import { ReturnObject } from "../getdata";
 
 import YAML from "yaml";

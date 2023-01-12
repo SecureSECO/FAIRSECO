@@ -1,3 +1,21 @@
+/**
+ * This module contains functions that get data from the previously run modules and new data from Github,
+ * and calculates a number of metrics used to calculate the quality score.
+ * 
+ * #### FAIRness score
+ * Score between 0 and 100 indicating how many of the 5 FAIRness criteria are met
+ * #### Maintainability score
+ * Percentage of closed issues
+ * #### License score
+ * Score between 0 and 100 indicating how compatible the license of the project is with those of its dependencies. The more violations there are, the lower the license score will be
+ * #### Documentation
+ * Can be 0 or 100, depending on whether documentation is available. Currently only checks for a 'docs' or 'documentation' folder in the root directory.
+ * #### Average Solve Time
+ * Average number of days between opening and closing an issue. Ths number is not used to calculate the quality score, but may be displayed separately. This is because the acceptable amount of time it takes to solve an issue can be different for each project
+ * 
+ * @module
+ */
+
 import { ReturnObject } from "../../src/getdata";
 import { GithubInfo } from "./git";
 

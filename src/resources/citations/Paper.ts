@@ -1,3 +1,9 @@
+/**
+ * Contains class definitions for handling papers and getting citation information.
+ * 
+ * @module
+ */
+
 export class Paper {
     title: string;
     doi: string;

@@ -1,3 +1,9 @@
+/**
+ * This module contains the action.
+ * 
+ * @module
+ */
+
 import { pre } from "./pre";
 import { data } from "./getdata";
 import { post } from "./post";

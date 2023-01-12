@@ -1,3 +1,10 @@
+/**
+ * This module contains functions that are called before the main action is run,
+ * to set up the folder and files used by the program.
+ * 
+ * @module
+ */
+
 import * as core from "@actions/core";
 import { createLogFile, ErrorLevel, LogMessage } from "./errorhandling/log";
 import fs, { PathLike } from "fs";

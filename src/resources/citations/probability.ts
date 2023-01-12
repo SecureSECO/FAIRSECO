@@ -1,9 +1,17 @@
+/** 
+ * This module contains a function that calculates how likely it is that a paper is related to the project.
+ * 
+ * @module
+ */
+
 import { MetaDataPaper } from "./Paper";
 import { ErrorLevel, LogMessage } from "../../errorhandling/log";
+
 /**
- *
- * @returns array containing for each paper a probability from 0 to 1 that they are a reference paper.
+ * Calculates the probability that a paper is related to the project.
  * Probability is definied as the number of words that occur in both titles divided by the total number of words in the title of the main paper.
+ * 
+ * @returns An array containing for each paper a probability from 0 to 1 that they are a reference paper.
  */
 export function calculateProbabiltyOfReference(
     uniquePapers: Map<string, MetaDataPaper>

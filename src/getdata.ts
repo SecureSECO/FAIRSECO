@@ -1,3 +1,15 @@
+/**
+ * This module handles the main part of the action. It runs each resource module and compiles
+ * them into one object.
+ * 
+ * @remarks
+ * Because every function is wrapped in a try-catch block separately,
+ * the program doesn't crash if one of them fails. The result will simply omit the data
+ * from that resource.
+ * 
+ * @module
+ */
+
 import { runTortellini } from "./resources/tortellini";
 import { runHowfairis } from "./resources/howfairis";
 import { runSearchseco } from "./resources/searchseco";

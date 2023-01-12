@@ -1,3 +1,14 @@
+/**
+ * This module contains functions that run the SearchSECO Docker image and parses its output.
+ * 
+ * @remarks
+ * If the action is run on a private repository, SearchSECO will be unable
+ * to analyze the code. To circumvent this, a mock of SearchSECO was created
+ * ([jarnohendriksen/MockSECO:v1](https://hub.docker.com/r/jarnohendriksen/mockseco)).
+ * 
+ * @module
+ */
+
 import { ReturnObject } from "../getdata";
 import { GithubInfo } from "./git";
 import { ErrorLevel, LogMessage } from "../errorhandling/log";
@@ -10,8 +21,7 @@ import { exec, ExecOptions } from "@actions/exec";
  * This function first runs the searchSECO docker and listens to stdout for its output.
  * Then, it tries to parse whatever SearchSECO returned into an {@link Output} object.
  *
- * @param getRepoUrlFn Here, you can pass a mocked version of the {@link git.getRepoUrl} function. This is needed when testing locally,
- * since the Github repo url can't be retrieved locally.
+ * @param ghInfo iserbvrtubr
  * @returns A {@link getdata.ReturnObject} containing the name of the module and the object constructed from SearchSECO's output.
  *
  */

@@ -1,3 +1,9 @@
+/**
+ * This module contains variables that need to be mocked in the unit tests.
+ * 
+ * @module
+ */
+
 import * as artifact from "@actions/artifact";
 
 import { Artifact } from "./helperfunctions/artifact";

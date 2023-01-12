@@ -1,7 +1,16 @@
+/**
+ * This module contains functions that retrieve data of the Github repository using Octokit.
+ * 
+ * @module
+ */
+
 import * as core from "@actions/core";
 import * as gh from "@actions/github";
 import * as log from "../errorhandling/log"
 
+/**
+ * Object containing all info retrieved from Octokit about the repository.
+ */
 export interface GithubInfo {
     Repo: string;
     GithubToken: string;
@@ -45,7 +54,14 @@ export interface RepoStats {
     visibility: string | undefined;
 }
 
-// Get all repo contributors here
+/**
+ * Retrieves the stats of the repository from Octokit.
+ * 
+ * @param owner The username of the owner of the repository.
+ * @param repo The name of the repository.
+ * @param token The Github token associated with the owner.
+ * @returns A RepoStats object containing stats of the repository.
+ */
 export async function getRepoStats(
     owner: string,
     repo: string,
@@ -83,7 +99,11 @@ export async function getRepoStats(
     return repostats;
 }
 
-// Create github info object with all data collected from Octokit API
+/**
+ * Creates a GithubInfo object with all data collected from the Octokit API
+ * 
+ * @returns A GithubInfo object containing all data recieved from Octokit.
+ */
 export async function getGithubInfo(): Promise<GithubInfo> {
     const ghinfo: GithubInfo = {
         Owner: "",
@@ -122,6 +142,13 @@ export async function getGithubInfo(): Promise<GithubInfo> {
     return ghinfo;
 }
 
+/**
+ * 
+ * @param owner The username of the owner of the repository.
+ * @param repo The name of the repository.
+ * @param token The Github token associated with the owner.
+ * @returns An array of {@link GithubContributor}s.
+ */
 export async function getContributors(
     owner: string,
     repo: string,
@@ -142,12 +169,26 @@ export async function getContributors(
     }
 }
 
+/**
+ * Constructs the full URL of the repository by combining the username and repo name.
+ * 
+ * @returns The url of the repository
+ */
 export async function getRepoUrl(): Promise<string> {
     const prefix = "https://github.com/";
     const repository: string = core.getInput("repository");
     return prefix + repository;
 }
 
+/**
+ * 
+ * Retrieves the readme.md file from the repository.
+ * 
+ * @param owner The username of the owner of the repository.
+ * @param repo The name of the repository.
+ * @param token The Github token associated with the owner.
+ * @returns A string with the contents of the readme.md file
+ */
 export async function getRepoReadme(
     owner: string,
     repo: string,
@@ -170,7 +211,12 @@ export async function getRepoReadme(
     return result;
 }
 
-// Filters readme.md's for badge links from shield.io
+/**
+ * Searches through the readme.md file for badge links from shields.io
+ * 
+ * @param input The contents of the readme.md file
+ * @returns An array of badge links.
+ */
 export function filterBadgeURLS(input: string): string[] {
     const rgexp: RegExp =
         /!\[.*\]\s*\(https:\/\/img\.shields\.io\/badge\/.*\)/g;

@@ -1,3 +1,9 @@
+/**
+ * Unused.
+ * 
+ * @module
+ */
+
 export class Journal {
     title: string;
     doi: string;

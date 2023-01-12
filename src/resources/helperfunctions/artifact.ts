@@ -1,3 +1,11 @@
+/**
+ * This module contains functions to retrieve artifacts.
+ * 
+ * The custom interfaces allow @actions/artifact to be mocked in the unit tests.
+ * 
+ * @module
+ */
+
 import * as artifact from "@actions/artifact";
 import * as fs from "fs";
 import * as path from "path";
@@ -71,7 +79,7 @@ export function getFileFromArtifact(
 }
 
 /**
- * An {@link Artifact} object that can be used for unit testing.
+ * An Artifact object that can be used for unit testing.
  * the {@link ArtifactClient} provided by create() does not download anything
  * when downloadArtifact is called, but it returns a download response
  * as if a file was correctly downloaded.

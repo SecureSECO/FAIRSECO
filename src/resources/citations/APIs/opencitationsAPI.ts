@@ -1,3 +1,9 @@
+/**
+ * Unused.
+ * 
+ * @module
+ */
+
 import { count } from "console";
 import fetch from "node-fetch";
 import { ReturnObject } from "../../../getdata";

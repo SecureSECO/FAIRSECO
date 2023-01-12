@@ -1,6 +1,11 @@
+/**
+ * This module contains functions to handle docker exit codes based on error status.
+ * 
+ * @module
+ */
+
 // Known docker errors: https://komodor.com/learn/exit-codes-in-containers-and-kubernetes-the-complete-guide/
 // Other exit codes indicate the contained command's exit code
-
 const dockerErrors = new Map<number, string>();
 dockerErrors.set(125, "Container failed to run error");
 dockerErrors.set(
