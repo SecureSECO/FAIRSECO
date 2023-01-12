@@ -1,3 +1,6 @@
+
+---
+
 *FAIRSECO* is a GitHub Action that analyzes your repository to give information about:
 
 - **Impact**
@@ -30,6 +33,8 @@
 <br>
 
 # How to run
+
+---
 
 In your Github repository, put the following workflow code in a `.yml` file in the `.github/workflows` folder:
 
@@ -71,6 +76,8 @@ The workflow creates an artifact in the folder `.FairSECO` containing the follow
 <br>
 
 # License 
+
+---
 
 This project is licensed under the GNU Affero General Public License v3.0. See LICENSE for more info.
 

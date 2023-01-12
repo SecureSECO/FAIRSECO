@@ -10,7 +10,7 @@ import fs from "fs";
  * This function runs the fairtally docker image on the current repo,
  * and gives the checklist of FAIRness criteria.
  *
- * @returns A {@link action.ReturnObject} containing the result from fairtally.
+ * @returns A {@link getdata.ReturnObject} containing the result from fairtally.
  */
 export async function runHowfairis(ghInfo: GithubInfo): Promise<ReturnObject> {
     LogMessage("Howfairis started.", ErrorLevel.info);

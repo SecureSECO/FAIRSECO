@@ -13,7 +13,7 @@ import { ErrorLevel, LogMessage } from "../log";
  * Downloads the artifact that was uploaded by Tortellini, and parses the YAML file.
  *
  * @param fileName Name of the file that should be retrieved from the artifact.
- * @returns A {@link action.ReturnObject} containing the relevant data from the YAML file given by Tortellini.
+ * @returns A {@link getdata.ReturnObject} containing the relevant data from the YAML file given by Tortellini.
  */
 export async function runTortellini(
     fileName: string = "evaluation-result.yml"
