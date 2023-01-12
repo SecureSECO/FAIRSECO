@@ -1,7 +1,7 @@
 import { count } from "console";
 import fetch from "node-fetch";
-import { ReturnObject } from "../getdata";
-import { Paper } from "./Paper";
+import { ReturnObject } from "../../../getdata";
+import { Paper } from "../Paper";
 
 // Test OpenCitations API, returns citations for example paper
 export async function testOpenCitations() {

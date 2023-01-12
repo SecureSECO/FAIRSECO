@@ -1,6 +1,6 @@
 import * as core from "@actions/core";
 import * as gh from "@actions/github";
-import * as log from "./log"
+import * as log from "../errorhandling/log"
 
 export interface GithubInfo {
     Repo: string;

@@ -1,11 +1,11 @@
 import { ReturnObject } from "../getdata";
-import * as dockerExit from "./helperfunctions/docker_exit";
+import * as dockerExit from "../errorhandling/docker_exit";
 import YAML from "yaml";
 import * as path_ from "path";
 
 import * as fs from "fs";
 import { exec, ExecOptions } from "@actions/exec";
-import { ErrorLevel, LogMessage } from "../log";
+import { ErrorLevel, LogMessage } from "../errorhandling/log";
 
 export type CffObject =
     | MissingCffObject

@@ -1,8 +1,8 @@
-import { ReturnObject } from "../getdata";
-import { semanticScholarCitations } from "./semanticscholarAPI";
-import { openAlexCitations } from "./openalexAPI";
+import { ReturnObject } from "../../getdata";
+import { semanticScholarCitations } from "./APIs/semanticscholarAPI";
+import { openAlexCitations } from "./APIs/openalexAPI";
 import { Author, Paper, Citations } from "./Paper";
-import { ValidCffObject } from "./citation_cff";
+import { ValidCffObject } from "../citation_cff";
 
 /**
  *

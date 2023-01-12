@@ -1,7 +1,7 @@
 import { ReturnObject } from "../getdata";
-import { GithubInfo } from "../git";
-import * as dockerExit from "./helperfunctions/docker_exit";
-import { ErrorLevel, LogMessage } from "../log";
+import { GithubInfo } from "./git";
+import * as dockerExit from "../errorhandling/docker_exit";
+import { ErrorLevel, LogMessage } from "../errorhandling/log";
 
 import { exec, ExecOptions } from "@actions/exec";
 import fs from "fs";

@@ -1,5 +1,5 @@
 import { ReturnObject } from "../../src/getdata";
-import { GithubInfo } from "../git";
+import { GithubInfo } from "./git";
 
 import * as gh from "@actions/github";
 import * as fs from "fs";

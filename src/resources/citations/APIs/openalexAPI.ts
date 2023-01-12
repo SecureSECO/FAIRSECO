@@ -1,7 +1,7 @@
 import fetch from "node-fetch";
-import { Author, Paper, MetaDataPaper } from "./Paper";
-import { ErrorLevel, LogMessage } from "../log";
-import { calculateProbabiltyOfReference } from "./probability";
+import { Author, Paper, MetaDataPaper } from "../Paper";
+import { ErrorLevel, LogMessage } from "../../../errorhandling/log";
+import { calculateProbabiltyOfReference } from "../probability";
 /**
  *
  * @returns array containing the list of papers citing the giving piece of research software.

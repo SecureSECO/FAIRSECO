@@ -2,7 +2,7 @@ import { ReturnObject } from "./getdata";
 import YAML from "yaml";
 import fs from "fs";
 import { WriteHTML, WriteCSS } from "./webapp";
-import { ErrorLevel, LogMessage } from "./log";
+import { ErrorLevel, LogMessage } from "./errorhandling/log";
 
 /**
  * Creates reports showing the gathered data in .yml and .html format.

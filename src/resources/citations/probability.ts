@@ -1,5 +1,5 @@
 import { MetaDataPaper } from "./Paper";
-import { ErrorLevel, LogMessage } from "../log";
+import { ErrorLevel, LogMessage } from "../../errorhandling/log";
 /**
  *
  * @returns array containing for each paper a probability from 0 to 1 that they are a reference paper.

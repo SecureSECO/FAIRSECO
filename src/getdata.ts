@@ -1,11 +1,11 @@
 import { runTortellini } from "./resources/tortellini";
 import { runHowfairis } from "./resources/howfairis";
 import { runSearchseco } from "./resources/searchseco";
-import { runCitingPapers } from "./resources/citingPapers";
+import { runCitingPapers } from "./resources/citations/citingPapers";
 import { getCitationFile, CffObject } from "./resources/citation_cff";
 import { runSBOM } from "./resources/sbom";
-import { ErrorLevel, LogMessage } from "./log";
-import { getGithubInfo, GithubInfo } from "./git";
+import { ErrorLevel, LogMessage } from "./errorhandling/log";
+import { getGithubInfo, GithubInfo } from "./resources/git";
 import { getQualityMetrics } from "./resources/qualitymetrics";
 
 /** An object that contains data gathered by FairSECO. */
