@@ -21,8 +21,6 @@ import { ErrorLevel, LogMessage } from "../errorhandling/log";
  * 
  * #### ValidCffObject
  * The CITATION.cff file is completely valid.
- * 
- * @module
  */
 export type CffObject =
     | MissingCffObject
