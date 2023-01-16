@@ -1,13 +1,11 @@
 import * as tort from "../../src/resources/tortellini";
 import * as art from "../../src/resources/helperfunctions/artifact"
-import * as artifact from "@actions/artifact";
 import { expect, test } from "@jest/globals";
 
 import YAML from "yaml";
-import { ReturnObject } from "../../src/getdata";
 import * as input from "../../src/resources/tortellini-input";
 
-test("Data is filtered and correctly used in RunTortellini", correctData)
+test("Data is filtered and correctly used in runModule", correctData)
 
 jest.mock("../../src/resources/tortellini-input", () => {
     const actualModule = jest.requireActual(
@@ -26,8 +24,8 @@ jest.mock("../../src/resources/tortellini-input", () => {
 });
 
 async function correctData(): Promise<void>{
-    const TortResultDirect = await (await tort.runTortellini("correct.yml")).ReturnData;
-    const TortResultWithoutFiltering = await (await runTortelliniWithoutFiltering()).ReturnData;
+    const TortResultDirect = await tort.runModule("correct.yml");
+    const TortResultWithoutFiltering = await runModuleWithoutFiltering();
 
     const TortResulWithFiltering = tort.filterData(TortResultWithoutFiltering);
     return expect(TortResultDirect).toMatchObject(await TortResulWithFiltering);
@@ -39,9 +37,9 @@ async function correctData(): Promise<void>{
  * @param fileName Name of the file that should be retrieved from the artifact
  * @returns A {@link action.ReturnObject} containing the relevant data from the YAML file given by Tortellini
  */
- async function runTortelliniWithoutFiltering(
+ async function runModuleWithoutFiltering(
     fileName: string = "correct.yml"
-): Promise<ReturnObject> {
+): Promise<any> {
     const downloadResponse = await art.getArtifactData(
         "tortellini-result",
         input.destination,
@@ -51,12 +49,9 @@ async function correctData(): Promise<void>{
     const fileContents = await art.getFileFromArtifact(downloadResponse, fileName);
 
     if (fileContents === "")
-        return { ReturnName: "Tortellini", ReturnData: {} };
+        return {};
 
     const obj = YAML.parse(fileContents);
 
-    return {
-        ReturnName: "Tortellini",
-        ReturnData: obj,
-    };
+    return obj;
 }

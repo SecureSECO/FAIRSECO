@@ -1,6 +1,5 @@
-import * as ss from "../../src/resources/searchseco";
-import YAML from "yaml";
-import { getGithubInfo, GithubInfo } from "../../src/resources/git";
+import * as ss from "../../src/resources/SearchSECO";
+import { GitHubInfo } from "../../src/git";
 
 jest.setTimeout(100000);
 
@@ -75,21 +74,21 @@ describe("Test getHashIndices", () => {
 describe("Test getMethodInfo", () => {
     test("Normal input, one Author", () => {
         const input = [
-            "*Method unitTest1 in file searchseco_test.ts line 56",
+            "*Method unitTest1 in file SearchSECO_test.ts line 56",
             "Authors of local function:",
             "Jarno Hendriksen",
         ];
         const result = ss.getMethodInfo(input, 0, input.length);
 
         expect(result.name).toBe("unitTest1");
-        expect(result.file).toBe("searchseco_test.ts");
+        expect(result.file).toBe("SearchSECO_test.ts");
         expect(result.line).toBe(56);
         expect(result.authors).toEqual(["Jarno Hendriksen"]);
     });
 
     test("Normal input, several Authors", () => {
         const input = [
-            "*Method unitTest2 in file searchseco_test.ts line 71",
+            "*Method unitTest2 in file SearchSECO_test.ts line 71",
             "Authors of local function:",
             "Jarno Hendriksen",
             "Rowin Schouten",
@@ -98,7 +97,7 @@ describe("Test getMethodInfo", () => {
         const result = ss.getMethodInfo(input, 0, input.length);
 
         expect(result.name).toBe("unitTest2");
-        expect(result.file).toBe("searchseco_test.ts");
+        expect(result.file).toBe("SearchSECO_test.ts");
         expect(result.line).toBe(71);
         expect(result.authors).toEqual([
             "Jarno Hendriksen",
@@ -109,20 +108,20 @@ describe("Test getMethodInfo", () => {
 
     test("No Authors", () => {
         const input = [
-            "*Method unitTest3 in file searchseco_test.ts line 91",
+            "*Method unitTest3 in file SearchSECO_test.ts line 91",
             "Authors of local function:",
         ];
         const result = ss.getMethodInfo(input, 0, input.length);
 
         expect(result.name).toBe("unitTest3");
-        expect(result.file).toBe("searchseco_test.ts");
+        expect(result.file).toBe("SearchSECO_test.ts");
         expect(result.line).toBe(91);
         expect(result.authors).toEqual([]);
     });
 
     test("Missing Method Name", () => {
         const input = [
-            "*Method  in file searchseco_test.ts line 91",
+            "*Method  in file SearchSECO_test.ts line 91",
             "Authors of local function:",
         ];
 
@@ -141,7 +140,7 @@ describe("Test getMethodInfo", () => {
 
 describe("Test getMatchIndicesOfHash", () => {
     test("Single Line", () => {
-        const input = ["*Method unitTest5 in file searchseco_test.ts line 131"];
+        const input = ["*Method unitTest5 in file SearchSECO_test.ts line 131"];
         const result = ss.getMatchIndicesOfHash(input, 0, input.length);
 
         expect(result).toEqual([0]);
@@ -149,10 +148,10 @@ describe("Test getMatchIndicesOfHash", () => {
 
     test("Multiple Consecutive Lines", () => {
         const input = [
-            "*Method unitTest6 in file searchseco_test.ts line 131",
-            "*Method unitTest7 in file searchseco_test.ts line 132",
-            "*Method unitTest8 in file searchseco_test.ts line 133",
-            "*Method unitTest9 in file searchseco_test.ts line 134",
+            "*Method unitTest6 in file SearchSECO_test.ts line 131",
+            "*Method unitTest7 in file SearchSECO_test.ts line 132",
+            "*Method unitTest8 in file SearchSECO_test.ts line 133",
+            "*Method unitTest9 in file SearchSECO_test.ts line 134",
         ];
         const result = ss.getMatchIndicesOfHash(input, 0, input.length);
 
@@ -161,12 +160,12 @@ describe("Test getMatchIndicesOfHash", () => {
 
     test("Multiple Lines with Other Stuff", () => {
         const input = [
-            "*Method unitTest6 in file searchseco_test.ts line 131",
+            "*Method unitTest6 in file SearchSECO_test.ts line 131",
             "ksegrtviub54",
-            "*Method unitTest8 in file searchseco_test.ts line 133",
+            "*Method unitTest8 in file SearchSECO_test.ts line 133",
             "eye5yvibti5w",
-            "*Method unitTest8 in file searchseco_test.ts line 133",
-            "*Method unitTest8 in file searchseco_test.ts line 133",
+            "*Method unitTest8 in file SearchSECO_test.ts line 133",
+            "*Method unitTest8 in file SearchSECO_test.ts line 133",
         ];
         const result = ss.getMatchIndicesOfHash(input, 0, input.length);
 
@@ -496,7 +495,7 @@ describe("Test parseInput", () => {
             "Alina Aydin",
         ];
 
-        const result = ss.parseInput(input);
+        const result = ss.parseOutput(input);
 
         expect(result.methods[0].hash).toBe("1234567890");
         expect(result.methods[0].data.name).toBe("methodName");
@@ -572,36 +571,35 @@ describe("Test parseInput", () => {
             "--------------------------------------------------------------------------------------------------------------------------------",
         ];
 
-        const result = ss.parseInput(input);
+        const result = ss.parseOutput(input);
 
         expect(result.methods).toEqual([]);
     });
 });
 
-test("Test runSearchSECO", async () => {
+test("Test runModule", async () => {
     jest.setTimeout(15000);
 
-    const ghInfo: GithubInfo = {
+    const ghInfo: GitHubInfo = {
         Repo: "",
         GithubToken: "",
         Owner: "",
-        FullURL: "https://github.com/QDUNI/FairSECO",
+        FullURL: "https://github.com/QDUNI/FAIRSECO",
         Stars: 0,
         Forks: 0,
         Watched: 0,
-        Visibility: undefined,
+        Visibility: "private",
         Readme: "",
         Badges: [],
         Contributors: [],
     };
 
-    const result = await ss.runSearchseco(ghInfo);
+    const result = await ss.runModule(ghInfo);
 
     // Since the previous tests already check if the data is processed correctly,
     // we only need to check if SearchSECO gets executed at all, and if it can
     // create some kind of output. If the output is a non-empty object,
     // we know that it has succeeded.
-    expect(result.ReturnName).toBe("SearchSeco");
-    expect(result.ReturnData).toBeTruthy();
-    expect(result.ReturnData).not.toEqual({});
+    expect(result).toBeTruthy();
+    expect(result).not.toEqual({});
 });

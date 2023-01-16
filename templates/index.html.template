@@ -613,9 +613,9 @@ body {
                             </tr>
                             <tr>
                               <td><button class="emergency">!</button></td> 
-                              <td>NPM:fairseco:1.0.0</td>
+                              <td>NPM:FAIRSECO:1.0.0</td>
                               <td>UNHANDDLED_LICENSE</td>
-                              <td>The licence ISC is currently not coverd by policy rules. The licence was declared in package NPM:fairseco:1.0.0</td>
+                              <td>The licence ISC is currently not coverd by policy rules. The licence was declared in package NPM:FAIRSECO:1.0.0</td>
                             </tr>
                         </table>
                     </p>
@@ -801,16 +801,16 @@ body {
             // Comment out the two lines below:
             var allData = {{node inserts the data here}};
 
-            fairSeco();
+            FAIRSECO();
             //
 
 
-            function fairSeco() {
+            function FAIRSECO() {
               // Initialisation
               
               var tortellini;
               var howFairIs;
-              var searchSeco;
+              var SearchSECO;
               var SBOM;
               var citingPapers;
               // Site functionality - END
@@ -825,8 +825,8 @@ body {
                       case "HowFairIs":
                           howFairIs = element.ReturnData;
                           break;
-                      case "SearchSeco":
-                          searchSeco = element.ReturnData;
+                      case "SearchSECO":
+                          SearchSECO = element.ReturnData;
                           break;
                       case "SBOM":
                           SBOM = element.ReturnData;
@@ -913,8 +913,8 @@ body {
               console.log(tortellini);
               console.log("HowFairIs:")
               console.log(howFairIs);
-              console.log("SearchSeco:")            
-              console.log(searchSeco);
+              console.log("SearchSECO:")            
+              console.log(SearchSECO);
               console.log("SBOM:")            
               console.log(SBOM);
               //

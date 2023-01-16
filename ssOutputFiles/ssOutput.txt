@@ -1,4 +1,4 @@
-[command]"C:\Program Files\Docker\Docker\resources\bin\docker.exe" run --rm --name searchseco-container -e "github_token=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" -e "worker_name=test" jarnohendriksen/mockseco:v1 check https://github.com/QDUNI/FairSECO
+[command]"C:\Program Files\Docker\Docker\resources\bin\docker.exe" run --rm --name searchseco-container -e "github_token=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" -e "worker_name=test" jarnohendriksen/mockseco:v1 check https://github.com/QDUNI/FAIRSECO
 -----------------------------------------------------------------------------------------------------
 Matched the project at "https://github.com/QDUNI/FairSECO" against the database.
 -----------------------------------------------------------------------------------------------------

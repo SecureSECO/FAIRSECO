@@ -1,6 +1,6 @@
 /**
  * This module handles the main part of the action. It runs each resource module and compiles
- * them into one object.
+ * them into an array of {@link ReturnObject}s.
  * 
  * @remarks
  * Because every function is wrapped in a try-catch block separately,
@@ -10,17 +10,17 @@
  * @module
  */
 
-import { runTortellini } from "./resources/tortellini";
-import { runHowfairis } from "./resources/howfairis";
-import { runSearchseco } from "./resources/searchseco";
-import { runCitingPapers } from "./resources/citations/citingPapers";
-import { getCitationFile, CffObject } from "./resources/citation_cff";
-import { runSBOM } from "./resources/sbom";
+import * as tortellini from "./resources/tortellini";
+import * as fairtally from "./resources/fairtally";
+import * as searchSECO from "./resources/searchseco";
+import * as citingPapers from "./resources/citations/citingPapers";
+import * as citationcff from "./resources/citation_cff";
+import * as sbom from "./resources/sbom";
+import * as qualityMetrics from "./resources/qualitymetrics";
 import { ErrorLevel, LogMessage } from "./errorhandling/log";
-import { getGithubInfo, GithubInfo } from "./resources/git";
-import { getQualityMetrics } from "./resources/qualitymetrics";
+import { getGitHubInfo, GitHubInfo } from "./git";
 
-/** An object that contains data gathered by FairSECO. */
+/** An object that contains data gathered by FAIRSECO. */
 export interface ReturnObject {
     /** Describes the name of the gathered data. */
     ReturnName: string;
@@ -30,93 +30,43 @@ export interface ReturnObject {
 }
 
 export async function data(): Promise<ReturnObject[]> {
-    const output: ReturnObject[] = [];
+    // Get GitHub repository info
+    const ghInfo: GitHubInfo = await getGitHubInfo();
 
-    const ghinfo: GithubInfo = await getGithubInfo();
+    // Run modules
+    const tortelliniResult = await runModule(tortellini);
+    const fairtallyResult = await runModule(fairtally, ghInfo);
+    const searchSECOResult = await runModule(searchSECO, ghInfo);
+    const cffResult = await runModule(citationcff);
+    const SBOMResult = await runModule(sbom);
+    const citingPapersResult = await runModule(citingPapers, cffResult?.ReturnData);
+    const qualityMetricsResult = await runModule(qualityMetrics, ghInfo, fairtallyResult?.ReturnData, tortelliniResult?.ReturnData);
 
-    let tortelliniResult: ReturnObject | undefined;
+    // Return the data produced by modules
+    return [
+        tortelliniResult,
+        fairtallyResult,
+        searchSECOResult,
+        cffResult,
+        SBOMResult,
+        citingPapersResult,
+        qualityMetricsResult
+    ].filter((e) => e !== undefined) as ReturnObject[];
+}
+
+async function runModule(module: any, ...parameters: any): Promise<ReturnObject | undefined> {
     try {
-        tortelliniResult = await runTortellini();
-        output.push(tortelliniResult);
+        const result : ReturnObject = {
+            ReturnName: module.ModuleName as string,
+            ReturnData: await module.runModule(parameters)
+        };
+        return result;
     } catch (error) {
         LogMessage(
-            "An error occurred while gathering tortellini data:",
+            (module.ModuleName as string) + " encountered an error:\n" + (error.message as string),
             ErrorLevel.err
         );
-        LogMessage(error, ErrorLevel.err);
-    }
 
-    let howfairisResult: ReturnObject | undefined;
-    try {
-        howfairisResult = await runHowfairis(ghinfo);
-        output.push(howfairisResult);
-    } catch (error) {
-        LogMessage(
-            "An error occurred while running howfairis.",
-            ErrorLevel.err
-        );
-        LogMessage(error, ErrorLevel.err);
+        return undefined;
     }
-
-    try {
-        const searchsecoResult = await runSearchseco(ghinfo);
-        output.push(searchsecoResult);
-    } catch (error) {
-        LogMessage(
-            "An error occurred while running searchSECO.",
-            ErrorLevel.err
-        );
-        LogMessage(error, ErrorLevel.err);
-    }
-
-    let cffResult: ReturnObject | undefined;
-    try {
-        cffResult = await getCitationFile(".");
-        output.push(cffResult);
-    } catch (error) {
-        LogMessage(
-            "An error occurred while fetching CITATION.cff.",
-            ErrorLevel.err
-        );
-        LogMessage(error, ErrorLevel.err);
-    }
-
-    try {
-        const cffFile = cffResult?.ReturnData as CffObject;
-        if (cffFile?.status === "valid") {
-            const citingPapersResult = await runCitingPapers(cffFile);
-            output.push(citingPapersResult);
-        } else {
-            throw new Error("Invalid CITATION.cff file");
-        }
-    } catch (error) {
-        LogMessage("Scholarly threw an error:", ErrorLevel.err);
-        LogMessage(error, ErrorLevel.err);
-    }
-    
-    try {
-        const SBOMResult = await runSBOM();
-        output.push(SBOMResult);
-    } catch (error) {
-        LogMessage("An error occurred during SBOM generation.", ErrorLevel.err);
-        LogMessage(error, ErrorLevel.err);
-    }
-
-    try {
-        if (howfairisResult !== undefined && tortelliniResult !== undefined) {
-            const qualityMetrics = await getQualityMetrics(
-                ghinfo,
-                howfairisResult,
-                tortelliniResult
-            );
-            output.push(qualityMetrics);
-        } else {
-            throw new Error("howfairisResult or tortelliniResult is undefined");
-        }
-    } catch (error) {
-        LogMessage("QualityMetrics threw an error:", ErrorLevel.err);
-        LogMessage(error, ErrorLevel.err);
-    }
-
-    return output;
 }

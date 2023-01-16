@@ -4,7 +4,7 @@
       "ReturnName": "Tortellini",
       "ReturnData": {
         "project": {
-          "id": "NPM::fairseco:1.0.0",
+          "id": "NPM::FAIRSECO:1.0.0",
           "licenses": [
             "ISC"
           ],
@@ -12,7 +12,7 @@
           "authors": "-",
           "vcs": {
             "type": "Git",
-            "url": "https://github.com/QDUNI/FairSECO.git",
+            "url": "https://github.com/QDUNI/FAIRSECO.git",
             "revision": "ad5c813e9db3bde8e5d55b40ba0a721bab655445",
             "path": ""
           }
@@ -7588,11 +7588,11 @@
         "violations": [
           {
             "rule": "UNHANDLED_LICENSE",
-            "pkg": "NPM::fairseco:1.0.0",
+            "pkg": "NPM::FAIRSECO:1.0.0",
             "license": "ISC",
             "license_source": "DECLARED",
             "severity": "ERROR",
-            "message": "The license ISC is currently not covered by policy rules. The license was declared in package NPM::fairseco:1.0.0",
+            "message": "The license ISC is currently not covered by policy rules. The license was declared in package NPM::FAIRSECO:1.0.0",
             "how_to_fix": "A text written in MarkDown to help users resolve policy violations\nwhich may link to additional resources."
           },
           {
@@ -7953,19 +7953,19 @@
           "repository": false,
           "stderr": "",
           "stdout": "",
-          "url": "https://github.com/QDUNI/FairSECO"
+          "url": "https://github.com/QDUNI/FAIRSECO"
         }
       ]
     },
     {
-      "ReturnName": "SearchSeco",
+      "ReturnName": "SearchSECO",
       "ReturnData": {
         "methods": [
           {
             "hash": "1234567890",
             "data": {
               "name": "parseInput",
-              "file": "searchseco.ts",
+              "file": "SearchSECO.ts",
               "line": 110,
               "authors": [
                 "Quinn Donkers"
@@ -8010,7 +8010,7 @@
             "hash": "9876544322",
             "data": {
               "name": "getMethodInfo",
-              "file": "searchseco.ts",
+              "file": "SearchSECO.ts",
               "line": 180,
               "authors": [
                 "Bart Hageman"
@@ -8021,7 +8021,7 @@
                 "data": {
                   "name": "getInfo",
                   "file": "parseOutput.js",
-                  "project": "searchseco-output-parser",
+                  "project": "SearchSECO-output-parser",
                   "line": 88,
                   "authors": [
                     "Alina Aydin",

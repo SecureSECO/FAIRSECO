@@ -1,144 +1,126 @@
 import * as cff from "../../src/resources/citation_cff";
 
-describe("Test getCitationFile", () => {
+describe("Test runModule", () => {
     jest.setTimeout(60000);
     test("Correct", async () => {
-        const result = await cff.getCitationFile(
+        const result = await cff.runModule(
             "./__tests__/unit_tests/citation_files/correct"
         );
 
-        const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
+        expect(result.status).toBe("valid");
 
-        expect(cffData.status).toBe("valid");
-
-        if (cffData.status == "valid") {
-            expect(cffData.citation["cff-version"]).not.toBeUndefined();
-            expect(cffData.citation).toHaveProperty("title");
-            expect(cffData.citation).toHaveProperty("authors");
-            expect(cffData.citation).toHaveProperty("message");
+        if (result.status == "valid") {
+            expect(result.citation["cff-version"]).not.toBeUndefined();
+            expect(result.citation).toHaveProperty("title");
+            expect(result.citation).toHaveProperty("authors");
+            expect(result.citation).toHaveProperty("message");
         }
     });
 
     test("Extra Key", async () => {
-        const result = await cff.getCitationFile(
+        const result = await cff.runModule(
             "./__tests__/unit_tests/citation_files/extra-key"
         );
 
-        const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
+        expect(result.status).toBe("validation_error");
 
-        expect(cffData.status).toBe("validation_error");
-
-        if (cffData.status == "validation_error") {
-            expect(cffData.citation["cff-version"]).not.toBeUndefined();
-            expect(cffData.citation).toHaveProperty("title");
-            expect(cffData.citation).toHaveProperty("authors");
-            expect(cffData.citation).toHaveProperty("message");
+        if (result.status == "validation_error") {
+            expect(result.citation["cff-version"]).not.toBeUndefined();
+            expect(result.citation).toHaveProperty("title");
+            expect(result.citation).toHaveProperty("authors");
+            expect(result.citation).toHaveProperty("message");
         }
     });
 
     test("Incorrect DOI", async () => {
-        const result = await cff.getCitationFile(
+        const result = await cff.runModule(
             "./__tests__/unit_tests/citation_files/incorrect-doi"
         );
 
-        const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
+        expect(result.status).toBe("validation_error");
 
-        expect(cffData.status).toBe("validation_error");
-
-        if (cffData.status == "valid") {
-            expect(cffData.citation["cff-version"]).not.toBeUndefined();
-            expect(cffData.citation).toHaveProperty("title");
-            expect(cffData.citation).toHaveProperty("authors");
-            expect(cffData.citation).toHaveProperty("message");
+        if (result.status == "valid") {
+            expect(result.citation["cff-version"]).not.toBeUndefined();
+            expect(result.citation).toHaveProperty("title");
+            expect(result.citation).toHaveProperty("authors");
+            expect(result.citation).toHaveProperty("message");
         }
     });
 
     test("Incorrect Version", async () => {
-        const result = await cff.getCitationFile(
+        const result = await cff.runModule(
             "./__tests__/unit_tests/citation_files/incorrect-version"
         );
 
-        const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
+        expect(result.status).toBe("validation_error");
 
-        expect(cffData.status).toBe("validation_error");
-
-        if (cffData.status == "validation_error") {
-            expect(cffData.citation["cff-version"]).not.toBeUndefined();
-            expect(cffData.citation).toHaveProperty("title");
-            expect(cffData.citation).toHaveProperty("authors");
-            expect(cffData.citation).toHaveProperty("message");
+        if (result.status == "validation_error") {
+            expect(result.citation["cff-version"]).not.toBeUndefined();
+            expect(result.citation).toHaveProperty("title");
+            expect(result.citation).toHaveProperty("authors");
+            expect(result.citation).toHaveProperty("message");
         }
     });
 
     test("No Authors", async () => {
-        const result = await cff.getCitationFile(
+        const result = await cff.runModule(
             "./__tests__/unit_tests/citation_files/no-authors"
         );
 
-        const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
+        expect(result.status).toBe("validation_error");
 
-        expect(cffData.status).toBe("validation_error");
-
-        if (cffData.status == "validation_error") {
-            expect(cffData.citation["cff-version"]).not.toBeUndefined();
-            expect(cffData.citation).toHaveProperty("title");
-            expect(cffData.citation).toHaveProperty("authors");
-            expect(cffData.citation).toHaveProperty("message");
+        if (result.status == "validation_error") {
+            expect(result.citation["cff-version"]).not.toBeUndefined();
+            expect(result.citation).toHaveProperty("title");
+            expect(result.citation).toHaveProperty("authors");
+            expect(result.citation).toHaveProperty("message");
         }
     });
 
     test("No cff-version", async () => {
-        const result = await cff.getCitationFile(
+        const result = await cff.runModule(
             "./__tests__/unit_tests/citation_files/no-cff-version"
         );
 
-        const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
+        expect(result.status).toBe("validation_error");
 
-        expect(cffData.status).toBe("validation_error");
-
-        if (cffData.status == "validation_error") {
-            expect(cffData.citation["cff-version"]).toBeUndefined();
-            expect(cffData.citation).toHaveProperty("title");
-            expect(cffData.citation).toHaveProperty("authors");
-            expect(cffData.citation).toHaveProperty("message");
+        if (result.status == "validation_error") {
+            expect(result.citation["cff-version"]).toBeUndefined();
+            expect(result.citation).toHaveProperty("title");
+            expect(result.citation).toHaveProperty("authors");
+            expect(result.citation).toHaveProperty("message");
         }
     });
 
     test("No message", async () => {
-        const result = await cff.getCitationFile(
+        const result = await cff.runModule(
             "./__tests__/unit_tests/citation_files/no-message"
         );
 
-        const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
+        expect(result.status).toBe("validation_error");
 
-        expect(cffData.status).toBe("validation_error");
-
-        if (cffData.status == "validation_error") {
-            expect(cffData.citation["cff-version"]).toBeUndefined();
-            expect(cffData.citation).toHaveProperty("title");
-            expect(cffData.citation).toHaveProperty("authors");
-            expect(cffData.citation).not.toHaveProperty("message");
+        if (result.status == "validation_error") {
+            expect(result.citation["cff-version"]).toBeUndefined();
+            expect(result.citation).toHaveProperty("title");
+            expect(result.citation).toHaveProperty("authors");
+            expect(result.citation).not.toHaveProperty("message");
         }
     });
 
     test("Missing File", async () => {
-        const result = await cff.getCitationFile(
+        const result = await cff.runModule(
             "./__tests__/unit_tests/citation_files/missing-file"
         );
 
-        const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
-
-        expect(cffData.status).toBe("missing_file");
+        expect(result.status).toBe("missing_file");
     });
 
     test("Incorrect YAML", async () => {
-        const result = await cff.getCitationFile(
+        const result = await cff.runModule(
             "./__tests__/unit_tests/citation_files/incorrect-yaml"
         );
 
-        const cffData: cff.CffObject = result.ReturnData as cff.CffObject;
-
-        expect(cffData.status).toBe("incorrect_yaml");
+        expect(result.status).toBe("incorrect_yaml");
     });
 });
 

@@ -47,14 +47,10 @@ test("Check if a file can be retrieved with the downloadResponse", async () => {
     expect(result).toBeTruthy();
 });
 
-describe("Test runTortellini", () => {
+describe("Test runModule", () => {
     test("Correct Input", async () => {
-        const result = await tort.runTortellini("correct.yml");
+        const data = await tort.runModule("correct.yml");
 
-        const data: any = result.ReturnData;
-
-        expect(result).not.toBeUndefined();
-        expect(result.ReturnName).toBe("Tortellini");
         expect(data).toHaveProperty("project");
         const proj = data.project;
         expect(proj).toHaveProperty("id");
@@ -84,12 +80,8 @@ describe("Test runTortellini", () => {
     });
 
     test("No Packages", async () => {
-        const result = await tort.runTortellini("no-packages.yml");
+        const data = await tort.runModule("no-packages.yml");
 
-        const data: any = result.ReturnData;
-
-        expect(result).not.toBeUndefined();
-        expect(result.ReturnName).toBe("Tortellini");
         expect(data).toHaveProperty("project");
         const proj = data.project;
         expect(proj).toHaveProperty("id");
@@ -113,12 +105,8 @@ describe("Test runTortellini", () => {
     });
 
     test("No Violations", async () => {
-        const result = await tort.runTortellini("no-violations.yml");
+        const data = await tort.runModule("no-violations.yml");
 
-        const data: any = result.ReturnData;
-
-        expect(result).not.toBeUndefined();
-        expect(result.ReturnName).toBe("Tortellini");
         expect(data).toHaveProperty("project");
         const proj = data.project;
         expect(proj).toHaveProperty("id");
@@ -141,12 +129,8 @@ describe("Test runTortellini", () => {
     });
 
     test("No Project Info", async () => {
-        const result = await tort.runTortellini("no-project-info.yml");
+        const data = await tort.runModule("no-project-info.yml");
 
-        const data: any = result.ReturnData;
-
-        expect(result).not.toBeUndefined();
-        expect(result.ReturnName).toBe("Tortellini");
         expect(data).toHaveProperty("project");
         const proj = data.project;
         expect(proj).toHaveProperty("id");
@@ -175,7 +159,7 @@ describe("Test runTortellini", () => {
     });
 
     test("Empty File", async () => {
-        const result = await tort.runTortellini("empty-file.yml");
+        const result = await tort.runModule("empty-file.yml");
 
         expect(result.ReturnData).toEqual({});
     });

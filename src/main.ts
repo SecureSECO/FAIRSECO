@@ -6,4 +6,5 @@
 
 import { main } from "./action";
 
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
 main();

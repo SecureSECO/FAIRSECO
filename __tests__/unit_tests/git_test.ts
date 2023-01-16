@@ -7,7 +7,7 @@ import {
     getContributors,
     getRepoReadme,
     getRepoStats,
-} from "../../src/resources/git";
+} from "../../src/git";
 
 test("Has correct properties", async () => {
     const ghinfo: GithubInfo = await getGithubInfo();
@@ -21,7 +21,7 @@ test("Has correct properties", async () => {
 test("Filters text for badge urls properly", () => {
     //input readme.md
     const input = `
-# FairSECO
+# FAIRSECO
 
 ![fair-software.eu](https://img.shields.io/badge/fair--software.eu-%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F-green)
 ![test1](https://img.shields.io/badge/textafter) text after the line

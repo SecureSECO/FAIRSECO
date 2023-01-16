@@ -1,11 +1,11 @@
 import { MetaDataPaper } from "../../src/resources/citations/Paper";
 import { calculateProbabiltyOfReference } from "../../src/resources/citations/probability";
 
-test("empty map is handeled properly, returns empty array", () => {
+test("Empty map is handeled properly, returns empty array", () => {
     expect(calculateProbabiltyOfReference(new Map())).toStrictEqual([]);
 });
 
-test("singleton map is handled properly", () => {
+test("Singleton map is handled properly", () => {
     expect(
         calculateProbabiltyOfReference(
             new Map([["id", new MetaDataPaper("title", 1, 1, "Paper", 0)]])
@@ -13,7 +13,7 @@ test("singleton map is handled properly", () => {
     ).toStrictEqual([1]);
 });
 
-test("multiple entries map is handled correctly", () => {
+test("Multiple entries map is handled correctly", () => {
     expect(
         calculateProbabiltyOfReference(
             new Map([

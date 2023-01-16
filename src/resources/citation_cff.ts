@@ -1,4 +1,3 @@
-import { ReturnObject } from "../getdata";
 import * as dockerExit from "../errorhandling/docker_exit";
 import YAML from "yaml";
 import * as path_ from "path";
@@ -6,6 +5,9 @@ import * as path_ from "path";
 import * as fs from "fs";
 import { exec, ExecOptions } from "@actions/exec";
 import { ErrorLevel, LogMessage } from "../errorhandling/log";
+
+/** The name of the module. */
+export const ModuleName = "CitationCFF";
 
 /**
  * A CFFObject can be one of the following interfaces:
@@ -52,22 +54,17 @@ export interface ValidationErrorCffObject {
  * @param path Specifies the path to the directory the CITATION.cff file is in.
  * @returns A {@link getdata.ReturnObject} containing the data from the CITATION.cff file.
  */
-export async function getCitationFile(path?: string): Promise<ReturnObject> {
+export async function runModule(path: string = "."): Promise<CffObject> {
     let file: Buffer;
 
-    // Use current directory if none is specified
-    const filePath = path === undefined ? "." : path;
     // Read the citation.cff file
     try {
-        file = fs.readFileSync(filePath + "/CITATION.cff");
+        file = fs.readFileSync(path + "/CITATION.cff");
     } catch (e) {
         if (e.code === "ENOENT") {
             // File not found, return MissingCFFObject to indicate missing citation.cff file
-            const returnData: MissingCffObject = { status: "missing_file" };
-            return {
-                ReturnName: "Citation",
-                ReturnData: returnData,
-            };
+            const returnData : MissingCffObject = { status: "missing_file" };
+            return returnData;
         } else {
             // Critical error, stop
             throw e;
@@ -83,14 +80,11 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
         // Parsing failed, incorrect YAML.
         // Return IncorrectYamlCFFObject to indicate incorrect yaml
         const returnData: IncorrectYamlCffObject = { status: "incorrect_yaml" };
-        return {
-            ReturnName: "Citation",
-            ReturnData: returnData,
-        };
+        return returnData;
     }
 
     const cmd = "docker";
-    const absPath = path_.resolve(filePath);
+    const absPath = path_.resolve(path);
     const args = [
         "run",
         "--rm",
@@ -149,10 +143,7 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
             citation: result,
             validation_message: getLastLine(stdout),
         };
-        return {
-            ReturnName: "Citation",
-            ReturnData: returnData,
-        };
+        return returnData;
     } else {
         // Citation.cff file is invalid, return ValidationErrorCFFObject with data and error message
         const returnData: ValidationErrorCffObject = {
@@ -160,10 +151,7 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
             citation: result,
             validation_message: getError(stderr),
         };
-        return {
-            ReturnName: "Citation",
-            ReturnData: returnData,
-        };
+        return returnData;
     }
 }
 

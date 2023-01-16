@@ -39,14 +39,14 @@
 In your Github repository, put the following workflow code in a `.yml` file in the `.github/workflows` folder:
 
 ```yaml
-name: RunFairSECO
+name: RunFAIRSECO
 
 on:
     # Allows you to run this workflow manually from the Actions tab
     workflow_dispatch:
 
 jobs:
-    RunFairSECO:
+    RunFAIRSECO:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
@@ -58,14 +58,14 @@ jobs:
             - uses: anchore/sbom-action@v0
               with:
                   artifact-name: SBOM.spdx # Output is in JSON format
-            - uses: QDUNI/FairSECO@main
+            - uses: QDUNI/FAIRSECO@main
             - uses: actions/upload-artifact@v3
               with:
-                  name: FairSECO Result
-                  path: .FairSECO/
+                  name: FAIRSECO Result
+                  path: .FAIRSECO/
 ```
 
-The workflow creates an artifact in the folder `.FairSECO` containing the following files:
+The workflow creates an artifact in the folder `.FAIRSECO` containing the following files:
 - index.html
     - Dashboard where you can see the results in a nice overview
 - Report.yml

@@ -4,8 +4,6 @@
  * @module
  */
 
-import { ReturnObject } from "../getdata";
-
 import YAML from "yaml";
 import {
     getArtifactData,
@@ -15,15 +13,18 @@ import {
 import * as input from "./tortellini-input";
 import { ErrorLevel, LogMessage } from "../errorhandling/log";
 
+/** The name of the module. */
+export const ModuleName = "Tortellini";
+
 /**
  * Downloads the artifact that was uploaded by Tortellini, and parses the YAML file.
  *
- * @param fileName Name of the file that should be retrieved from the artifact.
- * @returns A {@link getdata.ReturnObject} containing the relevant data from the YAML file given by Tortellini.
+ * @param fileName The name of the file that should be retrieved from the artifact.
+ * @returns The relevant data from the YAML file given by Tortellini.
  */
-export async function runTortellini(
+export async function runModule(
     fileName: string = "evaluation-result.yml"
-): Promise<ReturnObject> {
+): Promise<any> {
     const downloadResponse = await getArtifactData(
         "tortellini-result",
         input.destination,
@@ -41,10 +42,7 @@ export async function runTortellini(
 
     const filteredData = await filterData(obj);
 
-    return {
-        ReturnName: "Tortellini",
-        ReturnData: filteredData,
-    };
+    return filteredData;
 }
 
 /**
@@ -57,31 +55,31 @@ export async function runTortellini(
  * We only need a list of dependencies with their license data, and a list of license violations.
  *
  * @param obj The object that contains the data from the YAML file.
- * @returns An object containing only the data that is relevant for FairSECO.
+ * @returns An object containing only the data that is relevant for FAIRSECO.
  */
 export async function filterData(obj: any): Promise<any> {
     // Project data
-    const projects: any[] = obj.analyzer.result.projects || [];
-    const project = projects[0] || {};
+    const projects: any[] = dataOrUndef(obj.analyzer.result.projects, []);
+    const project = dataOrUndef(projects[0], {});
 
     const projData = {
-        id: project.id || "-",
-        licenses: project.declared_licenses || "-",
-        description: project.description || "-",
-        authors: project.authors || "-",
-        vcs: project.vcs_processed || "-",
+        id: dataOrUndef(project.id, "-"),
+        licenses: dataOrUndef(project.declared_licenses, "-"),
+        description: dataOrUndef(project.description, "-"),
+        authors: dataOrUndef(project.authors, "-"),
+        vcs: dataOrUndef(project.vcs_processed, "-"),
     };
 
     // Package data
-    const packages: any[] = obj.analyzer.result.packages || [];
+    const packages: any[] = dataOrUndef(obj.analyzer.result.packages, []);
     const packData = [];
     for (const pack of packages) {
         const p = {
-            id: pack.package.id || "-",
-            licenses: pack.package.declared_licenses || "-",
-            description: pack.package.description || "-",
-            authors: pack.package.authors || "-",
-            vcs: pack.package.vcs_processed || "-",
+            id: dataOrUndef(pack.package.id, "-"),
+            licenses: dataOrUndef(pack.package.declared_licenses, "-"),
+            description: dataOrUndef(pack.package.description, "-"),
+            authors: dataOrUndef(pack.package.authors, "-"),
+            vcs: dataOrUndef(pack.package.vcs_processed, "-"),
         };
         packData.push(p);
     }
@@ -90,4 +88,8 @@ export async function filterData(obj: any): Promise<any> {
     const viol = obj.evaluator.violations;
 
     return { project: projData, packages: packData, violations: viol };
+}
+
+function dataOrUndef(data: any, alt: any): any{
+    return data !== undefined ? data : alt;
 }

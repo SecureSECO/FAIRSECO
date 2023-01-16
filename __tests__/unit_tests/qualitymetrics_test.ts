@@ -1,5 +1,5 @@
 import { ReturnObject } from "../../src/getdata";
-import { GithubInfo } from "../../src/resources/git";
+import { GitHubInfo } from "../../src/git";
 import * as quality from "../../src/resources/qualitymetrics";
 
 import * as fs from "fs";
@@ -35,31 +35,25 @@ jest.mock("@actions/github", () => {
     };
 });
 
-test("Test getQualityMetrics", async () => {
-    const mockHowfairisOutput: ReturnObject = {
-        ReturnName: "Howfairis",
-        ReturnData: [
-            {
-                count: 3,
-            },
-        ],
-    };
-
-    const mockTortelliniOutput: ReturnObject = {
-        ReturnName: "Tortellini",
-        ReturnData: {
-            packages: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}], // 12
-            violations: [{}, {}, {}], // 3
+test("Test runModule", async () => {
+    const mockHowfairisOutput = [
+        {
+            count: 3,
         },
+    ];
+
+    const mockTortelliniOutput = {
+        packages: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}], // 12
+        violations: [{}, {}, {}], // 3
     };
 
     let qualityScore = (
-        await quality.getQualityMetrics(
-            {} as unknown as GithubInfo,
+        await quality.runModule(
+            {} as unknown as GitHubInfo,
             mockHowfairisOutput,
             mockTortelliniOutput
         )
-    ).ReturnData as quality.QualityMetrics;
+    ) as quality.QualityMetrics;
 
     const hasDocs =
         fs.existsSync("./docs") || fs.existsSync("./documentation");
@@ -71,48 +65,36 @@ test("Test getQualityMetrics", async () => {
 
 describe("Test getLicenseScore", () => {
     test("Some violations", () => {
-        const mockTortelliniOutput: ReturnObject = {
-            ReturnName: "Tortellini",
-            ReturnData: {
+        const mockTortelliniOutput = {
                 packages: [{}, {}, {}, {}, {}, {}], // 6
                 violations: [{}, {}], // 2
-            },
-        };
+            };
 
         expect(quality.getLicenseScore(mockTortelliniOutput)).toBe(32);
     });
 
     test("No violations", () => {
-        const mockTortelliniOutput: ReturnObject = {
-            ReturnName: "Tortellini",
-            ReturnData: {
-                packages: [{}, {}], // 2
-                violations: [], // 0
-            },
+        const mockTortelliniOutput = {
+            packages: [{}, {}], // 2
+            violations: [], // 0
         };
 
         expect(quality.getLicenseScore(mockTortelliniOutput)).toBe(100);
     });
 
     test("100% violations", () => {
-        const mockTortelliniOutput: ReturnObject = {
-            ReturnName: "Tortellini",
-            ReturnData: {
-                packages: [{}, {}, {}], // 3
-                violations: [{}, {}, {}], // 3
-            },
+        const mockTortelliniOutput = {
+            packages: [{}, {}, {}], // 3
+            violations: [{}, {}, {}], // 3
         };
 
         expect(quality.getLicenseScore(mockTortelliniOutput)).toBe(0);
     });
 
     test("No packages", () => {
-        const mockTortelliniOutput: ReturnObject = {
-            ReturnName: "Tortellini",
-            ReturnData: {
-                packages: [], // 0
-                violations: [], // 0
-            },
+        const mockTortelliniOutput = {
+            packages: [], // 0
+            violations: [], // 0
         };
 
         expect(quality.getLicenseScore(mockTortelliniOutput)).toBe(100);
@@ -238,7 +220,7 @@ describe("Test getAvgSolveTime", () => {
 
 describe("Test hasDocumentation", () => {
     test("Existing docs folder", () => {
-        const result = quality.hasDocumentation();
+        const result = quality.hasDocumentationDir();
 
         const hasDocs =
             fs.existsSync("./docs") || fs.existsSync("./documentation");
@@ -248,7 +230,7 @@ describe("Test hasDocumentation", () => {
 });
 
 test("Test getIssues", async () => {
-    const result = await quality.getIssues({} as unknown as GithubInfo);
+    const result = await quality.getIssues({} as unknown as GitHubInfo);
 
     expect(result).toEqual(mockedOctokitIssues);
 });

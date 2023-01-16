@@ -4,11 +4,14 @@
  * @module
  */
 
-import { ReturnObject } from "../../getdata";
+import { ReturnObject } from "../../getdata"
 import { semanticScholarCitations } from "./APIs/semanticscholarAPI";
 import { openAlexCitations } from "./APIs/openalexAPI";
-import { Author, Paper, Citations } from "./Paper";
-import { ValidCffObject } from "../citation_cff";
+import { Author, Paper, Citations } from "./paper";
+import { CffObject } from "../citation_cff";
+
+/** The name of the module. */
+export const ModuleName = "CitingPapers";
 
 /**
  * Finds papers citing a piece of research software, given the citation.cff file of its repository.
@@ -17,9 +20,14 @@ import { ValidCffObject } from "../citation_cff";
  * 
  * @returns A `ReturnObject` containing unique papers citing the software.
  */
-export async function runCitingPapers(
-    cffFile: ValidCffObject
-): Promise<ReturnObject> {
+export async function runModule(
+    cffFile: CffObject | undefined 
+): Promise<any> {
+    // Check cff output
+    if (cffFile === undefined || cffFile.status !== "valid") {
+        throw new Error("Invalid CITATION.cff file");
+    }
+
     const authors: Author[] = [];
     const title: string = cffFile.citation.title;
     const refTitles: string[] = [];
@@ -65,10 +73,7 @@ export async function runCitingPapers(
     const output = new Citations(outputPapers);
     console.log(output);
     console.log(output.unqiueFields);
-    return {
-        ReturnName: "citingPapers",
-        ReturnData: output,
-    };
+    return output;
 }
 
 /**

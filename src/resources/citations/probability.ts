@@ -4,7 +4,7 @@
  * @module
  */
 
-import { MetaDataPaper } from "./Paper";
+import { MetaDataPaper } from "./paper";
 import { ErrorLevel, LogMessage } from "../../errorhandling/log";
 
 /**

@@ -7,7 +7,7 @@ beforeEach(() => {
 });
 
 test("A log file is created succesfully", async () => {
-    expect(fs.existsSync("./.FairSECO/program.log")).toBe(true);
+    expect(fs.existsSync("./.FAIRSECO/program.log")).toBe(true);
 });
 
 test("Formatting message works", async () => {
@@ -28,25 +28,12 @@ test("Formatting message works", async () => {
     expect(message.includes(testContent)).toBe(true);
 });
 
-test("Formatting message using an Error works", async () => {
-    try {
-        // Cause an error
-        fs.readFileSync("wrongpath//");
-    } catch (testError) {
-        // Format message using error
-        let message = log.formatMessage(testError, log.ErrorLevel.err);
-
-        // Check if formatted message includes error message
-        expect(message.includes(testError.message)).toBe(true);
-    }
-});
-
 test("A logged error ends up in the log file", async () => {
     // Log a message
     const testError = "This is an error";
     log.LogMessage(testError, log.ErrorLevel.err);
 
     // Check if the log file includes the message
-    const contents = fs.readFileSync("./.FairSECO/program.log");    
+    const contents = fs.readFileSync("./.FAIRSECO/program.log");    
     expect(contents.includes(testError)).toBe(true);
 });

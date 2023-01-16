@@ -6,7 +6,7 @@
  */
 
 import fetch from "node-fetch";
-import { Author, Paper, MetaDataPaper } from "../Paper";
+import { Author, Paper, MetaDataPaper } from "../paper";
 import { ErrorLevel, LogMessage } from "../../../errorhandling/log";
 import { calculateProbabiltyOfReference } from "../probability";
 

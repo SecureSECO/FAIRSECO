@@ -1,5 +1,5 @@
 {
-    "name": "fairseco",
+    "name": "FAIRSECO",
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
@@ -10,7 +10,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/QDUNI/FairSECO.git"
+        "url": "git+https://github.com/QDUNI/FAIRSECO.git"
     },
     "author": "",
     "license": "ISC",
@@ -36,9 +36,9 @@
         "typescript": "^4.8.4"
     },
     "bugs": {
-        "url": "https://github.com/QDUNI/FairSECO/issues"
+        "url": "https://github.com/QDUNI/FAIRSECO/issues"
     },
-    "homepage": "https://github.com/QDUNI/FairSECO#readme",
+    "homepage": "https://github.com/QDUNI/FAIRSECO#readme",
     "dependencies": {
         "@actions/artifact": "^1.1.0",
         "@actions/core": "^1.10.0",
