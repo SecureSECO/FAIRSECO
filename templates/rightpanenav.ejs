@@ -11,7 +11,7 @@
     <li class="RightPaneNav__Tab--3Away" onClick="clickTab(this)" data-linked-class="Quality">
         Quality
     </li>
-    <li class="RightPaneNav__Tab--3Away" onClick="clickTab(this)" data-linked-class="ImpactHistory">
+    <li class="RightPaneNav__Tab--4Away" onClick="clickTab(this)" data-linked-class="ImpactHistory">
         Impact History
     </li>
 </ul>
@@ -82,25 +82,28 @@
     background-color: #D3EEE0;
 }
 .RightPaneNav__Tab--1Away {
-    background-color: #729B85;
+    background-color: #8bcca9;
 }
 .RightPaneNav__Tab--1Away::before {
-    background-color: #729B85;
+    background-color: #8bcca9;
 }
 .RightPaneNav__Tab--2Away {
-    background-color: #47715A;
+    background-color: #5e9577;
 }
 .RightPaneNav__Tab--2Away::before {
-    background-color: #47715A;
+    background-color: #5e9577;
 }
 .RightPaneNav__Tab--3Away {
-    background-color: #0C281E;
+    background-color: #1f674e;
 }
 .RightPaneNav__Tab--3Away::before {
+    background-color: #1f674e;
+}
+.RightPaneNav__Tab--4Away {
     background-color: #0C281E;
 }
 .RightPaneNav__Tab--4Away::before {
-    background-color: #031a12;
+    background-color: #0C281E;
 }
 </style>
 
@@ -125,7 +128,7 @@
             tabIndex++;
         }
 
-        const classes = ["RightPaneNav__Tab--Active", "RightPaneNav__Tab--1Away", "RightPaneNav__Tab--2Away", "RightPaneNav__Tab--3Away"];
+        const classes = ["RightPaneNav__Tab--Active", "RightPaneNav__Tab--1Away", "RightPaneNav__Tab--2Away", "RightPaneNav__Tab--3Away", "RightPaneNav__Tab--4Away"];
 
         for (let i = 0; i < tabList.length; i++) {
             const navtab = tabList.item(i);
