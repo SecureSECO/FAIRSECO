@@ -16499,13 +16499,16 @@ flex-direction: row;
 <div class="RightPane">
     <div class="RightPaneContainer">
         <ul id="RightPaneNav">
-    <li class="RightPaneNav__Tab--Active" onClick="clickTab(this)" data-linked-class="HowFairIsReport">
+    <li class="RightPaneNav__Tab--Active" onClick="clickTab(this)" data-linked-class="Overview">
+        Overview
+    </li>
+    <li class="RightPaneNav__Tab--1Away" onClick="clickTab(this)" data-linked-class="HowFairIsReport">
         FAIRness
     </li>
-    <li class="RightPaneNav__Tab--1Away" onClick="clickTab(this)" data-linked-class="ImpactScore">
+    <li class="RightPaneNav__Tab--2Away" onClick="clickTab(this)" data-linked-class="ImpactScore">
         Impact
     </li>
-    <li class="RightPaneNav__Tab--2Away" onClick="clickTab(this)" data-linked-class="Quality">
+    <li class="RightPaneNav__Tab--3Away" onClick="clickTab(this)" data-linked-class="Quality">
         Quality
     </li>
     <li class="RightPaneNav__Tab--3Away" onClick="clickTab(this)" data-linked-class="ImpactHistory">
@@ -16553,15 +16556,18 @@ flex-direction: row;
     transition: all 150ms ease;
 }
 #RightPaneNav li:nth-child(1) {
-    z-index: 3;
+    z-index: 4;
 }
 #RightPaneNav li:nth-child(2) {
-    z-index: 2;
+    z-index: 3;
 }
 #RightPaneNav li:nth-child(3) {
-    z-index: 1;
+    z-index: 2;
 }
 #RightPaneNav li:nth-child(4) {
+    z-index: 1;
+}
+#RightPaneNav li:nth-child(5) {
     z-index: 0;
 }
 
@@ -16592,6 +16598,9 @@ flex-direction: row;
 }
 .RightPaneNav__Tab--3Away::before {
     background-color: #0C281E;
+}
+.RightPaneNav__Tab--4Away::before {
+    background-color: #031a12;
 }
 </style>
 
@@ -16632,8 +16641,89 @@ flex-direction: row;
         <div class="RightPaneWindow">
             
 
+<div class="Overview">
+    <h1 class="Overview__Title">Overview</h1>
+    <div class="Overview__Content">
+        <div class="Repository__Info__Left">
+            <div class="Repository__Info">
+                <p>Repository title</p>
+                <div class="Repository__Data">FAIRSECO</div>
+            </div>
+            <div class="Repository__Info">
+                <p>Repository owner</p>
+                <div class="Repository__Data">QDUNI</div>
+            </div>
+            <div class="Repository__Info">
+                <p>Top contributors</p>
+                <div class="Repository__Data"><p>RageRaptor</p><p>Tjibbe75</p></div>
+            </div>
 
-<div class="HowFairIsReport">
+        </div>
+        <div class="Repository__Info__Right">
+            <div class="Repository__Info">
+                <p>Date of issue</p>
+                <div class="Repository__Data">22 dec 2022</div>
+            </div>
+            <div class="Repository__Info">
+                <p>Repository stars</p>
+                <div class="Repository__Data">3100</div>
+            </div>
+            <div class="Repository__Info">
+                <p>Repository wacthers</p>
+                <div class="Repository__Data">1600</div>
+            </div>
+            <div class="Repository__Info">
+                <p>Repository Forks</p>
+                <div class="Repository__Data">25</div>
+            </div>
+        </div>
+        <div class="Meta-data__Row">
+            
+        </div>
+    </div>
+</div>
+
+<style>
+.Overview__Title {
+    color: #0C281E;
+    text-align: center;
+    margin: 2%;
+    font-size: 2vw;
+}
+
+.Overview__Content {
+    width: 80%;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.Repository__Info__Left {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.Repository__Info__Right {
+    text-align: right;
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.Repository__Data {
+    font-size: 1.75vw;
+    font-weight: bold;
+    margin: 0.25vw;
+}
+</style>
+            
+
+
+<div class="HowFairIsReport" hidden>
     <h1 class="HowFairIsReportTitle">FAIRness Report</h1>
     <div class="stars">
         <h2>
