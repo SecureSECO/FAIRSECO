@@ -1,0 +1,119 @@
+<%
+function getRepositoryTitle() {
+    return "FAIRSECO";
+}
+
+function getRepositoryOwner() {
+    return "QDUNI";
+}
+
+function getDate() {
+    return "22 dec 2022"
+}
+
+function getTopContributors() {
+    return ["RageRaptor", "QDUNI", "rowins", "JarnoHendriksen", "Nyfadon", "BramLankhorst", "Tjibbe75"];
+}
+
+function getRepositoryStars() {
+    return 3100;
+}
+
+function getrepositoryWatchers() {
+    return 1600;
+}
+
+function getRepositoryforks() {
+    return 25;
+}
+%>
+
+<div class="Overview" hidden>
+    <h1 class="Overview__Title">Overview</h1>
+    <div class="Overview__Content">
+        <div class="General__Info__Top">
+            <div class="Repository__Info__Left">
+                <p>Repository title</p>
+                <div class="Repository__Data"><%- getRepositoryTitle() %></div>
+            </div>
+            <div class="Repository__Info__Left">
+                <p>Repository owner</p>
+                <div class="Repository__Data"><%- getRepositoryOwner() %></div>
+            </div>
+            <div class="Repository__Info__Right">
+                <p>Date of issue</p>
+                <div class="Repository__Data"><%- getDate() %></div>
+            </div>
+        </div>
+        <div class="General__Info__Bottom">
+            <div class="Repository__Info__Left">
+                <p>Top contributors</p>
+                <div class="Repository__Data"><%- getTopContributors() %></div>
+            </div>
+            <div class="Repository__Info__Right">
+                <p>Repository stars</p>
+                <div class="Repository__Data"><%- getRepositoryStars() %></div>
+            </div>
+            <div class="Repository__Info__Right">
+                <p>Repository wacthers</p>
+                <div class="Repository__Data"><%- getrepositoryWatchers() %></div>
+            </div>
+            <div class="Repository__Info__Right">
+                <p>Repository Forks</p>
+                <div class="Repository__Data"><%- getRepositoryforks() %></div>
+            </div>
+        </div>
+        <div class="Meta-data__Row">
+            
+        </div>
+    </div>
+</div>
+
+<style>
+.Overview__Title {
+    color: #0C281E;
+    text-align: center;
+    margin: 2%;
+    font-size: 2vw;
+}
+
+.Overview__Content {
+    width: 80%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.General__Info_Top {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.General__Info__Bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.Repository__Info__Left{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: left;
+}
+
+.Repository__Info__Right{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: right;
+}
+
+.Repository__Data {
+    font-size: 1.75vw;
+    font-weight: bold;
+    margin: 0.25vw;
+}
+</style>
