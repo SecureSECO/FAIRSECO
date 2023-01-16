@@ -1,0 +1,353 @@
+<html>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,700;1,7..72,400&display=swap');
+
+        body{
+            margin: 0px;
+        }
+
+    </style>
+    <head>
+        <script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+        <script src="https://marvl.infotech.monash.edu/webcola/cola.min.js"></script>
+    </head>
+    <body>
+         <div class="LeftPane">
+    <div class="Branding">
+        <h1 class="Name"><i class="fa-solid fa-scale-balanced"></i>FAIRSECO</h1>
+        <h2 class="Tagline">FAIR is fair.</h2>
+    </div>
+    <div class="Buttons">
+        <button type="button" id="backBtn" onclick="location.href='index.html';"><i class="arrow left"></i></button>
+        <button type="button" id="helpBtn"><i class="questionmark">&#63</i></button>
+    </div>
+    <div class="Citationgraph">
+        <h1 class="Title"><i class="fa-solid fa-scale-balanced"></i>Citations Graph View</h1>
+    </div> 
+    <div class="HelpInfo">
+        <h1>Welcome.</h1>
+        This graph shows an overview of all the papers citing this project (small nodes) and their corresponding fields (large nodes).
+        <br>The size of the paper node depends on how often the paper is cited. 
+        The more citations, the larger the node.
+        <h2>Interaction</h2>
+        You can zoom in and out using your mouse wheel
+        <h3>Nodes</h3>
+        <ul>
+            <li><b>Hover</b> over a paper to highlight the fields it is connected with.<br> A small card wil appear showing some information about the paper </li>
+            <li><b>Click</b> on a paper node to show more information in this dark green section (left part of the screen)</li>
+        </ul>
+        <h3>Fields</h3>
+        <ul>            
+            <li><b>Click</b> on a field to show all the papers connected to this field in this dark green section.<br> You can select multiple fields at the same time, this will then show the papers that are connected to all these fields</li>
+
+        </ul>
+        If you wish to see this information again later, press the question mark button at the top of the green section, or reload the page.
+        <br> Press the back (left arrow) button to go back to the main FAIRSECO page
+    </div>
+    <div class="CitationgraphInfo">
+        
+        <div class="CitationsContainer ActiveTab">
+</div>
+<style>
+    .CitationsContainer {
+        max-height: 78%;
+        -webkit-mask-image: linear-gradient(
+            to bottom,
+            black 90%,
+            transparent 100%
+        );
+        mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+        animation: fade-in 600ms ease-out 1 forwards;
+        width: 100%;
+        padding: 8px;
+    }
+    .CitationsContainer h3{
+        text-align: left;
+        font-size: 0.9rem;            
+        color: #779C7E;
+        font-family: 'Literata', serif ;
+    }
+
+    @media screen and (min-width: 1000px) {
+        .Citation td {
+            max-width: 420px;
+        }
+        .info2 h1 {
+            font-size: 1rem;
+        }
+    }
+
+    @media screen and (min-width: 2500px) {
+        .Citation td {
+            max-width: 700px;
+        }
+        .info2 h1 {
+            font-size: 1.2rem;
+        }
+    }
+</style>
+
+    </div>
+</div>
+<script>
+    const backbutton = document.getElementById("helpBtn");
+    backbutton.addEventListener("click",showhelppage);
+
+    function showhelppage(){
+        //delete selectedpapers from html
+        d3.select("body").select(".LeftPane").select(".CitationgraphInfo").select(".CitationsContainer").selectAll(".Citation").remove();
+        //display help page
+        d3.select("body").select(".LeftPane").select(".HelpInfo").style("display","");
+    }
+</script>
+<style>
+    hr{
+        border-top: #0c281e 2px solid;
+        color: #779C7E;
+    }
+
+    .arrow {
+    border: solid rgba(15, 45, 30, 0.82);
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+    }
+
+    .left {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+    }
+
+    .questionmark{
+        color: rgba(15, 45, 30, 0.82);
+        display: inline-block;
+        padding: 3px;
+        font-weight: 800;
+        font-size: 1rem;
+    }
+
+    .LeftPane {
+        width: 40vw;
+        height: 100vh;
+        padding: 0;
+        margin: 0;
+        background: rgba(15, 45, 30, 0.82);
+        backdrop-filter: blur(30px);
+        overflow: hidden;
+        z-index: 1;
+        position: absolute;
+    }
+
+    .LeftPane .Branding {
+        display: flex;
+        flex-direction: row;
+        justify-content: start;
+        align-items: center;
+        padding: 8px;
+    }
+
+    .LeftPane .Branding .Name {
+        color: #d9f8df;
+        margin: 0 8px;
+    }
+
+    .LeftPane .Branding .Tagline {
+        align-self: center;
+        color: #88bf93;
+        font-size: 0.8rem;
+        position: relative;
+        top: 8px;
+        font-style: italic;
+    }
+
+    .LeftPane .Buttons{
+        padding:8px;
+        margin-left: 0 8px;
+    }
+
+    .LeftPane .Buttons button{
+        color: #0C281E;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        color: rgba(15, 45, 30, 0.82);
+        background-color: #779C7E;
+        border: none;
+
+    }
+
+    .LeftPane .Buttons button:hover{
+        /* color:#0c281e; */
+    }
+    
+
+    .LeftPane .Citationgraph {
+        padding: 8px;
+    }
+
+    .LeftPane .Citationgraph .Title {
+        text-align: center;
+        color: #d9f8df;
+        margin: 0 8px;
+        font-style: italic;
+    }
+    
+    .LeftPane .CitationgraphInfo {
+        display: flex;
+        flex-direction: row;
+        justify-content: start;
+        align-items: center;
+        padding: 8px;
+    }
+
+    .LeftPane .HelpInfo {
+        text-align: left;
+        font-size: 1rem;            
+        color:  #d9f8df;
+        font-family: 'Literata', serif ;
+        padding: 8px;
+        margin: 0 8px;
+        list-style-type: none;
+        display: "";
+    }
+
+    .LeftPane .HelpInfo h1{
+        font-size: 1.4rem;
+        color: #D3ECDE;
+    }
+
+    .LeftPane .HelpInfo h2{
+        font-size: 1.2rem;
+        color: #D3ECDE;
+    }
+
+    .LeftPane .HelpInfo h3{
+        font-size: 1rem;
+        color: #D3ECDE;
+    }
+
+    .LeftPane a {
+        display:inline-flex;
+        margin-top: 10px;
+        background-color:#D9F8DF;
+        text-decoration-line: none;
+        padding: 10px;
+        text-align: left;
+        font-size: 1.3rem;
+        color:rgba(15, 45, 30, 0.82);
+        font-family: 'Literata', serif ;
+        border-radius: 8px;
+    }
+
+    .listedPapersContainer{
+        /* overflow: scroll; */
+    }
+
+    .listedPapersContainer h1{
+        font-size: 1.3rem;
+        color: #D3ECDE;
+        float: left;
+    }
+
+    .listedPaper {
+        /* display: inline-flexbox; */
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .listedPaper h2{
+        font-size: 1.1rem;
+        color: #D3ECDE;
+        width: 30vw;
+        float: left;
+    }
+
+    .listedPaper h3{
+        font-size: 1.1rem;
+        color: #D3ECDE;
+        font-family: 'Literata', serif ;
+        float: right;
+    }
+
+</style>
+
+         <style>
+    div.tooltip {
+        background-color: lightblue;
+    }
+    #mainContainer h2{
+    text-align: left;
+    font-size: 1.3rem;
+    color: #D9F8DF;
+    font-family: 'Literata', serif ;
+    }
+
+    #mainContainer h3{
+        text-align: left;
+        font-size: 0.9rem;            
+        color: #0C281E;
+        font-family: 'Literata', serif ;
+    }
+    #mainContainer {
+        text-align: center;
+        margin-left: 40vw;
+    }
+
+    /* SVG */
+    #svgchart {
+        background-color: #D3ECDE;
+    }
+
+    .node {
+        fill: #164434;
+        stroke: #D3ECDE;
+        stroke-width: 1px;
+    }
+
+    .links {
+        stroke: #538475;
+        stroke-width: 0.5px;
+    }
+    div.tooltip {
+        position: absolute;
+        text-align: left;
+        padding: 12px;
+        background: rgba(234,254,237, 0.55);
+        -webkit-backdrop-filter: blur(50px);
+        backdrop-filter: blur(50px);
+        font: 8px 'Literata', serif;
+        text-align: left;
+        font-weight: bold;
+        border-radius: 8px;
+        pointer-events: none; /* keep the mouseover when over the tooltip */
+        word-wrap: break-word;
+        max-width: 280px;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    }
+
+    .label {
+        color: white;
+        display: flex;
+        font: 7px "Literata", serif;
+        font-style: italic;
+        text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        width: 60px;
+        height: 60px;
+    }
+
+    #footer {
+    color: black;
+    text-align: center;
+    }
+    #footer a{
+        color: blue;
+    }
+</style>
+<div id="mainContainer"><svg id="svgChart"></svg></div>
+<script src="./starField.js"></script>
+    </body>
+</html>
