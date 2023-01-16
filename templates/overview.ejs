@@ -8,11 +8,11 @@ function getRepositoryOwner() {
 }
 
 function getDate() {
-    return "22 dec 2022"
+    return "22 dec 2022";
 }
 
 function getTopContributors() {
-    return "<p>RageRaptor</p><p>Tjibbe75</p>"
+    return "<p>RageRaptor</p><p>Tjibbe75</p>";
 }
 
 function getRepositoryStars() {
@@ -25,6 +25,22 @@ function getrepositoryWatchers() {
 
 function getRepositoryforks() {
     return 25;
+}
+
+function getTimesCited() {
+    return 123;
+}
+
+function getFairness() {
+    return "5/5";
+}
+
+function getMethodsReuse() {
+    return 20;
+}
+
+function getQualityScore() {
+    return "83/100";
 }
 %>
 
@@ -64,8 +80,23 @@ function getRepositoryforks() {
                 <div class="Repository__Data"><%- getRepositoryforks() %></div>
             </div>
         </div>
-        <div class="Meta-data__Row">
-            
+    </div>
+    <div class="Meta-data__Row">
+        <div class="Meta-data">
+            <p>Times cited</p>
+            <div class = Meta-data__Data><%- getTimesCited() %></div>
+        </div>
+        <div class="Meta-data">
+            <p>Fairness</p>
+            <div class = Meta-data__Data><%- getFairness() %></div>
+        </div>
+        <div class="Meta-data">
+            <p>Methods reused in other projects</p>
+            <div class = Meta-data__Data><%- getMethodsReuse() %></div>
+        </div>
+        <div class="Meta-data">
+            <p>Quality Score</p>
+            <div class = Meta-data__Data><%- getQualityScore() %></div>
         </div>
     </div>
 </div>
@@ -102,6 +133,22 @@ function getRepositoryforks() {
 }
 
 .Repository__Data {
+    font-size: 1.75vw;
+    font-weight: bold;
+    margin: 0.25vw;
+}
+
+.Meta-data__Row {
+    width: 80%;
+    margin: auto;
+    display: flex;
+    float: bottom;
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.Meta-data__Data {
     font-size: 1.75vw;
     font-weight: bold;
     margin: 0.25vw;
