@@ -12,7 +12,7 @@ function getDate() {
 }
 
 function getTopContributors() {
-    return ["RageRaptor", "QDUNI", "rowins", "JarnoHendriksen", "Nyfadon", "BramLankhorst", "Tjibbe75"];
+    return "<p>RageRaptor</p><p>Tjibbe75</p>"
 }
 
 function getRepositoryStars() {
@@ -28,37 +28,38 @@ function getRepositoryforks() {
 }
 %>
 
-<div class="Overview" hidden>
+<div class="Overview">
     <h1 class="Overview__Title">Overview</h1>
     <div class="Overview__Content">
-        <div class="General__Info__Top">
-            <div class="Repository__Info__Left">
+        <div class="Repository__Info__Left">
+            <div class="Repository__Info">
                 <p>Repository title</p>
                 <div class="Repository__Data"><%- getRepositoryTitle() %></div>
             </div>
-            <div class="Repository__Info__Left">
+            <div class="Repository__Info">
                 <p>Repository owner</p>
                 <div class="Repository__Data"><%- getRepositoryOwner() %></div>
             </div>
-            <div class="Repository__Info__Right">
-                <p>Date of issue</p>
-                <div class="Repository__Data"><%- getDate() %></div>
-            </div>
-        </div>
-        <div class="General__Info__Bottom">
-            <div class="Repository__Info__Left">
+            <div class="Repository__Info">
                 <p>Top contributors</p>
                 <div class="Repository__Data"><%- getTopContributors() %></div>
             </div>
-            <div class="Repository__Info__Right">
+
+        </div>
+        <div class="Repository__Info__Right">
+            <div class="Repository__Info">
+                <p>Date of issue</p>
+                <div class="Repository__Data"><%- getDate() %></div>
+            </div>
+            <div class="Repository__Info">
                 <p>Repository stars</p>
                 <div class="Repository__Data"><%- getRepositoryStars() %></div>
             </div>
-            <div class="Repository__Info__Right">
+            <div class="Repository__Info">
                 <p>Repository wacthers</p>
                 <div class="Repository__Data"><%- getrepositoryWatchers() %></div>
             </div>
-            <div class="Repository__Info__Right">
+            <div class="Repository__Info">
                 <p>Repository Forks</p>
                 <div class="Repository__Data"><%- getRepositoryforks() %></div>
             </div>
@@ -81,34 +82,23 @@ function getRepositoryforks() {
     width: 80%;
     margin: auto;
     display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-}
-
-.General__Info_Top {
-    display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
-.General__Info__Bottom {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-.Repository__Info__Left{
+.Repository__Info__Left {
+    width: 40%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    align-items: left;
 }
 
-.Repository__Info__Right{
+.Repository__Info__Right {
+    text-align: right;
+    width: 40%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    align-items: right;
 }
 
 .Repository__Data {
