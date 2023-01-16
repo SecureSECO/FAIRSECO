@@ -1,11 +1,14 @@
 <ul id="RightPaneNav">
-    <li class="RightPaneNav__Tab--Active" onClick="clickTab(this)" data-linked-class="HowFairIsReport">
+    <li class="RightPaneNav__Tab--Active" onClick="clickTab(this)" data-linked-class="Overview">
+        Overview
+    </li>
+    <li class="RightPaneNav__Tab--1Away" onClick="clickTab(this)" data-linked-class="HowFairIsReport">
         FAIRness
     </li>
-    <li class="RightPaneNav__Tab--1Away" onClick="clickTab(this)" data-linked-class="ImpactScore">
+    <li class="RightPaneNav__Tab--2Away" onClick="clickTab(this)" data-linked-class="ImpactScore">
         Impact
     </li>
-    <li class="RightPaneNav__Tab--2Away" onClick="clickTab(this)" data-linked-class="Quality">
+    <li class="RightPaneNav__Tab--3Away" onClick="clickTab(this)" data-linked-class="Quality">
         Quality
     </li>
     <li class="RightPaneNav__Tab--3Away" onClick="clickTab(this)" data-linked-class="ImpactHistory">
@@ -53,15 +56,18 @@
     transition: all 150ms ease;
 }
 #RightPaneNav li:nth-child(1) {
-    z-index: 3;
+    z-index: 4;
 }
 #RightPaneNav li:nth-child(2) {
-    z-index: 2;
+    z-index: 3;
 }
 #RightPaneNav li:nth-child(3) {
-    z-index: 1;
+    z-index: 2;
 }
 #RightPaneNav li:nth-child(4) {
+    z-index: 1;
+}
+#RightPaneNav li:nth-child(5) {
     z-index: 0;
 }
 
@@ -92,6 +98,9 @@
 }
 .RightPaneNav__Tab--3Away::before {
     background-color: #0C281E;
+}
+.RightPaneNav__Tab--4Away::before {
+    background-color: #031a12;
 }
 </style>
 
