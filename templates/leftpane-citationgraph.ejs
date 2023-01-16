@@ -1,13 +1,12 @@
 <div class="LeftPane">
     <div class="Branding">
         <h1 class="Name"><i class="fa-solid fa-scale-balanced"></i>FAIRSECO</h1>
-        <h2 class="Tagline">Tagline.</h2>
+        <h2 class="Tagline">FAIR is fair.</h2>
     </div>
     <div class="Buttons">
-        <button type="button"><span>Back to FAIRSECO</span></button>
-        <button type="button"><span>Help</span></button>
+        <button type="button" id="backBtn" onclick="location.href='index.html';"><i class="arrow left"></i></button>
+        <button type="button" id="helpBtn"><i class="questionmark">&#63</i></button>
     </div>
-    <hr/>
     <div class="Citationgraph">
         <h1 class="Title"><i class="fa-solid fa-scale-balanced"></i>Citations Graph View</h1>
     </div> 
@@ -29,17 +28,48 @@
 
         </ul>
         If you wish to see this information again later, press the question mark button at the top of the green section, or reload the page.
+        <br> Press the back (left arrow) button to go back to the main FAIRSECO page
     </div>
     <div class="CitationgraphInfo">
         <% const citations = data.find((ele) => (ele.ReturnName === "citingPapers"))?.ReturnData.papers; %>
         <%- include('citations-citationgraph', {"citations": citations}) %>
     </div>
 </div>
+<script>
+    const backbutton = document.getElementById("helpBtn");
+    backbutton.addEventListener("click",showhelppage);
 
+    function showhelppage(){
+        //delete selectedpapers from html
+        d3.select("body").select(".LeftPane").select(".CitationgraphInfo").select(".CitationsContainer").selectAll(".Citation").remove();
+        //display help page
+        d3.select("body").select(".LeftPane").select(".HelpInfo").style("display","");
+    }
+</script>
 <style>
     hr{
         border-top: #0c281e 2px solid;
         color: #779C7E;
+    }
+
+    .arrow {
+    border: solid rgba(15, 45, 30, 0.82);
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+    }
+
+    .left {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+    }
+
+    .questionmark{
+        color: rgba(15, 45, 30, 0.82);
+        display: inline-block;
+        padding: 3px;
+        font-weight: 800;
+        font-size: 1rem;
     }
 
     .LeftPane {
@@ -83,6 +113,12 @@
 
     .LeftPane .Buttons button{
         color: #0C281E;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        color: rgba(15, 45, 30, 0.82);
+        background-color: #779C7E;
+        border: none;
 
     }
 
@@ -118,6 +154,7 @@
         padding: 8px;
         margin: 0 8px;
         list-style-type: none;
+        display: "";
     }
 
     .LeftPane .HelpInfo h1{

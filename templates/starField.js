@@ -259,7 +259,7 @@ function renderStarField() {
             
             //remove help page
             const help = d3.select("body").select(".LeftPane").select(".HelpInfo");
-            help.remove();
+            help.style("display","none");
             
             // make sure previous generated Citation is removed
             const citationContainer = d3.select("body").select(".LeftPane").select(".CitationgraphInfo").select(".CitationsContainer");
