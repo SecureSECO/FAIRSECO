@@ -49,54 +49,54 @@ function getQualityScore() {
     <div class="Overview__Content">
         <div class="Repository__Info__Left">
             <div class="Repository__Info">
-                <p>Repository title</p>
-                <div class="Repository__Data"><%- getRepositoryTitle() %></div>
+                <h3>Repository title</h3>
+                <h2 class="Repository__Data"><%- getRepositoryTitle() %></h2>
             </div>
             <div class="Repository__Info">
-                <p>Repository owner</p>
-                <div class="Repository__Data"><%- getRepositoryOwner() %></div>
+                <h3>Repository owner</h3>
+                <h2 class="Repository__Data"><%- getRepositoryOwner() %></h2>
             </div>
             <div class="Repository__Info">
-                <p>Top contributors</p>
-                <div class="Repository__Data"><%- getTopContributors() %></div>
+                <h3>Top contributors</h3>
+                <h2 class="Repository__Data Repository__Contributors"><%- getTopContributors() %></h2>
             </div>
 
         </div>
         <div class="Repository__Info__Right">
             <div class="Repository__Info">
-                <p>Date of issue</p>
-                <div class="Repository__Data"><%- getDate() %></div>
+                <h3>Date of issue</h3>
+                <h2 class="Repository__Data"><%- getDate() %></h2>
             </div>
             <div class="Repository__Info">
-                <p>Repository stars</p>
-                <div class="Repository__Data"><%- getRepositoryStars() %></div>
+                <h3>Repository stars</h3>
+                <h2 class="Repository__Data"><%- getRepositoryStars() %></h2>
             </div>
             <div class="Repository__Info">
-                <p>Repository wacthers</p>
-                <div class="Repository__Data"><%- getrepositoryWatchers() %></div>
+                <h3>Repository watchers</h3>
+                <h2 class="Repository__Data"><%- getrepositoryWatchers() %></h2>
             </div>
             <div class="Repository__Info">
-                <p>Repository Forks</p>
-                <div class="Repository__Data"><%- getRepositoryforks() %></div>
+                <h3>Repository Forks</h3>
+                <h2 class="Repository__Data"><%- getRepositoryforks() %></h2>
             </div>
         </div>
     </div>
     <div class="Meta-data__Row">
         <div class="Meta-data">
             <p>Times cited</p>
-            <div class = Meta-data__Data><%- getTimesCited() %></div>
+            <div class = Meta-data__Data><p><%- getTimesCited() %></p></div>
         </div>
         <div class="Meta-data">
             <p>Fairness</p>
-            <div class = Meta-data__Data><%- getFairness() %></div>
+            <div class = Meta-data__Data><p><%- getFairness() %></p></div>
         </div>
         <div class="Meta-data">
             <p>Methods reused in other projects</p>
-            <div class = Meta-data__Data><%- getMethodsReuse() %></div>
+            <div class = Meta-data__Data><p><%- getMethodsReuse() %></p></div>
         </div>
         <div class="Meta-data">
             <p>Quality Score</p>
-            <div class = Meta-data__Data><%- getQualityScore() %></div>
+            <div class = Meta-data__Data><p><%- getQualityScore() %></p></div>
         </div>
     </div>
 </div>
@@ -121,7 +121,10 @@ function getQualityScore() {
     width: 40%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+}
+
+.Repository__Info__Right .Repository__Info:first-child{
+    margin-bottom: 7vh;
 }
 
 .Repository__Info__Right {
@@ -132,20 +135,51 @@ function getQualityScore() {
     justify-content: space-between;
 }
 
+.RightPaneWindow .Repository__Info h3{
+    color: #5A9575;
+    font-weight: bold;
+    font-size: 1rem;
+}
+.RightPaneWindow .Repository__Info h2{
+    color: #0c281e;
+    font-weight: bold;
+    font-size: 2rem;
+}
+
 .Repository__Data {
     font-size: 1.75vw;
     font-weight: bold;
     margin: 0.25vw;
 }
 
+.Repository__Contributors p{
+    font-size: 1rem;
+    margin: 0;
+}
+
 .Meta-data__Row {
     width: 80%;
+    top: 50px;
+    position: relative;
     margin: auto;
     display: flex;
-    float: bottom;
     flex-direction: row;
-    justify-content: space-between;
     text-align: center;
+    justify-content: center;
+}
+.Meta-data {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid #84BAA7;
+}
+
+.Meta-data:last-child{
+    border:none;
+}
+
+.Meta-data p {
+    margin: 0px 16px;
 }
 
 .Meta-data__Data {
