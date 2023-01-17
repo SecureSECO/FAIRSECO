@@ -40,7 +40,7 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
     <div class="HighlightBlock"></div>
     <div class="ActiveBlock"></div>
     <div class="NavItem Active" onMouseOver="hoverNav(this)" onClick="clickNav(this)" data-list-index="0" data-linked-class="CitationsContainer"><i class="fa-solid fa-pen-nib"></i><p>Citations</p></div>
-    <div class="NavItem" onMouseOver="hoverNav(this)" onClick="clickNav(this)" data-list-index="1" data-linked-class="LicencesContainer"><i class="fa-solid fa-copyright"></i><p>Licence Violations</p></div>
+    <div class="NavItem" onMouseOver="hoverNav(this)" onClick="clickNav(this)" data-list-index="1" data-linked-class="LicensesContainer"><i class="fa-solid fa-copyright"></i><p>License Violations</p></div>
     <div class="NavItem" onMouseOver="hoverNav(this)" onClick="clickNav(this)" data-list-index="2" data-linked-class="SBOMContainer"><i class="fa-solid fa-scroll"></i><p>SBOM</p></div>
     <div class="NavItem" onMouseOver="hoverNav(this)" onClick="clickNav(this)" data-list-index="3" data-linked-class="SearchSeco"><i class="fa-solid fa-file-code"></i><p>SearchSECO</p></div>
 </div>
@@ -11033,11 +11033,9 @@ function clickNav(ele) {
     
 </table>
 </div>
-<div class="citationgraphbutton">
 <button type="button" class="citationgraphBtn" onclick="location.href='citationgraph.html';">Citationsgraph View</button>
-</div>
 <style>
-     .citationgraphbutton .citationgraphBtn{
+     .citationgraphBtn{
         position: fixed;
         z-index: 1;
         color: #0C281E;
@@ -11050,7 +11048,6 @@ function clickNav(ele) {
         font-size: 1vw;
         margin-top: -3.5vw;
         margin-left: 38vw;
-        display: visible !important;
     }
 
     .CitationsContainer {
@@ -11176,9 +11173,9 @@ function clickNav(ele) {
     }
 </style>
 
-    <div class="LicencesContainer Hidden">
+    <div class="LicensesContainer Hidden">
     <h1 class="issuesheader"> Issues detected: 39</h1>
-    <div class="LicencesContainerScroll">
+    <div class="LicensesContainerScroll">
         <div class="Licenses">
              
             <div class="Violation">
@@ -11205,7 +11202,7 @@ function clickNav(ele) {
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -11245,7 +11242,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -11285,7 +11282,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -11325,7 +11322,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -11365,7 +11362,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -11405,7 +11402,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -11445,7 +11442,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -11485,7 +11482,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -11525,7 +11522,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -11565,7 +11562,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -11605,7 +11602,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -11645,7 +11642,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -11685,7 +11682,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -11725,7 +11722,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -11765,7 +11762,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -11805,7 +11802,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -11845,7 +11842,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -11885,7 +11882,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -11925,7 +11922,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -11965,7 +11962,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -12005,7 +12002,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -12045,7 +12042,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -12085,7 +12082,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -12125,7 +12122,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -12165,7 +12162,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -12205,7 +12202,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -12245,7 +12242,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -12285,7 +12282,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -12325,7 +12322,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -12365,7 +12362,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -12405,7 +12402,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -12445,7 +12442,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -12485,7 +12482,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -12525,7 +12522,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -12565,7 +12562,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -12605,7 +12602,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -12645,7 +12642,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -12685,7 +12682,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -12725,7 +12722,7 @@ which may link to additional resources.</div>
             <div class="space1"></div>
             <div class="issue">Issue</div>
             <div class="space2"></div>
-            <div class="howToSolve">How to solve:</div>
+            <div class="howToSolve">How to solve</div>
         </div>
         
         <div class="ViolationsContent">
@@ -12745,7 +12742,7 @@ which may link to additional resources.</div>
     </div>
 </div>
 <style>
-    .LicencesContainer {
+    .LicensesContainer {
         height: 76%;
         width: 100%;
     }
@@ -12763,7 +12760,7 @@ which may link to additional resources.</div>
         margin-left: 20px;
     }
 
-    .LicencesContainerScroll{
+    .LicensesContainerScroll{
         overflow-y: scroll;
         height: 93%;
         padding: 0;
@@ -24717,7 +24714,7 @@ flex-direction: row;
                 <p><i class="fa-solid fa-copyright"></i>License file present?</p> <p>No</p>
             </div>
             <div>
-                Whether you have a license file in your repository, so that your software is correctly <b>R</b>euasable.
+                Whether you have a license file in your repository, so that your software is correctly <b>R</b>eusable.
                 <a href="https://fair-software.eu/recommendations/license" target="_blank">Read more</a>
             </div>
         </div>
@@ -24944,11 +24941,11 @@ flex-direction: row;
         <div class="QualityMetrics__ScoreMetric" id="QualityFairness">
             <i class="fa-solid fa-scale-balanced"></i>
             <div class="QualityMetrics__ScoreMetric__BarContainer">
-                <h2>Fairness</h2>
+                <h2>FAIRness</h2>
                 <div class="QualityMetrics__ScoreMetric__BarContainer__Bar">
                     <div class="QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground"></div>
                 </div>
-                <p>Percentage of Fairness criteria met</p>
+                <p>Percentage of FAIRness criteria met</p>
             </div>
             <div class="QualityMetrics__ScoreMetric__Percentage"><h2>80%</h2></div>
         </div>
