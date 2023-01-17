@@ -23,10 +23,10 @@ import { getGitHubInfo, GitHubInfo } from "./git";
 /** An object that contains data gathered by FAIRSECO. */
 export interface ReturnObject {
     /** Describes the name of the gathered data. */
-    ReturnName: string;
+    ModuleName: string;
 
     /** The gathered data. */
-    ReturnData: object;
+    Data: object;
 }
 
 export async function data(): Promise<ReturnObject[]> {
@@ -39,8 +39,8 @@ export async function data(): Promise<ReturnObject[]> {
     const searchSECOResult = await runModule(searchSECO, ghInfo);
     const cffResult = await runModule(citationcff);
     const SBOMResult = await runModule(sbom);
-    const citingPapersResult = await runModule(citingPapers, cffResult?.ReturnData);
-    const qualityMetricsResult = await runModule(qualityMetrics, ghInfo, fairtallyResult?.ReturnData, tortelliniResult?.ReturnData);
+    const citingPapersResult = await runModule(citingPapers, cffResult?.Data);
+    const qualityMetricsResult = await runModule(qualityMetrics, ghInfo, fairtallyResult?.Data, tortelliniResult?.Data);
 
     // Return the data produced by modules
     return [
@@ -57,8 +57,8 @@ export async function data(): Promise<ReturnObject[]> {
 async function runModule(module: any, ...parameters: any): Promise<ReturnObject | undefined> {
     try {
         const result : ReturnObject = {
-            ReturnName: module.ModuleName as string,
-            ReturnData: await module.runModule(parameters)
+            ModuleName: module.ModuleName as string,
+            Data: await module.runModule(parameters)
         };
         return result;
     } catch (error) {

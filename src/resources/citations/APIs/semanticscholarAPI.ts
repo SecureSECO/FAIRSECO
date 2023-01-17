@@ -8,7 +8,7 @@
 import fetch from "node-fetch";
 import { Author, Paper, MetaDataPaper } from "../paper";
 import { ErrorLevel, LogMessage } from "../../../errorhandling/log";
-import { calculateProbabiltyOfReference } from "../probability";
+import { calculateProbabilityOfReference } from "../referencepaper";
 
 /**
  * Finds papers citing the given piece of research software using Semantic Scholar.
@@ -229,7 +229,7 @@ export async function getRefTitles(
         });
     });
     // calculate the probability of each paper being a reference paper
-    const probScores: number[] = calculateProbabiltyOfReference(uniquePapers);
+    const probScores: number[] = calculateProbabilityOfReference(uniquePapers);
     let i = 0;
     uniquePapers.forEach((value, key) => {
         if (probScores[i] > 0.6) output.push(key);

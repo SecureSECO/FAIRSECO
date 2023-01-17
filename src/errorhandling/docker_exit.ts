@@ -1,10 +1,10 @@
 /**
- * This module contains functions to handle docker exit codes based on error status.
+ * This module contains functions to handle Docker exit codes based on error status.
  * 
  * @module
  */
 
-// Known docker errors: https://komodor.com/learn/exit-codes-in-containers-and-kubernetes-the-complete-guide/
+// Known Docker errors: https://komodor.com/learn/exit-codes-in-containers-and-kubernetes-the-complete-guide/
 // Other exit codes indicate the contained command's exit code
 const dockerErrors = new Map<number, string>();
 dockerErrors.set(125, "Container failed to run error");
@@ -42,27 +42,27 @@ dockerErrors.set(
 );
 
 /**
- * Checks if a docker exit code indicates an error with docker or the application.
- * @param exitCode The docker exit code.
- * @returns `true` if the exit code indicates an error from docker or the application.
+ * Checks if a Docker exit code indicates an error with Docker or the application.
+ * @param exitCode The Docker exit code.
+ * @returns `true` if the exit code indicates an error from Docker or the application.
  */
 export function isError(exitCode: number): boolean {
     return exitCode !== 0;
 }
 
 /**
- * Checks if a docker exit code indicates a docker error.
- * @param exitCode The docker exit code.
- * @returns `true` if the exit code indicates a docker error, `false` if it indicates an application's return value.
+ * Checks if a Docker exit code indicates a Docker error.
+ * @param exitCode The Docker exit code.
+ * @returns `true` if the exit code indicates a Docker error, `false` if it indicates an application's return value.
  */
 export function isDockerError(exitCode: number): boolean {
     return dockerErrors.has(exitCode);
 }
 
 /**
- * Checks if a docker exit code indicates a docker error and throws the error if it does.
+ * Checks if a Docker exit code indicates a Docker error and throws the error if it does.
  * No error is thrown if the exit code indicates an application error.
- * @param exitCode The docker exit code.
+ * @param exitCode The Docker exit code.
  */
 export function throwDockerError(exitCode: number): void {
     if (isDockerError(exitCode)) {
@@ -71,13 +71,13 @@ export function throwDockerError(exitCode: number): void {
 }
 
 /**
- * Checks if a docker exit code indicates an error with docker or the application, and throw it if it does.
+ * Checks if a Docker exit code indicates an error with Docker or the application, and throw it if it does.
  * @param application The name of the used application.
- * @param exitCode The docker exit code.
+ * @param exitCode The Docker exit code.
  */
 export function throwError(application: string, exitCode: number): void {
     if (isError(exitCode)) {
-        // If the exit code is a docker error, throw it
+        // If the exit code is a Docker error, throw it
         throwDockerError(exitCode);
 
         // Throw application error

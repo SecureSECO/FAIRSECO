@@ -1,6 +1,6 @@
 <%
-const howfairis = data.find((ele) => (ele.ReturnName === "HowFairIs"))?.ReturnData[0];
-const quality = data.find((ele) => (ele.ReturnName === "QualityMetrics"))?.ReturnData;
+const howfairis = data.find((ele) => (ele.ModuleName === "HowFairIs"))?.Data[0];
+const quality = data.find((ele) => (ele.ModuleName === "QualityMetrics"))?.Data;
 %>
 <div class="RightPane">
     <div class="RightPaneContainer">

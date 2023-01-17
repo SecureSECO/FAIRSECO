@@ -4,7 +4,6 @@
  * @module
  */
 
-import { ReturnObject } from "../getdata";
 import { GitHubInfo } from "../git";
 import * as dockerExit from "../errorhandling/docker_exit";
 import { ErrorLevel, LogMessage } from "../errorhandling/log";
@@ -13,18 +12,16 @@ import { exec, ExecOptions } from "@actions/exec";
 import fs from "fs";
 
 /** The name of the module. */
-export const ModuleName = "Fairtally";
+export const ModuleName = "fairtally";
 
 /**
- * This function runs the fairtally docker image on the current repo,
+ * Runs the fairtally docker image on the current repo,
  * and gives the checklist of FAIRness criteria.
  * 
  * @param ghInfo Information about the GitHub repository.
- * @returns A {@link getdata.ReturnObject} containing the result from fairtally.
+ * @returns The result object from fairtally.
  */
 export async function runModule(ghInfo: GitHubInfo): Promise<any> {
-    LogMessage("Howfairis started.", ErrorLevel.info);
-
     const cmd = "docker";
     const args = [
         "run",
@@ -39,7 +36,6 @@ export async function runModule(ghInfo: GitHubInfo): Promise<any> {
 
     // Output from the docker container
     let stdout = "";
-    let stderr = "";
 
     try {
         if (!fs.existsSync("./hfiOutputFiles"))
@@ -63,23 +59,19 @@ export async function runModule(ghInfo: GitHubInfo): Promise<any> {
     options.listeners = {
         stdout: (data: Buffer) => {
             stdout += data.toString();
-        },
-        stderr: (data: Buffer) => {
-            stderr += data.toString();
-        },
+        }
     };
+    // Run fairtally in Docker
+    LogMessage("Starting Docker program: fairtally", ErrorLevel.info);
     const exitCode = await exec(cmd, args, options);
 
-    // Check docker exit code
-    dockerExit.throwError("Howfairis", exitCode);
+    // Check Docker exit code
+    dockerExit.throwError("fairtally", exitCode);
 
     // Parse the JSON output
-    let returnData;
     try {
-        returnData = JSON.parse(stdout);
+        return JSON.parse(stdout);
     } catch {
         throw new Error("Run output is not valid JSON");
     }
-
-    return returnData;
 }

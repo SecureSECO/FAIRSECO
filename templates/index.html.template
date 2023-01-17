@@ -818,21 +818,21 @@ body {
               // A generic way of storing the different data in vars
               for(let i = 0; i < allData.length; i++){
                   const element = allData[i];
-                  switch(element.ReturnName) {
+                  switch(element.ModuleName) {
                       case "Tortellini":
-                          tortellini = element.ReturnData;
+                          tortellini = element.Data;
                           break;
                       case "HowFairIs":
-                          howFairIs = element.ReturnData;
+                          howFairIs = element.Data;
                           break;
                       case "SearchSECO":
-                          SearchSECO = element.ReturnData;
+                          SearchSECO = element.Data;
                           break;
                       case "SBOM":
-                          SBOM = element.ReturnData;
+                          SBOM = element.Data;
                           break;
                       case 'citingPapers':
-                          citingPapers = element.ReturnData;
+                          citingPapers = element.Data;
                       default:
                           break;
                   }

@@ -1,8 +1,8 @@
 {
   "data": [
     {
-      "ReturnName": "QualityMetrics",
-      "ReturnData": {
+      "ModuleName": "QualityMetrics",
+      "Data": {
         "score": 69,
         "fairnessScore": 80,
         "licenseScore": 94,
@@ -12,8 +12,8 @@
       }
     },
     {
-      "ReturnName": "Tortellini",
-      "ReturnData": {
+      "ModuleName": "Tortellini",
+      "Data": {
         "project": {
           "id": "NPM::FAIRSECO:1.0.0",
           "licenses": [
@@ -7952,8 +7952,8 @@
       }
     },
     {
-      "ReturnName": "HowFairIs",
-      "ReturnData": [
+      "ModuleName": "HowFairIs",
+      "Data": [
         {
           "badge": "https://img.shields.io/badge/fair--software.eu-%E2%97%8B%20%20%E2%97%8B%20%20%E2%97%8B%20%20%E2%97%8B%20%20%E2%97%8B-red",
           "checklist": false,
@@ -7969,8 +7969,8 @@
       ]
     },
     {
-      "ReturnName": "SearchSECO",
-      "ReturnData": {
+      "ModuleName": "SearchSECO",
+      "Data": {
         "methods": [
           {
             "hash": "1234567890",
@@ -8050,8 +8050,8 @@
       }
     },
     {
-      "ReturnName": "Citation",
-      "ReturnData": {
+      "ModuleName": "Citation",
+      "Data": {
         "status": "valid",
         "citation": {
           "cff-version": "1.2.0",
@@ -8092,8 +8092,8 @@
       }
     },
     {
-      "ReturnName": "citingPapers",
-      "ReturnData": {
+      "ModuleName": "citingPapers",
+      "Data": {
         "papers" : [
             {
               "title": "Biogas upgrading and utilization: Current status and perspectives",
@@ -12734,8 +12734,8 @@
         }
     },
     {
-      "ReturnName": "SBOM",
-      "ReturnData": {
+      "ModuleName": "SBOM",
+      "Data": {
         "SPDXID": "SPDXRef-DOCUMENT",
         "name": ".",
         "spdxVersion": "SPDX-2.2",

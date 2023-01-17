@@ -35,7 +35,7 @@ export async function runModule(
 
     if (fileContents === "") {
         LogMessage("Tortellini artifact file appears to be empty.", ErrorLevel.warn);
-        return { ReturnName: "Tortellini", ReturnData: {} };
+        return { ModuleName: "Tortellini", Data: {} };
     }
 
     const obj = YAML.parse(fileContents);

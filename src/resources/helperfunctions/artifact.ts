@@ -1,5 +1,5 @@
 /**
- * This module contains functions to retrieve artifacts.
+ * This module contains functions to retrieve GitHub workflow artifacts.
  * 
  * The custom interfaces allow @actions/artifact to be mocked in the unit tests.
  * 
@@ -17,21 +17,21 @@ export type DownloadOptions = artifact.DownloadOptions;
 
 /**
  * An interface for providing an {@link ArtifactClient | artifact client},
- * which can be used to download a github artifact.
+ * which can be used to download a GitHub artifact.
  * 
  * Normally the artifact client is provided by @actions/artifact,
  * but a different artifact client provider can be used for unit testing.
  */
 export interface Artifact {
     /**
-     * @returns An {@link ArtifactClient | artifact client} which can be used to download a github artifact.
+     * @returns An {@link ArtifactClient | artifact client} which can be used to download a GitHub artifact.
      */
     create: () => ArtifactClient;
 }
 
-/** An interface for downloading a github artifact. */
+/** An interface for downloading a GitHub artifact. */
 export interface ArtifactClient {
-    /** Downloads a github artifact. */
+    /** Downloads a GitHub artifact. */
     downloadArtifact: (
         name: string,
         path: string,
@@ -44,8 +44,8 @@ export interface ArtifactClient {
  *
  * @param artifactName The name of the artifact given by the action that created it.
  * @param destination The directory in which the artifact files should be downloaded.
- * @param artifactObject The {@link Artifact} module that is used. During normal operation of the program, this should simply be \@actions/artifact, but for the unit tests a mock is passed instead.
- * @returns A {@link DownloadResponse} object containing the download path and the artifact name.
+ * @param artifactObject The artifact module that is used. During normal operation of the program, this should simply be \@actions/artifact, but for the unit tests a mock is passed instead.
+ * @returns The download reponse.
  */
 export async function getArtifactData(
     artifactName: string,
@@ -62,9 +62,9 @@ export async function getArtifactData(
 }
 
 /**
- * Get a file from the artifact as a string.
+ * Gets a file from the artifact as a string.
  *
- * @param dlResponse The {@link DownloadResponse} object that was returned by {@link getArtifactData}.
+ * @param dlResponse The object that was returned by {@link getArtifactData}.
  * @param fileName The name of the file that should be read.
  * @returns The contents of the file.
  */

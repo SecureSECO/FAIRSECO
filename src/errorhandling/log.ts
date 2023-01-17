@@ -18,10 +18,8 @@ export enum ErrorLevel {
 /**
  * Logs an error or information message to console and appends the message to the log file.
  *
- * @param content - The message to be logged.
- * @param level - Severity of the error as an {@link ErrorLevel}.
- *
- * @see {@link ErrorLevel}
+ * @param content The message to be logged.
+ * @param level The severity of the error.
  */
 export function LogMessage(content: string, level: ErrorLevel): void {
     // Format the message
@@ -63,8 +61,9 @@ export function createLogFile(): void {
 
 /**
  * Formats a message for logging.
+ * 
  * @param content The message.
- * @param level The {@link ErrorLevel | error level} of the message.
+ * @param level The error level of the message.
  * @returns The formatted message.
  */
 export function formatMessage(content: string, level: ErrorLevel): string {
@@ -75,6 +74,8 @@ export function formatMessage(content: string, level: ErrorLevel): string {
         [ErrorLevel.err]: "ERR"
     };
 
-    // Message formatted as date, error level, content and new line
-    return new Date().toLocaleString("en-US") + "- [" + levelNames[level] + "]: " + content + "\n";
+    // Message formatted as date, error level tag, content and new line
+    const date = new Date().toLocaleString("en-US");
+    const levelTag = "[" + levelNames[level] + "]";
+    return date + "- " + levelTag + ": " + content + "\n";
 }

@@ -20,7 +20,7 @@ import { exec, ExecOptions } from "@actions/exec";
 export const ModuleName = "SearchSECO";
 
 /**
- * This function first runs the SearchSECO docker and listens to stdout for its output.
+ * This function first runs the SearchSECO Docker and listens to stdout for its output.
  * Then, it tries to parse whatever SearchSECO returned into an {@link Output} object.
  *
  * @param ghInfo Information about the GitHub repository.
@@ -30,7 +30,7 @@ export async function runModule(ghInfo: GitHubInfo): Promise<Output> {
     const gitrepo: string = ghInfo.FullURL;
     const useMock = ghInfo.Visibility !== "public";
 
-    // Determine which docker image to use
+    // Determine which Docker image to use
     const dockerImage = useMock
         ? "jarnohendriksen/mockseco:v1"
         : "searchseco/controller";
@@ -41,14 +41,7 @@ export async function runModule(ghInfo: GitHubInfo): Promise<Output> {
         : '--entrypoint="./controller/build/searchseco"';
 
     // The token will be retrieved from the git data collection object once that is merged
-    const ghToken = "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";
-
-    LogMessage("SearchSECO started.", ErrorLevel.info);
-    if (useMock)
-        LogMessage(
-            "Running a mock of SearchSECO. The output will be incorrect!",
-            ErrorLevel.warn
-        );
+    const ghToken = ghInfo.GithubToken;
 
     const cmd = "docker";
     const mockArgs = [
@@ -81,7 +74,7 @@ export async function runModule(ghInfo: GitHubInfo): Promise<Output> {
 
     const args = useMock ? mockArgs : realArgs;
 
-    // Output from the docker container
+    // Output from the Docker container
     let stdout = "";
 
     try {
@@ -113,10 +106,17 @@ export async function runModule(ghInfo: GitHubInfo): Promise<Output> {
         },
     };
 
-    // Executes the docker run command
+    // Executes the Docker run command
+    LogMessage("Starting Docker program: SearchSECO", ErrorLevel.info);
+    if (useMock)
+        LogMessage(
+            "Running a mock of SearchSECO. The output will be incorrect!",
+            ErrorLevel.warn
+        );
+
     const exitCode = await exec(cmd, args, options);
 
-    // Check docker exit code
+    // Check Docker exit code
     throwError("SearchSECO", exitCode);
 
     // ParseInput expects an array of trimmed lines

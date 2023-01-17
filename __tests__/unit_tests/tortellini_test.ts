@@ -161,6 +161,6 @@ describe("Test runModule", () => {
     test("Empty File", async () => {
         const result = await tort.runModule("empty-file.yml");
 
-        expect(result.ReturnData).toEqual({});
+        expect(result.Data).toEqual({});
     });
 });

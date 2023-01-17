@@ -18747,13 +18747,13 @@ exports.main = main;
 "use strict";
 
 /**
- * This module contains functions to handle docker exit codes based on error status.
+ * This module contains functions to handle Docker exit codes based on error status.
  *
  * @module
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.throwError = exports.throwDockerError = exports.isDockerError = exports.isError = void 0;
-// Known docker errors: https://komodor.com/learn/exit-codes-in-containers-and-kubernetes-the-complete-guide/
+// Known Docker errors: https://komodor.com/learn/exit-codes-in-containers-and-kubernetes-the-complete-guide/
 // Other exit codes indicate the contained command's exit code
 const dockerErrors = new Map();
 dockerErrors.set(125, "Container failed to run error");
@@ -18766,27 +18766,27 @@ dockerErrors.set(139, "Container attempted to access memory that was not assigne
 dockerErrors.set(143, "Container received warning that it was about to be terminated, then terminated");
 dockerErrors.set(255, "Container exited, returning an exit code outside the acceptable range, meaning the cause of the error is not known");
 /**
- * Checks if a docker exit code indicates an error with docker or the application.
- * @param exitCode The docker exit code.
- * @returns `true` if the exit code indicates an error from docker or the application.
+ * Checks if a Docker exit code indicates an error with Docker or the application.
+ * @param exitCode The Docker exit code.
+ * @returns `true` if the exit code indicates an error from Docker or the application.
  */
 function isError(exitCode) {
     return exitCode !== 0;
 }
 exports.isError = isError;
 /**
- * Checks if a docker exit code indicates a docker error.
- * @param exitCode The docker exit code.
- * @returns `true` if the exit code indicates a docker error, `false` if it indicates an application's return value.
+ * Checks if a Docker exit code indicates a Docker error.
+ * @param exitCode The Docker exit code.
+ * @returns `true` if the exit code indicates a Docker error, `false` if it indicates an application's return value.
  */
 function isDockerError(exitCode) {
     return dockerErrors.has(exitCode);
 }
 exports.isDockerError = isDockerError;
 /**
- * Checks if a docker exit code indicates a docker error and throws the error if it does.
+ * Checks if a Docker exit code indicates a Docker error and throws the error if it does.
  * No error is thrown if the exit code indicates an application error.
- * @param exitCode The docker exit code.
+ * @param exitCode The Docker exit code.
  */
 function throwDockerError(exitCode) {
     if (isDockerError(exitCode)) {
@@ -18795,13 +18795,13 @@ function throwDockerError(exitCode) {
 }
 exports.throwDockerError = throwDockerError;
 /**
- * Checks if a docker exit code indicates an error with docker or the application, and throw it if it does.
+ * Checks if a Docker exit code indicates an error with Docker or the application, and throw it if it does.
  * @param application The name of the used application.
- * @param exitCode The docker exit code.
+ * @param exitCode The Docker exit code.
  */
 function throwError(application, exitCode) {
     if (isError(exitCode)) {
-        // If the exit code is a docker error, throw it
+        // If the exit code is a Docker error, throw it
         throwDockerError(exitCode);
         // Throw application error
         throw new Error(application + " application error: " + exitCode.toString());
@@ -18840,10 +18840,8 @@ var ErrorLevel;
 /**
  * Logs an error or information message to console and appends the message to the log file.
  *
- * @param content - The message to be logged.
- * @param level - Severity of the error as an {@link ErrorLevel}.
- *
- * @see {@link ErrorLevel}
+ * @param content The message to be logged.
+ * @param level The severity of the error.
  */
 function LogMessage(content, level) {
     // Format the message
@@ -18885,8 +18883,9 @@ function createLogFile() {
 exports.createLogFile = createLogFile;
 /**
  * Formats a message for logging.
+ *
  * @param content The message.
- * @param level The {@link ErrorLevel | error level} of the message.
+ * @param level The error level of the message.
  * @returns The formatted message.
  */
 function formatMessage(content, level) {
@@ -18896,8 +18895,10 @@ function formatMessage(content, level) {
         [ErrorLevel.warn]: "WARN",
         [ErrorLevel.err]: "ERR"
     };
-    // Message formatted as date, error level, content and new line
-    return new Date().toLocaleString("en-US") + "- [" + levelNames[level] + "]: " + content + "\n";
+    // Message formatted as date, error level tag, content and new line
+    const date = new Date().toLocaleString("en-US");
+    const levelTag = "[" + levelNames[level] + "]";
+    return date + "- " + levelTag + ": " + content + "\n";
 }
 exports.formatMessage = formatMessage;
 
@@ -18973,8 +18974,8 @@ function data() {
         const searchSECOResult = yield runModule(searchSECO, ghInfo);
         const cffResult = yield runModule(citationcff);
         const SBOMResult = yield runModule(sbom);
-        const citingPapersResult = yield runModule(citingPapers, cffResult === null || cffResult === void 0 ? void 0 : cffResult.ReturnData);
-        const qualityMetricsResult = yield runModule(qualityMetrics, ghInfo, fairtallyResult === null || fairtallyResult === void 0 ? void 0 : fairtallyResult.ReturnData, tortelliniResult === null || tortelliniResult === void 0 ? void 0 : tortelliniResult.ReturnData);
+        const citingPapersResult = yield runModule(citingPapers, cffResult === null || cffResult === void 0 ? void 0 : cffResult.Data);
+        const qualityMetricsResult = yield runModule(qualityMetrics, ghInfo, fairtallyResult === null || fairtallyResult === void 0 ? void 0 : fairtallyResult.Data, tortelliniResult === null || tortelliniResult === void 0 ? void 0 : tortelliniResult.Data);
         // Return the data produced by modules
         return [
             tortelliniResult,
@@ -18992,8 +18993,8 @@ function runModule(module, ...parameters) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const result = {
-                ReturnName: module.ModuleName,
-                ReturnData: yield module.runModule(parameters)
+                ModuleName: module.ModuleName,
+                Data: yield module.runModule(parameters)
             };
             return result;
         }
@@ -19430,24 +19431,25 @@ const fs = __importStar(__nccwpck_require__(7147));
 const exec_1 = __nccwpck_require__(9710);
 const log_1 = __nccwpck_require__(4854);
 /** The name of the module. */
-exports.ModuleName = "CitationCFF";
+exports.ModuleName = "CitationCff";
 /**
  * Reads a CITATION.cff file.
+ *
  * @param path Specifies the path to the directory the CITATION.cff file is in.
- * @returns A {@link getdata.ReturnObject} containing the data from the CITATION.cff file.
+ * @returns An object containing the data from/about the CITATION.cff file.
  */
 function runModule(path = ".") {
     return __awaiter(this, void 0, void 0, function* () {
         let file;
-        // Read the citation.cff file
+        // Read the CITATION.cff file
         try {
             file = fs.readFileSync(path + "/CITATION.cff");
         }
         catch (e) {
             if (e.code === "ENOENT") {
-                // File not found, return MissingCFFObject to indicate missing citation.cff file
-                const returnData = { status: "missing_file" };
-                return returnData;
+                // File not found, return MissingCffObject to indicate missing CITATION.cff file
+                const Data = { status: "missing_file" };
+                return Data;
             }
             else {
                 // Critical error, stop
@@ -19455,15 +19457,15 @@ function runModule(path = ".") {
             }
         }
         let result;
-        // Parse the citation.cff file (YAML format)
+        // Parse the CITATION.cff file (YAML format)
         try {
             result = yaml_1.default.parse(file.toString());
         }
         catch (_a) {
             // Parsing failed, incorrect YAML.
-            // Return IncorrectYamlCFFObject to indicate incorrect yaml
-            const returnData = { status: "incorrect_yaml" };
-            return returnData;
+            // Return IncorrectYamlCffObject to indicate incorrect yaml
+            const Data = { status: "incorrect_yaml" };
+            return Data;
         }
         const cmd = "docker";
         const absPath = path_.resolve(path);
@@ -19503,28 +19505,29 @@ function runModule(path = ".") {
                 stderr += data.toString();
             },
         };
-        // Run cffconvert in docker to validate the citation.cff file
+        // Run cffconvert in Docker to validate the CITATION.cff file
+        (0, log_1.LogMessage)("Starting Docker program: cffconvert", log_1.ErrorLevel.info);
         const exitCode = yield (0, exec_1.exec)(cmd, args, options);
-        // Check the docker exit code for docker specific errors
+        // Check the Docker exit code for Docker specific errors
         dockerExit.throwDockerError(exitCode);
         // Check cffconvert exit code for success
         if (!dockerExit.isError(exitCode)) {
-            // Citation.cff file is valid, return ValidCFFObject with data and validation message
-            const returnData = {
+            // CITATION.cff file is valid, return ValidCffObject with data and validation message
+            const Data = {
                 status: "valid",
                 citation: result,
                 validation_message: getLastLine(stdout),
             };
-            return returnData;
+            return Data;
         }
         else {
-            // Citation.cff file is invalid, return ValidationErrorCFFObject with data and error message
-            const returnData = {
+            // CITATION.cff file is invalid, return ValidationErrorCffObject with data and error message
+            const Data = {
                 status: "validation_error",
                 citation: result,
                 validation_message: getError(stderr),
             };
-            return returnData;
+            return Data;
         }
     });
 }
@@ -19532,8 +19535,9 @@ exports.runModule = runModule;
 exports.unknownErrorMsg = "Unknown Error";
 /**
  * Finds the error when cffconvert returns an error code.
+ *
  * @param stderr The stderr output produced by docker.
- * @returns A string showing information about the error.
+ * @returns A string containing information about the error.
  */
 function getError(stderr) {
     // An error given by cffconvert appears as a line which looks like *Error: *
@@ -19563,7 +19567,8 @@ function getLastLine(input) {
 
 /**
  * This module contains functions for finding papers that cite a piece of research software, making use of OpenAlex.
- * <br>The main function to be used by other modules is {@link openAlexCitations}.
+ *
+ * The main function to be used by other modules is {@link openAlexCitations}.
  *
  * @module
  */
@@ -19596,19 +19601,23 @@ const probability_1 = __nccwpck_require__(9241);
  */
 function openAlexCitations(authors, title, firstRefTitles) {
     return __awaiter(this, void 0, void 0, function* () {
-        // initiate variables
-        let output = [];
+        // Find the OpenAlex paper IDs of the input
         let paperIds = [];
-        // find reference titles if neccessary
         if (firstRefTitles.length === 0) {
+            // No reference titles given: find reference titles and their paper IDs
             paperIds = yield getRefTitles(authors, title);
         }
-        else
+        else {
+            // Reference titles given: get their paper IDs
             for (const title of firstRefTitles) {
                 paperIds.push(yield getOpenAlexPaperId(title));
             }
-        for (const paperId of paperIds)
+        }
+        // Find papers citing the given papers
+        let output = [];
+        for (const paperId of paperIds) {
             output = output.concat(yield getCitationPapers(paperId));
+        }
         return output;
     });
 }
@@ -19616,34 +19625,36 @@ exports.openAlexCitations = openAlexCitations;
 /**
  * Finds papers citing a given paper.
  *
- * @param paperId The {@link https://docs.openalex.org/api-entities/works/work-object#id | OpenAlex ID} corresponding to the paper.
+ * @param paperID The {@link https://docs.openalex.org/api-entities/works/work-object#id | OpenAlex ID} corresponding to the paper.
  *
  * @returns An array of papers citing the given paper.
  */
-function getCitationPapers(paperId) {
+function getCitationPapers(paperID) {
     return __awaiter(this, void 0, void 0, function* () {
-        paperId = paperId.replace("https://openalex.org/", "");
-        // prepare query strings
+        paperID = paperID.replace("https://openalex.org/", "");
+        // Prepare query strings: query journals/articles that cite the paper with the given ID
+        // Query returns works: https://docs.openalex.org/api-entities/works/work-object
         const apiURL = "https://api.openalex.org/";
-        const query = "works?filter=cites:";
-        const filter = ",type:journal-article";
-        // get the unique id OpenAlex gives it's papers
-        // instanciate output array
-        let output = [];
+        const query = "works";
+        const filter = "?filter=cites:" + paperID + ",type:journal-article";
+        // Get the works that cite this paper
+        const output = [];
         try {
-            // API call and save output in Json object
-            const firstResponse = yield (0, node_fetch_1.default)(apiURL + query + paperId + filter + "&per-page=1", {
+            // API call to find the amount of pages of results
+            const firstResponse = yield (0, node_fetch_1.default)(apiURL + query + filter + "&per-page=1", {
                 method: "GET",
                 headers: {},
             });
             const firstResponseJSON = yield firstResponse.json();
+            // Amount of pages
             const amount = firstResponseJSON.meta.count;
             const pages = Math.ceil(amount / 200);
-            let outputText = "";
+            // Get the results
+            let outputJSON = [];
             for (let i = 1; i <= pages; i++) {
+                // Request a page
                 const response = yield (0, node_fetch_1.default)(apiURL +
                     query +
-                    paperId +
                     filter +
                     "&page=" +
                     String(i) +
@@ -19651,81 +19662,63 @@ function getCitationPapers(paperId) {
                     method: "GET",
                     headers: {},
                 });
-                const responseText = yield response.text();
-                const responseJSON = JSON.parse(responseText);
-                outputText +=
-                    JSON.stringify(responseJSON.results).slice(1, -1) + ",";
+                const responseJSON = yield response.json();
+                // Add the page results
+                if (responseJSON.results !== undefined) {
+                    outputJSON = outputJSON.concat(responseJSON.results);
+                }
             }
-            outputText = "[" + outputText.slice(0, -1) + "]";
-            const outputJSON = JSON.parse(outputText);
-            // save outputted metadata in Paper object and append to output array
+            // Extract data from the works that cite the paper
+            // data is formatted as Paper objects
             outputJSON.forEach((element) => {
-                let title = "";
-                let year = 0;
+                var _a;
+                const title = element.title;
+                const year = element.publication_year;
+                const journal = (_a = element.host_venue.publisher) !== null && _a !== void 0 ? _a : "";
+                const numberOfCitations = element.cited_by_count;
+                const url = element.open_access.oa_status === "closed" ? element.id : element.open_access.oa_url;
+                // Get paper id (doi, pmid, or pmcid)
                 let DOI = "";
                 let pmid = "";
                 let pmcid = "";
-                const authors = [];
-                const fields = [];
-                let journal = "";
-                let url = "";
-                let numberOfCitations = 0;
-                if (element.title !== undefined &&
-                    element.publication_year !== undefined) {
-                    if (element.ids !== undefined) {
-                        title = element.title;
-                        year = element.publication_year;
-                        for (const [key, value] of Object.entries(element.ids)) {
-                            switch (key) {
-                                case "doi":
-                                    DOI = String(value);
-                                    break;
-                                case "pmid":
-                                    pmid = String(value);
-                                    break;
-                                case "pmcid":
-                                    pmcid = String(value);
-                                    break;
-                            }
-                        }
-                        DOI = DOI.slice(16);
-                        pmid = pmid.slice(32);
-                        pmcid = pmcid.slice(32);
+                for (const [key, value] of Object.entries(element.ids)) {
+                    switch (key) {
+                        case "doi":
+                            DOI = String(value);
+                            break;
+                        case "pmid":
+                            pmid = String(value);
+                            break;
+                        case "pmcid":
+                            pmcid = String(value);
+                            break;
                     }
-                    if (element.host_venue.publisher !== undefined) {
-                        journal = element.host_venue.publisher;
-                    }
-                    if (element.cited_by_count !== undefined) {
-                        numberOfCitations = element.cited_by_count;
-                    }
-                    if (element.concepts !== undefined) {
-                        element.concepts.forEach((concept) => {
-                            if (concept.level === 0 && concept.score > 0.2)
-                                fields.push(concept.display_name);
-                        });
-                    }
-                    if (element.authorships !== undefined) {
-                        element.authorships.forEach((element) => {
-                            var _a;
-                            authors.push(new paper_1.Author(element.author.display_name, (_a = element.author.orcid) !== null && _a !== void 0 ? _a : ""));
-                        });
-                    }
-                    if (element.open_access !== undefined) {
-                        if (element.open_access.oa_status === "closed")
-                            url = element.id;
-                        else
-                            url = element.open_access.oa_url;
-                    }
-                    const tempPaper = new paper_1.Paper(title, DOI, pmid, pmcid, year, "OpenAlex", [], fields, journal, url, numberOfCitations);
-                    output = output.concat([tempPaper]);
                 }
+                DOI = DOI.slice(16);
+                pmid = pmid.slice(32);
+                pmcid = pmcid.slice(32);
+                // Get fields
+                const fields = [];
+                element.concepts.forEach((concept) => {
+                    // Add the concept as a field if it's top-level and if it applies strongly enough to this paper
+                    if (concept.level === 0 && concept.score > 0.2) {
+                        fields.push(concept.display_name);
+                    }
+                });
+                // Get authors
+                const authors = [];
+                element.authorships.forEach((element) => {
+                    var _a;
+                    authors.push(new paper_1.Author(element.author.display_name, (_a = element.author.orcid) !== null && _a !== void 0 ? _a : ""));
+                });
+                // Add the data to the results
+                const paper = new paper_1.Paper(title, DOI, pmid, pmcid, year, "OpenAlex", [], fields, journal, url, numberOfCitations);
+                output.push(paper);
             });
-            // console.log("Getting citations took " + (performance.now() - endtime) + " ms")
             return output;
         }
         catch (error) {
-            (0, log_1.LogMessage)("Error while searching OpenAlex with OpenAlex paper ID of: " +
-                paperId, log_1.ErrorLevel.err);
+            (0, log_1.LogMessage)("Error while searching OpenAlex with OpenAlex paper " + paperID + ":\n" + error.message, log_1.ErrorLevel.err);
             return output;
         }
     });
@@ -19741,38 +19734,44 @@ exports.getCitationPapers = getCitationPapers;
  */
 function getRefTitles(authors, title) {
     return __awaiter(this, void 0, void 0, function* () {
-        // instanciate output array and maps
+        // Initialize output array and maps
         const output = [];
         const papersPerAuthor = new Map();
         const uniquePapers = new Map();
-        // prepare API strings
+        // Prepare API strings for querying authors with a name
         const apiURL = "https://api.openalex.org/";
-        const query = "authors?filter=display_name.search:";
-        // find of every author their papers with the title of the software mentioned in the paper
+        const query = "authors";
+        const filter = "?filter=display_name.search:";
+        // Find the papers of every author that mentions the software in the title
         for (const author of authors) {
             let papers = [];
             let papersFiltered = [];
             try {
-                const response = yield (0, node_fetch_1.default)(apiURL + query + author.name + "&per-page=200", {
+                // Query first author on OpenAlex with the author's name
+                // https://docs.openalex.org/api-entities/authors/author-object
+                const response = yield (0, node_fetch_1.default)(apiURL + query + filter + author.name + "&per-page=1", {
                     method: "GET",
                     headers: {},
                 });
                 const outputJSON = yield response.json();
-                const results = outputJSON.results[0];
-                if (results === undefined) {
-                    // console.log("no results for author " + author.givenNames + " " + author.familyName)
+                const openAlexAuthor = outputJSON.results[0];
+                // If no OpenAlex author was found, skip this author
+                if (openAlexAuthor === undefined)
                     continue;
-                }
-                const worksApiURL = results.works_api_url;
-                let nextCursor = "*";
-                while (nextCursor !== null) {
-                    const response = yield (0, node_fetch_1.default)(worksApiURL + "&per-page=200&cursor=" + nextCursor, {
+                // Find all the works of the author
+                const worksApiURL = openAlexAuthor.works_api_url;
+                let cursor = "*";
+                while (cursor !== null) {
+                    // Get page of works
+                    // https://docs.openalex.org/api-entities/works/work-object
+                    const response = yield (0, node_fetch_1.default)(worksApiURL + "&per-page=200&cursor=" + cursor, {
                         method: "GET",
                         headers: {},
                     });
                     const responseJSON = yield response.json();
                     papers = papers.concat(responseJSON.results);
-                    nextCursor = responseJSON.meta.next_cursor;
+                    // Get cursor for next page of results
+                    cursor = responseJSON.meta.next_cursor;
                 }
             }
             catch (error) {
@@ -20690,17 +20689,16 @@ const log_1 = __nccwpck_require__(4854);
 const exec_1 = __nccwpck_require__(9710);
 const fs_1 = __importDefault(__nccwpck_require__(7147));
 /** The name of the module. */
-exports.ModuleName = "Fairtally";
+exports.ModuleName = "fairtally";
 /**
- * This function runs the fairtally docker image on the current repo,
+ * Runs the fairtally docker image on the current repo,
  * and gives the checklist of FAIRness criteria.
  *
  * @param ghInfo Information about the GitHub repository.
- * @returns A {@link getdata.ReturnObject} containing the result from fairtally.
+ * @returns The result object from fairtally.
  */
 function runModule(ghInfo) {
     return __awaiter(this, void 0, void 0, function* () {
-        (0, log_1.LogMessage)("Howfairis started.", log_1.ErrorLevel.info);
         const cmd = "docker";
         const args = [
             "run",
@@ -20714,7 +20712,6 @@ function runModule(ghInfo) {
         ];
         // Output from the docker container
         let stdout = "";
-        let stderr = "";
         try {
             if (!fs_1.default.existsSync("./hfiOutputFiles"))
                 fs_1.default.mkdirSync("./hfiOutputFiles/");
@@ -20735,23 +20732,20 @@ function runModule(ghInfo) {
         options.listeners = {
             stdout: (data) => {
                 stdout += data.toString();
-            },
-            stderr: (data) => {
-                stderr += data.toString();
-            },
+            }
         };
+        // Run fairtally in Docker
+        (0, log_1.LogMessage)("Starting Docker program: fairtally", log_1.ErrorLevel.info);
         const exitCode = yield (0, exec_1.exec)(cmd, args, options);
-        // Check docker exit code
-        dockerExit.throwError("Howfairis", exitCode);
+        // Check Docker exit code
+        dockerExit.throwError("fairtally", exitCode);
         // Parse the JSON output
-        let returnData;
         try {
-            returnData = JSON.parse(stdout);
+            return JSON.parse(stdout);
         }
         catch (_b) {
             throw new Error("Run output is not valid JSON");
         }
-        return returnData;
     });
 }
 exports.runModule = runModule;
@@ -20765,7 +20759,7 @@ exports.runModule = runModule;
 "use strict";
 
 /**
- * This module contains functions to retrieve artifacts.
+ * This module contains functions to retrieve GitHub workflow artifacts.
  *
  * The custom interfaces allow @actions/artifact to be mocked in the unit tests.
  *
@@ -20812,8 +20806,8 @@ const path = __importStar(__nccwpck_require__(1017));
  *
  * @param artifactName The name of the artifact given by the action that created it.
  * @param destination The directory in which the artifact files should be downloaded.
- * @param artifactObject The {@link Artifact} module that is used. During normal operation of the program, this should simply be \@actions/artifact, but for the unit tests a mock is passed instead.
- * @returns A {@link DownloadResponse} object containing the download path and the artifact name.
+ * @param artifactObject The artifact module that is used. During normal operation of the program, this should simply be \@actions/artifact, but for the unit tests a mock is passed instead.
+ * @returns The download reponse.
  */
 function getArtifactData(artifactName, destination, artifactObject) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -20824,9 +20818,9 @@ function getArtifactData(artifactName, destination, artifactObject) {
 }
 exports.getArtifactData = getArtifactData;
 /**
- * Get a file from the artifact as a string.
+ * Gets a file from the artifact as a string.
  *
- * @param dlResponse The {@link DownloadResponse} object that was returned by {@link getArtifactData}.
+ * @param dlResponse The object that was returned by {@link getArtifactData}.
  * @param fileName The name of the file that should be read.
  * @returns The contents of the file.
  */
@@ -21207,7 +21201,7 @@ const exec_1 = __nccwpck_require__(9710);
 /** The name of the module. */
 exports.ModuleName = "SearchSECO";
 /**
- * This function first runs the SearchSECO docker and listens to stdout for its output.
+ * This function first runs the SearchSECO Docker and listens to stdout for its output.
  * Then, it tries to parse whatever SearchSECO returned into an {@link Output} object.
  *
  * @param ghInfo Information about the GitHub repository.
@@ -21217,7 +21211,7 @@ function runModule(ghInfo) {
     return __awaiter(this, void 0, void 0, function* () {
         const gitrepo = ghInfo.FullURL;
         const useMock = ghInfo.Visibility !== "public";
-        // Determine which docker image to use
+        // Determine which Docker image to use
         const dockerImage = useMock
             ? "jarnohendriksen/mockseco:v1"
             : "searchseco/controller";
@@ -21226,10 +21220,7 @@ function runModule(ghInfo) {
             ? ""
             : '--entrypoint="./controller/build/searchseco"';
         // The token will be retrieved from the git data collection object once that is merged
-        const ghToken = "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";
-        (0, log_1.LogMessage)("SearchSECO started.", log_1.ErrorLevel.info);
-        if (useMock)
-            (0, log_1.LogMessage)("Running a mock of SearchSECO. The output will be incorrect!", log_1.ErrorLevel.warn);
+        const ghToken = ghInfo.GithubToken;
         const cmd = "docker";
         const mockArgs = [
             "run",
@@ -21259,7 +21250,7 @@ function runModule(ghInfo) {
             gitrepo,
         ];
         const args = useMock ? mockArgs : realArgs;
-        // Output from the docker container
+        // Output from the Docker container
         let stdout = "";
         try {
             if (!fs.existsSync("./ssOutputFiles"))
@@ -21285,9 +21276,12 @@ function runModule(ghInfo) {
                 stdout += data.toString();
             },
         };
-        // Executes the docker run command
+        // Executes the Docker run command
+        (0, log_1.LogMessage)("Starting Docker program: SearchSECO", log_1.ErrorLevel.info);
+        if (useMock)
+            (0, log_1.LogMessage)("Running a mock of SearchSECO. The output will be incorrect!", log_1.ErrorLevel.warn);
         const exitCode = yield (0, exec_1.exec)(cmd, args, options);
-        // Check docker exit code
+        // Check Docker exit code
         (0, docker_exit_1.throwError)("SearchSECO", exitCode);
         // ParseInput expects an array of trimmed lines
         // (i.e. without trailing or leading whitespace)
@@ -21577,7 +21571,7 @@ function runModule(fileName = "evaluation-result.yml") {
         const fileContents = (0, artifact_1.getFileFromArtifact)(downloadResponse, fileName);
         if (fileContents === "") {
             (0, log_1.LogMessage)("Tortellini artifact file appears to be empty.", log_1.ErrorLevel.warn);
-            return { ReturnName: "Tortellini", ReturnData: {} };
+            return { ModuleName: "Tortellini", Data: {} };
         }
         const obj = yaml_1.default.parse(fileContents);
         const filteredData = yield filterData(obj);
