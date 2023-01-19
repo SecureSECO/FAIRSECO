@@ -21,6 +21,11 @@ export async function data(): Promise<ReturnObject[]> {
     const output: ReturnObject[] = [];
 
     const ghinfo: GithubInfo = await getGithubInfo();
+    const ghreturnobject : ReturnObject = {
+        ReturnName: "GithubInfo",
+        ReturnData: ghinfo
+    }
+    output.push(ghreturnobject)
 
     let tortelliniResult: ReturnObject | undefined;
     try {
