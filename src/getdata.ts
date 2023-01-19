@@ -21,9 +21,13 @@ export async function data(): Promise<ReturnObject[]> {
     const output: ReturnObject[] = [];
 
     const ghinfo: GithubInfo = await getGithubInfo();
+    // We clear the github token from the output
     const ghreturnobject : ReturnObject = {
         ReturnName: "GithubInfo",
-        ReturnData: ghinfo
+        ReturnData: {
+            ...ghinfo,
+            GithubToken: ""
+        }
     }
     output.push(ghreturnobject)
 
