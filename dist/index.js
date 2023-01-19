@@ -18763,6 +18763,11 @@ function data() {
     return __awaiter(this, void 0, void 0, function* () {
         const output = [];
         const ghinfo = yield (0, git_1.getGithubInfo)();
+        const ghreturnobject = {
+            ReturnName: "GithubInfo",
+            ReturnData: ghinfo
+        };
+        output.push(ghreturnobject);
         let tortelliniResult;
         try {
             tortelliniResult = yield (0, tortellini_1.runTortellini)();
@@ -19149,6 +19154,7 @@ exports.post = post;
 function createReport(result) {
     (0, log_1.LogMessage)("FairSECO report:\n" + result.toString(), log_1.ErrorLevel.info);
     try {
+        fs_1.default.writeFileSync("./.FairSECO/Report.json", JSON.stringify(result));
         fs_1.default.writeFileSync("./.FairSECO/Report.yml", yaml_1.default.stringify(result));
         (0, log_1.LogMessage)("Successfully wrote YML file to dir.", log_1.ErrorLevel.info);
     }
