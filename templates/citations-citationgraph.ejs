@@ -1,0 +1,40 @@
+<div class="CitationsContainer ActiveTab">
+</div>
+<style>
+    .CitationsContainer {
+        max-height: 78%;
+        -webkit-mask-image: linear-gradient(
+            to bottom,
+            black 90%,
+            transparent 100%
+        );
+        mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+        animation: fade-in 600ms ease-out 1 forwards;
+        width: 100%;
+        padding: 8px;
+    }
+    .CitationsContainer h3{
+        text-align: left;
+        font-size: 0.9rem;            
+        color: #779C7E;
+        font-family: 'Literata', serif ;
+    }
+
+    @media screen and (min-width: 1000px) {
+        .Citation td {
+            max-width: 420px;
+        }
+        .info2 h1 {
+            font-size: 1rem;
+        }
+    }
+
+    @media screen and (min-width: 2500px) {
+        .Citation td {
+            max-width: 700px;
+        }
+        .info2 h1 {
+            font-size: 1.2rem;
+        }
+    }
+</style>

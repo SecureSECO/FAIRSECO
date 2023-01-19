@@ -1,3 +1,241 @@
-<div class="ImpactScore">
+<%
+function getNumberOfCitations() {
+    return (pp.firstHandCitations + pp.secondHandCitations).toString();
+}
 
+function getNumberOfFields() {
+    return (pp.unqiueFields.filter(x => x !== "Unknown")).length.toString();
+}
+
+const mostNotableTitle = pp.papers[0].title;
+const mostNotableJournal = pp.papers[0].journal;
+
+const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
+
+function setFontSize(text){
+    return clamp(35/text.length, 0.8, 2).toString() + "rem";
+}
+
+function getJournal(paper){
+    if (paper.journal) return paper.journal;
+    else return "unknown journal";
+}
+
+const uniqueProjects = getProjects();
+
+function getProjects() {
+    let uniqueProjects = [];
+    for(const method of ss.methods){
+        for(const match of method.matches){
+            uniqueProjects.push({project: match.data.project, authors: match.data.authors});
+        }
+    }
+
+    return uniqueProjects;
+}
+
+function getAuthors(proj){
+    let authors = "";
+
+    for (let i = 0; i < proj.authors.length; i++){
+        if (i === proj.authors.length - 1) authors += proj.authors[i];
+        else authors += proj.authors[i] + ", ";
+    }
+
+    return authors;
+}
+
+const labels = [
+    "Computer Science",
+    "Medicine",
+    "Chemistry",
+    "Biology",
+    "Material Science",
+    "Physics",
+    "Geology",
+    "Psychology",
+    "Art",
+    "History",
+    "Sociology",
+    "Business",
+    "Political Science",
+    "Economy",
+    "Philosophy",
+    "Mathematics",
+    "Engineering",
+    "Environmental Science"
+]
+
+function getChartData(labels) {
+    let data = [];
+
+    let disc = pp.disciplines;
+
+    data.push(disc["Humanities"] || 0);
+    data.push(disc["Social Sciences"] || 0);
+    data.push(disc["Natural Sciences"] || 0);
+    data.push(disc["Formal Sciences"] || 0);
+    data.push(disc["Applied Sciences"] || 0);
+
+    return data;
+}
+
+%>
+
+<div class="ImpactScore" hidden>
+    <h1 class="Impact__Title">Impact</h1>
+    <div class="ImpactScore__Content">
+        <div class="Impact__Row">
+            <h2> Papers and Citations</h2>
+            <div class="Impact__Row__Content">
+                <div class="Impact__Row__Block">
+                    <p>Your project was cited</p>
+                    <div class="Row__Number"><%- getNumberOfCitations() %></div>
+                    <p>times</p>
+                </div>
+                <div class="Impact__Row__Block">
+                    <p>in papers across</p>
+                    <div class="Row__Number"><%- getNumberOfFields() %></div>
+                    <p>scientific fields</p>
+                </div>
+                <div class="Impact__Row__Block">
+                    <p>The most notable of which was</p>
+                    <div class="Row__PaperTitle" style="font-size:<%- setFontSize(mostNotableTitle) %>"><%- pp.papers[0].title %></div>
+                    <p>from <%- getJournal(pp.papers[0]) %></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="Impact__Row">
+            <canvas id="Citations__RadarChart"></canvas>
+        </div>
+
+        <div class="Impact__Row">
+            <h2>Projects and Reuse</h2>
+            <div class="Impact__Row__Content">
+                <div class="Impact__Row__Block">
+                    <p>Your code made its way into</p>
+                    <div class="Row__Number"><%- uniqueProjects.length %></div>
+                    <p>other projects</p>
+                </div>
+                <div class="Impact__Row__Block">
+                    <p>The most notable of which was</p>
+                    <div class="Row__PaperTitle" style="font-size:<%- setFontSize(uniqueProjects[0].project) %>"><%- uniqueProjects[0].project %></div>
+                    <p>by <%- getAuthors(uniqueProjects[0]) %></p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+
+function genData(){
+    let data = [];
+    for (let i = 0; i < 18; i++){
+        if (i % 3 == 0) data.push(null);
+        else data.push(i%5 + i%2);
+    }
+
+    return data;
+}
+
+const labels = [
+    "Humanities" ,
+    "Social Sciences",
+    "Natural Sciences",
+    "Formal Sciences",
+    "Applied Sciences"
+]
+const data = {
+    labels: labels,
+    datasets: [
+        {
+            data: [<%- getChartData(labels) %>],
+            borderColor: "rgb(170, 85, 183)",
+            backgroundColor: "rgba(175, 102, 186, 0.4)",
+            pointBackgroundColor: "rgb(175, 102, 186)"
+        }]
+};
+
+const config = {
+  type: 'radar',
+  data: data,
+  options: {
+    responsive: true,
+    spanGaps: true,
+    plugins: {
+        legend: false
+    },
+    scale: {
+        ticks: {
+            callback: function() {return ""},
+            backdropColor: "rgba(0, 0, 0, 0)"
+        },
+        pointLabels:{
+            fontSize: 16
+        }
+    }
+  }
+};
+
+new Chart("Citations__RadarChart", config);
+
+</script>
+
+<style>
+.Impact__Title {
+    color: #0C281E;
+    text-align: center;
+    margin: 2%;
+    font-size: 2vw;
+}
+
+.ImpactScore__Content {
+    width: 80%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.Impact__Row h2 {
+    margin-top: 0;
+}
+
+.Impact__Row__Content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+}
+
+.Impact__Row__Block .Row__PaperTitle {
+    font-weight: bold;
+    margin: 0.25vw;
+    max-width: 15vw;
+    text-align: center;
+}
+
+.Impact__Row__Block {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Impact__Row__Block p {
+    margin: 0;
+}
+
+.Impact__Row__Block .Row__Number {
+    font-size: 1.75vw;
+    font-weight: bold;
+    margin: 0.25vw;
+}
+
+#Citations__RadarChart {
+    margin: 5px;
+}
+
+</style>

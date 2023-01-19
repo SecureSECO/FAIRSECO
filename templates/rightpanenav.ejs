@@ -1,8 +1,16 @@
 <ul id="RightPaneNav">
-    <li class="RightPaneNav__Tab--Active" onClick="clickTab(this)" data-linked-class="HowFairIsReport">FAIRness</li>
-    <li onClick="clickTab(this)" data-linked-class="ImpactScore">Impact</li>
-    <li onClick="clickTab(this)" data-linked-class="Quality">Quality</li>
-    <li onClick="clickTab(this)" data-linked-class="ImpactHistory">Impact History</li>
+    <li class="RightPaneNav__Tab--Active" onClick="clickTab(this)" data-linked-class="HowFairIsReport">
+        FAIRness
+    </li>
+    <li class="RightPaneNav__Tab--1Away" onClick="clickTab(this)" data-linked-class="ImpactScore">
+        Impact
+    </li>
+    <li class="RightPaneNav__Tab--2Away" onClick="clickTab(this)" data-linked-class="Quality">
+        Quality
+    </li>
+    <li class="RightPaneNav__Tab--3Away" onClick="clickTab(this)" data-linked-class="ImpactHistory">
+        Impact History
+    </li>
 </ul>
 
 
@@ -24,16 +32,16 @@
     font-size: 1.2rem;
     height: 50px;
     color: #EAFEED;
+    transition: all 150ms ease;
 }
 
 #RightPaneNav li:hover {
     height: 65px;
     margin-bottom: -15px;
     translate: 0 -15px;
-    transition: all 300ms ease;
 }
 
-#RightPaneNav li:nth-child(n+1)::before {
+#RightPaneNav li:nth-child(n + 2):before {
     content: "";
     display: block;
     height: 100%;
@@ -42,65 +50,82 @@
     top: 0;
     left: -20px;
     width: 40px;
+    transition: all 150ms ease;
 }
 #RightPaneNav li:nth-child(1) {
-    color: #497361;
-    background: #D3EEE0;
     z-index: 3;
 }
 #RightPaneNav li:nth-child(2) {
-    background: #729B85;
     z-index: 2;
 }
 #RightPaneNav li:nth-child(3) {
-    background: #47715A;
     z-index: 1;
 }
 #RightPaneNav li:nth-child(4) {
-    background: #0c281e;
     z-index: 0;
-}
-
-#RightPaneNav li:nth-child(2)::before {
-    background: #729B85;
-}
-#RightPaneNav li:nth-child(3)::before {
-    background: #47715A;
-}
-#RightPaneNav li:nth-child(4)::before {
-    background: #0c281e;
 }
 
 #RightPaneNav .RightPaneNav__Tab--Active {
     height: 65px;
     margin-bottom: -15px;
     translate: 0 -15px;
+    color: #497361;
+    background-color: #D3EEE0;
+}
+.RightPaneNav__Tab--Active::before {
+    background-color: #D3EEE0;
+}
+.RightPaneNav__Tab--1Away {
+    background-color: #729B85;
+}
+.RightPaneNav__Tab--1Away::before {
+    background-color: #729B85;
+}
+.RightPaneNav__Tab--2Away {
+    background-color: #47715A;
+}
+.RightPaneNav__Tab--2Away::before {
+    background-color: #47715A;
+}
+.RightPaneNav__Tab--3Away {
+    background-color: #0C281E;
+}
+.RightPaneNav__Tab--3Away::before {
+    background-color: #0C281E;
 }
 </style>
 
 <script>
     function clickTab(tab) {
-        const activeTab = getActiveTab();
+        const activeTab = document.querySelector(".RightPaneNav__Tab--Active");
 
         if (tab === activeTab) {
             return;
         }
 
-        hideTab(activeTab);
-        showTab(tab);
-    }
+        document.querySelector("." + activeTab.dataset.linkedClass).hidden = true;
+        document.querySelector("." + tab.dataset.linkedClass).hidden = false;
 
-    function getActiveTab() {
-        return document.querySelector(".RightPaneNav__Tab--Active");
-    }
+        const tabList = tab.parentElement.getElementsByTagName("li");
+        let tabIndex = 0;
+        for (const navtab of tabList) {
+            if (navtab === tab) {
+                break;
+            }
 
-    function hideTab(tab) {
-        tab.classList.remove("RightPaneNav__Tab--Active");
-        document.querySelector("." + tab.dataset.linkedClass).style.display = "none";
-    }
+            tabIndex++;
+        }
 
-    function showTab(tab) {
-        tab.classList.add("RightPaneNav__Tab--Active");
-        document.querySelector("." + tab.dataset.linkedClass).style.display = "block";
+        const classes = ["RightPaneNav__Tab--Active", "RightPaneNav__Tab--1Away", "RightPaneNav__Tab--2Away", "RightPaneNav__Tab--3Away"];
+
+        for (let i = 0; i < tabList.length; i++) {
+            const navtab = tabList.item(i);
+
+            for (const removeclass of classes) {
+                navtab.classList.remove(removeclass);
+            }
+
+            navtab.classList.add(classes[Math.abs(tabIndex - i)]);
+        }
     }
 </script>

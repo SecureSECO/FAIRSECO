@@ -1,6 +1,9 @@
 <%
 const howfairis = data.find((ele) => (ele.ReturnName === "HowFairIs"))?.ReturnData[0];
 const quality = data.find((ele) => (ele.ReturnName === "QualityMetrics"))?.ReturnData;
+const searchSeco = data.find((ele) => (ele.ReturnName === "SearchSeco"))?.ReturnData;
+const paperData = data.find((ele) => (ele.ReturnName === "citingPapers"))?.ReturnData;
+
 const history = [
     {
         date: "25/12/2022",
@@ -24,6 +27,7 @@ const history = [
         matches: 23,
     }
 ];
+
 %>
 <div class="RightPane">
     <div class="RightPaneContainer">
@@ -32,7 +36,7 @@ const history = [
             <%- include('howfairis', {howfairis})%>
             <%- include('createcff')%>
             <%- include('quality', {quality}) %>
-            <%- include('impact') %>
+            <%- include('impact', {ss: searchSeco, pp: paperData}) %>
             <%- include('impact-history', {history}) %>
         </div>
     </div>

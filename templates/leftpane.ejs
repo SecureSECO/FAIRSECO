@@ -6,11 +6,11 @@
     <%- include('leftpanenav')%>
     
     <% const citations = data.find((ele) => (ele.ReturnName === "citingPapers"))?.ReturnData.papers; %>
-    <% const licences = data.find((ele) => (ele.ReturnName === "Tortellini"))?.ReturnData; %>
+    <% const licenses = data.find((ele) => (ele.ReturnName === "Tortellini"))?.ReturnData; %>
     <% const sbom = data.find((ele) => (ele.ReturnName === "SBOM"))?.ReturnData; %>
     <% const searchseco = data.find((ele) => (ele.ReturnName === "SearchSeco"))?.ReturnData; %>
     <%- include('citations', {"citations": citations}) %>
-    <%- include('licences', {"licences": licences}) %>
+    <%- include('licenses', {"licenses": licenses}) %>
     <%- include('SBOM', {"SBOM": sbom}) %>
     <%- include('searchseco', {"searchseco": searchseco}) %>
     <%- include('footer') %>
@@ -18,6 +18,10 @@
 </div>
 
 <style>
+    .citationgraphbutton .citationgraphBtn{
+        display: none;
+    }
+
     .LeftPane {
         width: 50vw;
         height: 100vh;

@@ -1,4 +1,4 @@
-<div class="Quality">
+<div class="Quality" hidden>
     <h1>Quality Score</h1>
     <div class="QualityMeter">
         <div class="QualityMeter__Bar">
@@ -23,11 +23,11 @@
         <div class="QualityMetrics__ScoreMetric" id="QualityFairness">
             <i class="fa-solid fa-scale-balanced"></i>
             <div class="QualityMetrics__ScoreMetric__BarContainer">
-                <h2>Fairness</h2>
+                <h2>FAIRness</h2>
                 <div class="QualityMetrics__ScoreMetric__BarContainer__Bar">
                     <div class="QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground"></div>
                 </div>
-                <p>Percentage of Fairness criteria met</p>
+                <p>Percentage of FAIRness criteria met</p>
             </div>
             <div class="QualityMetrics__ScoreMetric__Percentage"><h2><%- quality?.fairnessScore %>%</h2></div>
         </div>
@@ -78,13 +78,12 @@
     width: 100%;
     height: 100%;
     border-radius: 16px;
-    display: none;
 }
 
 .Quality h1 {
     color: #0C281E;
     text-align: center;
-    margin: 4%;
+    margin: 2%;
     font-size: 2vw;
 }
 
@@ -264,17 +263,21 @@
 #QualityFairness .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
     width: <%- quality?.fairnessScore %>%;
     background-color: #60415F;
+    filter: brightness(<%- 1 + 1.25 * quality.fairnessScore / 100 %>);
 }
 #QualityLicenses .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
-    width: <%- quality?.licenseScore %>%;
-    background-color: #894586;
+    width: <%- quality.licenseScore %>%;
+    background-color: #60415F;
+    filter: brightness(<%- 1 + 1.25 * quality.licenseScore / 100 %>);
 }
 #QualityMaintainability .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
-    width: <%- quality?.maintainabilityScore %>%;
-    background-color: #A95F94;
+    width: <%- quality.maintainabilityScore %>%;
+    background-color: #60415F;
+    filter: brightness(<%- 1 + 1.25 * quality.maintainabilityScore / 100 %>);
 }
 #QualityDocumentation .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
-    width: <%- quality?.documentationScore %>%;
-    background-color: #D991C5;
+    width: <%- quality.documentationScore %>%;
+    background-color: #60415F;
+    filter: brightness(<%- 1 + 1.25 * quality.documentationScore / 100 %>);
 }
 </style>

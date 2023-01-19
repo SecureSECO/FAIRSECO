@@ -1,15 +1,15 @@
-<div class="LicencesContainer Hidden">
-    <h1 class="issuesheader"> Issues detected: <%= licences.violations?.length %></h1>
-    <div class="LicencesContainerScroll">
+<div class="LicensesContainer Hidden">
+    <h1 class="issuesheader"> Issues detected: <%= licenses.violations?.length %></h1>
+    <div class="LicensesContainerScroll">
         <div class="Licenses">
-            <% licences.violations?.forEach((violation) => { %> 
+            <% licenses.violations?.forEach((violation) => { %> 
             <%- include('violation', {"violation": violation})%> 
             <% }) %>
         </div>
     </div>
 </div>
 <style>
-    .LicencesContainer {
+    .LicensesContainer {
         height: 76%;
         width: 100%;
     }
@@ -27,7 +27,7 @@
         margin-left: 20px;
     }
 
-    .LicencesContainerScroll{
+    .LicensesContainerScroll{
         overflow-y: scroll;
         height: 93%;
         padding: 0;
