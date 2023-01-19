@@ -29,11 +29,14 @@ export async function openAlexCitations(
     let paperIds: string[] = [];
     if (firstRefTitles.length === 0) {
         // No reference titles given: find reference titles and their paper IDs
-        paperIds = await getRefTitles(authors, title);
+        paperIds = await getReferencePapers(authors, title);
     } else {
         // Reference titles given: get their paper IDs
         for (const title of firstRefTitles) {
-            paperIds.push(await getOpenAlexPaperId(title));
+            const id = await getOpenAlexPaperId(title);
+            if (id !== undefined) {
+                paperIds.push(id);
+            }
         }
     }
 
@@ -49,7 +52,7 @@ export async function openAlexCitations(
 /**
  * Finds papers citing a given paper.
  * 
- * @param paperID The {@link https://docs.openalex.org/api-entities/works/work-object#id | OpenAlex ID} corresponding to the paper.
+ * @param paperID The [OpenAlex ID](https://docs.openalex.org/api-entities/works/work-object#id) corresponding to the paper.
  * 
  * @returns An array of papers citing the given paper.
  */
@@ -175,22 +178,19 @@ export async function getCitationPapers(paperID: string): Promise<Paper[]> {
  * @param authors The authors of the software.
  * @param title The title of the software.
  * 
- * @returns An Array of titles of reference papers for the given piece of software.
+ * @returns An array of [OpenAlex IDs](https://docs.openalex.org/api-entities/works/work-object#id) of reference papers for the given piece of software.
  */
-export async function getRefTitles(
+export async function getReferencePapers(
     authors: Author[],
     title: string
 ): Promise<string[]> {
-    // Initialize maps
-    const papersPerAuthor: Map<Author, any[]> = new Map();
-    const uniquePapers: Map<string, MetaDataPaper> = new Map();
-
     // Prepare API strings for querying authors with a name
     const apiURL = "https://api.openalex.org/";
     const query = "authors"
     const filter = "?filter=display_name.search:";
 
     // Find the papers of every author that mentions the software in the title
+    const papersPerAuthor: Map<Author, any[]> = new Map();
     for (const author of authors) {
         let papers: any[] = [];
         
@@ -253,6 +253,7 @@ export async function getRefTitles(
     }
     
     // Find all the unique papers, and keep count of how many authors it shares
+    const uniquePapers: Map<string, MetaDataPaper> = new Map();
     for (const papers of papersPerAuthor.values()) {
         for (const paper of papers.values()) {
             let paperData: MetaDataPaper;
@@ -281,30 +282,35 @@ export async function getRefTitles(
 }
 
 /**
- * Finds the {@link https://docs.openalex.org/api-entities/works/work-object#id | OpenAlex ID} of a paper.
+ * Finds the [OpenAlex ID](https://docs.openalex.org/api-entities/works/work-object#id) of a paper.
  * 
  * @param title The title of the paper.
  *
- * @returns The {@link https://docs.openalex.org/api-entities/works/work-object#id | OpenAlex ID} of a paper.
+ * @returns The [OpenAlex ID](https://docs.openalex.org/api-entities/works/work-object#id) of the paper, or undefined if it could not be found.
  */
-export async function getOpenAlexPaperId(title: string): Promise<string> {
+export async function getOpenAlexPaperId(title: string): Promise<string | undefined> {
+    // Query strings for searching the paper
     const apiURL = "https://api.openalex.org/";
     const searchQuery = "works?search=";
+
     try {
-        const response = await fetch(apiURL + searchQuery + title, {
+        // API call for searching paper with the title
+        const response = await fetch(apiURL + searchQuery + title + "?per-page=1", {
             method: "GET",
             headers: {},
         });
-        const output = await response.text();
-        const outputJSON = JSON.parse(output);
-        const paperid = outputJSON.results[0].id;
-        return paperid;
+        const outputJSON = await response.json();
+
+        if (outputJSON.results[0].id === undefined) {
+            throw new Error("No result");
+        }
+        return outputJSON.results[0].id;
     } catch (error) {
         LogMessage(
-            "Error while fetching paperID from OpenAlex of: " + title,
+            "Error while fetching paperID of " + title + " on OpenAlex:\n" + (error.message as string),
             ErrorLevel.err
         );
-        const output = JSON.parse("");
-        return output;
+        
+        return undefined;
     }
 }
