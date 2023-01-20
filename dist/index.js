@@ -19930,7 +19930,7 @@ exports.semanticScholarCitations = semanticScholarCitations;
  * @returns An array of papers citing the given paper.
  */
 function getCitationPapers(paperID) {
-    var _a, _b, _c;
+    var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
         // Prepare query strings: query citations of the given paper
         // https://api.semanticscholar.org/api-docs/graph#tag/Paper-Data/operation/get_graph_get_paper
@@ -19950,14 +19950,15 @@ function getCitationPapers(paperID) {
             for (const scholarPaper of outputJSON.data) {
                 const title = scholarPaper.citingPaper.title;
                 const year = scholarPaper.citingPaper.year;
-                const journal = (_a = scholarPaper.citingPaper.journal.name) !== null && _a !== void 0 ? _a : "";
-                const numberOfCitations = (_b = scholarPaper.citingPaper.citationCount) !== null && _b !== void 0 ? _b : 0;
+                const journalObject = scholarPaper.citingPaper.journal;
+                const journal = journalObject.name == null ? journalObject : journalObject.name;
+                const numberOfCitations = (_a = scholarPaper.citingPaper.citationCount) !== null && _a !== void 0 ? _a : 0;
                 let url;
                 if (scholarPaper.citingPaper.openAccessPdf === null || scholarPaper.citingPaper.openAccessPdf === undefined) {
                     url = scholarPaper.citingPaper.url;
                 }
                 else {
-                    url = ((_c = scholarPaper.citingPaper.openAccessPdf.url) !== null && _c !== void 0 ? _c : scholarPaper.citingPaper.url);
+                    url = ((_b = scholarPaper.citingPaper.openAccessPdf.url) !== null && _b !== void 0 ? _b : scholarPaper.citingPaper.url);
                 }
                 // Get paper ID (doi, pmid, or pmcid)
                 let doi = "";
