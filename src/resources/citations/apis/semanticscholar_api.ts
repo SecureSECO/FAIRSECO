@@ -82,7 +82,14 @@ export async function getCitationPapers(paperID: string): Promise<Paper[]> {
             const title = scholarPaper.citingPaper.title;
             const year = scholarPaper.citingPaper.year;
             const journalObject = scholarPaper.citingPaper.journal;
-            const journal = journalObject.name == null ? journalObject : journalObject.name;
+            let journal: string;
+            if (journalObject == null){
+                journal = "unknown journal";
+            } else if (journalObject.name == null){
+                journal = journalObject;
+            } else {
+                journal = journalObject.name;
+            }
             const numberOfCitations = scholarPaper.citingPaper.citationCount ?? 0;
             let url;
             if (scholarPaper.citingPaper.openAccessPdf === null ||  scholarPaper.citingPaper.openAccessPdf === undefined) {
