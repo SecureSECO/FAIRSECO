@@ -18992,10 +18992,18 @@ exports.data = data;
 function runModule(module, ...parameters) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            // If no parameters were passed, don't pass it on. Doing so will
+            // pass an empty array, which could cancel some modules' default parameters.
+            let resultData;
+            if (parameters.length === 0) {
+                resultData = yield module.runModule();
+            }
+            else {
+                resultData = yield module.runModule(parameters);
+            }
             const result = {
                 ModuleName: module.ModuleName,
-                // Pass parameters to runModule as any[]
-                Data: yield module.runModule(parameters)
+                Data: resultData,
             };
             return result;
         }
