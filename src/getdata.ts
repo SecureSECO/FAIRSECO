@@ -58,6 +58,8 @@ async function runModule(module: any, ...parameters: any): Promise<ReturnObject 
     try {
         const result : ReturnObject = {
             ModuleName: module.ModuleName as string,
+
+            // Pass parameters to runModule as any[]
             Data: await module.runModule(parameters)
         };
         return result;
@@ -67,6 +69,8 @@ async function runModule(module: any, ...parameters: any): Promise<ReturnObject 
             ErrorLevel.err
         );
 
-        return undefined;
+        const noData: ReturnObject = {ModuleName:module.ModuleName, Data: {}};
+
+        return noData;
     }
 }

@@ -1,15 +1,44 @@
 <%
-    const fairtally = data.find((ele) => (ele.ModuleName === "fairtally"))?.Data[0];
-    const quality = data.find((ele) => (ele.ModuleName === "QualityMetrics"))?.Data;
+const howfairis = data.find((ele) => (ele.ReturnName === "fairtally"))?.ReturnData[0];
+const quality = data.find((ele) => (ele.ReturnName === "QualityMetrics"))?.ReturnData;
+const searchSeco = data.find((ele) => (ele.ReturnName === "SearchSECO"))?.ReturnData;
+const paperData = data.find((ele) => (ele.ReturnName === "CitingPapers"))?.ReturnData;
+
+const history = [
+    {
+        date: "25/12/2022",
+        quality: 62,
+        citations: 901,
+        fairness: 3,
+        matches: 15,
+    },
+    {
+        date: "01/01/2023",
+        quality: 64,
+        citations: 925,
+        fairness: 3,
+        matches: 18,
+    },
+    {
+        date: "08/01/2023",
+        quality: 69,
+        citations: 1034,
+        fairness: 4,
+        matches: 23,
+    }
+];
+
 %>
 <div class="RightPane">
     <div class="RightPaneContainer">
         <%- include('rightpanenav') %>
         <div class="RightPaneWindow">
-            <%- include('fairtally', {fairtally})%>
+            <%- include('overview', {}) %>
+            <%- include('howfairis', {howfairis})%>
             <%- include('createcff')%>
             <%- include('quality', {quality}) %>
-            <%- include('impact') %>
+            <%- include('impact', {ss: searchSeco, pp: paperData}) %>
+            <%- include('impact-history', {history}) %>
         </div>
     </div>
 </div>

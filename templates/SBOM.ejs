@@ -11,7 +11,6 @@ class Node {
 }
 
 let graph = new Map()
-
 // First for each package get their name and make a node. (We'll miss the root node, so we'll need to do that as well later.)
 SBOM.packages?.forEach((p) => {
         if (graph.get(p.SPDXID) === undefined){
@@ -62,8 +61,8 @@ function expandItem(ele){
 }
 </script>
 <div class="SBOMContainer Hidden">
-    <% if (!rootelem ==  undefined) { %>
-    <%- include('SBOMItem', {"grapharr": Array.from(graph), parent: rootelem, lastItem : false})%>
+    <% if (rootelem !== undefined) { %>
+        <%- include('SBOMItem', {"grapharr": Array.from(graph), parent: rootelem, lastItem : false})%>
     <% } %>
 </div>
 

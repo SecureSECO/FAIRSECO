@@ -40,9 +40,10 @@ export interface QualityMetrics {
 /**
  * Calculates the quality metrics of the repository.
  * 
- * @param ghInfo Information about the GitHub repository.
- * @param fairtallyOutput The output from the fairtally module.
- * @param tortelliniOutput The output from the tortellini module.
+ * @param params The parameters passed by getData. It should contain the following:
+ * - A `GitHubInfo` object containing data about the GitHub repository.
+ * - The output from the fairtally module.
+ * - The output from the tortellini module.
  * @returns The quality metrics of the repository.
  * 
  * @remarks
@@ -58,10 +59,15 @@ export interface QualityMetrics {
  * Average number of days between opening and closing an issue. This number is not used to calculate the quality score, but may be displayed separately. This is because the acceptable amount of time it takes to solve an issue can be different for each project.
  */
 export async function runModule(
-    ghInfo: GitHubInfo,
-    fairtallyOutput: any,
-    tortelliniOutput: any
+    params: any[]
 ): Promise<QualityMetrics> {
+    if (params.length < 3)
+        throw new Error("Too few arguments passed to " + ModuleName + "'s runModule function");
+
+    const ghInfo = params[0] as GitHubInfo;
+    const fairtallyOutput = params[1];
+    const tortelliniOutput = params[2];
+
     // Check if fairtally and Tortellini output exist
     if (fairtallyOutput === undefined || tortelliniOutput === undefined) {
         throw new Error("fairtallyOutput or tortelliniOutput is undefined");

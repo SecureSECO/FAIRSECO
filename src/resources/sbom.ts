@@ -18,16 +18,22 @@ export const ModuleName = "SBOM";
  * This function downloads the artifact created by the SBOM action,
  * and parses the JSON to an object.
  *
- * @param artifactObject The Artifact object that is used. During normal operation of the program, this should simply be \@actions/artifact, but for the unit tests a mock is passed instead.
- * @param destination The path to the directory in which the artifact file should be downloaded.
- * @param fileName The name of the file that should be read.
+ * @param params The parameters passed by getData. It should contain the following:
+ * - The Artifact object that is used. During normal operation of the program, this should simply be \@actions/artifact, but for the unit tests a mock is passed instead.
+ * - The path to the directory in which the artifact file should be downloaded.
+ * - The name of the file that should be read.
  * @returns The data from the spdx file.
  */
 export async function runModule(
-    artifactObject: Artifact = artifact,
-    destination: string = ".SBOM-artifact",
-    fileName: string = "SBOM.spdx"
+    params: any[] = [artifact, ".SBOM-artifact", "SBOM.spdx"]
 ): Promise<any> {
+    if (params.length < 3)
+        throw new Error("Too few arguments passed to " + ModuleName + "'s runModule function");
+
+    const artifactObject = params[0] as Artifact;
+    const destination = params[1] as string;
+    const fileName = params[2] as string;
+
     // Get the SBOM file
     const downloadResponse = await getArtifactData(
         fileName,

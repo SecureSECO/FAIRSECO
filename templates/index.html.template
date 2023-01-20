@@ -613,9 +613,9 @@ body {
                             </tr>
                             <tr>
                               <td><button class="emergency">!</button></td> 
-                              <td>NPM:FAIRSECO:1.0.0</td>
+                              <td>NPM:fairseco:1.0.0</td>
                               <td>UNHANDDLED_LICENSE</td>
-                              <td>The licence ISC is currently not coverd by policy rules. The licence was declared in package NPM:FAIRSECO:1.0.0</td>
+                              <td>The licence ISC is currently not coverd by policy rules. The licence was declared in package NPM:fairseco:1.0.0</td>
                             </tr>
                         </table>
                     </p>
@@ -801,16 +801,16 @@ body {
             // Comment out the two lines below:
             var allData = {{node inserts the data here}};
 
-            FAIRSECO();
+            fairSeco();
             //
 
 
-            function FAIRSECO() {
+            function fairSeco() {
               // Initialisation
               
               var tortellini;
               var howFairIs;
-              var SearchSECO;
+              var searchSeco;
               var SBOM;
               var citingPapers;
               // Site functionality - END
@@ -818,21 +818,21 @@ body {
               // A generic way of storing the different data in vars
               for(let i = 0; i < allData.length; i++){
                   const element = allData[i];
-                  switch(element.ModuleName) {
+                  switch(element.ReturnName) {
                       case "Tortellini":
-                          tortellini = element.Data;
+                          tortellini = element.ReturnData;
                           break;
                       case "HowFairIs":
-                          howFairIs = element.Data;
+                          howFairIs = element.ReturnData;
                           break;
-                      case "SearchSECO":
-                          SearchSECO = element.Data;
+                      case "SearchSeco":
+                          searchSeco = element.ReturnData;
                           break;
                       case "SBOM":
-                          SBOM = element.Data;
+                          SBOM = element.ReturnData;
                           break;
                       case 'citingPapers':
-                          citingPapers = element.Data;
+                          citingPapers = element.ReturnData;
                       default:
                           break;
                   }
@@ -913,8 +913,8 @@ body {
               console.log(tortellini);
               console.log("HowFairIs:")
               console.log(howFairIs);
-              console.log("SearchSECO:")            
-              console.log(SearchSECO);
+              console.log("SearchSeco:")            
+              console.log(searchSeco);
               console.log("SBOM:")            
               console.log(SBOM);
               //

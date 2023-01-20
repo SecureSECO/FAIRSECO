@@ -1,8 +1,8 @@
-<div class="SearchSECO__ListObject SearchSECO__ArrowOwner<%- !project.vulnerable ? ' SearchSECO--NotVulnerable' : '' %>">
-    <div class="SearchSECO__ListObject__Header">
-        <div class="SearchSECO__ListObject__Header__Start">
+<div class="SearchSeco__ListObject SearchSeco__ArrowOwner<%- !project.vulnerable ? ' SearchSeco--NotVulnerable' : '' %>">
+    <div class="SearchSeco__ListObject__Header">
+        <div class="SearchSeco__ListObject__Header__Start">
             <h1>
-                <i class="fa-solid fa-angle-right" onClick="SearchSECOClickArrow(event)"></i><%- project.name %>
+                <i class="fa-solid fa-angle-right" onClick="searchSecoClickArrow(event)"></i><%- project.name %>
             </h1>
             <p>
                 <%- project.vulnerable ? '<span><i class="fa-solid fa-file-circle-exclamation"></i> Vulnerable   </span>' : '' %>
@@ -10,9 +10,9 @@
             </p>
         </div>
     </div>
-    <div class="SearchSECO__ListObject__MatchList SearchSECO__ArrowTarget" hidden>
+    <div class="SearchSeco__ListObject__MatchList SearchSeco__ArrowTarget" hidden>
         <% for (const pmatch of project.matches) { %>
-        <%- include('SearchSECO-project-match', {"match": pmatch.match, "yourMethod": pmatch.yourMethod}); %>
+        <%- include('searchseco-project-match', {"match": pmatch.match, "yourMethod": pmatch.yourMethod}); %>
         <% } %>
     </div>
 </div>

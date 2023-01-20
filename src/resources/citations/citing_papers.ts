@@ -15,13 +15,17 @@ export const ModuleName = "CitingPapers";
 /**
  * Finds papers citing a piece of research software, given the CITATION.cff file of its repository.
  * 
- * @param cffFile The information from the CITATION.cff file.
+ * @param params The parameters passed by getData. It should contain the data from the CITATION.cff file.
  * 
  * @returns An array of unique papers citing the software.
  */
 export async function runModule(
-    cffFile: CffObject | undefined 
+    params: any[]
 ): Promise<any> {
+    if (params.length < 1)
+        throw new Error("Too few arguments passed to " + ModuleName + "'s runModule function");
+
+    const cffFile = params[0] as CffObject | undefined;
     // Check cff output
     if (cffFile === undefined || cffFile.status !== "valid") {
         throw new Error("Invalid CITATION.cff file");

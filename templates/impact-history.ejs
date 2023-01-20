@@ -1,0 +1,247 @@
+<%
+    const count = history.length;
+    
+    const date = history[count- 1].date;
+
+    const quality = history[count - 1].quality;
+    const citations = history[count - 1].citations;
+    const fairness = history[count - 1].fairness;
+    const matches = history[count - 1].matches;
+
+    const qualityChange = count <= 1 ? quality : quality - history[count - 2].quality;
+    const citationsChange = count <= 1 ? citations : citations - history[count - 2].citations;
+    const fairnessChange = count <= 1 ? fairness : fairness - history[count - 2].fairness;
+    const matchesChange = count <= 1 ? matches : matches - history[count - 2].matches;
+
+    function showChange(change) {
+        return change >= 0 ? "+" + change : change;
+    }
+
+    function maxStep(value, stepSize) {
+        return Math.ceil(value / stepSize) * stepSize;
+    }
+
+    function minStep(value, stepSize, max) {
+        if (max / stepSize <= 5) {
+            return 0;
+        } else {
+            return Math.floor(value / stepSize) * stepSize;
+        }
+    }
+%>
+
+<div class="ImpactHistory" hidden>
+    <h1>Impact History</h1>
+    <h2>Overview</h2>
+    <div class="ImpactHistory__Overview">
+        <div>
+            <h3>Quality Score</h3>
+            <%- quality %>%
+            <div>
+                <b><%- showChange(qualityChange) %>%</b><br>since last time
+            </div>
+        </div>
+        <div>
+            <h3>Citations</h3>
+            <%- citations %>
+            <div>
+                <b><%- showChange(citationsChange) %></b><br>since last time
+            </div>
+        </div>
+        <div>
+            <h3>FAIRness</h3>
+            <% for (let i = 0; i < Math.floor(fairness); i++) { %>
+                <i class="fa-solid fa-star"></i>
+            <% } %>
+            <% if (fairness % 1 > 0) {%>
+                <i class="fa-solid fa-star-half-stroke"></i>
+            <%}%> 
+            <% for (let i = 0; i < (5 - Math.ceil(fairness)); i++) { %>
+                <i class="fa-regular fa-star"></i>
+            <% } %>
+            <div>
+                <b><%- showChange(fairnessChange) %> <i class="fa-solid fa-star"></i></b><br>since last time
+            </div>
+        </div>
+        <div>
+            <h3>Method Matches</h3>
+            <%- matches %>
+            <div>
+                <b><%- showChange(matchesChange) %></b><br>since last time
+            </div>
+        </div>
+    </div>
+    <div class="ImpactHistory__Graphs">
+        <div>
+            <h2>Quality Score</h2>
+            <%- include('impact-history-graph', {history, field: "quality"}); %>
+        </div>
+        <div>
+            <h2>FAIRness</h2>
+            <div>
+                <%- include('impact-history-graph', {history, field: "fairness"}); %>
+            </div>
+        </div>
+        <div>
+            <h2>Citations</h2>
+            <div>
+                <%- include('impact-history-graph', {history, field: "citations"}); %>
+            </div>
+        </div>
+        <div>
+            <h2>Method Matches</h2>
+            <div>
+                <%- include('impact-history-graph', {history, field: "matches"}); %>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+.ImpactHistory {
+    width: 85%;
+    height: 100%;
+    margin: auto;
+}
+.ImpactHistory h1 {
+    color: #0C281E;
+    text-align: center;
+    margin: 2.5%;
+    font-size: 2vw;
+}
+.ImpactHistory h2 {
+    color: #0C281E;
+    font-size: 1.1vw;
+}
+
+.ImpactHistory__Overview {
+    width: 100%;
+    margin-top: 0.75vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    font-size: 0.9vw;
+}
+.ImpactHistory__Overview > div {
+    width: 8vw;
+    height: 8vw;
+    border: 2px solid #5a9575;
+    border-radius: 16px;
+    text-align: center;
+}
+.ImpactHistory__Overview > div > h3 {
+    color: #0C281E;
+    font-size: 0.85vw;
+    margin-top: 0.35vw;
+    margin-bottom: 0;
+}
+.ImpactHistory__Overview > div > div {
+    width: 100%;
+    color: #5a9575;
+    border-top: 1px solid #5a9575;
+    padding-top: 0.5vw;
+}
+.ImpactHistory__Overview > div > div b {
+    font-size: 1.4vw;
+    color: #0C281E;
+}
+
+.ImpactHistory__Graphs {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.ImpactHistory__Graphs > div {
+    width: 50%;
+}
+.ImpactHistory__Graphs > div > h2 {
+    margin-bottom: 1.3vw;
+}
+.ImpactHistory__Graphs__LeftAxis > div {
+    position: absolute;
+    width: 2vw;
+    text-align: right;
+    margin-left: -0.9vw;
+    font-size: 0.6vw;
+}
+.ImpactHistory__Graphs__Graph {
+    width: calc(95% - 2vw);
+    margin-left: 2vw;
+    height: 18vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+.ImpactHistory__Graphs__Graph > div {
+    text-align: center;
+    transition: background-color 0.1s ease-out;
+    width: <%- 80 / count %>%;
+}
+.ImpactHistory__Graphs > div:nth-child(1) .ImpactHistory__Graphs__Graph > div {
+    background-color: #60415F;
+}
+.ImpactHistory__Graphs > div:nth-child(2) .ImpactHistory__Graphs__Graph > div {
+    background-color: #894586;
+}
+.ImpactHistory__Graphs > div:nth-child(3) .ImpactHistory__Graphs__Graph > div {
+    background-color: #A95F94;
+}
+.ImpactHistory__Graphs > div:nth-child(4) .ImpactHistory__Graphs__Graph > div {
+    background-color: #D991C5;
+}
+.ImpactHistory__Graphs__Graph > div > div {
+    display: none;
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 50%;
+    width: 6vw;
+    margin-left: -3vw;
+    background-color: white;
+    border-radius: 8px;
+    font-size: 0.9vw;
+}
+.ImpactHistory__Graphs__Graph > div > div:after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -6px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent transparent white transparent;
+}
+.ImpactHistory__Graphs__Graph > div:hover > div {
+    display: block;
+}
+.ImpactHistory__Graphs__Graph > div span {
+    display: none;
+    font-size: 1.2vw;
+    width: 10vw;
+    margin-left: calc(50% - 5vw);
+    margin-top: -2vw;
+}
+.ImpactHistory__Graphs__Graph > .ImpactHistory__HoveredData {
+    filter: brightness(1.2);
+}
+.ImpactHistory__Graphs__Graph > .ImpactHistory__HoveredData span {
+    display: block;
+}
+</style>
+
+<script>
+    function impactHistoryHoverData(index) {
+        for (const graph of document.getElementsByClassName("ImpactHistory__Graphs__Graph")) {
+            graph.children.item(index).classList.add("ImpactHistory__HoveredData");
+        }
+    }
+
+    function impactHistoryUnhoverData(index) {
+        for (const graph of document.getElementsByClassName("ImpactHistory__Graphs__Graph")) {
+            graph.children.item(index).classList.remove("ImpactHistory__HoveredData");
+        }
+    }
+</script>

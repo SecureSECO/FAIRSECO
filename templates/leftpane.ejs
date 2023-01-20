@@ -1,23 +1,27 @@
 <div class="LeftPane">
     <div class="Branding">
-        <h1 class="Name"><i class="fa-solid fa-scale-balanced"></i>FAIRSECO</h1>
+        <h1 class="Name"><%- include('logo')%></i>FAIRSECO</h1>
         <h2 class="Tagline">FAIR is fair.</h2>
     </div>
     <%- include('leftpanenav')%>
     
-    <% const citations = data.find((ele) => (ele.ModuleName === "CitingPapers"))?.Data.papers; %>
-    <% const licences = data.find((ele) => (ele.ModuleName === "Tortellini"))?.Data; %>
-    <% const sbom = data.find((ele) => (ele.ModuleName === "SBOM"))?.Data; %>
-    <% const SearchSECO = data.find((ele) => (ele.ModuleName === "SearchSECO"))?.Data; %>
+    <% const citations = data.find((ele) => (ele.ReturnName === "citingPapers"))?.ReturnData.papers; %>
+    <% const licenses = data.find((ele) => (ele.ReturnName === "Tortellini"))?.ReturnData; %>
+    <% const sbom = data.find((ele) => (ele.ReturnName === "SBOM"))?.ReturnData; %>
+    <% const searchseco = data.find((ele) => (ele.ReturnName === "SearchSeco"))?.ReturnData; %>
     <%- include('citations', {"citations": citations}) %>
-    <%- include('licences', {"licences": licences}) %>
+    <%- include('licenses', {"licenses": licenses}) %>
     <%- include('SBOM', {"SBOM": sbom}) %>
-    <%- include('SearchSECO', {"SearchSECO": SearchSECO}) %>
+    <%- include('searchseco', {"searchseco": searchseco}) %>
     <%- include('footer') %>
 
 </div>
 
 <style>
+    .citationgraphbutton .citationgraphBtn{
+        display: none;
+    }
+
     .LeftPane {
         width: 50vw;
         height: 100vh;
@@ -48,5 +52,9 @@
         position: relative;
         top: 8px;
         font-style: italic;
+    }
+    .Logo {
+        height: 2.5rem;
+        margin: 0px -38px; 
     }
 </style>

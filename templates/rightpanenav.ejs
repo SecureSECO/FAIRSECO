@@ -11,6 +11,9 @@
     <li class="RightPaneNav__Tab--3Away" onClick="clickTab(this)" data-linked-class="Quality">
         Quality
     </li>
+    <li class="RightPaneNav__Tab--4Away" onClick="clickTab(this)" data-linked-class="ImpactHistory">
+        Impact History
+    </li>
 </ul>
 
 
@@ -22,6 +25,7 @@
     margin: 0;
     padding: 0;
 }
+
 #RightPaneNav li {
     display: block;
     backdrop-filter: blur(50px);
@@ -33,11 +37,13 @@
     color: #EAFEED;
     transition: all 150ms ease;
 }
+
 #RightPaneNav li:hover {
     height: 65px;
     margin-bottom: -15px;
     translate: 0 -15px;
 }
+
 #RightPaneNav li:nth-child(n + 2):before {
     content: "";
     display: block;
@@ -64,6 +70,7 @@
 #RightPaneNav li:nth-child(5) {
     z-index: 0;
 }
+
 #RightPaneNav .RightPaneNav__Tab--Active {
     height: 65px;
     margin-bottom: -15px;
@@ -103,25 +110,33 @@
 <script>
     function clickTab(tab) {
         const activeTab = document.querySelector(".RightPaneNav__Tab--Active");
+
         if (tab === activeTab) {
             return;
         }
+
         document.querySelector("." + activeTab.dataset.linkedClass).hidden = true;
         document.querySelector("." + tab.dataset.linkedClass).hidden = false;
+
         const tabList = tab.parentElement.getElementsByTagName("li");
         let tabIndex = 0;
         for (const navtab of tabList) {
             if (navtab === tab) {
                 break;
             }
+
             tabIndex++;
         }
+
         const classes = ["RightPaneNav__Tab--Active", "RightPaneNav__Tab--1Away", "RightPaneNav__Tab--2Away", "RightPaneNav__Tab--3Away", "RightPaneNav__Tab--4Away"];
+
         for (let i = 0; i < tabList.length; i++) {
             const navtab = tabList.item(i);
+
             for (const removeclass of classes) {
                 navtab.classList.remove(removeclass);
             }
+
             navtab.classList.add(classes[Math.abs(tabIndex - i)]);
         }
     }

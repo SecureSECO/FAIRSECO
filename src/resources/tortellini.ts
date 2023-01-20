@@ -18,12 +18,16 @@ export const ModuleName = "Tortellini";
 /**
  * Downloads the artifact that was uploaded by Tortellini, and parses the YAML file.
  *
- * @param fileName The name of the file that should be retrieved from the artifact.
+ * @param params The parameters passed by getData. It should contain the name of the file that should be retrieved from the artifact.
  * @returns The relevant data from the YAML file given by Tortellini.
  */
 export async function runModule(
-    fileName: string = "evaluation-result.yml"
+    params: any[] = ["evaluation-result.yml"]
 ): Promise<any> {
+    if (params.length < 1)
+        throw new Error("Too few arguments passed to " + ModuleName + "'s runModule function");
+
+    const fileName = params[0];
     const downloadResponse = await getArtifactData(
         "tortellini-result",
         input.destination,
