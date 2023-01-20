@@ -8,7 +8,9 @@ function getNumberOfFields() {
 }
 
 const mostNotableTitle = pp.papers[0].title;
-const mostNotableJournal = pp.papers[0].journal;
+const mostNotablePaper = pp.papers.sort((a, b) => a.numberOfCitations > b.numberOfCitations)[0];
+const mostNotableTitle = mostNotablePaper.title;
+const mostNotableJournal = mostNotablePaper.journal;
 
 const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 
