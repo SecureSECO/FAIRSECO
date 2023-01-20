@@ -75,6 +75,7 @@ export async function runModule(
         title,
         refTitles
     );
+
     const outputPapers: Paper[] = mergeDuplicates(semanticScholarData, openAlexData);
     return new Citations(outputPapers);
 }

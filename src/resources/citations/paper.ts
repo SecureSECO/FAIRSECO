@@ -140,7 +140,7 @@ export class Paper {
         // Get the unique fields
         const uniqueFields = new Set<Field>();
         for (const subject of input) {
-            uniqueFields.add(Paper.fieldMap[subject] ?? "Unknown");
+            uniqueFields.add(Paper.fieldMap[subject.toLowerCase()] ?? "Unknown");
         }
         
         // Return an array of the unique fields,
@@ -183,7 +183,9 @@ export class Paper {
         // Get the discipline of each subject
         const uniqueDisc = new Set<Discipline>();
         for (const subject of input) {
-            uniqueDisc.add(Paper.disciplineMap[subject] ?? "Unknown");
+            uniqueDisc.add(
+                Paper.disciplineMap[subject.toLowerCase()] ?? "Unknown"
+            );
         }
 
         // Return an array of the unique disciplines,

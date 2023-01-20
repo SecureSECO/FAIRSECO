@@ -24,7 +24,7 @@ jest.mock("../../src/resources/tortellini_input", () => {
 });
 
 async function correctData(): Promise<void>{
-    const TortResultDirect = await tort.runModule("correct.yml");
+    const TortResultDirect = await tort.runModule(["correct.yml"]);
     const TortResultWithoutFiltering = await runModuleWithoutFiltering();
 
     const TortResulWithFiltering = tort.filterData(TortResultWithoutFiltering);

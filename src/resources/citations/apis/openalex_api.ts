@@ -83,6 +83,7 @@ export async function getCitationPapers(paperID: string): Promise<Paper[]> {
                     headers: {},
                 }
             );
+
             const responseJSON = await response.json();
 
             // Add the page results

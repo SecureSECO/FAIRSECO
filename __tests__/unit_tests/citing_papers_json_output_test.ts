@@ -73,5 +73,10 @@ test("Check that openAlexCitations and semanticScholarCitations output JSON matc
         title,
         refTitles
     );
+
+    //console.log("SSData: " + JSON.stringify(semanticScholar_output));
+    //console.log("================================");
+    //console.log("OAData: " + JSON.stringify(openAlex_output));
+
     expect(semanticScholar_output).toMatchSchema(schema);
 });

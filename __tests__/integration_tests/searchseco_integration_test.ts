@@ -155,7 +155,7 @@ async function localrunModule(ghInfo: GitHubInfo): Promise<void> {
 
     const output: Output = parseOutput(filteredlines);
 
-    const realOutput = await runModule(ghInfo);
+    const realOutput = await runModule([ghInfo]);
 
     expect(output).toEqual(realOutput);
 }

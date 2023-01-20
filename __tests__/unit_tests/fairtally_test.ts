@@ -75,6 +75,6 @@ test("that output json matches the schema", async () => {
     };
 
     // Run fairtally and check if output JSON matches with the predefined schema
-    const output = await runModule(await getGitHubInfo());
+    const output = await runModule([await getGitHubInfo()]);
     expect(output).toMatchSchema(schema);
 });

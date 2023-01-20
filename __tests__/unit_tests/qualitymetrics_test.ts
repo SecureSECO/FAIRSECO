@@ -49,9 +49,9 @@ test("Test runModule", async () => {
 
     let qualityScore = (
         await quality.runModule(
-            {} as unknown as GitHubInfo,
+            [{} as unknown as GitHubInfo,
             mockHowfairisOutput,
-            mockTortelliniOutput
+            mockTortelliniOutput]
         )
     ) as quality.QualityMetrics;
 
