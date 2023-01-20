@@ -5,10 +5,10 @@
     </div>
     <%- include('leftpanenav')%>
     
-    <% const citations = data.find((ele) => (ele.ReturnName === "citingPapers"))?.ReturnData.papers; %>
-    <% const licenses = data.find((ele) => (ele.ReturnName === "Tortellini"))?.ReturnData; %>
-    <% const sbom = data.find((ele) => (ele.ReturnName === "SBOM"))?.ReturnData; %>
-    <% const searchseco = data.find((ele) => (ele.ReturnName === "SearchSeco"))?.ReturnData; %>
+    <% const citations = data.find((ele) => (ele.ModuleName === "CitingPapers"))?.Data.papers; %>
+    <% const licenses = data.find((ele) => (ele.ModuleName === "Tortellini"))?.Data; %>
+    <% const sbom = data.find((ele) => (ele.ModuleName === "SBOM"))?.Data; %>
+    <% const searchseco = data.find((ele) => (ele.ModuleName === "SearchSECO"))?.Data; %>
     <%- include('citations', {"citations": citations}) %>
     <%- include('licenses', {"licenses": licenses}) %>
     <%- include('SBOM', {"SBOM": sbom}) %>

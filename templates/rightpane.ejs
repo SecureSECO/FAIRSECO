@@ -1,8 +1,8 @@
 <%
-const fairtally = data.find((ele) => (ele.ReturnName === "fairtally"))?.ReturnData[0];
-const quality = data.find((ele) => (ele.ReturnName === "QualityMetrics"))?.ReturnData;
-const searchSeco = data.find((ele) => (ele.ReturnName === "SearchSECO"))?.ReturnData;
-const paperData = data.find((ele) => (ele.ReturnName === "CitingPapers"))?.ReturnData;
+const fairtally = data.find((ele) => (ele.ModuleName === "fairtally"))?.Data[0];
+const quality = data.find((ele) => (ele.ModuleName === "QualityMetrics"))?.Data;
+const searchSECO = data.find((ele) => (ele.ModuleName === "SearchSECO"))?.Data;
+const paperData = data.find((ele) => (ele.ModuleName === "CitingPapers"))?.Data;
 
 const history = [
     {
@@ -37,7 +37,7 @@ const history = [
             <%- include('fairtally', {fairtally})%>
             <%- include('createcff')%>
             <%- include('quality', {quality}) %>
-            <%- include('impact', {ss: searchSeco, pp: paperData}) %>
+            <%- include('impact', {ss: searchSECO, pp: paperData}) %>
             <%- include('impact-history', {history}) %>
         </div>
     </div>
