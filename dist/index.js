@@ -19951,7 +19951,16 @@ function getCitationPapers(paperID) {
                 const title = scholarPaper.citingPaper.title;
                 const year = scholarPaper.citingPaper.year;
                 const journalObject = scholarPaper.citingPaper.journal;
-                const journal = journalObject.name == null ? journalObject : journalObject.name;
+                let journal;
+                if (journalObject == null) {
+                    journal = "unknown journal";
+                }
+                else if (journalObject.name == null) {
+                    journal = journalObject;
+                }
+                else {
+                    journal = journalObject.name;
+                }
                 const numberOfCitations = (_a = scholarPaper.citingPaper.citationCount) !== null && _a !== void 0 ? _a : 0;
                 let url;
                 if (scholarPaper.citingPaper.openAccessPdf === null || scholarPaper.citingPaper.openAccessPdf === undefined) {
