@@ -245,7 +245,8 @@ export async function getReferencePapers(
         // Add all works from author that include the title of the given paper
         const papersFiltered: any[] = [];
         for (const p of papers){
-            if ((p.title as string).toLowerCase().includes(title.toLowerCase())) {
+            const paperTitle = p.title === undefined || p.title === null ? "" : p.title as string;
+            if (paperTitle.toLowerCase().includes(title.toLowerCase())) {
                 papersFiltered.push(p);
             }
         }
