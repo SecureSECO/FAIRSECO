@@ -38,7 +38,7 @@ function fairSeco() {
     // Initialisation
 
     var tortellini;
-    var howFairIs;
+    var fairtally;
     var searchSeco;
     var SBOM;
     var citingPapers;
@@ -51,16 +51,16 @@ function fairSeco() {
             case "Tortellini":
                 tortellini = element.ReturnData;
                 break;
-            case "HowFairIs":
-                howFairIs = element.ReturnData;
+            case "Fairtally":
+                fairtally = element.ReturnData;
                 break;
-            case "SearchSeco":
+            case "SearchSECO":
                 searchSeco = element.ReturnData;
                 break;
             case "SBOM":
                 SBOM = element.ReturnData;
                 break;
-            case 'citingPapers':
+            case 'CitingPapers':
                 citingPapers = element.ReturnData;
             default:
             break;
@@ -140,8 +140,8 @@ function fairSeco() {
     // Debugging
     console.log("Tortellini:");
     console.log(tortellini);
-    console.log("HowFairIs:")
-    console.log(howFairIs);
+    console.log("Fairtally:")
+    console.log(fairtally);
     console.log("SearchSeco:")            
     console.log(searchSeco);
     console.log("SBOM:")            
@@ -150,11 +150,11 @@ function fairSeco() {
 
     // Create the content for the fairness page.
     function createFairnessTable(){
-        let fairScore = createRow("Fairness Score", howFairIs[0].count);
+        let fairScore = createRow("Fairness Score", fairtally[0].count);
         let badgeImg = document.createElement("img");
-        badgeImg.setAttribute("src", howFairIs[0].badge);
-        badgeImg.setAttribute("alt", "howfairis badge");
-        let check = createRow("Checklist",howFairIs[0].checklist);
+        badgeImg.setAttribute("src", fairtally[0].badge);
+        badgeImg.setAttribute("alt", "fairtally badge");
+        let check = createRow("Checklist",fairtally[0].checklist);
 
         let badge = document.createElement("tr");
         let label_ = document.createElement("td");
@@ -165,10 +165,10 @@ function fairSeco() {
         badge.appendChild(value_);
 
 
-        let citation = createRow("Citation", howFairIs[0].citation);
-        let license = createRow("License", howFairIs[0].license);
-        let registry = createRow("Registry", howFairIs[0].registry);
-        let repository = createRow("Repository", howFairIs[0].repository);
+        let citation = createRow("Citation", fairtally[0].citation);
+        let license = createRow("License", fairtally[0].license);
+        let registry = createRow("Registry", fairtally[0].registry);
+        let repository = createRow("Repository", fairtally[0].repository);
 
         fairnessTable.appendChild(fairScore);
         fairnessTable.appendChild(badge);

@@ -4,58 +4,58 @@ return x ? '<p>Yes</p>' : '<p>No</p>'
 }
 %>
 
-<div class="HowFairIsReport" hidden>
-    <h1 class="HowFairIsReportTitle">FAIRness Report</h1>
+<div class="FairtallyReport" hidden>
+    <h1 class="FairtallyReportTitle">FAIRness Report</h1>
     <div class="stars">
         <h2>
-        <% for (let i = 0; i < Math.floor(howfairis.count); i++) { %>
+        <% for (let i = 0; i < Math.floor(fairtally.count); i++) { %>
             <i class="fa-solid fa-star"></i>
         <% } %>
-        <% if (howfairis.count % 1 > 0) {%>
+        <% if (fairtally.count % 1 > 0) {%>
             <i class="fa-solid fa-star-half-stroke"></i>
         <%}%> 
-        <% for (let i = 0; i < (5 - Math.ceil(howfairis.count)); i++) { %>
+        <% for (let i = 0; i < (5 - Math.ceil(fairtally.count)); i++) { %>
             <i class="fa-regular fa-star"></i>
         <% } %>
 
         </h2>
         <h2>
-        <%= `${howfairis.count} / 5` %>
+        <%= `${fairtally.count} / 5` %>
         </h2>
     </div>
         <div class="ChecklistContainer">
             <div onClick="togglePanel(this)">
-                <p><i class="fa-solid fa-arrow-up-from-bracket"></i>Registered in public repository?</p> <%- checkOrCross(howfairis.registry)%>
+                <p><i class="fa-solid fa-arrow-up-from-bracket"></i>Registered in public repository?</p> <%- checkOrCross(fairtally.registry)%>
             </div>
             <div>
                 Whether your software is registered in a public registry, so that it is easily <b>F</b>indable.
                 <a href="https://fair-software.eu/recommendations/registry" target="_blank">Read more</a>
             </div>
             <div onClick="togglePanel(this)">
-                <p><i class="fa-solid fa-code-fork"></i>Repository is public?</p><%- checkOrCross(howfairis.repository)%>
+                <p><i class="fa-solid fa-code-fork"></i>Repository is public?</p><%- checkOrCross(fairtally.repository)%>
             </div>
             <div>
                 Whether your repository is public, so that your software is <b>A</b>ccessible.
                 <a href="https://fair-software.eu/recommendations/repository" target="_blank">Read more</a>
             </div>
             <div onClick="togglePanel(this)">
-                <p><i class="fa-solid fa-list-check"></i>Using a quality checklist?</p> <%- checkOrCross(howfairis.checklist)%>
+                <p><i class="fa-solid fa-list-check"></i>Using a quality checklist?</p> <%- checkOrCross(fairtally.checklist)%>
             </div>
             <div>
                 Whether your project uses a software quality checklist, so that your software is <b>I</b>nteroperable.
                 <a href="https://fair-software.eu/recommendations/checklist" target="_blank">Read more</a>
             </div>
             <div onClick="togglePanel(this)">
-                <p><i class="fa-solid fa-quote-right"></i>Citation file present?</p> <%- checkOrCross(howfairis.citation)%>
+                <p><i class="fa-solid fa-quote-right"></i>Citation file present?</p> <%- checkOrCross(fairtally.citation)%>
             </div>
             <div>
                 <p>Whether your repository contains a citation file, so that your software is <b>R</b>eusable.
                 <a href="https://fair-software.eu/recommendations/citation" target="_blank">Read more.</a>
-                <%- howfairis.citation ? '' : ' Need help creating a CFF File? <a href = "https://citation-file-format.github.io/cff-initializer-javascript/#/start">This tool can help.</a>' %>
+                <%- fairtally.citation ? '' : ' Need help creating a CFF File? <a href = "https://citation-file-format.github.io/cff-initializer-javascript/#/start">This tool can help.</a>' %>
                 </p>
             </div>
             <div onClick="togglePanel(this)">
-                <p><i class="fa-solid fa-copyright"></i>License file present?</p> <%- checkOrCross(howfairis.license)%>
+                <p><i class="fa-solid fa-copyright"></i>License file present?</p> <%- checkOrCross(fairtally.license)%>
             </div>
             <div>
                 Whether you have a license file in your repository, so that your software is correctly <b>R</b>eusable.
@@ -67,21 +67,21 @@ return x ? '<p>Yes</p>' : '<p>No</p>'
 
 <style>
 
-    .HowFairIsReport {
+    .FairtallyReport {
         color: #0C281E;
         max-height: 90%;
         overflow-y: scroll;
     }
 
-    .HowFairIsReport h1 {
+    .FairtallyReport h1 {
         color: #0C281E;
         text-align: center;
     }
 
-    .HowFairIsReport h2 {
+    .FairtallyReport h2 {
         text-align: center;
     }
-    .HowFairIsReport h4 {
+    .FairtallyReport h4 {
         font-weight: 400;
         font-style: italic;
         text-align: center;
