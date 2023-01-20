@@ -1,8 +1,8 @@
 import { runModule as runCff, ValidCffObject } from "../../src/resources/citation_cff";
-import {  mergeDuplicates, runModule } from "../../src/resources/citations/citingPapers";
+import {  mergeDuplicates, runModule } from "../../src/resources/citations/citing_papers";
 import { Author, Paper, Citations } from "../../src/resources/citations/Paper";
-import { openAlexCitations } from "../../src/resources/citations/APIs/openalexAPI";
-import { semanticScholarCitations } from "../../src/resources/citations/APIs/semanticscholarAPI";
+import { openAlexCitations } from "../../src/resources/citations/apis/openalex_api";
+import { semanticScholarCitations } from "../../src/resources/citations/apis/semanticscholar_api";
 
 jest.setTimeout(100000);
 

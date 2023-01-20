@@ -1,12 +1,12 @@
 <%
-const howfairis = data.find((ele) => (ele.ModuleName === "HowFairIs"))?.Data[0];
-const quality = data.find((ele) => (ele.ModuleName === "QualityMetrics"))?.Data;
+    const fairtally = data.find((ele) => (ele.ModuleName === "fairtally"))?.Data[0];
+    const quality = data.find((ele) => (ele.ModuleName === "QualityMetrics"))?.Data;
 %>
 <div class="RightPane">
     <div class="RightPaneContainer">
         <%- include('rightpanenav') %>
         <div class="RightPaneWindow">
-            <%- include('howfairis', {howfairis})%>
+            <%- include('fairtally', {fairtally})%>
             <%- include('createcff')%>
             <%- include('quality', {quality}) %>
             <%- include('impact') %>

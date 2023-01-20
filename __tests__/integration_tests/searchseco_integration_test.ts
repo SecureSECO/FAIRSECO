@@ -1,5 +1,5 @@
 import { exec, ExecOptions } from "@actions/exec";
-import { GithubInfo } from "../../src/git";
+import { GitHubInfo } from "../../src/git";
 import { throwError } from "../../src/errorhandling/docker_exit";
 import { LogMessage, ErrorLevel } from "../../src/errorhandling/log";
 import * as fs from "fs";
@@ -11,13 +11,13 @@ import {
     Method,
     MethodData,
     Output,
-    parseInput,
+    parseOutput,
     runModule,
 } from "../../src/resources/SearchSECO";
 
 jest.setTimeout(30000);
 
-const ghInfo: GithubInfo = {
+const ghInfo: GitHubInfo = {
     Repo: "",
     GithubToken: "",
     Owner: "",
@@ -47,7 +47,7 @@ test("Integration between SearchSECO and Parse input", () =>
     localrunModule(ghInfo));
 
 // Test is SearchSECO mock gives same result as running it here locally
-async function localrunModule(ghInfo: GithubInfo): Promise<void> {
+async function localrunModule(ghInfo: GitHubInfo): Promise<void> {
     const gitrepo: string = ghInfo.FullURL;
     const useMock = ghInfo.Visibility !== "public";
 
@@ -153,7 +153,7 @@ async function localrunModule(ghInfo: GithubInfo): Promise<void> {
         filteredlines[n] = filteredlines[n].trim();
     }
 
-    const output: Output = parseInput(filteredlines);
+    const output: Output = parseOutput(filteredlines);
 
     const realOutput = await runModule(ghInfo);
 
@@ -178,7 +178,7 @@ async function parseInputIntegration(): Promise<void> {
     const hashIndices: number[] = getHashIndices(databaseMock);
 
     const localMS: Method[] = [];
-    const parseInputMS: Method[] = parseInput(databaseMock).methods;
+    const parseInputMS: Method[] = parseOutput(databaseMock).methods;
 
     for (let i = 0; i < hashIndices.length - 1; i++) {
         const h = databaseMock[hashIndices[i]].split(" ")[1];

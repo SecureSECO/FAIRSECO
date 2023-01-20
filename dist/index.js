@@ -18958,7 +18958,7 @@ exports.data = void 0;
 const tortellini = __importStar(__nccwpck_require__(5234));
 const fairtally = __importStar(__nccwpck_require__(8105));
 const searchSECO = __importStar(__nccwpck_require__(1239));
-const citingPapers = __importStar(__nccwpck_require__(4475));
+const citingPapers = __importStar(__nccwpck_require__(3065));
 const citationcff = __importStar(__nccwpck_require__(3223));
 const sbom = __importStar(__nccwpck_require__(2766));
 const qualityMetrics = __importStar(__nccwpck_require__(447));
@@ -19560,7 +19560,7 @@ function getLastLine(input) {
 
 /***/ }),
 
-/***/ 4087:
+/***/ 8543:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -19585,11 +19585,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getOpenAlexPaperId = exports.getRefTitles = exports.getCitationPapers = exports.openAlexCitations = void 0;
+exports.getOpenAlexPaperID = exports.getReferencePapers = exports.getCitationPapers = exports.openAlexCitations = void 0;
 const node_fetch_1 = __importDefault(__nccwpck_require__(2504));
 const paper_1 = __nccwpck_require__(3754);
 const log_1 = __nccwpck_require__(4854);
-const probability_1 = __nccwpck_require__(9241);
+const referencepaper_1 = __nccwpck_require__(2432);
 /**
  * Finds papers citing the given piece of research software using OpenAlex.
  *
@@ -19602,21 +19602,24 @@ const probability_1 = __nccwpck_require__(9241);
 function openAlexCitations(authors, title, firstRefTitles) {
     return __awaiter(this, void 0, void 0, function* () {
         // Find the OpenAlex paper IDs of the input
-        let paperIds = [];
+        let paperIDs = [];
         if (firstRefTitles.length === 0) {
-            // No reference titles given: find reference titles and their paper IDs
-            paperIds = yield getRefTitles(authors, title);
+            // No reference titles given: find reference papers and their paper IDs
+            paperIDs = yield getReferencePapers(authors, title);
         }
         else {
             // Reference titles given: get their paper IDs
             for (const title of firstRefTitles) {
-                paperIds.push(yield getOpenAlexPaperId(title));
+                const id = yield getOpenAlexPaperID(title);
+                if (id !== undefined) {
+                    paperIDs.push(id);
+                }
             }
         }
         // Find papers citing the given papers
         let output = [];
-        for (const paperId of paperIds) {
-            output = output.concat(yield getCitationPapers(paperId));
+        for (const paperID of paperIDs) {
+            output = output.concat(yield getCitationPapers(paperID));
         }
         return output;
     });
@@ -19625,11 +19628,12 @@ exports.openAlexCitations = openAlexCitations;
 /**
  * Finds papers citing a given paper.
  *
- * @param paperID The {@link https://docs.openalex.org/api-entities/works/work-object#id | OpenAlex ID} corresponding to the paper.
+ * @param paperID The [OpenAlex ID](https://docs.openalex.org/api-entities/works/work-object#id) corresponding to the paper.
  *
  * @returns An array of papers citing the given paper.
  */
 function getCitationPapers(paperID) {
+    var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
         paperID = paperID.replace("https://openalex.org/", "");
         // Prepare query strings: query journals/articles that cite the paper with the given ID
@@ -19640,25 +19644,15 @@ function getCitationPapers(paperID) {
         // Get the works that cite this paper
         const output = [];
         try {
-            // API call to find the amount of pages of results
-            const firstResponse = yield (0, node_fetch_1.default)(apiURL + query + filter + "&per-page=1", {
-                method: "GET",
-                headers: {},
-            });
-            const firstResponseJSON = yield firstResponse.json();
-            // Amount of pages
-            const amount = firstResponseJSON.meta.count;
-            const pages = Math.ceil(amount / 200);
             // Get the results
             let outputJSON = [];
-            for (let i = 1; i <= pages; i++) {
+            let pageCursor = "*";
+            while (pageCursor !== null && pageCursor !== undefined) {
                 // Request a page
                 const response = yield (0, node_fetch_1.default)(apiURL +
                     query +
                     filter +
-                    "&page=" +
-                    String(i) +
-                    "&per-page=200", {
+                    "&per-page=200&cursor=" + pageCursor, {
                     method: "GET",
                     headers: {},
                 });
@@ -19667,24 +19661,25 @@ function getCitationPapers(paperID) {
                 if (responseJSON.results !== undefined) {
                     outputJSON = outputJSON.concat(responseJSON.results);
                 }
+                // Get cursor for next page of results
+                pageCursor = responseJSON.meta.next_cursor;
             }
-            // Extract data from the works that cite the paper
-            // data is formatted as Paper objects
-            outputJSON.forEach((element) => {
-                var _a;
-                const title = element.title;
-                const year = element.publication_year;
-                const journal = (_a = element.host_venue.publisher) !== null && _a !== void 0 ? _a : "";
-                const numberOfCitations = element.cited_by_count;
-                const url = element.open_access.oa_status === "closed" ? element.id : element.open_access.oa_url;
+            // Extract data from the works that cite the paper,
+            // data is represented as Paper objects
+            for (const openAlexPaper of outputJSON) {
+                const title = openAlexPaper.title;
+                const year = openAlexPaper.publication_year;
+                const journal = (_a = openAlexPaper.host_venue.publisher) !== null && _a !== void 0 ? _a : "";
+                const numberOfCitations = openAlexPaper.cited_by_count;
+                const url = openAlexPaper.open_access.oa_status === "closed" ? openAlexPaper.id : openAlexPaper.open_access.oa_url;
                 // Get paper id (doi, pmid, or pmcid)
-                let DOI = "";
+                let doi = "";
                 let pmid = "";
                 let pmcid = "";
-                for (const [key, value] of Object.entries(element.ids)) {
+                for (const [key, value] of Object.entries(openAlexPaper.ids)) {
                     switch (key) {
                         case "doi":
-                            DOI = String(value);
+                            doi = String(value);
                             break;
                         case "pmid":
                             pmid = String(value);
@@ -19694,31 +19689,33 @@ function getCitationPapers(paperID) {
                             break;
                     }
                 }
-                DOI = DOI.slice(16);
+                doi = doi.slice(16);
                 pmid = pmid.slice(32);
                 pmcid = pmcid.slice(32);
                 // Get fields
                 const fields = [];
-                element.concepts.forEach((concept) => {
+                for (const concept of openAlexPaper.concepts) {
                     // Add the concept as a field if it's top-level and if it applies strongly enough to this paper
                     if (concept.level === 0 && concept.score > 0.2) {
                         fields.push(concept.display_name);
                     }
-                });
+                }
+                ;
                 // Get authors
                 const authors = [];
-                element.authorships.forEach((element) => {
-                    var _a;
-                    authors.push(new paper_1.Author(element.author.display_name, (_a = element.author.orcid) !== null && _a !== void 0 ? _a : ""));
-                });
-                // Add the data to the results
-                const paper = new paper_1.Paper(title, DOI, pmid, pmcid, year, "OpenAlex", [], fields, journal, url, numberOfCitations);
+                for (const authorship of openAlexPaper.authorships) {
+                    authors.push(new paper_1.Author(authorship.author.display_name, (_b = authorship.author.orcid) !== null && _b !== void 0 ? _b : ""));
+                }
+                ;
+                // Add the paper data to the results
+                const paper = new paper_1.Paper(title, doi, pmid, pmcid, year, "OpenAlex", [], fields, journal, url, numberOfCitations);
                 output.push(paper);
-            });
+            }
+            ;
             return output;
         }
         catch (error) {
-            (0, log_1.LogMessage)("Error while searching OpenAlex with OpenAlex paper " + paperID + ":\n" + error.message, log_1.ErrorLevel.err);
+            (0, log_1.LogMessage)("Error while searching OpenAlex paper " + paperID + ":\n" + error.message, log_1.ErrorLevel.err);
             return output;
         }
     });
@@ -19730,22 +19727,18 @@ exports.getCitationPapers = getCitationPapers;
  * @param authors The authors of the software.
  * @param title The title of the software.
  *
- * @returns An Array of titles of reference papers for the given piece of software.
+ * @returns An array of [OpenAlex IDs](https://docs.openalex.org/api-entities/works/work-object#id) of reference papers for the given piece of software.
  */
-function getRefTitles(authors, title) {
+function getReferencePapers(authors, title) {
     return __awaiter(this, void 0, void 0, function* () {
-        // Initialize output array and maps
-        const output = [];
-        const papersPerAuthor = new Map();
-        const uniquePapers = new Map();
         // Prepare API strings for querying authors with a name
         const apiURL = "https://api.openalex.org/";
         const query = "authors";
         const filter = "?filter=display_name.search:";
         // Find the papers of every author that mentions the software in the title
+        const papersPerAuthor = new Map();
         for (const author of authors) {
             let papers = [];
-            let papersFiltered = [];
             try {
                 // Query first author on OpenAlex with the author's name
                 // https://docs.openalex.org/api-entities/authors/author-object
@@ -19760,41 +19753,44 @@ function getRefTitles(authors, title) {
                     continue;
                 // Find all the works of the author
                 const worksApiURL = openAlexAuthor.works_api_url;
-                let cursor = "*";
-                while (cursor !== null) {
+                let pageCursor = "*";
+                while (pageCursor !== null && pageCursor !== undefined) {
                     // Get page of works
                     // https://docs.openalex.org/api-entities/works/work-object
-                    const response = yield (0, node_fetch_1.default)(worksApiURL + "&per-page=200&cursor=" + cursor, {
+                    const response = yield (0, node_fetch_1.default)(worksApiURL + "&per-page=200&cursor=" + pageCursor, {
                         method: "GET",
                         headers: {},
                     });
                     const responseJSON = yield response.json();
-                    papers = papers.concat(responseJSON.results);
+                    // Add results to papers
+                    if (responseJSON.results !== undefined) {
+                        papers = papers.concat(responseJSON.results);
+                    }
                     // Get cursor for next page of results
-                    cursor = responseJSON.meta.next_cursor;
+                    pageCursor = responseJSON.meta.next_cursor;
                 }
             }
             catch (error) {
-                let errorMessage = "Error while searching for author " +
+                const errorMessage = "Error while searching for author " +
                     author.name +
-                    " on Semantic Scholar";
-                if (error instanceof Error) {
-                    errorMessage = error.message;
-                }
+                    " on OpenAlex:\n" +
+                    error.message;
                 (0, log_1.LogMessage)(errorMessage, log_1.ErrorLevel.err);
             }
-            papers.forEach((element) => {
-                if (element.title !== null) {
-                    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-                    if (element.title.toLowerCase().includes(title.toLowerCase()))
-                        papersFiltered = papersFiltered.concat([element]);
+            // Add all works from author that include the title of the given paper
+            const papersFiltered = [];
+            for (const p of papers) {
+                if (p.title.toLowerCase().includes(title.toLowerCase())) {
+                    papersFiltered.push(p);
                 }
-            });
+            }
+            // Add to papersPerAuthor dictionary
             papersPerAuthor.set(author, papersFiltered);
         }
-        // find all the unique papers, and keep count of how many authors it shares
-        papersPerAuthor.forEach((papers) => {
-            papers.forEach((paper) => {
+        // Find all the unique papers, and keep count of how many authors it shares
+        const uniquePapers = new Map();
+        for (const papers of papersPerAuthor.values()) {
+            for (const paper of papers.values()) {
                 let paperData;
                 if (uniquePapers.has(paper.id)) {
                     paperData = uniquePapers.get(paper.id);
@@ -19802,58 +19798,53 @@ function getRefTitles(authors, title) {
                     uniquePapers.set(paper.paperId, paperData);
                 }
                 else {
-                    uniquePapers.set(paper.id, new paper_1.MetaDataPaper(paper.title, 1, paper.cited_by_count, paper.host_venue, 1));
+                    uniquePapers.set(paper.id, new paper_1.MetaDataPaper(paper.title, 1, paper.cited_by_count, paper.host_venue));
                 }
-            });
-        });
-        // calculate the probability of each paper being a reference paper
-        const probScores = (0, probability_1.calculateProbabiltyOfReference)(uniquePapers);
-        let i = 0;
-        uniquePapers.forEach((value, key) => {
-            if (key === undefined)
-                return;
-            if (probScores[i] > 0.6)
-                output.push(key);
-            i++;
-        });
-        return output;
+            }
+        }
+        // Return the papers that are probably reference papers
+        const probability = 0.6;
+        return (0, referencepaper_1.selectReferencePapers)(title, uniquePapers, probability);
     });
 }
-exports.getRefTitles = getRefTitles;
+exports.getReferencePapers = getReferencePapers;
 /**
- * Finds the {@link https://docs.openalex.org/api-entities/works/work-object#id | OpenAlex ID} of a paper.
+ * Finds the [OpenAlex ID](https://docs.openalex.org/api-entities/works/work-object#id) of a paper.
  *
  * @param title The title of the paper.
  *
- * @returns The {@link https://docs.openalex.org/api-entities/works/work-object#id | OpenAlex ID} of a paper.
+ * @returns The [OpenAlex ID](https://docs.openalex.org/api-entities/works/work-object#id) of the paper, or undefined if it could not be found.
  */
-function getOpenAlexPaperId(title) {
+function getOpenAlexPaperID(title) {
     return __awaiter(this, void 0, void 0, function* () {
+        // Query strings for searching the paper
         const apiURL = "https://api.openalex.org/";
         const searchQuery = "works?search=";
         try {
-            const response = yield (0, node_fetch_1.default)(apiURL + searchQuery + title, {
+            // API call for searching paper with the title
+            const response = yield (0, node_fetch_1.default)(apiURL + searchQuery + title + "?per-page=1", {
                 method: "GET",
                 headers: {},
             });
-            const output = yield response.text();
-            const outputJSON = JSON.parse(output);
-            const paperid = outputJSON.results[0].id;
-            return paperid;
+            const outputJSON = yield response.json();
+            // Get and return the paper ID
+            if (outputJSON.results[0].id === undefined) {
+                throw new Error("No result");
+            }
+            return outputJSON.results[0].id;
         }
         catch (error) {
-            (0, log_1.LogMessage)("Error while fetching paperID from OpenAlex of: " + title, log_1.ErrorLevel.err);
-            const output = JSON.parse("");
-            return output;
+            (0, log_1.LogMessage)("Error while fetching paperID of " + title + " on OpenAlex:\n" + error.message, log_1.ErrorLevel.err);
+            return undefined;
         }
     });
 }
-exports.getOpenAlexPaperId = getOpenAlexPaperId;
+exports.getOpenAlexPaperID = getOpenAlexPaperID;
 
 
 /***/ }),
 
-/***/ 7054:
+/***/ 9565:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -19877,11 +19868,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getSemanticScholarPaperId = exports.getRefTitles = exports.getCitationPapers = exports.semanticScholarCitations = void 0;
+exports.getSemanticScholarPaperID = exports.getReferencePapers = exports.getCitationPapers = exports.semanticScholarCitations = void 0;
 const node_fetch_1 = __importDefault(__nccwpck_require__(2504));
 const paper_1 = __nccwpck_require__(3754);
 const log_1 = __nccwpck_require__(4854);
-const probability_1 = __nccwpck_require__(9241);
+const referencepaper_1 = __nccwpck_require__(2432);
 /**
  * Finds papers citing the given piece of research software using Semantic Scholar.
  *
@@ -19893,17 +19884,26 @@ const probability_1 = __nccwpck_require__(9241);
  */
 function semanticScholarCitations(authors, title, firstRefTitles) {
     return __awaiter(this, void 0, void 0, function* () {
-        // initiate variables
+        // Find the OpenAlex paper IDs of the input
+        let paperIDs = [];
+        if (firstRefTitles.length === 0) {
+            // No reference titles given: find reference papers and their paper IDs
+            paperIDs = yield getReferencePapers(authors, title);
+        }
+        else {
+            // Reference titles given: get their paper IDs
+            for (const title of firstRefTitles) {
+                const id = yield getSemanticScholarPaperID(title);
+                if (id !== undefined) {
+                    paperIDs.push(id);
+                }
+            }
+        }
+        // Find papers citing the given papers
         let output = [];
-        let paperIds = [];
-        // find reference titles if neccessary
-        if (firstRefTitles.length === 0)
-            paperIds = yield getRefTitles(authors, title);
-        else
-            for (const title of firstRefTitles)
-                paperIds.push(yield getSemanticScholarPaperId(title));
-        for (const paperId of paperIds)
-            output = output.concat(yield getCitationPapers(paperId));
+        for (const paperID of paperIDs) {
+            output = output.concat(yield getCitationPapers(paperID));
+        }
         return output;
     });
 }
@@ -19911,42 +19911,49 @@ exports.semanticScholarCitations = semanticScholarCitations;
 /**
  * Finds papers citing a given paper.
  *
- * @param paperId The {@link https://api.semanticscholar.org/api-docs/graph#tag/Paper-Data/operation/get_graph_get_paper | Semantic Scholar paper id} corresponding to the paper.
+ * @param paperID The [Semantic Scholar paper ID](https://api.semanticscholar.org/api-docs/graph#tag/Paper-Data/operation/get_graph_get_paper) corresponding to the paper.
  *
  * @returns An array of papers citing the given paper.
  */
-function getCitationPapers(paperId) {
+function getCitationPapers(paperID) {
+    var _a, _b, _c;
     return __awaiter(this, void 0, void 0, function* () {
-        // prepare query strings
+        // Prepare query strings: query citations of the given paper
+        // https://api.semanticscholar.org/api-docs/graph#tag/Paper-Data/operation/get_graph_get_paper
         const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/paper/";
         const fieldsQuery = "/citations?fields=title,externalIds,year,authors,s2FieldsOfStudy,journal,openAccessPdf,url,citationCount&limit=1000";
-        // get the unique id semantic scholar gives it's papers
-        // instanciate output array
-        let output = [];
+        // Get the works that cite this paper
+        const output = [];
         try {
-            // API call and save output in Json object
-            const response = yield (0, node_fetch_1.default)(semanticScholarApiURL + paperId + fieldsQuery, {
+            // Get the paper data
+            const response = yield (0, node_fetch_1.default)(semanticScholarApiURL + paperID + fieldsQuery, {
                 method: "GET",
                 headers: {},
             });
             const outputJSON = yield response.json();
-            // save outputted metadata in Paper object and append to output array
-            outputJSON.data.forEach((element) => {
-                const title = element.citingPaper.title;
-                const year = element.citingPaper.year;
-                let DOI = "";
+            // Extract data from the works that cite the paper,
+            // data is represented as Paper objects
+            for (const scholarPaper of outputJSON.data) {
+                const title = scholarPaper.citingPaper.title;
+                const year = scholarPaper.citingPaper.year;
+                const journal = (_a = scholarPaper.citingPaper.journal) !== null && _a !== void 0 ? _a : "";
+                const numberOfCitations = (_b = scholarPaper.citingPaper.citationCount) !== null && _b !== void 0 ? _b : 0;
+                let url;
+                if (scholarPaper.citingPaper.openAccessPdf === null || scholarPaper.citingPaper.openAccessPdf === undefined) {
+                    url = scholarPaper.citingPaper.url;
+                }
+                else {
+                    url = ((_c = scholarPaper.citingPaper.openAccessPdf.url) !== null && _c !== void 0 ? _c : scholarPaper.citingPaper.url);
+                }
+                // Get paper ID (doi, pmid, or pmcid)
+                let doi = "";
                 let pmid = "";
                 let pmcid = "";
-                const fields = [];
-                let journal = "";
-                let url = "";
-                let numberOfCitations = 0;
-                const authors = [];
-                if (element.citingPaper.externalIds !== undefined) {
-                    for (const [key, value] of Object.entries(element.citingPaper.externalIds)) {
+                if (scholarPaper.citingPaper.externalIds !== undefined) {
+                    for (const [key, value] of Object.entries(scholarPaper.citingPaper.externalIds)) {
                         switch (key) {
                             case "DOI":
-                                DOI = String(value);
+                                doi = String(value);
                                 break;
                             case "PubMed":
                                 pmid = String(value);
@@ -19956,43 +19963,33 @@ function getCitationPapers(paperId) {
                                 break;
                         }
                     }
-                    DOI = DOI.toLowerCase();
+                    doi = doi.toLowerCase();
                     pmid = pmid.toLowerCase();
                     pmcid = pmcid.toLowerCase();
                 }
-                if (element.citingPaper.journal !== undefined &&
-                    element.citingPaper.journal !== null) {
-                    const journalObject = element.citingPaper.journal;
-                    if (journalObject.name !== undefined) {
-                        journal = journalObject.name;
+                // Get fields
+                const fields = [];
+                if (scholarPaper.citingPaper.s2FieldsOfStudy !== undefined) {
+                    for (const field of scholarPaper.citingPaper.s2FieldsOfStudy) {
+                        fields.push(field.category);
                     }
                 }
-                if (element.citingPaper.openAccessPdf !== null) {
-                    url = element.citingPaper.openAccessPdf.url;
-                }
-                else {
-                    url = element.citingPaper.url;
-                }
-                if (element.citingPaper.citationCount !== undefined) {
-                    numberOfCitations = element.citingPaper.citationCount;
-                }
-                if (element.citingPaper.s2FieldsOfStudy !== undefined) {
-                    element.citingPaper.s2FieldsOfStudy.forEach((element) => {
-                        fields.push(element.category);
-                    });
-                }
-                if (element.authors !== undefined) {
-                    for (const author of element.authors)
+                // Get authors
+                const authors = [];
+                if (scholarPaper.authors !== undefined) {
+                    for (const author of scholarPaper.authors) {
                         authors.push(new paper_1.Author(author.name, ""));
+                    }
                 }
-                const tempPaper = new paper_1.Paper(title, DOI, pmid, pmcid, year, "SemanticScholar", authors, fields, journal, url, numberOfCitations);
-                output = output.concat([tempPaper]);
-            });
+                // Add the paper data to the results
+                const paper = new paper_1.Paper(title, doi, pmid, pmcid, year, "SemanticScholar", authors, fields, journal, url, numberOfCitations);
+                output.push(paper);
+            }
+            ;
             return output;
         }
         catch (error) {
-            (0, log_1.LogMessage)("Error while searching Semantic Scholar with Semantic Scholar paper ID of: " +
-                paperId, log_1.ErrorLevel.err);
+            (0, log_1.LogMessage)("Error while searching Semantic Scholar paper " + paperID + ":\n" + error.message, log_1.ErrorLevel.err);
             return output;
         }
     });
@@ -20004,55 +20001,57 @@ exports.getCitationPapers = getCitationPapers;
  * @param authors The authors of the software.
  * @param title The title of the software.
  *
- * @returns An Array of titles of reference papers for the given piece of software.
+ * @returns An array of [Semantic Scholar paper IDs](https://api.semanticscholar.org/api-docs/graph#tag/Paper-Data/operation/get_graph_get_paper) for the given piece of software.
  */
-function getRefTitles(authors, title) {
+function getReferencePapers(authors, title) {
     return __awaiter(this, void 0, void 0, function* () {
-        // instanciate output array and maps
-        const output = [];
+        // Prepare API strings
+        const apiURL = "https://api.semanticscholar.org/graph/v1/author/";
+        const query = "search?query=";
+        const filter = "&fields=papers.title,papers.citationCount,papers.venue&limit=1";
+        // Find the papers of every author that mentions the software in the title
         const papersPerAuthor = new Map();
-        const uniquePapers = new Map();
-        // prepare API strings
-        const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/author/";
-        const searchQuery = "search?query=";
-        const fieldsQuery = "&fields=papers.title,papers.citationCount,papers.venue";
-        // find of every author their papers with the title of the software mentioned in the paper
         for (const author of authors) {
             let papers = [];
-            let papersFiltered = [];
             try {
-                const response = yield (0, node_fetch_1.default)(semanticScholarApiURL + searchQuery + author.name + fieldsQuery, {
+                // Query first author on Semantic Scholar with the author's name
+                // https://api.semanticscholar.org/api-docs/graph#tag/Author-Data/operation/get_graph_get_author_papers
+                const response = yield (0, node_fetch_1.default)(apiURL + query + author.name + filter, {
                     method: "GET",
                     headers: {},
                 });
-                const outputText = yield response.text();
-                const outputJSON = JSON.parse(outputText);
-                outputJSON.data.forEach((element) => {
-                    for (const [key, value] of Object.entries(element)) {
-                        if (key === "papers")
-                            papers = papers.concat(value);
+                const outputJSON = yield response.json();
+                const semanticScholarAuthor = outputJSON.data[0];
+                // If no Semantic Scholar author was found, skip this author
+                if (semanticScholarAuthor === undefined)
+                    continue;
+                for (const [key, value] of Object.entries(semanticScholarAuthor)) {
+                    if (key === "papers") {
+                        papers = papers.concat(value);
                     }
-                });
+                }
             }
             catch (error) {
-                let errorMessage = "Error while searching for author " +
+                const errorMessage = "Error while searching for author " +
                     author.name +
-                    " on Semantic Scholar";
-                if (error instanceof Error) {
-                    errorMessage = error.message;
-                }
+                    " on Semantic Scholar:\n" +
+                    error.essage;
                 (0, log_1.LogMessage)(errorMessage, log_1.ErrorLevel.err);
             }
-            papers.forEach((element) => {
-                // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-                if (element.title.toLowerCase().includes(title.toLowerCase()))
-                    papersFiltered = papersFiltered.concat([element]);
-            });
+            // Add all works from author that include the title of the given paper
+            const papersFiltered = [];
+            for (const p of papers) {
+                if (p.title.toLowerCase().includes(title.toLowerCase())) {
+                    papersFiltered.push(p);
+                }
+            }
+            // Add to papersPerAuthor dictionary
             papersPerAuthor.set(author, papersFiltered);
         }
-        // find all the unique papers, and keep count of how many authors it shares
-        papersPerAuthor.forEach((papers) => {
-            papers.forEach((paper) => {
+        // Find all the unique papers, and keep count of how many authors it shares
+        const uniquePapers = new Map();
+        for (const papers of papersPerAuthor.values()) {
+            for (const paper of papers.values()) {
                 let paperData;
                 if (uniquePapers.has(paper.paperId)) {
                     paperData = uniquePapers.get(paper.paperId);
@@ -20060,60 +20059,53 @@ function getRefTitles(authors, title) {
                     uniquePapers.set(paper.paperId, paperData);
                 }
                 else {
-                    uniquePapers.set(paper.paperId, new paper_1.MetaDataPaper(paper.title, 1, paper.citationCount, paper.venue, 1));
+                    uniquePapers.set(paper.paperId, new paper_1.MetaDataPaper(paper.title, 1, paper.citationCount, paper.venue));
                 }
-            });
-        });
-        // calculate the probability of each paper being a reference paper
-        const probScores = (0, probability_1.calculateProbabiltyOfReference)(uniquePapers);
-        let i = 0;
-        uniquePapers.forEach((value, key) => {
-            if (probScores[i] > 0.6)
-                output.push(key);
-            i++;
-        });
-        return output;
+            }
+        }
+        // Return the papers that are probably reference papers
+        const probability = 0.6;
+        return (0, referencepaper_1.selectReferencePapers)(title, uniquePapers, probability);
     });
 }
-exports.getRefTitles = getRefTitles;
+exports.getReferencePapers = getReferencePapers;
 /**
- * Finds the {@link https://api.semanticscholar.org/api-docs/graph#tag/Paper-Data/operation/get_graph_get_paper | Semantic Scholar paper id} of a paper.
+ * Finds the [Semantic Scholar paper ID](https://api.semanticscholar.org/api-docs/graph#tag/Paper-Data/operation/get_graph_get_paper) of a paper.
  *
  * @param title The title of the paper.
  *
- * @returns The {@link https://api.semanticscholar.org/api-docs/graph#tag/Paper-Data/operation/get_graph_get_paper | Semantic Scholar paper id} of a paper.
+ * @returns The [Semantic Scholar paper ID](https://api.semanticscholar.org/api-docs/graph#tag/Paper-Data/operation/get_graph_get_paper) of a paper.
  */
-function getSemanticScholarPaperId(title) {
+function getSemanticScholarPaperID(title) {
     return __awaiter(this, void 0, void 0, function* () {
-        // prepare query strings
+        // Query strings for searching the paper
         const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/paper/";
         const searchQuery = "search?query=";
         try {
-            // API call and save it in JSON, then extract the paperID
-            // TODO: remove ANYs
+            // API call for searching paper with the title
             const response = yield (0, node_fetch_1.default)(semanticScholarApiURL + searchQuery + '"' + title + '"', {
                 method: "GET",
                 headers: {},
             });
-            const outputText = yield response.text();
-            const outputJSON = JSON.parse(outputText);
-            // const outputJSON : any = await response.json();
-            const paperid = outputJSON.data[0].paperId;
-            return paperid;
+            const outputJSON = yield response.json();
+            // Get and return the paper ID
+            if (outputJSON.data[0].paperId === undefined) {
+                throw new Error("No result");
+            }
+            return outputJSON.data[0].paperId;
         }
         catch (error) {
-            (0, log_1.LogMessage)("Error while fetching paperID from Semantic Scholar of: " + title, log_1.ErrorLevel.err);
-            const output = "";
-            return output;
+            (0, log_1.LogMessage)("Error while fetching paper ID of " + title + " on Semantic Scholar:\n" + error.message, log_1.ErrorLevel.err);
+            return undefined;
         }
     });
 }
-exports.getSemanticScholarPaperId = getSemanticScholarPaperId;
+exports.getSemanticScholarPaperID = getSemanticScholarPaperID;
 
 
 /***/ }),
 
-/***/ 4475:
+/***/ 3065:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -20134,17 +20126,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.mergeDuplicates = exports.runModule = exports.ModuleName = void 0;
-const semanticscholarAPI_1 = __nccwpck_require__(7054);
-const openalexAPI_1 = __nccwpck_require__(4087);
+const semanticscholar_api_1 = __nccwpck_require__(9565);
+const openalex_api_1 = __nccwpck_require__(8543);
 const paper_1 = __nccwpck_require__(3754);
 /** The name of the module. */
 exports.ModuleName = "CitingPapers";
 /**
- * Finds papers citing a piece of research software, given the citation.cff file of its repository.
+ * Finds papers citing a piece of research software, given the CITATION.cff file of its repository.
  *
- * @param cffFile The information from the citation.cff file.
+ * @param cffFile The information from the CITATION.cff file.
  *
- * @returns A `ReturnObject` containing unique papers citing the software.
+ * @returns An array of unique papers citing the software.
  */
 function runModule(cffFile) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -20152,21 +20144,23 @@ function runModule(cffFile) {
         if (cffFile === undefined || cffFile.status !== "valid") {
             throw new Error("Invalid CITATION.cff file");
         }
-        const authors = [];
         const title = cffFile.citation.title;
+        // Get reference paper titles from CITATION.cff file
         const refTitles = [];
         if (cffFile.citation.references !== undefined) {
-            cffFile.citation.references.forEach((element) => {
-                if (element.type === "article" ||
-                    element.type === "journal-article")
-                    refTitles.push(element.title);
-            });
+            for (const ref of cffFile.citation.references) {
+                if (ref.type === "article" || ref.type === "journal-article") {
+                    refTitles.push(ref.title);
+                }
+            }
         }
-        cffFile.citation.authors.forEach((element) => {
+        // Get authors from CITATION.cff file
+        const authors = [];
+        for (const author of cffFile.citation.authors) {
             let familyName = "";
             let givenNames = "";
-            let orchidId = "";
-            for (const [key, value] of Object.entries(element)) {
+            let orchidID = "";
+            for (const [key, value] of Object.entries(author)) {
                 switch (key) {
                     case "family-names":
                         familyName = String(value);
@@ -20175,19 +20169,16 @@ function runModule(cffFile) {
                         givenNames = String(value);
                         break;
                     case "orcid":
-                        orchidId = String(value);
+                        orchidID = String(value);
                         break;
                 }
             }
-            authors.push(new paper_1.Author(givenNames + " " + familyName, orchidId));
-        });
-        const outData1 = yield (0, semanticscholarAPI_1.semanticScholarCitations)(authors, title, refTitles);
-        const outData2 = yield (0, openalexAPI_1.openAlexCitations)(authors, title, refTitles);
-        const outputPapers = mergeDuplicates(outData1, outData2);
-        const output = new paper_1.Citations(outputPapers);
-        console.log(output);
-        console.log(output.unqiueFields);
-        return output;
+            authors.push(new paper_1.Author(givenNames + " " + familyName, orchidID));
+        }
+        const semanticScholarData = yield (0, semanticscholar_api_1.semanticScholarCitations)(authors, title, refTitles);
+        const openAlexData = yield (0, openalex_api_1.openAlexCitations)(authors, title, refTitles);
+        const outputPapers = mergeDuplicates(semanticScholarData, openAlexData);
+        return new paper_1.Citations(outputPapers);
     });
 }
 exports.runModule = runModule;
@@ -20203,41 +20194,44 @@ exports.runModule = runModule;
 */
 function mergeDuplicates(array1, array2) {
     let totalArray = array1.concat(array2);
+    // Merge papers with the same doi
     const doiMap = new Map();
-    const pmidMap = new Map();
-    const pmcidMap = new Map();
     let mockID = 0;
-    totalArray.forEach((element) => {
-        if (doiMap.has(element.doi)) {
-            const tempPaper = doiMap.get(element.doi);
-            doiMap.set(element.doi, element.combine(tempPaper));
+    for (const paper of totalArray) {
+        if (doiMap.has(paper.doi)) {
+            const tempPaper = doiMap.get(paper.doi);
+            doiMap.set(paper.doi, paper.combine(tempPaper));
         }
-        else if (element.doi === "") {
-            doiMap.set(mockID.toString(), element);
+        else if (paper.doi === "") {
+            doiMap.set(mockID.toString(), paper);
             mockID++;
         }
         else {
-            doiMap.set(element.doi, element);
+            doiMap.set(paper.doi, paper);
         }
-    });
+    }
     totalArray = Array.from(doiMap.values());
+    // Merge papers with the same pmid
+    const pmidMap = new Map();
     mockID = 0;
-    totalArray.forEach((element) => {
-        if (pmidMap.has(element.pmid)) {
-            const tempPaper = pmidMap.get(element.pmid);
-            pmidMap.set(element.pmid, element.combine(tempPaper));
+    for (const paper of totalArray) {
+        if (pmidMap.has(paper.pmid)) {
+            const tempPaper = pmidMap.get(paper.pmid);
+            pmidMap.set(paper.pmid, paper.combine(tempPaper));
         }
-        else if (element.pmid === "") {
-            pmidMap.set(mockID.toString(), element);
+        else if (paper.pmid === "") {
+            pmidMap.set(mockID.toString(), paper);
             mockID++;
         }
         else {
-            pmidMap.set(element.pmid, element);
+            pmidMap.set(paper.pmid, paper);
         }
-    });
+    }
     totalArray = Array.from(pmidMap.values());
+    // Merge papers with the same pmcid
+    const pmcidMap = new Map();
     mockID = 0;
-    totalArray.forEach((element) => {
+    for (const element of totalArray) {
         if (pmcidMap.has(element.pmcid)) {
             const tempPaper = pmcidMap.get(element.pmcid);
             pmcidMap.set(element.pmcid, element.combine(tempPaper));
@@ -20249,7 +20243,8 @@ function mergeDuplicates(array1, array2) {
         else {
             pmcidMap.set(element.pmcid, element);
         }
-    });
+    }
+    ;
     totalArray = Array.from(pmcidMap.values());
     return totalArray;
 }
@@ -20270,6 +20265,7 @@ exports.mergeDuplicates = mergeDuplicates;
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Citations = exports.Author = exports.MetaDataPaper = exports.Paper = void 0;
+/** Contains the data belonging to a paper found in OpenAlex or Semantic Scholar. */
 class Paper {
     constructor(title, doi, pmid, pmcid, year, database, authors, fields, journal, url, numberOfCitations) {
         this.title = title;
@@ -20285,250 +20281,193 @@ class Paper {
         this.url = url;
         this.numberOfCitations = numberOfCitations;
     }
+    /**
+     * Combines the metadata of this paper with that of another.
+     *
+     * @param input The other paper.
+     * @returns A paper containing the combined metadata of both papers.
+     */
     combine(input) {
-        if (this.doi === "")
+        // Combine identifiers
+        if (this.doi === "") {
             this.doi = input.doi;
-        if (this.pmid === "")
-            this.pmid = input.pmid;
-        if (this.pmcid === "")
-            this.pmcid = input.pmcid;
-        if (this.authors !== input.authors) {
-            input.authors.forEach(element => {
-                if (!this.authors.includes(element))
-                    this.authors.push(element);
-            });
         }
-        if (this.fields !== input.fields) {
-            input.fields.forEach(element => {
-                if (!this.fields.includes(element))
-                    this.fields.push(element);
-            });
+        if (this.pmid === "") {
+            this.pmid = input.pmid;
+        }
+        if (this.pmcid === "") {
+            this.pmcid = input.pmcid;
+        }
+        // Combine authors
+        const uniqueAuthors = new Set(this.authors.concat(input.authors));
+        this.authors = Array.from(uniqueAuthors.values());
+        // Combine fields
+        const uniqueFields = new Set(this.fields.concat(input.fields));
+        this.fields = Array.from(uniqueFields.values());
+        // Combine databases
+        if (!this.database.includes(input.database)) {
+            this.database += ", " + input.database;
         }
         return this;
     }
     getFields(input) {
-        const output = [];
-        input.forEach(element => {
-            element = element.toLowerCase();
-            switch (element) {
-                case ("computer science"):
-                    output.push("Computer science");
-                    break;
-                case ("medicine"):
-                    output.push("Medicine");
-                    break;
-                case ("chemistry"):
-                    output.push("Chemistry");
-                    break;
-                case ("biology"):
-                    output.push("Biology");
-                    break;
-                case ("materials science"):
-                    output.push("Materials science");
-                    break;
-                case ("physics"):
-                    output.push("Physics");
-                    break;
-                case ("geology"):
-                    output.push("Geology");
-                    break;
-                case ("psychology"):
-                    output.push("Psychology");
-                    break;
-                case ("art"):
-                    output.push("Art");
-                    break;
-                case ("history"):
-                    output.push("History");
-                    break;
-                case ("geography"):
-                    output.push("Geography");
-                    break;
-                case ("sociology"):
-                    output.push("Sociology");
-                    break;
-                case ("business"):
-                    output.push("Business");
-                    break;
-                case ("political science"):
-                    output.push("Political science");
-                    break;
-                case ("economics"):
-                    output.push("Economics");
-                    break;
-                case ("philosophy"):
-                    output.push("Philosophy");
-                    break;
-                case ("mathematics"):
-                    output.push("Mathematics");
-                    break;
-                case ("engineering"):
-                    output.push("Engineering");
-                    break;
-                case ("environmental science"):
-                    output.push("Environmental science");
-                    break;
-                case ("agricultural and food sciences"):
-                    output.push("Biology");
-                    break;
-                case ("law"):
-                    output.push("Philosophy");
-                    break;
-                case ("education"):
-                    output.push("Psychology");
-                    break;
-                case ("linguistics"):
-                    output.push("Psychology");
-                    break;
-                // default:
-                //     console.log(element)
-                //     break;
-            }
-        });
-        if (output.length === 0)
-            output.push("Unknown");
-        return output;
+        var _a;
+        // Get the unique fields
+        const uniqueFields = new Set();
+        for (const subject of input) {
+            uniqueFields.add((_a = Paper.fieldMap[subject]) !== null && _a !== void 0 ? _a : "Unknown");
+        }
+        // Return an array of the unique fields,
+        // or an array with a single unknown if it's empty
+        const fields = Array.from(uniqueFields.values());
+        if (fields.length > 0) {
+            return fields;
+        }
+        else {
+            return ["Unknown"];
+        }
     }
     getDiscipline(input) {
-        const output = [];
-        for (const field of input) {
-            switch (field.toLowerCase()) {
-                case ("computer science"):
-                    output.push("Formal Sciences");
-                    break;
-                case ("medicine"):
-                    output.push("Applied Sciences");
-                    break;
-                case ("chemistry"):
-                    output.push("Natural Sciences");
-                    break;
-                case ("biology"):
-                    output.push("Natural Sciences");
-                    ;
-                    break;
-                case ("materials science"):
-                    output.push("Applied Sciences");
-                    break;
-                case ("physics"):
-                    output.push("Natural Sciences");
-                    break;
-                case ("geology"):
-                    output.push("Natural Sciences");
-                    break;
-                case ("psychology"):
-                    output.push("Social Sciences");
-                    break;
-                case ("art"):
-                    output.push("Humanities");
-                    break;
-                case ("history"):
-                    output.push("Humanities");
-                    break;
-                case ("geography"):
-                    output.push("Social Sciences");
-                    break;
-                case ("sociology"):
-                    output.push("Social Sciences");
-                    break;
-                case ("business"):
-                    output.push("Applied Sciences");
-                    break;
-                case ("political science"):
-                    output.push("Applied Sciences");
-                    break;
-                case ("economics"):
-                    output.push("Social Sciences");
-                    break;
-                case ("philosophy"):
-                    output.push("Humanities");
-                    break;
-                case ("mathematics"):
-                    output.push("Formal Sciences");
-                    break;
-                case ("engineering"):
-                    output.push("Applied Sciences");
-                    break;
-                case ("environmental science"):
-                    output.push("Applied Sciences");
-                    break;
-                case ("agricultural and food sciences"):
-                    output.push("Applied Sciences");
-                    break;
-                case ("law"):
-                    output.push("Humanities");
-                    break;
-                case ("education"):
-                    output.push("Social Sciences");
-                    break;
-                case ("linguistics"):
-                    output.push("Social Sciences");
-                    break;
+        var _a;
+        // Get the discipline of each subject
+        const uniqueDisc = new Set();
+        for (const subject of input) {
+            uniqueDisc.add((_a = Paper.disciplineMap[subject]) !== null && _a !== void 0 ? _a : "Unknown");
+        }
+        // Return an array of the unique disciplines,
+        // or an array with a single unknown if it's empty
+        let output = Array.from(uniqueDisc.values());
+        if (output.length <= 0) {
+            output = ["Unknown"];
+        }
+        // Count the number of occurences of each discipline
+        const map = new Map();
+        for (const disc of output) {
+            if (map.has(disc)) {
+                map.set(disc, map.get(disc) + 1);
+            }
+            else {
+                map.set(disc, 1);
             }
         }
-        const map = new Map();
-        output.forEach(element => {
-            if (map.has(element))
-                map.set(element, map.get(element) + 1);
-            else
-                map.set(element, 1);
-        });
-        let result = "Unknown";
+        // Get the main (most common) discipline
+        let mainDiscipline = "Unknown";
         let max = 0;
-        let twoHighest = false;
-        map.forEach((value, key) => {
-            if (max < value) {
-                result = key;
+        for (const [key, value] of map) {
+            if (key !== "Unknown" && value > max) {
                 max = value;
-                twoHighest = false;
+                mainDiscipline = key;
             }
-            else if (max === value && max !== 0)
-                twoHighest = true;
-        });
-        if (twoHighest)
-            return output[0];
-        else
-            return result;
+        }
+        return mainDiscipline;
     }
 }
 exports.Paper = Paper;
+Paper.fieldMap = {
+    "computer science": "Computer science",
+    "medicine": "Medicine",
+    "chemistry": "Chemistry",
+    "biology": "Biology",
+    "materials science": "Materials science",
+    "physics": "Physics",
+    "geology": "Geology",
+    "psychology": "Psychology",
+    "art": "Art",
+    "history": "History",
+    "geography": "Geography",
+    "sociology": "Sociology",
+    "business": "Business",
+    "political science": "Political science",
+    "economics": "Economics",
+    "philosophy": "Philosophy",
+    "mathematics": "Mathematics",
+    "engineering": "Engineering",
+    "environmental science": "Environmental science",
+    "agricultural and food sciences": "Biology",
+    "law": "Philosophy",
+    "education": "Psychology",
+    "linguistics": "Psychology",
+};
+Paper.disciplineMap = {
+    "computer science": "Formal Sciences",
+    "medicine": "Applied Sciences",
+    "chemistry": "Natural Sciences",
+    "biology": "Natural Sciences",
+    "materials science": "Applied Sciences",
+    "physics": "Natural Sciences",
+    "geology": "Natural Sciences",
+    "psychology": "Social Sciences",
+    "art": "Humanities",
+    "history": "Humanities",
+    "geography": "Social Sciences",
+    "sociology": "Social Sciences",
+    "business": "Applied Sciences",
+    "political science": "Applied Sciences",
+    "economics": "Social Sciences",
+    "philosophy": "Humanities",
+    "mathematics": "Formal Sciences",
+    "engineering": "Applied Sciences",
+    "environmental science": "Applied Sciences",
+    "agricultural and food sciences": "Applied Sciences",
+    "law": "Humanities",
+    "education": "Social Sciences",
+    "linguistics": "Social Sciences",
+};
+/** Contains metadata belonging to a paper found in OpenAlex or Semantic Scholar. */
 class MetaDataPaper {
-    constructor(title, contributors, citationCount, Paper, probabilty) {
+    constructor(title, contributors, citationCount, paperID) {
         this.title = title;
         this.contributors = contributors;
         this.citationCount = citationCount;
-        this.Paper = Paper;
-        this.probability = probabilty;
+        this.paperID = paperID;
     }
 }
 exports.MetaDataPaper = MetaDataPaper;
+/** Contains the name and OrchidID of an author. */
 class Author {
-    constructor(name, orchidId) {
+    constructor(name, orchidID) {
         this.name = name;
-        this.orchidId = orchidId;
+        this.orchidID = orchidID;
     }
 }
 exports.Author = Author;
+/**
+ * Contains papers that cite the software, and general information about the citations.
+ */
 class Citations {
+    /**
+     * Analyzes metadata of citing papers and constructs the object containing this information.
+     *
+     * @param papers The citing papers.
+     * @returns An object containing citation information.
+     */
     constructor(papers) {
+        let firstYear = Number.MAX_SAFE_INTEGER;
+        let secondHandCitations = 0;
+        const uniqueFields = new Set();
+        const disciplines = new Map();
+        for (const paper of papers) {
+            // Find year of oldest paper
+            firstYear = Math.min(firstYear, paper.year);
+            // Find secondhand citations
+            secondHandCitations += paper.numberOfCitations;
+            // Find all fields occuring in papers
+            for (const field of paper.fields) {
+                uniqueFields.add(field);
+            }
+            ;
+            // Count the disciplines of all papers
+            if (disciplines.has(paper.discipline)) {
+                disciplines.set(paper.discipline, disciplines.get(paper.discipline) + 1);
+            }
+            else {
+                disciplines.set(paper.discipline, 1);
+            }
+        }
+        ;
         this.papers = papers;
         this.firstHandCitations = this.papers.length;
-        let firstYear = Number.MAX_SAFE_INTEGER;
-        const unqiueFields = new Set();
-        let secondHandCitations = 0;
-        const disciplines = new Map;
-        papers.forEach(paper => {
-            if (paper.year < firstYear)
-                firstYear = paper.year;
-            paper.fields.forEach(field => {
-                unqiueFields.add(field);
-            });
-            secondHandCitations += paper.numberOfCitations;
-            if (disciplines.has(paper.discipline))
-                disciplines.set(paper.discipline, disciplines.get(paper.discipline) + 1);
-            else
-                disciplines.set(paper.discipline, 1);
-        });
-        this.unqiueFields = Array.from(unqiueFields.values());
+        this.uniqueFields = Array.from(uniqueFields.values());
         this.firstYear = firstYear;
         this.secondHandCitations = secondHandCitations;
         this.disciplines = disciplines;
@@ -20539,100 +20478,93 @@ exports.Citations = Citations;
 
 /***/ }),
 
-/***/ 9241:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+/***/ 2432:
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
 
 /**
- * This module contains a function that calculates how likely it is that a paper is related to the project.
+ * This module contains a function that selects reference papers for a paper title.
  *
  * @module
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.calculateProbabiltyOfReference = void 0;
-const log_1 = __nccwpck_require__(4854);
+exports.selectReferencePapers = void 0;
 /**
- * Calculates the probability that a paper is related to the project.
- * Probability is definied as the number of words that occur in both titles divided by the total number of words in the title of the main paper.
+ * Selects papers that are likely a reference paper of the main paper given by its title.
+ * The number of contributors should be at least the average of contributors of all papers given.
+ * Probability is defined as the number of words that occur in both titles divided by the total number of words in the title of the main paper.
  *
- * @returns An array containing for each paper a probability from 0 to 1 that they are a reference paper.
+ * @param title The title of the main paper.
+ * @param uniquePapers A map containing the ID and metadata of the papers.
+ * @param probabilityThreshold The minimum probability a paper need to be counted as a reference paper.
+ *
+ * @returns An array containing the keys of papers that are likely a reference paper.
  */
-function calculateProbabiltyOfReference(uniquePapers) {
-    var _a;
-    // initialization
-    let mainPaperId = "";
+function selectReferencePapers(title, uniquePapers, probabilityThreshold) {
+    let contributors = 0;
+    let citations = 0;
     let highestContributors = 0;
     let lowestContributors = Number.MAX_SAFE_INTEGER;
     let highestCitations = 0;
     let lowestCitations = Number.MAX_SAFE_INTEGER;
-    let i = 0;
-    const output = new Array(uniquePapers.size).fill(0); // Holds probabilities for each paper that they are a reference paper
-    // find highest/lowest contributor/citation count, then assign one paper as main
+    // Find the highest/lowest contributor/citation count
     uniquePapers.forEach((paper, key) => {
+        contributors += paper.contributors;
         if (paper.contributors > highestContributors) {
             highestContributors = paper.contributors;
-            mainPaperId = key;
         }
-        if (paper.contributors < lowestContributors)
-            lowestContributors = paper.contributors;
-        if (paper.citationCount > highestCitations)
-            highestCitations = paper.citationCount;
-        if (paper.citationCount < lowestCitations)
-            lowestCitations = paper.citationCount;
+        lowestContributors = Math.min(lowestContributors, paper.contributors);
+        citations += paper.citationCount;
+        highestCitations = Math.max(highestCitations, paper.citationCount);
+        lowestCitations = Math.min(lowestCitations, paper.citationCount);
     });
-    // calculate mean values of contributors and citations and find the unique id of the main paper
-    const meanContributors = lowestContributors + (highestContributors - lowestContributors) / 2;
-    const meanCitations = lowestCitations + (highestCitations - lowestCitations) / 2;
-    const title = (_a = uniquePapers.get(mainPaperId)) === null || _a === void 0 ? void 0 : _a.title;
-    // Find the probabilty of a paper being a reference paper based on the similarity of the title to the main paper, ignoring papers beneath the mean value of contributors or citations.
-    if (title === undefined) {
-        (0, log_1.LogMessage)("Paper has no title", log_1.ErrorLevel.info);
-    }
-    else {
-        const wordsMainPaper = title.toLowerCase().split(" ");
-        const mainTitle = new Map();
-        let count = 0;
-        wordsMainPaper.forEach((word) => {
-            if (mainTitle.has(word)) {
-                count = mainTitle.get(word);
-                mainTitle.set(word, count + 1);
+    // Calculate mean values of contributors and citations
+    const meanContributors = contributors / uniquePapers.size;
+    const meanCitations = citations / uniquePapers.size;
+    // Holds IDs of works that are likely a reference paper
+    const output = [];
+    // Get number of occurences of unique words in main title
+    const mainTitleWordOccurences = wordOccurences(title);
+    // Find the probabilty of a paper being a reference paper based on the similarity of the title to the main paper.
+    // Papers that meet the probability threshold are added to the output.
+    uniquePapers.forEach((paper, id) => {
+        // Ignore papers that have less than the mean value of contributors or citations
+        if (paper.contributors >= meanContributors && paper.citationCount >= meanCitations) {
+            // Get number of occurences of unique words in paper title
+            const paperWordOccurences = wordOccurences(paper.title);
+            // Calculate probability of being a reference paper
+            let similarWordsCount = 0;
+            mainTitleWordOccurences.forEach((count, word) => {
+                if (paperWordOccurences.has(word)) {
+                    similarWordsCount += Math.min(mainTitleWordOccurences.get(word), paperWordOccurences.get(word));
+                }
+            });
+            const probability = similarWordsCount / title.split(" ").length;
+            // Add paper to output if the probability is high enough
+            if (probability >= probabilityThreshold) {
+                output.push(id);
             }
-            else
-                mainTitle.set(word, 1);
-        });
-        uniquePapers.forEach((paper, id) => {
-            if (id === mainPaperId)
-                output[i] = 1;
-            else if (paper.contributors <= meanContributors &&
-                paper.citationCount <= meanCitations)
-                output[i] = 0;
-            else {
-                const wordsPaper = paper.title
-                    .toLowerCase()
-                    .split(" ");
-                const title = new Map();
-                let similarWordsCount = 0;
-                wordsPaper.forEach((word) => {
-                    if (title.has(word)) {
-                        count = title.get(word);
-                        title.set(word, count + 1);
-                    }
-                    else
-                        title.set(word, 1);
-                });
-                mainTitle.forEach((count, word) => {
-                    if (title.has(word))
-                        similarWordsCount += Math.min(mainTitle.get(word), title.get(word));
-                });
-                output[i] = similarWordsCount / wordsMainPaper.length;
-            }
-            i++;
-        });
-    }
+        }
+    });
     return output;
 }
-exports.calculateProbabiltyOfReference = calculateProbabiltyOfReference;
+exports.selectReferencePapers = selectReferencePapers;
+// Counts the number of occurences of each unique word of a title
+function wordOccurences(title) {
+    const wordCount = new Map();
+    for (const word of title.toLowerCase().split(" ")) {
+        if (wordCount.has(word)) {
+            const count = wordCount.get(word);
+            wordCount.set(word, count + 1);
+        }
+        else {
+            wordCount.set(word, 1);
+        }
+        ;
+    }
+    return wordCount;
+}
 
 
 /***/ }),
@@ -21456,56 +21388,6 @@ exports.getMatchIndicesOfHash = getMatchIndicesOfHash;
 
 /***/ }),
 
-/***/ 9478:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-/**
- * This module contains variables that need to be mocked in the unit tests.
- *
- * @module
- */
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.destination = exports.artifactObject = void 0;
-const artifact = __importStar(__nccwpck_require__(9151));
-/**
- * The `Artifact` object that will be used by tortellini.ts.
- * Can be overridden by mocking this module in jest for unit testing.
- */
-exports.artifactObject = artifact;
-/**
- * The path to the directory the artifact produced by tortellini will be downloaded to.
- * Can be overriden by mocking this module in jest for unit testing.
- */
-exports.destination = ".tortellini-artifact";
-
-
-/***/ }),
-
 /***/ 5234:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -21555,8 +21437,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.filterData = exports.runModule = exports.ModuleName = void 0;
 const yaml_1 = __importDefault(__nccwpck_require__(1317));
 const artifact_1 = __nccwpck_require__(2949);
-const input = __importStar(__nccwpck_require__(9478));
-const log_1 = __nccwpck_require__(4854);
+const input = __importStar(__nccwpck_require__(1415));
 /** The name of the module. */
 exports.ModuleName = "Tortellini";
 /**
@@ -21570,11 +21451,10 @@ function runModule(fileName = "evaluation-result.yml") {
         const downloadResponse = yield (0, artifact_1.getArtifactData)("tortellini-result", input.destination, input.artifactObject);
         const fileContents = (0, artifact_1.getFileFromArtifact)(downloadResponse, fileName);
         if (fileContents === "") {
-            (0, log_1.LogMessage)("Tortellini artifact file appears to be empty.", log_1.ErrorLevel.warn);
-            return { ModuleName: "Tortellini", Data: {} };
+            throw new Error("Tortellini artifact file appears to be empty.");
         }
         const obj = yaml_1.default.parse(fileContents);
-        const filteredData = yield filterData(obj);
+        const filteredData = filterData(obj);
         return filteredData;
     });
 }
@@ -21592,39 +21472,85 @@ exports.runModule = runModule;
  * @returns An object containing only the data that is relevant for FAIRSECO.
  */
 function filterData(obj) {
-    return __awaiter(this, void 0, void 0, function* () {
-        // Project data
-        const projects = dataOrUndef(obj.analyzer.result.projects, []);
-        const project = dataOrUndef(projects[0], {});
-        const projData = {
-            id: dataOrUndef(project.id, "-"),
-            licenses: dataOrUndef(project.declared_licenses, "-"),
-            description: dataOrUndef(project.description, "-"),
-            authors: dataOrUndef(project.authors, "-"),
-            vcs: dataOrUndef(project.vcs_processed, "-"),
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t;
+    // Project data
+    const projects = (_a = obj.analyzer.result.projects) !== null && _a !== void 0 ? _a : [];
+    const project = (_b = projects[0]) !== null && _b !== void 0 ? _b : {};
+    const projData = {
+        id: (_c = project.id) !== null && _c !== void 0 ? _c : "-",
+        licenses: (_d = project.declared_licenses) !== null && _d !== void 0 ? _d : "-",
+        description: (_e = project.description) !== null && _e !== void 0 ? _e : "-",
+        authors: (_f = project.authors) !== null && _f !== void 0 ? _f : "-",
+        vcs: (_g = project.vcs_processed) !== null && _g !== void 0 ? _g : "-",
+    };
+    // Package data
+    const packages = (_h = obj.analyzer.result.packages) !== null && _h !== void 0 ? _h : [];
+    const packData = [];
+    for (const pack of packages) {
+        const p = {
+            id: (_k = (_j = pack.package) === null || _j === void 0 ? void 0 : _j.id) !== null && _k !== void 0 ? _k : "-",
+            licenses: (_m = (_l = pack.package) === null || _l === void 0 ? void 0 : _l.declared_licenses) !== null && _m !== void 0 ? _m : "-",
+            description: (_p = (_o = pack.package) === null || _o === void 0 ? void 0 : _o.description) !== null && _p !== void 0 ? _p : "-",
+            authors: (_r = (_q = pack.package) === null || _q === void 0 ? void 0 : _q.authors) !== null && _r !== void 0 ? _r : "-",
+            vcs: (_t = (_s = pack.package) === null || _s === void 0 ? void 0 : _s.vcs_processed) !== null && _t !== void 0 ? _t : "-",
         };
-        // Package data
-        const packages = dataOrUndef(obj.analyzer.result.packages, []);
-        const packData = [];
-        for (const pack of packages) {
-            const p = {
-                id: dataOrUndef(pack.package.id, "-"),
-                licenses: dataOrUndef(pack.package.declared_licenses, "-"),
-                description: dataOrUndef(pack.package.description, "-"),
-                authors: dataOrUndef(pack.package.authors, "-"),
-                vcs: dataOrUndef(pack.package.vcs_processed, "-"),
-            };
-            packData.push(p);
-        }
-        // Violations
-        const viol = obj.evaluator.violations;
-        return { project: projData, packages: packData, violations: viol };
-    });
+        packData.push(p);
+    }
+    // Violations
+    const viol = obj.evaluator.violations;
+    return { project: projData, packages: packData, violations: viol };
 }
 exports.filterData = filterData;
-function dataOrUndef(data, alt) {
-    return data !== undefined ? data : alt;
-}
+
+
+/***/ }),
+
+/***/ 1415:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+/**
+ * This module contains variables that need to be mocked in the unit tests.
+ *
+ * @module
+ */
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.destination = exports.artifactObject = void 0;
+const artifact = __importStar(__nccwpck_require__(9151));
+/**
+ * The `Artifact` object that will be used by tortellini.ts.
+ * Can be overridden by mocking this module in jest for unit testing.
+ */
+exports.artifactObject = artifact;
+/**
+ * The path to the directory the artifact produced by tortellini will be downloaded to.
+ * Can be overriden by mocking this module in jest for unit testing.
+ */
+exports.destination = ".tortellini-artifact";
 
 
 /***/ }),

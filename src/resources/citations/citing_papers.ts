@@ -4,9 +4,8 @@
  * @module
  */
 
-import { ReturnObject } from "../../getdata"
-import { semanticScholarCitations } from "./APIs/semanticscholarAPI";
-import { openAlexCitations } from "./APIs/openalexAPI";
+import { semanticScholarCitations } from "./apis/semanticscholar_api";
+import { openAlexCitations } from "./apis/openalex_api";
 import { Author, Paper, Citations } from "./paper";
 import { CffObject } from "../citation_cff";
 
@@ -14,11 +13,11 @@ import { CffObject } from "../citation_cff";
 export const ModuleName = "CitingPapers";
 
 /**
- * Finds papers citing a piece of research software, given the citation.cff file of its repository.
+ * Finds papers citing a piece of research software, given the CITATION.cff file of its repository.
  * 
- * @param cffFile The information from the citation.cff file.
+ * @param cffFile The information from the CITATION.cff file.
  * 
- * @returns A `ReturnObject` containing unique papers citing the software.
+ * @returns An array of unique papers citing the software.
  */
 export async function runModule(
     cffFile: CffObject | undefined 
@@ -28,23 +27,25 @@ export async function runModule(
         throw new Error("Invalid CITATION.cff file");
     }
 
-    const authors: Author[] = [];
     const title: string = cffFile.citation.title;
+    
+    // Get reference paper titles from CITATION.cff file
     const refTitles: string[] = [];
     if (cffFile.citation.references !== undefined) {
-        cffFile.citation.references.forEach((element: any) => {
-            if (
-                element.type === "article" ||
-                element.type === "journal-article"
-            )
-                refTitles.push(element.title);
-        });
+        for (const ref of cffFile.citation.references){
+            if (ref.type === "article" || ref.type === "journal-article") {
+                refTitles.push(ref.title);
+            }
+        }
     }
-    cffFile.citation.authors.forEach((element: any) => {
+
+    // Get authors from CITATION.cff file
+    const authors: Author[] = [];
+    for (const author of cffFile.citation.authors){
         let familyName = "";
         let givenNames = "";
-        let orchidId = "";
-        for (const [key, value] of Object.entries(element)) {
+        let orchidID = "";
+        for (const [key, value] of Object.entries(author)) {
             switch (key) {
                 case "family-names":
                     familyName = String(value);
@@ -53,27 +54,25 @@ export async function runModule(
                     givenNames = String(value);
                     break;
                 case "orcid":
-                    orchidId = String(value);
+                    orchidID = String(value);
                     break;
             }
         }
-        authors.push(new Author(givenNames + " " + familyName, orchidId));
-    });
-    const outData1: Paper[] = await semanticScholarCitations(
+        authors.push(new Author(givenNames + " " + familyName, orchidID));
+    }
+
+    const semanticScholarData: Paper[] = await semanticScholarCitations(
         authors,
         title,
         refTitles
     );
-    const outData2: Paper[] = await openAlexCitations(
+    const openAlexData: Paper[] = await openAlexCitations(
         authors,
         title,
         refTitles
     );
-    const outputPapers: Paper[] = mergeDuplicates(outData1, outData2);
-    const output = new Citations(outputPapers);
-    console.log(output);
-    console.log(output.unqiueFields);
-    return output;
+    const outputPapers: Paper[] = mergeDuplicates(semanticScholarData, openAlexData);
+    return new Citations(outputPapers);
 }
 
 /**
@@ -88,37 +87,43 @@ export async function runModule(
 */
 export function mergeDuplicates(array1: Paper[], array2: Paper[]): Paper[] {
     let totalArray: Paper[] = array1.concat(array2);
+
+    // Merge papers with the same doi
     const doiMap: Map<string, Paper> = new Map();
-    const pmidMap: Map<string, Paper> = new Map();
-    const pmcidMap: Map<string, Paper> = new Map();
     let mockID: number = 0;
-    totalArray.forEach((element) => {
-        if (doiMap.has(element.doi)) {
-            const tempPaper = doiMap.get(element.doi) as Paper;
-            doiMap.set(element.doi, element.combine(tempPaper));
-        } else if (element.doi === "") {
-            doiMap.set(mockID.toString(), element);
+    for (const paper of totalArray) {
+        if (doiMap.has(paper.doi)) {
+            const tempPaper = doiMap.get(paper.doi) as Paper;
+            doiMap.set(paper.doi, paper.combine(tempPaper));
+        } else if (paper.doi === "") {
+            doiMap.set(mockID.toString(), paper);
             mockID++;
         } else {
-            doiMap.set(element.doi, element);
+            doiMap.set(paper.doi, paper);
         }
-    });
+    }
     totalArray = Array.from(doiMap.values());
+
+    // Merge papers with the same pmid
+    const pmidMap: Map<string, Paper> = new Map();
     mockID = 0;
-    totalArray.forEach((element) => {
-        if (pmidMap.has(element.pmid)) {
-            const tempPaper = pmidMap.get(element.pmid) as Paper;
-            pmidMap.set(element.pmid, element.combine(tempPaper));
-        } else if (element.pmid === "") {
-            pmidMap.set(mockID.toString(), element);
+    for (const paper of totalArray) {
+        if (pmidMap.has(paper.pmid)) {
+            const tempPaper = pmidMap.get(paper.pmid) as Paper;
+            pmidMap.set(paper.pmid, paper.combine(tempPaper));
+        } else if (paper.pmid === "") {
+            pmidMap.set(mockID.toString(), paper);
             mockID++;
         } else {
-            pmidMap.set(element.pmid, element);
+            pmidMap.set(paper.pmid, paper);
         }
-    });
+    }
     totalArray = Array.from(pmidMap.values());
+
+    // Merge papers with the same pmcid
+    const pmcidMap: Map<string, Paper> = new Map();
     mockID = 0;
-    totalArray.forEach((element) => {
+    for (const element of totalArray) {
         if (pmcidMap.has(element.pmcid)) {
             const tempPaper = pmcidMap.get(element.pmcid) as Paper;
             pmcidMap.set(element.pmcid, element.combine(tempPaper));
@@ -128,7 +133,8 @@ export function mergeDuplicates(array1: Paper[], array2: Paper[]): Paper[] {
         } else {
             pmcidMap.set(element.pmcid, element);
         }
-    });
+    };
+
     totalArray = Array.from(pmcidMap.values());
     return totalArray;
 }
