@@ -81,7 +81,8 @@ export async function getCitationPapers(paperID: string): Promise<Paper[]> {
         for (const scholarPaper of outputJSON.data) {
             const title = scholarPaper.citingPaper.title;
             const year = scholarPaper.citingPaper.year;
-            const journal = scholarPaper.citingPaper.journal.name ?? "";
+            const journalObject = scholarPaper.citingPaper.journal;
+            const journal = journalObject.name == null ? journalObject : journalObject.name;
             const numberOfCitations = scholarPaper.citingPaper.citationCount ?? 0;
             let url;
             if (scholarPaper.citingPaper.openAccessPdf === null ||  scholarPaper.citingPaper.openAccessPdf === undefined) {
