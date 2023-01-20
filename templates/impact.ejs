@@ -49,10 +49,10 @@ const labels = [
     "Applied Sciences"
 ]
 
-function getChartData(labels) {
-    let data = [];
+function getChartData() {
+    const data = [];
 
-    let disc = pp.disciplines;
+    const disc = pp.disciplines;
 
     data.push(disc["Humanities"] || 0);
     data.push(disc["Social Sciences"] || 0);
@@ -130,11 +130,12 @@ const labels = [
     "Formal Sciences",
     "Applied Sciences"
 ]
+
 const data = {
     labels: labels,
     datasets: [
         {
-            data: [<%- getChartData(labels) %>],
+            data: [<%- getChartData() %>],
             borderColor: "rgb(170, 85, 183)",
             backgroundColor: "rgba(175, 102, 186, 0.4)",
             pointBackgroundColor: "rgb(175, 102, 186)"
