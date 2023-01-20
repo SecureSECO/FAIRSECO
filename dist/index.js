@@ -19950,7 +19950,7 @@ function getCitationPapers(paperID) {
             for (const scholarPaper of outputJSON.data) {
                 const title = scholarPaper.citingPaper.title;
                 const year = scholarPaper.citingPaper.year;
-                const journal = (_a = scholarPaper.citingPaper.journal) !== null && _a !== void 0 ? _a : "";
+                const journal = (_a = scholarPaper.citingPaper.journal.name) !== null && _a !== void 0 ? _a : "";
                 const numberOfCitations = (_b = scholarPaper.citingPaper.citationCount) !== null && _b !== void 0 ? _b : 0;
                 let url;
                 if (scholarPaper.citingPaper.openAccessPdf === null || scholarPaper.citingPaper.openAccessPdf === undefined) {
