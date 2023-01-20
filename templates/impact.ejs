@@ -17,11 +17,6 @@ function setFontSize(text){
     return clamp(35/text.length, 0.8, 2).toString() + "rem";
 }
 
-function getJournal(paper){
-    if (paper.journal) return paper.journal;
-    else return "unknown journal";
-}
-
 const uniqueProjects = getProjects();
 
 function getProjects() {
@@ -47,24 +42,11 @@ function getAuthors(proj){
 }
 
 const labels = [
-    "Computer Science",
-    "Medicine",
-    "Chemistry",
-    "Biology",
-    "Material Science",
-    "Physics",
-    "Geology",
-    "Psychology",
-    "Art",
-    "History",
-    "Sociology",
-    "Business",
-    "Political Science",
-    "Economy",
-    "Philosophy",
-    "Mathematics",
-    "Engineering",
-    "Environmental Science"
+    "Humanities" ,
+    "Social Sciences",
+    "Natural Sciences",
+    "Formal Sciences",
+    "Applied Sciences"
 ]
 
 function getChartData(labels) {
@@ -101,8 +83,8 @@ function getChartData(labels) {
                 </div>
                 <div class="Impact__Row__Block">
                     <p>The most notable of which was</p>
-                    <div class="Row__PaperTitle" style="font-size:<%- setFontSize(mostNotableTitle) %>"><%- pp.papers[0].title %></div>
-                    <p>from <%- getJournal(pp.papers[0]) %></p>
+                    <div class="Row__PaperTitle" style="font-size:<%- setFontSize(mostNotableTitle) %>"><%- mostNotableTitle %></div>
+                    <p>from <%- mostNotableJournal %></p>
                 </div>
             </div>
         </div>
