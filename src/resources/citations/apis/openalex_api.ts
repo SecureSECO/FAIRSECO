@@ -26,24 +26,24 @@ export async function openAlexCitations(
     firstRefTitles: string[]
 ): Promise<Paper[]> {
     // Find the OpenAlex paper IDs of the input
-    let paperIds: string[] = [];
+    let paperIDs: string[] = [];
     if (firstRefTitles.length === 0) {
-        // No reference titles given: find reference titles and their paper IDs
-        paperIds = await getReferencePapers(authors, title);
+        // No reference titles given: find reference papers and their paper IDs
+        paperIDs = await getReferencePapers(authors, title);
     } else {
         // Reference titles given: get their paper IDs
         for (const title of firstRefTitles) {
-            const id = await getOpenAlexPaperId(title);
+            const id = await getOpenAlexPaperID(title);
             if (id !== undefined) {
-                paperIds.push(id);
+                paperIDs.push(id);
             }
         }
     }
 
     // Find papers citing the given papers
     let output: Paper[] = [];
-    for (const paperId of paperIds) {
-        output = output.concat(await getCitationPapers(paperId));
+    for (const paperID of paperIDs) {
+        output = output.concat(await getCitationPapers(paperID));
     }
 
     return output;
@@ -94,23 +94,23 @@ export async function getCitationPapers(paperID: string): Promise<Paper[]> {
             pageCursor = responseJSON.meta.next_cursor;
         }
         
-        // Extract data from the works that cite the paper
-        // data is formatted as Paper objects
-        for (const element of outputJSON) {
-            const title = element.title;
-            const year = element.publication_year;
-            const journal = element.host_venue.publisher ?? "";
-            const numberOfCitations = element.cited_by_count;
-            const url = element.open_access.oa_status === "closed" ? element.id : element.open_access.oa_url;
+        // Extract data from the works that cite the paper,
+        // data is represented as Paper objects
+        for (const openAlexPaper of outputJSON) {
+            const title = openAlexPaper.title;
+            const year = openAlexPaper.publication_year;
+            const journal = openAlexPaper.host_venue.publisher ?? "";
+            const numberOfCitations = openAlexPaper.cited_by_count;
+            const url = openAlexPaper.open_access.oa_status === "closed" ? openAlexPaper.id : openAlexPaper.open_access.oa_url;
 
             // Get paper id (doi, pmid, or pmcid)
-            let DOI = "";
+            let doi = "";
             let pmid = "";
             let pmcid = "";
-            for (const [key, value] of Object.entries(element.ids)) {
+            for (const [key, value] of Object.entries(openAlexPaper.ids)) {
                 switch (key) {
                     case "doi":
-                        DOI = String(value);
+                        doi = String(value);
                         break;
                     case "pmid":
                         pmid = String(value);
@@ -120,13 +120,13 @@ export async function getCitationPapers(paperID: string): Promise<Paper[]> {
                         break;
                 }
             }
-            DOI = DOI.slice(16);
+            doi = doi.slice(16);
             pmid = pmid.slice(32);
             pmcid = pmcid.slice(32);
 
             // Get fields
             const fields: string[] = [];
-            for (const concept of element.concepts) {
+            for (const concept of openAlexPaper.concepts) {
                 // Add the concept as a field if it's top-level and if it applies strongly enough to this paper
                 if (concept.level === 0 && concept.score > 0.2) {
                     fields.push(concept.display_name);
@@ -135,7 +135,7 @@ export async function getCitationPapers(paperID: string): Promise<Paper[]> {
 
             // Get authors
             const authors: Author[] = [];
-            for (const authorship of element.authorships) {
+            for (const authorship of openAlexPaper.authorships) {
                 authors.push(
                     new Author(
                         authorship.author.display_name,
@@ -144,10 +144,10 @@ export async function getCitationPapers(paperID: string): Promise<Paper[]> {
                 );
             };
 
-            // Add the data to the results
+            // Add the paper data to the results
             const paper = new Paper(
                 title,
-                DOI,
+                doi,
                 pmid,
                 pmcid,
                 year,
@@ -164,7 +164,7 @@ export async function getCitationPapers(paperID: string): Promise<Paper[]> {
         return output;
     } catch (error) {
         LogMessage(
-            "Error while searching OpenAlex with OpenAlex paper " + paperID + ":\n" + (error.message as string),
+            "Error while searching OpenAlex paper " + paperID + ":\n" + (error.message as string),
             ErrorLevel.err
         );
 
@@ -193,7 +193,7 @@ export async function getReferencePapers(
     const papersPerAuthor: Map<Author, any[]> = new Map();
     for (const author of authors) {
         let papers: any[] = [];
-        
+
         try {
             // Query first author on OpenAlex with the author's name
             // https://docs.openalex.org/api-entities/authors/author-object
@@ -224,6 +224,8 @@ export async function getReferencePapers(
                     }
                 );
                 const responseJSON = await response.json();
+
+                // Add results to papers
                 if (responseJSON.results !== undefined) {
                     papers = papers.concat(responseJSON.results);
                 }
@@ -242,9 +244,9 @@ export async function getReferencePapers(
         
         // Add all works from author that include the title of the given paper
         const papersFiltered: any[] = [];
-        for (const element of papers){
-            if ((element.title as string).toLowerCase().includes(title.toLowerCase())) {
-                papersFiltered.push(element);
+        for (const p of papers){
+            if ((p.title as string).toLowerCase().includes(title.toLowerCase())) {
+                papersFiltered.push(p);
             }
         }
         
@@ -268,8 +270,7 @@ export async function getReferencePapers(
                         paper.title,
                         1,
                         paper.cited_by_count,
-                        paper.host_venue,
-                        1
+                        paper.host_venue
                     )
                 );
             }
@@ -288,7 +289,7 @@ export async function getReferencePapers(
  *
  * @returns The [OpenAlex ID](https://docs.openalex.org/api-entities/works/work-object#id) of the paper, or undefined if it could not be found.
  */
-export async function getOpenAlexPaperId(title: string): Promise<string | undefined> {
+export async function getOpenAlexPaperID(title: string): Promise<string | undefined> {
     // Query strings for searching the paper
     const apiURL = "https://api.openalex.org/";
     const searchQuery = "works?search=";
@@ -301,6 +302,7 @@ export async function getOpenAlexPaperId(title: string): Promise<string | undefi
         });
         const outputJSON = await response.json();
 
+        // Get and return the paper ID
         if (outputJSON.results[0].id === undefined) {
             throw new Error("No result");
         }

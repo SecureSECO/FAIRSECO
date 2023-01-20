@@ -4,57 +4,57 @@ return x ? '<p><i class="fa-solid fa-check"></i></p>' : '<p><i class="fa-solid f
 }
 %>
 
-<div class="HowFairIsReport">
-    <h1 class="HowFairIsReportTitle">FAIRness Report</h1>
+<div class="fairtallyReport">
+    <h1 class="fairtallyReportTitle">FAIRness Report</h1>
     <div class="stars">
         <h2>
-        <% for (let i = 0; i < Math.floor(howfairis.count); i++) { %>
+        <% for (let i = 0; i < Math.floor(fairtally.count); i++) { %>
             <i class="fa-solid fa-star"></i>
         <% } %>
-        <% if (howfairis.count % 1 > 0) {%>
+        <% if (fairtally.count % 1 > 0) {%>
             <i class="fa-solid fa-star-half-stroke"></i>
         <%}%> 
-        <% for (let i = 0; i < (5 - Math.ceil(howfairis.count)); i++) { %>
+        <% for (let i = 0; i < (5 - Math.ceil(fairtally.count)); i++) { %>
             <i class="fa-regular fa-star"></i>
         <% } %>
 
         </h2>
         <h2>
-        <%= `${howfairis.count} / 5` %>
+        <%= `${fairtally.count} / 5` %>
         </h2>
     </div>
         <div class="ChecklistContainer">
             <div onClick="togglePanel(this)">
-                <p><i class="fa-solid fa-arrow-up-from-bracket"></i> Passed registry</p> <%- checkOrCross(howfairis.registry)%>
+                <p><i class="fa-solid fa-arrow-up-from-bracket"></i> Passed registry</p> <%- checkOrCross(fairtally.registry)%>
             </div>
             <div>
                 Whether your software is registered in a public registry, so that it is easily <b>F</b>indable.
                 <a href="https://fair-software.eu/recommendations/registry" target="_blank">Read more</a>
             </div>
             <div onClick="togglePanel(this)">
-                <p><i class="fa-solid fa-code-fork"></i> Passed repository</p><%- checkOrCross(howfairis.repository)%>
+                <p><i class="fa-solid fa-code-fork"></i> Passed repository</p><%- checkOrCross(fairtally.repository)%>
             </div>
             <div>
                 Whether your repository is public, so that your software is <b>A</b>ccessible.
                 <a href="https://fair-software.eu/recommendations/repository" target="_blank">Read more</a>
             </div>
             <div onClick="togglePanel(this)">
-                <p><i class="fa-solid fa-list-check"></i> Passed checklist</p> <%- checkOrCross(howfairis.checklist)%>
+                <p><i class="fa-solid fa-list-check"></i> Passed checklist</p> <%- checkOrCross(fairtally.checklist)%>
             </div>
             <div>
                 Whether you have used a software quality checklist, so that your software is <b>I</b>nteroperable.
                 <a href="https://fair-software.eu/recommendations/checklist" target="_blank">Read more</a>
             </div>
             <div onClick="togglePanel(this)">
-                <p><i class="fa-solid fa-quote-right"></i> Passed citation</p> <%- checkOrCross(howfairis.citation)%>
+                <p><i class="fa-solid fa-quote-right"></i> Passed citation</p> <%- checkOrCross(fairtally.citation)%>
             </div>
             <div>
                 Whether your repository contains a citation file, so that your software is <b>R</b>eusable.
                 <a href="https://fair-software.eu/recommendations/citation" target="_blank">Read more</a>
-                <%- howfairis.citation ? '' : ' <button onClick="createCreateCffTab()">Create citation.cff file</button>' %>
+                <%- fairtally.citation ? '' : ' <button onClick="createCreateCffTab()">Create citation.cff file</button>' %>
             </div>
             <div onClick="togglePanel(this)">
-                <p><i class="fa-solid fa-copyright"></i> Passed license</p> <%- checkOrCross(howfairis.license)%>
+                <p><i class="fa-solid fa-copyright"></i> Passed license</p> <%- checkOrCross(fairtally.license)%>
             </div>
             <div>
                 Whether you have a license file in your repository, so that your software is correctly <b>R</b>euasable.
@@ -64,18 +64,18 @@ return x ? '<p><i class="fa-solid fa-check"></i></p>' : '<p><i class="fa-solid f
 </div>
 
 <style>
-    .HowFairIsReport {
+    .fairtallyReport {
         color: #0C281E;
         font-size: 1vw;
         display: block;
     }
 
-    .HowFairIsReport h1 {
+    .fairtallyReport h1 {
         color: #0C281E;
         text-align: center;
     }
 
-    .HowFairIsReport h2 {
+    .fairtallyReport h2 {
         text-align: center;
     }
 

@@ -13,7 +13,7 @@
 import * as tortellini from "./resources/tortellini";
 import * as fairtally from "./resources/fairtally";
 import * as searchSECO from "./resources/searchseco";
-import * as citingPapers from "./resources/citations/citingPapers";
+import * as citingPapers from "./resources/citations/citing_papers";
 import * as citationcff from "./resources/citation_cff";
 import * as sbom from "./resources/sbom";
 import * as qualityMetrics from "./resources/qualitymetrics";

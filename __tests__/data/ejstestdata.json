@@ -7952,7 +7952,7 @@
       }
     },
     {
-      "ModuleName": "HowFairIs",
+      "ModuleName": "fairtally",
       "Data": [
         {
           "badge": "https://img.shields.io/badge/fair--software.eu-%E2%97%8B%20%20%E2%97%8B%20%20%E2%97%8B%20%20%E2%97%8B%20%20%E2%97%8B-red",
@@ -8092,7 +8092,7 @@
       }
     },
     {
-      "ModuleName": "citingPapers",
+      "ModuleName": "CitingPapers",
       "Data": {
         "papers" : [
             {

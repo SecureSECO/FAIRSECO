@@ -3,13 +3,13 @@ import * as art from "../../src/resources/helperfunctions/artifact"
 import { expect, test } from "@jest/globals";
 
 import YAML from "yaml";
-import * as input from "../../src/resources/tortellini-input";
+import * as input from "../../src/resources/tortellini_input";
 
 test("Data is filtered and correctly used in runModule", correctData)
 
-jest.mock("../../src/resources/tortellini-input", () => {
+jest.mock("../../src/resources/tortellini_input", () => {
     const actualModule = jest.requireActual(
-        "../../src/resources/tortellini-input"
+        "../../src/resources/tortellini_input"
     );
 
     // This code runs before modules are loaded so load the artifact module here
@@ -19,7 +19,7 @@ jest.mock("../../src/resources/tortellini-input", () => {
         __esModule: true,
         ...actualModule,
         artifactObject: art.testArtifactObject, // Unit testing artifact object
-        destination: "__tests__/unit_tests/.tortellini-unit-test",
+        destination: "__tests__/unit_tests/.tortellini_unit_test",
     };
 });
 
@@ -31,12 +31,6 @@ async function correctData(): Promise<void>{
     return expect(TortResultDirect).toMatchObject(await TortResulWithFiltering);
 }
 
-/**
- * Downloads the artifact that was uploaded by Tortellini, and parses the YAML file.
- *
- * @param fileName Name of the file that should be retrieved from the artifact
- * @returns A {@link action.ReturnObject} containing the relevant data from the YAML file given by Tortellini
- */
  async function runModuleWithoutFiltering(
     fileName: string = "correct.yml"
 ): Promise<any> {
@@ -46,10 +40,11 @@ async function correctData(): Promise<void>{
         input.artifactObject
     );
 
-    const fileContents = await art.getFileFromArtifact(downloadResponse, fileName);
+    const fileContents = art.getFileFromArtifact(downloadResponse, fileName);
 
-    if (fileContents === "")
-        return {};
+    if (fileContents === "") {
+        throw new Error("Tortellini artifact file appears to be empty.");
+    }
 
     const obj = YAML.parse(fileContents);
 
