@@ -7,7 +7,6 @@ function getNumberOfFields() {
     return (pp.uniqueFields.filter(x => x !== "Unknown")).length.toString();
 }
 
-const mostNotableTitle = pp.papers[0].title;
 const mostNotablePaper = pp.papers.sort((a, b) => a.numberOfCitations > b.numberOfCitations)[0];
 const mostNotableTitle = mostNotablePaper.title;
 const mostNotableJournal = mostNotablePaper.journal;
