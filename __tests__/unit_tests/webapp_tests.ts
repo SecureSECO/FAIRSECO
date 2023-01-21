@@ -4,7 +4,7 @@ import { WriteHTML } from "../../src/webapp";
 import {ReturnObject} from '../../src/getdata'
 import testData from '../data/ejstestdata.json'
 
-describe('Index.html is still generated with', () => {
+describe('WriteHTML still generates files with', () => {
     // Collect all the returnnames from our test data into an array, so we can test these objects being ommitted
     const returnNames : String[] = [];
     testData.data.forEach((obj) => returnNames.push(obj.ReturnName));
