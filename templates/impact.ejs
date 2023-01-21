@@ -54,15 +54,11 @@ function getChartData() {
 
     const disc = pp.disciplines;
 
-    console.log(JSON.stringify(pp));
-
     data.push(disc["Humanities"] ?? 0);
     data.push(disc["Social Sciences"] ?? 0);
     data.push(disc["Natural Sciences"] ?? 0);
     data.push(disc["Formal Sciences"] ?? 0);
     data.push(disc["Applied Sciences"] ?? 0);
-
-    console.log(JSON.stringify(data));
 
     return data;
 }

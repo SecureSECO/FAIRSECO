@@ -1,33 +1,26 @@
 <%
     const count = history.length;
     
+    // Latest data: date
     const date = history[count- 1].date;
 
+    // Latest data: stats
     const quality = history[count - 1].quality;
     const citations = history[count - 1].citations;
     const fairness = history[count - 1].fairness;
     const matches = history[count - 1].matches;
 
+    // Stats change since last time
     const qualityChange = count <= 1 ? quality : quality - history[count - 2].quality;
     const citationsChange = count <= 1 ? citations : citations - history[count - 2].citations;
     const fairnessChange = count <= 1 ? fairness : fairness - history[count - 2].fairness;
     const matchesChange = count <= 1 ? matches : matches - history[count - 2].matches;
 
+    // Formats a change number (with leading + if it's positive)
     function showChange(change) {
         return change >= 0 ? "+" + change : change;
     }
 
-    function maxStep(value, stepSize) {
-        return Math.ceil(value / stepSize) * stepSize;
-    }
-
-    function minStep(value, stepSize, max) {
-        if (max / stepSize <= 5) {
-            return 0;
-        } else {
-            return Math.floor(value / stepSize) * stepSize;
-        }
-    }
 %>
 
 <div class="ImpactHistory" hidden>
