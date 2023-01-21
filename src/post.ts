@@ -26,7 +26,7 @@ export async function post(result: ReturnObject[]): Promise<void> {
 
 // Generate the report of FAIRSECO
 function createReport(result: ReturnObject[]): void {
-    LogMessage("FAIRSECO report:\n" + result.toString(), ErrorLevel.info);
+    LogMessage("FAIRSECO report:\n" + JSON.stringify(result), ErrorLevel.info);
 
     try {
         fs.writeFileSync("./.FAIRSECO/report.yml", YAML.stringify(result));
