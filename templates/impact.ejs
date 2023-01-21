@@ -13,27 +13,27 @@ const mostNotableJournal = mostNotablePaper.journal;
 
 const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 
-function setFontSize(text){
+function setFontSize(text) {
     return clamp(35/text.length, 0.8, 2).toString() + "rem";
 }
 
 const uniqueProjects = getProjects();
 
 function getProjects() {
-    let uniqueProjects = [];
-    for(const method of ss.methods){
-        for(const match of method.matches){
-            uniqueProjects.push({project: match.data.project, authors: match.data.authors});
+    let uniqueProjects = new Set();
+    for(const method of ss.methods) {
+        for(const match of method.matches) {
+            uniqueProjects.add({project: match.data.project, authors: match.data.authors});
         }
     }
 
-    return uniqueProjects;
+    return Array.from(uniqueProjects.values());
 }
 
-function getAuthors(proj){
+function getAuthors(proj) {
     let authors = "";
 
-    for (let i = 0; i < proj.authors.length; i++){
+    for (let i = 0; i < proj.authors.length; i++) {
         if (i === proj.authors.length - 1) authors += proj.authors[i];
         else authors += proj.authors[i] + ", ";
     }
@@ -54,11 +54,11 @@ function getChartData() {
 
     const disc = pp.disciplines;
 
-    data.push(disc["Humanities"] || 0);
-    data.push(disc["Social Sciences"] || 0);
-    data.push(disc["Natural Sciences"] || 0);
-    data.push(disc["Formal Sciences"] || 0);
-    data.push(disc["Applied Sciences"] || 0);
+    data.push(disc["Humanities"] ?? 0);
+    data.push(disc["Social Sciences"] ?? 0);
+    data.push(disc["Natural Sciences"] ?? 0);
+    data.push(disc["Formal Sciences"] ?? 0);
+    data.push(disc["Applied Sciences"] ?? 0);
 
     return data;
 }
