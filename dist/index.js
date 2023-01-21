@@ -20966,7 +20966,6 @@ function getMaintainabilityScore(issues) {
         if (issue.closed_at)
             closed++;
     }
-    console.log(JSON.stringify(issues));
     // Return score as percentage of closed issues
     return total > 0 ? Math.round((100 * closed) / total) : 100;
 }
@@ -21006,10 +21005,10 @@ function hasDocumentationDir() {
 }
 exports.hasDocumentationDir = hasDocumentationDir;
 /**
- * Gets issues of the current repository from GitHub.
+ * Gets issues (excluding pull requests) of the current repository from GitHub.
  *
  * @param ghInfo Information about the GitHub repository.
- * @returns Array of issue objects.
+ * @returns An array of GitHub issue objects.
  */
 function getIssues(ghInfo) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -21027,7 +21026,8 @@ function getIssues(ghInfo) {
                 owner: ghInfo.Owner,
                 repo: ghInfo.Repo,
             });
-            return response.data;
+            // Filter out pull requests and return the issues
+            return response.data.filter((issue) => issue.pull_request === undefined);
         }
         catch (error) {
             throw new Error("Error getting issues: " + error.message);
