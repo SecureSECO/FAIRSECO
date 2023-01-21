@@ -20470,10 +20470,11 @@ class Citations {
      * @returns An object containing citation information.
      */
     constructor(papers) {
+        var _a;
         let firstYear = Number.MAX_SAFE_INTEGER;
         let secondHandCitations = 0;
         const uniqueFields = new Set();
-        const disciplines = new Map();
+        let disciplines = {};
         for (const paper of papers) {
             // Find year of oldest paper
             firstYear = Math.min(firstYear, paper.year);
@@ -20485,12 +20486,8 @@ class Citations {
             }
             ;
             // Count the disciplines of all papers
-            if (disciplines.has(paper.discipline)) {
-                disciplines.set(paper.discipline, disciplines.get(paper.discipline) + 1);
-            }
-            else {
-                disciplines.set(paper.discipline, 1);
-            }
+            const disciplineCounter = (_a = disciplines[paper.discipline]) !== null && _a !== void 0 ? _a : 0;
+            disciplines[paper.discipline] = disciplineCounter + 1;
         }
         ;
         this.papers = papers;
