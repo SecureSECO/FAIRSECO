@@ -19277,7 +19277,7 @@ function post(result) {
 exports.post = post;
 // Generate the report of FAIRSECO
 function createReport(result) {
-    (0, log_1.LogMessage)("FAIRSECO report:\n" + result.toString(), log_1.ErrorLevel.info);
+    (0, log_1.LogMessage)("FAIRSECO report:\n" + JSON.stringify(result), log_1.ErrorLevel.info);
     try {
         fs_1.default.writeFileSync("./.FAIRSECO/report.yml", yaml_1.default.stringify(result));
         (0, log_1.LogMessage)("Successfully wrote YML file to dir.", log_1.ErrorLevel.info);
@@ -21664,7 +21664,6 @@ const ejs_1 = __importDefault(__nccwpck_require__(8431));
  */
 function WriteHTML(data, filePath) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log(JSON.stringify(data));
         const template = yield ejs_1.default.renderFile("./templates/index.ejs", { data });
         const app = template.replace("{{node inserts the data here}}", JSON.stringify(data));
         yield fs.promises.writeFile(filePath, app, "utf8");
