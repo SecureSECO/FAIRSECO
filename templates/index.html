@@ -11033,23 +11033,7 @@ function clickNav(ele) {
     
 </table>
 </div>
-<button type="button" class="citationgraphBtn" onclick="location.href='citationgraph.html';">Citationsgraph View</button>
 <style>
-     .citationgraphBtn{
-        position: fixed;
-        z-index: 1;
-        color: #0C281E;
-        border-radius: 8px;
-        width: 10.5vw;
-        height: 2vw;
-        color: #D9F8DF;
-        background-color: #779C7E;
-        border: none;
-        font-size: 1vw;
-        margin-top: -3.5vw;
-        margin-left: 38vw;
-    }
-
     .CitationsContainer {
         max-height: 78%;
          overflow-y: scroll;
@@ -24011,6 +23995,10 @@ function expandItem(ele){
 </div>
 
 <style>
+.SBOMContainer .citationgraphBtn{
+    display:none;
+}
+
 .SBOMContainer{
     padding: 16px;
     overflow-y: scroll;
@@ -24457,11 +24445,12 @@ flex-direction: row;
     }
 </script>
 
-    <div class="footer">
+    <div class="footer">  
+    <button class="citationgraphBtn" onclick="location.href='citationgraph.html';">Citationsgraph View</button>
     <p>Tool developed by students of Utrecht University, <br>
         in collaboration with the Netherlands eScience Center <br>
         ⓒ 2022
-        </p>
+     </p>   
 </div>
 
 <style>
@@ -24476,14 +24465,30 @@ flex-direction: row;
         margin: auto;
         width: 100%;
     }
+
+    .footer .citationgraphBtn{
+        z-index: 1;
+        border-radius: 12px;
+        width: 11.5vw;
+        height: 4vh;
+        color: #d9f8df;
+        background-color: transparent;
+        border: 2px solid #d9f8df;
+        font-size: 1.1rem;
+        float: right;
+        margin-right: 24px;
+        margin-top: 16px;
+    }
+
+    .footer .citationgraphBtn:hover{
+    background-color: #d9f8df;
+       color: #0c281e;
+    }    
 </style>
 
 </div>
 
 <style>
-    .citationgraphbutton .citationgraphBtn{
-        display: none;
-    }
 
     .LeftPane {
         width: 50vw;

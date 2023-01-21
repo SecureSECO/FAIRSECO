@@ -4,8 +4,8 @@
         <h2 class="Tagline">FAIR is fair.</h2>
     </div>
     <div class="Buttons">
-        <button type="button" id="backBtn" onclick="location.href='index.html';"><i class="arrow left"></i></button>
-        <button type="button" id="helpBtn"><i class="questionmark">&#63</i></button>
+        <button class="citationgraphBtn" id="backBtn" onclick="location.href='index.html';"><i class="arrow left"></i></button>
+        <button class="citationgraphBtn" id="helpBtn"><i class="questionmark">&#63</i></button>
     </div>
     <div class="Citationgraph">
         <h1 class="Title"><i class="fa-solid fa-scale-balanced"></i>Citations Graph View</h1>
@@ -53,10 +53,10 @@
     }
 
     .arrow {
-    border: solid rgba(15, 45, 30, 0.82);
-    border-width: 0 3px 3px 0;
+    border: solid;
+    border-width: 0 5px 5px 0;
     display: inline-block;
-    padding: 3px;
+    padding: 5px;
     }
 
     .left {
@@ -65,11 +65,10 @@
     }
 
     .questionmark{
-        color: rgba(15, 45, 30, 0.82);
         display: inline-block;
-        padding: 3px;
+        padding: 1px;
         font-weight: 800;
-        font-size: 1rem;
+        font-size: 1.5rem;
     }
 
     .LeftPane {
@@ -109,21 +108,21 @@
     .LeftPane .Buttons{
         padding:8px;
         margin-left: 0 8px;
+        /* color: #000; Fallback for older browsers */
+        color: #3A5347
     }
 
-    .LeftPane .Buttons button{
-        color: #0C281E;
+    .LeftPane .Buttons .citationgraphBtn{
         border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        color: rgba(15, 45, 30, 0.82);
+        width: 33px;
+        height: 33px;
         background-color: #779C7E;
         border: none;
-
+        color: #3A5347;
     }
 
-    .LeftPane .Buttons button:hover{
-        /* color:#0c281e; */
+    .LeftPane .Buttons .citationgraphBtn:hover{
+        background-color: #d9f8df;
     }
     
 
@@ -196,7 +195,6 @@
     }
 
     .listedPaper {
-        /* display: inline-flexbox; */
         display: flex;
         flex-direction: row;
         justify-content: space-between;
