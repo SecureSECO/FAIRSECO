@@ -21020,7 +21020,8 @@ function getIssues(ghInfo) {
         catch (error) {
             throw new Error("Error while contacting Octokit API: " + error.message);
         }
-        // Request issues of the repo
+        // Request issues of the repo (pull requests are also counted as issues)
+        // https://docs.github.com/en/rest/issues/issues#list-repository-issues
         try {
             const response = yield octokit.request("GET /repos/" + ghInfo.Owner + "/" + ghInfo.Repo + "/issues", {
                 owner: ghInfo.Owner,
