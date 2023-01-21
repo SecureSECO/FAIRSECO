@@ -27,7 +27,7 @@ export interface QualityMetrics {
     /** The license score based on license violations 0-100. */
     licenseScore: number;
     
-    /** The maintability score, percentage of solved issues 0-100. */
+    /** The maintainability score, percentage of solved issues 0-100. */
     maintainabilityScore: number;
     
     /** The documentation score 0-100, based on presence of documentation. */
