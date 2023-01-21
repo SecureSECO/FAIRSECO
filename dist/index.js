@@ -20966,6 +20966,7 @@ function getMaintainabilityScore(issues) {
         if (issue.closed_at)
             closed++;
     }
+    console.log(JSON.stringify(issues));
     // Return score as percentage of closed issues
     return total > 0 ? Math.round((100 * closed) / total) : 100;
 }
