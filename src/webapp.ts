@@ -28,7 +28,7 @@ export async function WriteHTML(
     );
 
     await fs.promises.writeFile(filePath, app, "utf8");
-    await fs.promises.writeFile("./.fairSECO/citationgraph.html", template2, "utf8");
+    await fs.promises.writeFile("./.FairSECO/citationgraph.html", template2, "utf8");
 }
 
 /**
