@@ -19,7 +19,6 @@ export async function WriteHTML(
     data: ReturnObject[],
     filePath: string
 ): Promise<void> {
-    console.log(JSON.stringify(data));
     const template = await ejs.renderFile("./templates/index.ejs", { data });
     const app = template.replace(
         "{{node inserts the data here}}",
