@@ -259,7 +259,7 @@ export class Citations {
     firstYear: number;
     firstHandCitations: number;
     secondHandCitations: number;
-    disciplines: Map<Discipline, number>;
+    disciplines: {[index: string]: number};
 
     /** 
      * Analyzes metadata of citing papers and constructs the object containing this information.
@@ -272,7 +272,7 @@ export class Citations {
         
         let secondHandCitations = 0;
         const uniqueFields: Set<Field> = new Set();
-        const disciplines: Map<Discipline, number> = new Map();
+        let disciplines: {[index: string]: number} = {};
 
         for (const paper of papers) {
             // Find year of oldest paper
@@ -287,14 +287,8 @@ export class Citations {
             };
 
             // Count the disciplines of all papers
-            if (disciplines.has(paper.discipline)) {
-                disciplines.set(
-                    paper.discipline,
-                    (disciplines.get(paper.discipline) as number) + 1
-                );
-            } else {
-                disciplines.set(paper.discipline, 1);
-            }
+            const disciplineCounter = disciplines[paper.discipline as string] ?? 0 as number;
+            disciplines[paper.discipline as string] = disciplineCounter + 1;
         };
         
         this.papers = papers;
