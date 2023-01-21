@@ -287,8 +287,8 @@ export class Citations {
             };
 
             // Count the disciplines of all papers
-            const disciplineCounter = disciplines[paper.discipline as string] ?? 0 as number;
-            disciplines[paper.discipline as string] = disciplineCounter + 1;
+            const disciplineCounter = disciplines[paper.discipline] ?? 0 as number;
+            disciplines[paper.discipline] = disciplineCounter + 1;
         };
         
         this.papers = papers;
