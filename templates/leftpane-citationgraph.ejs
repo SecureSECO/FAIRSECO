@@ -10,6 +10,7 @@
     <div class="Citationgraph">
         <h1 class="Title"><i class="fa-solid fa-scale-balanced"></i>Citations Graph View</h1>
     </div> 
+    <div class="border"></div>
     <div class="HelpInfo">
         <h1>Welcome.</h1>
         This graph shows an overview of all the papers citing this project (small nodes) and their corresponding fields (large nodes).
@@ -28,7 +29,7 @@
 
         </ul>
         If you wish to see this information again later, press the question mark button at the top of the green section, or reload the page.
-        <br> Press the back (left arrow) button to go back to the main FAIRSECO page
+        <br> Press the back (left arrow) button to go back to the main FAIRSECO page.
     </div>
     <div class="CitationgraphInfo">
         <% const citations = data.find((ele) => (ele.ReturnName === "citingPapers"))?.ReturnData.papers; %>
@@ -109,7 +110,8 @@
         padding:8px;
         margin-left: 0 8px;
         /* color: #000; Fallback for older browsers */
-        color: #3A5347
+        color: #3A5347;
+        margin-left: 10px;
     }
 
     .LeftPane .Buttons .citationgraphBtn{
@@ -130,11 +132,18 @@
         padding: 8px;
     }
 
+    .LeftPane .border {
+        padding: 8px;
+        border-bottom: 3px #779C7E solid;
+        margin-left: 40px;
+        margin-right: 40px;
+    }
+
     .LeftPane .Citationgraph .Title {
         text-align: center;
         color: #d9f8df;
         margin: 0 8px;
-        font-style: italic;
+        font-size: 2.2rem;
     }
     
     .LeftPane .CitationgraphInfo {
@@ -143,6 +152,8 @@
         justify-content: start;
         align-items: center;
         padding: 8px;
+        margin-left: 30px;
+        margin-right: 30px;
     }
 
     .LeftPane .HelpInfo {
@@ -151,7 +162,8 @@
         color:  #d9f8df;
         font-family: 'Literata', serif ;
         padding: 8px;
-        margin: 0 8px;
+        margin-left: 30px;
+        margin-right: 30px;
         list-style-type: none;
         display: "";
     }
