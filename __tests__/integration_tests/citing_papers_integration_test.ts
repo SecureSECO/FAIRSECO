@@ -50,7 +50,7 @@ async function runCitingPapersIntegration(): Promise<void>{
     await semanticScholarCitations(authors, title, refTitles).then(async (outData1) => {
         await openAlexCitations(authors, title, refTitles).then(async (outData2) => {
             output1 = mergeDuplicates(outData1, outData2);
-            await runModule([cffFile]).then((outDataReal) => {
+            await runModule(cffFile).then((outDataReal) => {
                 const output2 = new Citations(output1);
                 expect(output2).toMatchObject(outDataReal);    
             })

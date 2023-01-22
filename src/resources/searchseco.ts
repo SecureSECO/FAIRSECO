@@ -23,15 +23,10 @@ export const ModuleName = "SearchSECO";
  * This function first runs the SearchSECO Docker and listens to stdout for its output.
  * Then, it tries to parse whatever SearchSECO returned into an {@link Output} object.
  *
- * @param params The parameters passed by getData. It should contain a `GitHubInfo` object with Information about the GitHub repository.
+ * @param ghInfo Information about the GitHub repository.
  * @returns The object constructed from SearchSECO's output.
  */
-export async function runModule(params: any[]): Promise<Output> {
-    if (params.length < 1)
-        throw new Error("Too few arguments passed to " + ModuleName + "'s runModule function");
-
-    const ghInfo = params[0] as GitHubInfo;
-
+export async function runModule(ghInfo: GitHubInfo): Promise<Output> {
     const gitrepo: string = ghInfo.FullURL;
     const useMock = ghInfo.Visibility !== "public";
 

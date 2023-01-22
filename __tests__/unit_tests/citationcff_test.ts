@@ -4,7 +4,7 @@ describe("Test runModule", () => {
     jest.setTimeout(60000);
     test("Correct", async () => {
         const result = await cff.runModule(
-            ["./__tests__/unit_tests/citation_files/correct"]
+            "./__tests__/unit_tests/citation_files/correct"
         );
 
         expect(result.status).toBe("valid");
@@ -19,7 +19,7 @@ describe("Test runModule", () => {
 
     test("Extra Key", async () => {
         const result = await cff.runModule(
-            ["./__tests__/unit_tests/citation_files/extra-key"]
+            "./__tests__/unit_tests/citation_files/extra-key"
         );
 
         expect(result.status).toBe("validation_error");
@@ -34,7 +34,7 @@ describe("Test runModule", () => {
 
     test("Incorrect DOI", async () => {
         const result = await cff.runModule(
-            ["./__tests__/unit_tests/citation_files/incorrect-doi"]
+            "./__tests__/unit_tests/citation_files/incorrect-doi"
         );
 
         expect(result.status).toBe("validation_error");
@@ -49,7 +49,7 @@ describe("Test runModule", () => {
 
     test("Incorrect Version", async () => {
         const result = await cff.runModule(
-            ["./__tests__/unit_tests/citation_files/incorrect-version"]
+            "./__tests__/unit_tests/citation_files/incorrect-version"
         );
 
         expect(result.status).toBe("validation_error");
@@ -64,7 +64,7 @@ describe("Test runModule", () => {
 
     test("No Authors", async () => {
         const result = await cff.runModule(
-            ["./__tests__/unit_tests/citation_files/no-authors"]
+            "./__tests__/unit_tests/citation_files/no-authors"
         );
 
         expect(result.status).toBe("validation_error");
@@ -79,7 +79,7 @@ describe("Test runModule", () => {
 
     test("No cff-version", async () => {
         const result = await cff.runModule(
-            ["./__tests__/unit_tests/citation_files/no-cff-version"]
+            "./__tests__/unit_tests/citation_files/no-cff-version"
         );
 
         expect(result.status).toBe("validation_error");
@@ -94,7 +94,7 @@ describe("Test runModule", () => {
 
     test("No message", async () => {
         const result = await cff.runModule(
-            ["./__tests__/unit_tests/citation_files/no-message"]
+            "./__tests__/unit_tests/citation_files/no-message"
         );
 
         expect(result.status).toBe("validation_error");
@@ -109,7 +109,7 @@ describe("Test runModule", () => {
 
     test("Missing File", async () => {
         const result = await cff.runModule(
-            ["./__tests__/unit_tests/citation_files/missing-file"]
+            "./__tests__/unit_tests/citation_files/missing-file"
         );
 
         expect(result.status).toBe("missing_file");
@@ -117,7 +117,7 @@ describe("Test runModule", () => {
 
     test("Incorrect YAML", async () => {
         const result = await cff.runModule(
-            ["./__tests__/unit_tests/citation_files/incorrect-yaml"]
+            "./__tests__/unit_tests/citation_files/incorrect-yaml"
         );
 
         expect(result.status).toBe("incorrect_yaml");

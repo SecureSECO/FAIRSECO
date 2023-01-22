@@ -57,15 +57,10 @@ export interface ValidationErrorCffObject {
 /**
  * Reads a CITATION.cff file.
  * 
- * @param params The parameters passed by getData. It should contain the path to the directory the CITATION.cff file is in.
+ * @param path Specifies the path to the directory the CITATION.cff file is in.
  * @returns An object containing the data from/about the CITATION.cff file.
  */
-export async function runModule(params: any[] = ["."]): Promise<CffObject> {
-    if (params.length < 1)
-        throw new Error("Too few arguments passed to " + ModuleName + "'s runModule function");
-
-    const path = params[0] as string;
-
+export async function runModule(path: string = "."): Promise<CffObject> {
     let file: Buffer;
 
     // Read the CITATION.cff file

@@ -49,7 +49,7 @@ test("Check if a file can be retrieved with the downloadResponse", async () => {
 
 describe("Test runModule", () => {
     test("Correct Input", async () => {
-        const data = await tort.runModule(["correct.yml"]);
+        const data = await tort.runModule("correct.yml");
 
         expect(data).toHaveProperty("project");
         const proj = data.project;
@@ -80,7 +80,7 @@ describe("Test runModule", () => {
     });
 
     test("No Packages", async () => {
-        const data = await tort.runModule(["no-packages.yml"]);
+        const data = await tort.runModule("no-packages.yml");
 
         expect(data).toHaveProperty("project");
         const proj = data.project;
@@ -105,7 +105,7 @@ describe("Test runModule", () => {
     });
 
     test("No Violations", async () => {
-        const data = await tort.runModule(["no-violations.yml"]);
+        const data = await tort.runModule("no-violations.yml");
 
         expect(data).toHaveProperty("project");
         const proj = data.project;
@@ -129,7 +129,7 @@ describe("Test runModule", () => {
     });
 
     test("No Project Info", async () => {
-        const data = await tort.runModule(["no-project-info.yml"]);
+        const data = await tort.runModule("no-project-info.yml");
 
         expect(data).toHaveProperty("project");
         const proj = data.project;
@@ -160,7 +160,7 @@ describe("Test runModule", () => {
 
     test("Empty File", () => {
         return expect(
-            tort.runModule(["empty-file.yml"])
+            tort.runModule("empty-file.yml")
         ).rejects.toThrow();
     });
 });

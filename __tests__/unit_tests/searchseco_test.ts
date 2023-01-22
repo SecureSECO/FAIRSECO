@@ -594,7 +594,7 @@ test("Test runModule", async () => {
         Contributors: [],
     };
 
-    const result = await ss.runModule([ghInfo]);
+    const result = await ss.runModule(ghInfo);
 
     // Since the previous tests already check if the data is processed correctly,
     // we only need to check if SearchSECO gets executed at all, and if it can

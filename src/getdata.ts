@@ -56,14 +56,7 @@ export async function data(): Promise<ReturnObject[]> {
 
 async function runModule(module: any, ...parameters: any): Promise<ReturnObject | undefined> {
     try {
-        // If no parameters were passed, don't pass it on. Doing so will
-        // pass an empty array, which could cancel some modules' default parameters.
-        let resultData;
-        if (parameters.length === 0) {
-            resultData = await module.runModule();
-        } else {
-            resultData = await module.runModule(parameters);
-        }
+        const resultData = await module.runModule(...parameters);
         const result: ReturnObject = {
             ModuleName: module.ModuleName as string,
             Data: resultData,

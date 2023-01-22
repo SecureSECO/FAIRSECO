@@ -18,15 +18,10 @@ export const ModuleName = "fairtally";
  * Runs the fairtally docker image on the current repo,
  * and gives the checklist of FAIRness criteria.
  * 
- * @param params The parameters passed by getData. It should contain a `GitHubInfo` object with information about the GitHub repository.
+ * @param ghInfo Information about the GitHub repository.
  * @returns The result object from fairtally.
  */
-export async function runModule(params: any[]): Promise<any> {
-    if (params.length < 1)
-        throw new Error("Too few arguments passed to " + ModuleName + "'s runModule function");
-
-    const ghInfo = params[0] as GitHubInfo;
-
+export async function runModule(ghInfo: GitHubInfo): Promise<any> {
     const cmd = "docker";
     const args = [
         "run",
