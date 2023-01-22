@@ -17985,26 +17985,8 @@ flex-direction: row;
 
 <script>
 
-function genData(){
-    let data = [];
-    for (let i = 0; i < 18; i++){
-        if (i % 3 == 0) data.push(null);
-        else data.push(i%5 + i%2);
-    }
-
-    return data;
-}
-
-const labels = [
-    "Humanities" ,
-    "Social Sciences",
-    "Natural Sciences",
-    "Formal Sciences",
-    "Applied Sciences"
-]
-
 const data = {
-    labels: labels,
+    labels: ["Humanities", "Social Sciences", "Natural Sciences", "Formal Sciences", "Applied Sciences"],
     datasets: [
         {
             data: [0,4,39,11,81],
@@ -18013,6 +17995,7 @@ const data = {
             pointBackgroundColor: "rgb(175, 102, 186)"
         }]
 };
+
 
 const config = {
   type: 'radar',
@@ -18034,6 +18017,7 @@ const config = {
     }
   }
 };
+
 
 new Chart("Citations__RadarChart", config);
 

@@ -1,25 +1,35 @@
 <%
+// Returns the total number of citations
 function getNumberOfCitations() {
     return (pp.firstHandCitations + pp.secondHandCitations).toString();
 }
 
+// Filters out "Unknown" from the unique fields (there should be at most one),
+// and returns the length of the resulting array
 function getNumberOfFields() {
     return (pp.uniqueFields.filter(x => x !== "Unknown")).length.toString();
 }
 
+// The most notable paper is the one with the highest number of citations.
 const mostNotablePaper = pp.papers.sort((a, b) => a.numberOfCitations > b.numberOfCitations)[0];
 const mostNotableTitle = mostNotablePaper.title;
 const mostNotableJournal = mostNotablePaper.journal;
 
 const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 
+// Sets the font size based on the length of the string, to make sure the text
+// always fits on the page. This is necessary because paper titles can be very long.
 function setFontSize(text) {
     return clamp(35/text.length, 0.8, 2).toString() + "rem";
 }
 
 const uniqueProjects = getProjects();
 
+// Returns an array of objects containing titles and authors of projects
+// in which one or more matches were found by SearchSECO
 function getProjects() {
+    // Because several matches can originate from the same project,
+    // the data are added to a Set. This ensures each project occurs only once
     let uniqueProjects = new Set();
     for(const method of ss.methods) {
         for(const match of method.matches) {
@@ -30,6 +40,7 @@ function getProjects() {
     return Array.from(uniqueProjects.values());
 }
 
+// Stringifies the authors array of a project to a comma-separated list
 function getAuthors(proj) {
     let authors = "";
 
@@ -41,6 +52,7 @@ function getAuthors(proj) {
     return authors;
 }
 
+
 const labels = [
     "Humanities" ,
     "Social Sciences",
@@ -49,16 +61,33 @@ const labels = [
     "Applied Sciences"
 ]
 
+// Constructs a comma-separated list of labels,
+// to be inserted in the chart data (see the <script> block below)
+// Simply inserting the labels array directly doesn't work, because the strings
+// are inserted as plain text, not as strings.
+function getChartLabels() {
+    let result = "";
+
+    for (let i = 0; i < labels.length; i++) {
+        if (i === labels.length - 1) result += '"' + labels[i] + '"';
+        else result += '"' + labels[i] + '", ';
+    }
+
+    return result;
+}
+
+// Retrieves the number of papers associated with each discipline. The data
+// needs to be pushed in the same order as the labels above, because they need to line up.
 function getChartData() {
     const data = [];
 
     const disc = pp.disciplines;
 
-    data.push(disc["Humanities"] ?? 0);
-    data.push(disc["Social Sciences"] ?? 0);
-    data.push(disc["Natural Sciences"] ?? 0);
-    data.push(disc["Formal Sciences"] ?? 0);
-    data.push(disc["Applied Sciences"] ?? 0);
+    data.push(disc[labels[0]] ?? 0);
+    data.push(disc[labels[1]] ?? 0);
+    data.push(disc[labels[2]] ?? 0);
+    data.push(disc[labels[3]] ?? 0);
+    data.push(disc[labels[4]] ?? 0);
 
     return data;
 }
@@ -112,27 +141,9 @@ function getChartData() {
 </div>
 
 <script>
-
-function genData(){
-    let data = [];
-    for (let i = 0; i < 18; i++){
-        if (i % 3 == 0) data.push(null);
-        else data.push(i%5 + i%2);
-    }
-
-    return data;
-}
-
-const labels = [
-    "Humanities" ,
-    "Social Sciences",
-    "Natural Sciences",
-    "Formal Sciences",
-    "Applied Sciences"
-]
-
+<%# The data for the radar chart %>
 const data = {
-    labels: labels,
+    labels: [<%- getChartLabels() %>],
     datasets: [
         {
             data: [<%- getChartData() %>],
@@ -142,6 +153,11 @@ const data = {
         }]
 };
 
+<%#
+    Settings for the rdar chart
+    The settings for ticks are necessary to hide the labels on the grid.
+    Simply setting display to false doesn't work.
+%>
 const config = {
   type: 'radar',
   data: data,
@@ -163,6 +179,7 @@ const config = {
   }
 };
 
+<%# Initializes and renders the chart in the canvas with id "Citations__RadarChart" %>
 new Chart("Citations__RadarChart", config);
 
 </script>
