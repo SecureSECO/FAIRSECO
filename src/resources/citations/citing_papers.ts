@@ -17,11 +17,11 @@ export const ModuleName = "CitingPapers";
  * 
  * @param cffFile The information from the CITATION.cff file.
  * 
- * @returns An array of unique papers citing the software.
+ * @returns An object containing information about the citations.
  */
 export async function runModule(
     cffFile: CffObject | undefined 
-): Promise<any> {
+): Promise<Citations> {
     // Check cff output
     if (cffFile === undefined || cffFile.status !== "valid") {
         throw new Error("Invalid CITATION.cff file");

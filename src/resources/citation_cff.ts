@@ -1,3 +1,9 @@
+/**
+ * This module contains functions for reading and validating a CITATION.cff file.
+ * 
+ * @module
+ */
+
 import * as dockerExit from "../errorhandling/docker_exit";
 import YAML from "yaml";
 import * as path_ from "path";

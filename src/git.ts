@@ -104,9 +104,9 @@ export async function getRepoStats(
 }
 
 /**
- * Creates a `GitHubInfo` object with all data collected from the Octokit API.
+ * Creates a GitHubInfo object with all data collected from the Octokit API.
  * 
- * @returns A `GitHubInfo` object containing all data recieved from Octokit.
+ * @returns A GitHubInfo object containing all data recieved from Octokit.
  */
 export async function getGitHubInfo(): Promise<GitHubInfo> {
     const ghInfo: GitHubInfo = {

@@ -1,7 +1,7 @@
 /**
  * This module contains functions for finding papers that cite a piece of research software, making use of OpenAlex.
  * 
- * The main function to be used by other modules is {@link openAlexCitations}.
+ * The main function to be used by other modules is {@link openAlexCitations | openAlexCitations()}.
  * 
  * @module
  */

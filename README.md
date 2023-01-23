@@ -24,14 +24,15 @@
         - Open/closed GitHub issues
     - Documentation
         - Presence of documentation directory
+        - Presence of readme file
 - **SBOM** (from  [sbom-action](https://github.com/anchore/sbom-action))
     - Dependency tree
 
 <br>
 
-# How to run
+# How to Run
 
-In your Github repository, put the following workflow code in a `.yml` file in the `.github/workflows` folder:
+In your GitHub repository, put the following workflow code in a `.yml` file in the `.github/workflows` directory:
 
 ```yaml
 name: RunFAIRSECO
@@ -52,7 +53,7 @@ jobs:
                   path: .tortellini/out
             - uses: anchore/sbom-action@v0
               with:
-                  artifact-name: SBOM.spdx # Output is in JSON format
+                  artifact-name: SBOM.spdx
             - uses: QDUNI/FAIRSECO@main
             - uses: actions/upload-artifact@v3
               with:
@@ -60,10 +61,10 @@ jobs:
                   path: .FAIRSECO/
 ```
 
-The workflow creates an artifact in the folder `.FAIRSECO` containing the following files:
-- index.html
-    - Dashboard where you can see the results in a nice overview
-- Report.yml
+The workflow creates an artifact in the `.FAIRSECO` directory that contains the following files:
+- dashboard.html
+    - Dashboard where you can see the results in a clear overview
+- report.yml
     - Contains the data collected and processed by the action
 - program.log
     - The log of the program
