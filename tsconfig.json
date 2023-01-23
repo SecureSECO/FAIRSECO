@@ -12,6 +12,7 @@
         "experimentalDecorators": true,
         "emitDecoratorMetadata": false,
         "useUnknownInCatchVariables": false,
+        "resolveJsonModule": true,
         "outDir": "./dist",
         "rootDir": "./src",
         "noImplicitAny": true,
