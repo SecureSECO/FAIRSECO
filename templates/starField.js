@@ -56,7 +56,7 @@ function renderStarField() {
 
     //initial height 800, width 900
 
-    const svg = d3.select("#svgchart")
+    const svg = d3.select("#svgChart")
         .attr("width", chartWidth)
         .attr("height", chartHeight);
     
