@@ -4,40 +4,36 @@ function getNumberOfCitations() {
 }
 
 function getNumberOfFields() {
-    return (pp.unqiueFields.filter(x => x !== "Unknown")).length.toString();
+    return (pp.uniqueFields.filter(x => x !== "Unknown")).length.toString();
 }
 
-const mostNotableTitle = pp.papers[0].title;
-const mostNotableJournal = pp.papers[0].journal;
+const mostNotablePaper = pp.papers.sort((a, b) => a.numberOfCitations > b.numberOfCitations)[0];
+const mostNotableTitle = mostNotablePaper.title;
+const mostNotableJournal = mostNotablePaper.journal;
 
 const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 
-function setFontSize(text){
+function setFontSize(text) {
     return clamp(35/text.length, 0.8, 2).toString() + "rem";
-}
-
-function getJournal(paper){
-    if (paper.journal) return paper.journal;
-    else return "unknown journal";
 }
 
 const uniqueProjects = getProjects();
 
 function getProjects() {
-    let uniqueProjects = [];
-    for(const method of ss.methods){
-        for(const match of method.matches){
-            uniqueProjects.push({project: match.data.project, authors: match.data.authors});
+    let uniqueProjects = new Set();
+    for(const method of ss.methods) {
+        for(const match of method.matches) {
+            uniqueProjects.add({project: match.data.project, authors: match.data.authors});
         }
     }
 
-    return uniqueProjects;
+    return Array.from(uniqueProjects.values());
 }
 
-function getAuthors(proj){
+function getAuthors(proj) {
     let authors = "";
 
-    for (let i = 0; i < proj.authors.length; i++){
+    for (let i = 0; i < proj.authors.length; i++) {
         if (i === proj.authors.length - 1) authors += proj.authors[i];
         else authors += proj.authors[i] + ", ";
     }
@@ -46,36 +42,27 @@ function getAuthors(proj){
 }
 
 const labels = [
-    "Computer Science",
-    "Medicine",
-    "Chemistry",
-    "Biology",
-    "Material Science",
-    "Physics",
-    "Geology",
-    "Psychology",
-    "Art",
-    "History",
-    "Sociology",
-    "Business",
-    "Political Science",
-    "Economy",
-    "Philosophy",
-    "Mathematics",
-    "Engineering",
-    "Environmental Science"
+    "Humanities" ,
+    "Social Sciences",
+    "Natural Sciences",
+    "Formal Sciences",
+    "Applied Sciences"
 ]
 
-function getChartData(labels) {
-    let data = [];
+function getChartData() {
+    const data = [];
 
-    let disc = pp.disciplines;
+    const disc = pp.disciplines;
 
-    data.push(disc["Humanities"] || 0);
-    data.push(disc["Social Sciences"] || 0);
-    data.push(disc["Natural Sciences"] || 0);
-    data.push(disc["Formal Sciences"] || 0);
-    data.push(disc["Applied Sciences"] || 0);
+    console.log(JSON.stringify(pp));
+
+    data.push(disc["Humanities"] ?? 0);
+    data.push(disc["Social Sciences"] ?? 0);
+    data.push(disc["Natural Sciences"] ?? 0);
+    data.push(disc["Formal Sciences"] ?? 0);
+    data.push(disc["Applied Sciences"] ?? 0);
+
+    console.log(JSON.stringify(data));
 
     return data;
 }
@@ -100,8 +87,8 @@ function getChartData(labels) {
                 </div>
                 <div class="Impact__Row__Block">
                     <p>The most notable of which was</p>
-                    <div class="Row__PaperTitle" style="font-size:<%- setFontSize(mostNotableTitle) %>"><%- pp.papers[0].title %></div>
-                    <p>from <%- getJournal(pp.papers[0]) %></p>
+                    <div class="Row__PaperTitle" style="font-size:<%- setFontSize(mostNotableTitle) %>"><%- mostNotableTitle %></div>
+                    <p>from <%- mostNotableJournal %></p>
                 </div>
             </div>
         </div>
@@ -147,11 +134,12 @@ const labels = [
     "Formal Sciences",
     "Applied Sciences"
 ]
+
 const data = {
     labels: labels,
     datasets: [
         {
-            data: [<%- getChartData(labels) %>],
+            data: [<%- getChartData() %>],
             borderColor: "rgb(170, 85, 183)",
             backgroundColor: "rgba(175, 102, 186, 0.4)",
             pointBackgroundColor: "rgb(175, 102, 186)"

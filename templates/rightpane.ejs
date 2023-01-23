@@ -1,8 +1,8 @@
 <%
-const howfairis = data.find((ele) => (ele.ReturnName === "HowFairIs"))?.ReturnData[0];
-const quality = data.find((ele) => (ele.ReturnName === "QualityMetrics"))?.ReturnData;
-const searchSeco = data.find((ele) => (ele.ReturnName === "SearchSeco"))?.ReturnData;
-const paperData = data.find((ele) => (ele.ReturnName === "citingPapers"))?.ReturnData;
+const fairtally = data.find((ele) => (ele.ModuleName === "fairtally"))?.Data[0];
+const quality = data.find((ele) => (ele.ModuleName === "QualityMetrics"))?.Data;
+const searchSECO = data.find((ele) => (ele.ModuleName === "SearchSECO"))?.Data;
+const paperData = data.find((ele) => (ele.ModuleName === "CitingPapers"))?.Data;
 
 const history = [
     {
@@ -33,10 +33,11 @@ const history = [
     <div class="RightPaneContainer">
         <%- include('rightpanenav') %>
         <div class="RightPaneWindow">
-            <%- include('howfairis', {howfairis})%>
+            <%- include('overview', {}) %>
+            <%- include('fairtally', {fairtally})%>
             <%- include('createcff')%>
             <%- include('quality', {quality}) %>
-            <%- include('impact', {ss: searchSeco, pp: paperData}) %>
+            <%- include('impact', {ss: searchSECO, pp: paperData}) %>
             <%- include('impact-history', {history}) %>
         </div>
     </div>

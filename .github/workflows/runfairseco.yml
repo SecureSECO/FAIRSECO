@@ -1,11 +1,11 @@
-name: RunFairSECO
+name: RunFAIRSECO
 
 on:
     # Allows you to run this workflow manually from the Actions tab
     workflow_dispatch:
 
 jobs:
-    RunFairSECO:
+    RunFAIRSECO:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
@@ -22,5 +22,5 @@ jobs:
                   myToken: ${{ secrets.GITHUB_TOKEN }}
             - uses: actions/upload-artifact@v3
               with:
-                  name: FairSECO Result
-                  path: .FairSECO/
+                  name: FAIRSECO Result
+                  path: .FAIRSECO/

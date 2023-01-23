@@ -1,0 +1,219 @@
+<%
+function getRepositoryTitle() {
+    return "FAIRSECO";
+}
+
+function getRepositoryOwner() {
+    return "QDUNI";
+}
+
+function getDate() {
+    return "22 dec 2022";
+}
+
+function getTopContributors() {
+    return "<p>RageRaptor</p><p>Tjibbe75</p>";
+}
+
+function getRepositoryStars() {
+    return 3100;
+}
+
+function getrepositoryWatchers() {
+    return 1600;
+}
+
+function getRepositoryforks() {
+    return 25;
+}
+
+function getTimesCited() {
+    return 123;
+}
+
+function getFairness() {
+    return "5/5";
+}
+
+function getMethodsReuse() {
+    return 20;
+}
+
+function getQualityScore() {
+    return "83/100";
+}
+%>
+
+<div class="Overview">
+    <h1 class="Overview__Title">Overview</h1>
+    <div class="Overview__Content">
+        <div class="Repository__Info__Top">
+            <div class="Repository__Info">
+                <h3>Repository title</h3>
+                <h2 class="Repository__Data"><%- getRepositoryTitle() %></h2>
+            </div>
+            <div class="Repository__Info">
+                <h3>Repository owner</h3>
+                <h2 class="Repository__Data"><%- getRepositoryOwner() %></h2>
+            </div>
+            <div class="Repository__Info">
+                <h3>Date of issue</h3>
+                <h2 class="Repository__Data"><%- getDate() %></h2>
+            </div>
+        </div>
+        <div class="Repository__Info__Left">
+            <div class="Repository__Info">
+                <h3>Top contributors</h3>
+                <h2 class="Repository__Data Repository__Contributors"><%- getTopContributors() %></h2>
+            </div>
+        </div>
+        <div class="Repository__Info__Right">
+            <div class="Repository__Info">
+                <h3>Repository stars</h3>
+                <h2 class="Repository__Data"><%- getRepositoryStars() %><i class="fa-solid fa-star"></i></h2>
+            </div>
+            <div class="Repository__Info">
+                <h3>Repository watchers</h3>
+                <h2 class="Repository__Data"><%- getrepositoryWatchers() %><i class="fa-solid fa-eye"></i></h2>
+            </div>
+            <div class="Repository__Info">
+                <h3>Repository Forks</h3>
+                <h2 class="Repository__Data"><%- getRepositoryforks() %><i class="fa-solid fa-code-fork"></i></h2>
+            </div>
+        </div>
+    </div>
+    <h1 class="Scores__Title">Your scores</h1>
+    <div class="Meta-data__Row">
+        <div class="Meta-data">
+            <p>Times cited</p>
+            <div class = Meta-data__Data><p><%- getTimesCited() %></p></div>
+        </div>
+        <div class="Meta-data">
+            <p>Fairness</p>
+            <div class = Meta-data__Data><p><%- getFairness() %></p></div>
+        </div>
+        <div class="Meta-data">
+            <p>Methods reused in other projects</p>
+            <div class = Meta-data__Data><p><%- getMethodsReuse() %></p></div>
+        </div>
+        <div class="Meta-data">
+            <p>Quality Score</p>
+            <div class = Meta-data__Data><p><%- getQualityScore() %></p></div>
+        </div>
+    </div>
+</div>
+
+<style>
+.Overview__Title {
+    color: #0C281E;
+    text-align: center;
+    margin: 2%;
+    font-size: 2rem;
+}
+
+.Scores__Title {
+    color: #0C281E;
+    text-align: Left;
+    margin: 0;
+    margin-bottom: 2rem;
+    margin-left: 4.8vw;
+    font-size: 1.5rem;
+}
+
+.Overview__Content {
+    width: 80%;
+    margin: auto;
+    display: grid;
+    grid-template-areas: 
+            "a a a"
+            "b c d"
+            "b c d";
+    justify-content: space-between;
+}
+.Repository__Info__Top {
+    grid-area: a;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.Repository__Info__Top > *:nth-child(2){
+    text-align: center;
+}
+
+.Repository__Info__Top > *:nth-child(3){
+    text-align: right;
+}
+.Repository__Info__Left {
+    margin-top: 5vh;
+    grid-area: b;
+    display: flex;
+    flex-direction: column;
+}
+
+.Repository__Info__Right {
+    margin-top: 5vh;
+    grid-area: d;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.RightPaneWindow .Repository__Info h3{
+    color: #5A9575;
+    font-weight: bold;
+    font-size: 1rem;
+}
+.RightPaneWindow .Repository__Info h2{
+    color: #0c281e;
+    font-weight: bold;
+    font-size: 2rem;
+    margin: 0;
+}
+
+.RightPaneWindow .Repository__Info h2 i {
+    margin-left: 8px;
+}
+
+.Repository__Data {
+    font-size: 1.75vw;
+    font-weight: bold;
+    margin: 0.25vw;
+}
+
+.Repository__Contributors p{
+    font-size: 1rem;
+    margin: 0;
+}
+
+.Meta-data__Row {
+    width: 80%;
+    position: relative;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    justify-content: center;
+}
+.Meta-data {
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid #0c281e;
+    margin: 4px;
+    border-radius: 8px;
+}
+
+.Meta-data p {
+    margin: 0px 16px;
+}
+
+.Meta-data__Data {
+    font-size: 1.75vw;
+    font-weight: bold;
+    margin: 0.25vw;
+}
+</style>

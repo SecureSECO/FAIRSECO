@@ -46,24 +46,24 @@
     searchseco.projects = searchseco.projects.sort((a, b) => { return b.matches.length - a.matches.length; });
 %>
 
-<div class="SearchSeco Hidden">
+<div class="SearchSECO Hidden">
     <h1>Total matches: <%- searchseco.matchCount %></h1>
-    <div class="SearchSeco__Nav">
-        <button class="SearchSeco__Nav__Button--Active" id="SearchSeco__MethodsButton" onClick="searchsecoShowMethods()" data-linked-class="SearchSeco__Methods"><i class="fa-solid fa-file-code"></i> Methods</button>
-        <button id="SearchSeco__ProjectsButton" onClick="searchsecoShowProjects()" data-linked-class="SearchSeco__Projects"><i class="fa-solid fa-box-archive"></i> Projects</button>
+    <div class="SearchSECO__Nav">
+        <button class="SearchSECO__Nav__Button--Active" id="SearchSECO__MethodsButton" onClick="searchsecoShowMethods()" data-linked-class="SearchSECO__Methods"><i class="fa-solid fa-file-code"></i> Methods</button>
+        <button id="SearchSECO__ProjectsButton" onClick="searchsecoShowProjects()" data-linked-class="SearchSECO__Projects"><i class="fa-solid fa-box-archive"></i> Projects</button>
         <div style="display: flex; flex-direction: row; align-items: center">
-            <input type="checkbox" id="SearchSeco_ToggleShowVulnerable" onclick="searchsecoToggleShowVulnerabilities()"<% if (searchseco.vulnerableMethodCount === 0) { %> disabled<% } %>>
-            <label for="SearchSeco_ToggleShowVulnerable">Show vulnerabilities only<br><%- searchseco.vulnerableMatchCount %> match<% if (searchseco.vulnerableMatchCount !== 1) { %>es<% } %> / <%- searchseco.vulnerableMethodCount %> method<% if (searchseco.vulnerableMethodCount !== 1) { %>s<% } %> / <%- searchseco.vulnerableProjectCount %> project<% if (searchseco.vulnerableProjectCount !== 1) { %>s<% } %></label>
+            <input type="checkbox" id="SearchSECO_ToggleShowVulnerable" onclick="searchsecoToggleShowVulnerabilities()"<% if (searchseco.vulnerableMethodCount === 0) { %> disabled<% } %>>
+            <label for="SearchSECO_ToggleShowVulnerable">Show vulnerabilities only<br><%- searchseco.vulnerableMatchCount %> match<% if (searchseco.vulnerableMatchCount !== 1) { %>es<% } %> / <%- searchseco.vulnerableMethodCount %> method<% if (searchseco.vulnerableMethodCount !== 1) { %>s<% } %> / <%- searchseco.vulnerableProjectCount %> project<% if (searchseco.vulnerableProjectCount !== 1) { %>s<% } %></label>
         </div>
     </div>
-    <div class="SearchSeco__List SearchSeco__MethodList">
+    <div class="SearchSECO__List SearchSECO__MethodList">
         <p><%- searchseco.methods.length %> of your methods found matches</p>
 
         <% for (const method of searchseco.methods) { %>
         <%- include('searchseco-method', { "method": method }); %>
         <% } %>
     </div>
-    <div class="SearchSeco__List SearchSeco__ProjectList" hidden>
+    <div class="SearchSECO__List SearchSECO__ProjectList" hidden>
         <p>Your methods found matches with <%- searchseco.projects.length %> project<% if (searchseco.projects.length !== 1) { %>s<% } %></p>
 
         <% for (const project of searchseco.projects) { %>
@@ -73,7 +73,7 @@
 </div>
 
 <style>
-    .SearchSeco {
+    .SearchSECO {
         width: 100%;
         height: 70%;
         -webkit-mask-image: linear-gradient( to bottom, black 90%, transparent 100% );
@@ -82,21 +82,21 @@
         word-break: break-word;
         padding: 16px;
     }
-    .SearchSeco--HideNonVulnerable .SearchSeco--NotVulnerable {
+    .SearchSECO--HideNonVulnerable .SearchSECO--NotVulnerable {
         display: none;
     }
 
-    .SearchSeco__Nav {
+    .SearchSECO__Nav {
         display: flex;
         flex-direction: row;
         align-items: center;
         margin-left: 1%;
     }
-    .SearchSeco__Nav > * {
+    .SearchSECO__Nav > * {
         margin-right: 0.6vw;
         font-size: 1vw;
     }
-    .SearchSeco__Nav button {
+    .SearchSECO__Nav button {
         padding: 0.5vw;
         border: 1px solid #779C7E;
         background: transparent;
@@ -105,31 +105,31 @@
         cursor: pointer;
         transition: all 300ms ease;
     }
-    .SearchSeco__Nav button.SearchSeco__Nav__Button--Active {
+    .SearchSECO__Nav button.SearchSECO__Nav__Button--Active {
         background: #D9F8DF;
         color: #0C281E;
         border: 1px solid #D9F8DF;
 
     }
-    .SearchSeco__Nav input {
+    .SearchSECO__Nav input {
         width: 1.15vw;
         height: 1.15vw;
     }
-    .SearchSeco__Nav label {
+    .SearchSECO__Nav label {
         color: #D9F8DF;
         font-size: 0.8vw;
         margin-left: 0.4vw;
     }
 
-    .SearchSeco__List {
+    .SearchSECO__List {
         width: 98%;
         margin: 1%;
     }
-    .SearchSeco__List h1 {
+    .SearchSECO__List h1 {
         font-size: 1.7vw;
     }
 
-    .SearchSeco__ListObject__Header {
+    .SearchSECO__ListObject__Header {
         color: #D9F8DF;
         font-size: 0.8rem;
         /* background-color: #47715A; */
@@ -140,7 +140,7 @@
         margin-top: 5px;
         margin-bottom: 5px;
     }
-    .SearchSeco__ListObject__Header__Start {
+    .SearchSECO__ListObject__Header__Start {
         width: 100%;
         display: flex;
         flex-direction: row;
@@ -148,32 +148,32 @@
         align-items: center;
         flex-wrap: wrap;
     }
-    .SearchSeco__ListObject__Header h1 {
+    .SearchSECO__ListObject__Header h1 {
         font-size: 1.1rem;
     }
-    .SearchSeco__ListObject__Header p, .SearchSeco__ListObject__Header h1 {
+    .SearchSECO__ListObject__Header p, .SearchSECO__ListObject__Header h1 {
         margin: 0;
     }
-    .SearchSeco__ListObject__Header h1 i {
+    .SearchSECO__ListObject__Header h1 i {
         font-size: 1.5vw;
         width: 1.8vw;
         margin-left: -1.8vw;
         text-align: center;
     }
-    .SearchSeco__ListObject__Header h1 i:hover {
+    .SearchSECO__ListObject__Header h1 i:hover {
         color: #b8d7cc;
         cursor: pointer;
     }
-    .SearchSeco__ListObject__Header span {
+    .SearchSECO__ListObject__Header span {
         margin-right: 1.5vw;
         color: #fcec69;
     }
-    .SearchSeco__ListObject__MatchList {
+    .SearchSECO__ListObject__MatchList {
         width: 95%;
         margin-left: 5%;
     }
 
-    .SearchSeco__Match {
+    .SearchSECO__Match {
         color: #D9F8DF;
         font-size: 0.7rem;
         /* background-color: #47715A; */
@@ -183,11 +183,11 @@
         margin-top: 5px;
         margin-bottom: 5px;
     }
-    .SearchSeco__Match span {
+    .SearchSECO__Match span {
         /* color: yellow; */
         color: #fcec69;
     }
-    .SearchSeco__Match__Header {
+    .SearchSECO__Match__Header {
         width: 100%;
         display: flex;
         flex-direction: row;
@@ -195,44 +195,44 @@
         align-items: center;
         flex-wrap: wrap;
     }
-    .SearchSeco__Match__Header h2 {
+    .SearchSECO__Match__Header h2 {
         font-size: 1rem;
         margin: 0;
     }
-    .SearchSeco__Match h3 {
+    .SearchSECO__Match h3 {
         font-size: 0.9rem;
         margin: 0;
     }
-    .SearchSeco__Match a {
+    .SearchSECO__Match a {
         color: #D9F8DF; 
     }
 </style>
 
 <script>
-    const searchseco = document.querySelector(".SearchSeco");
-    const searchsecoMethodsButton = document.getElementById("SearchSeco__MethodsButton");
-    const searchsecoProjectsButton = document.getElementById("SearchSeco__ProjectsButton");
-    const searchsecoMethodList = document.querySelector(".SearchSeco__MethodList");
-    const searchsecoProjectList = document.querySelector(".SearchSeco__ProjectList");
+    const searchseco = document.querySelector(".SearchSECO");
+    const searchsecoMethodsButton = document.getElementById("SearchSECO__MethodsButton");
+    const searchsecoProjectsButton = document.getElementById("SearchSECO__ProjectsButton");
+    const searchsecoMethodList = document.querySelector(".SearchSECO__MethodList");
+    const searchsecoProjectList = document.querySelector(".SearchSECO__ProjectList");
 
     function searchsecoToggleShowVulnerabilities() {
-        searchseco.classList.toggle("SearchSeco--HideNonVulnerable");
+        searchseco.classList.toggle("SearchSECO--HideNonVulnerable");
     }
 
     function searchsecoShowMethods() {
         searchsecoProjectList.hidden = true;
         searchsecoMethodList.hidden = false;
         
-        searchsecoProjectsButton.classList.remove("SearchSeco__Nav__Button--Active");
-        searchsecoMethodsButton.classList.add("SearchSeco__Nav__Button--Active");
+        searchsecoProjectsButton.classList.remove("SearchSECO__Nav__Button--Active");
+        searchsecoMethodsButton.classList.add("SearchSECO__Nav__Button--Active");
     }
 
     function searchsecoShowProjects() {
         searchsecoMethodList.hidden = true;
         searchsecoProjectList.hidden = false;
         
-        searchsecoMethodsButton.classList.remove("SearchSeco__Nav__Button--Active");
-        searchsecoProjectsButton.classList.add("SearchSeco__Nav__Button--Active");
+        searchsecoMethodsButton.classList.remove("SearchSECO__Nav__Button--Active");
+        searchsecoProjectsButton.classList.add("SearchSECO__Nav__Button--Active");
     }
 
     function searchSecoClickArrow(event) {
@@ -241,8 +241,8 @@
 
         let elem = event.target;
         while (elem = elem.parentNode) {
-            if (elem.classList?.contains("SearchSeco__ArrowOwner")) {
-                let target = elem.querySelector(".SearchSeco__ArrowTarget");
+            if (elem.classList?.contains("SearchSECO__ArrowOwner")) {
+                let target = elem.querySelector(".SearchSECO__ArrowTarget");
                 target.hidden = !target.hidden;
                 break;
             }

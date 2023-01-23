@@ -1,5 +1,8 @@
 import { exec, ExecOptions } from "@actions/exec";
-import { getGithubInfo, getRepoUrl, GithubInfo } from "../../src/git";
+import { GitHubInfo } from "../../src/git";
+import { throwError } from "../../src/errorhandling/docker_exit";
+import { LogMessage, ErrorLevel } from "../../src/errorhandling/log";
+import * as fs from "fs";
 import {
     getHashIndices,
     getMatches,
@@ -8,21 +11,21 @@ import {
     Method,
     MethodData,
     Output,
-    parseInput,
-    runSearchseco,
+    parseOutput,
+    runModule,
 } from "../../src/resources/searchseco";
 
 jest.setTimeout(30000);
 
-const ghInfo: GithubInfo = {
+const ghInfo: GitHubInfo = {
     Repo: "",
     GithubToken: "",
     Owner: "",
-    FullURL: "https://github.com/QDUNI/FairSECO",
+    FullURL: "https://github.com/QDUNI/FAIRSECO",
     Stars: 0,
     Forks: 0,
     Watched: 0,
-    Visibility: undefined,
+    Visibility: "private",
     Readme: "",
     Badges: [],
     Contributors: [],
@@ -30,7 +33,7 @@ const ghInfo: GithubInfo = {
 
 jest.setTimeout(100000);
 
-// Test cases for SearchSeco mock
+// Test cases for SearchSECO mock
 test(
     "Check if getMatches is working on the correct Indices",
     correctIndicesMethod
@@ -40,31 +43,54 @@ test("Authors presence", authorsPresence);
 
 test("Parse the input with HashIndices", parseInputIntegration);
 
-test("Integration between SearchSeco and Parse input", () =>
-    localRunSearchSeco(ghInfo));
+test("Integration between SearchSECO and Parse input", () =>
+    localrunModule(ghInfo));
 
-// Test is searchseco mock gives same result as running it here locally
-async function localRunSearchSeco(ghInfo: GithubInfo): Promise<void> {
+// Test is SearchSECO mock gives same result as running it here locally
+async function localrunModule(ghInfo: GitHubInfo): Promise<void> {
     const gitrepo: string = ghInfo.FullURL;
-    // When the real SearchSECO is back, the run command needs to be slightly edited.
-    // The docker image needs to be replaced with 'searchseco/controller',
-    // and the enrtypoint needs to be inserted at the location indicated below.
-    const dockerImage = "jarnohendriksen/mockseco:v1";
-    const entrypoint = '--entrypoint="./controller/build/searchseco"';
+    const useMock = ghInfo.Visibility !== "public";
 
-    const ghToken = ""; // core.getInput("GITHUB_TOKEN");
+    // Determine which docker image to use
+    const dockerImage = useMock
+        ? "jarnohendriksen/mockseco:v1"
+        : "searchseco/controller";
 
-    console.debug("SearchSECO started");
-    console.debug(
-        "WARNING: Running a mock of SearchSECO. The output will be incorrect!"
-    );
+    // The mock can't handle a custom entrypoint, while SearchSECO requires it
+    const entrypoint = useMock
+        ? ""
+        : '--entrypoint="./controller/build/SearchSECO"';
+
+    // The token will be retrieved from the git data collection object once that is merged
+    const ghToken = "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";
+
+    LogMessage("SearchSECO started.", ErrorLevel.info);
+    if (useMock)
+        LogMessage(
+            "Running a mock of SearchSECO. The output will be incorrect!",
+            ErrorLevel.warn
+        );
+
     const cmd = "docker";
-    const args = [
+    const mockArgs = [
         "run",
         "--rm",
         "--name",
         "searchseco-container",
-        // This is where 'entrypoint' goes
+        "-e",
+        '"github_token=' + ghToken + '"',
+        "-e",
+        '"worker_name=test"',
+        dockerImage,
+        "check",
+        gitrepo,
+    ];
+    const realArgs = [
+        "run",
+        "--rm",
+        "--name",
+        "searchseco-container",
+        entrypoint,
         "-e",
         '"github_token=' + ghToken + '"',
         "-e",
@@ -74,11 +100,31 @@ async function localRunSearchSeco(ghInfo: GithubInfo): Promise<void> {
         gitrepo,
     ];
 
+    const args = useMock ? mockArgs : realArgs;
+
+    // Output from the docker container
     let stdout = "";
     let stderr = "";
 
+    try {
+        if (!fs.existsSync("./ssOutputFiles")) fs.mkdirSync("./ssOutputFiles/");
+        else
+            LogMessage(
+                "Directory ssOutputFiles already exists!",
+                ErrorLevel.info
+            );
+    } catch {
+        LogMessage("Could not create ssOutputFiles directory", ErrorLevel.err);
+    }
+
+    const stdOutStream = fs.createWriteStream("./ssOutputFiles/ssOutput.txt");
+    const stdErrStream = fs.createWriteStream("./ssOutputFiles/ssError.txt");
+
     const options: ExecOptions = {
         ignoreReturnCode: true,
+        windowsVerbatimArguments: true,
+        outStream: stdOutStream,
+        errStream: stdErrStream,
     };
 
     // SearchSECO prints its results in the console. The code below copies the
@@ -95,11 +141,8 @@ async function localRunSearchSeco(ghInfo: GithubInfo): Promise<void> {
     // Executes the docker run command
     const exitCode = await exec(cmd, args, options);
 
-    console.debug("Docker running SearchSECO returned " + String(exitCode));
-    console.debug("stdout:");
-    console.debug(stdout);
-    console.debug("stderr:");
-    console.debug(stderr);
+    // Check docker exit code
+    throwError("SearchSECO", exitCode);
 
     // ParseInput expects an array of trimmed lines
     // (i.e. without trailing or leading whitespace)
@@ -110,9 +153,9 @@ async function localRunSearchSeco(ghInfo: GithubInfo): Promise<void> {
         filteredlines[n] = filteredlines[n].trim();
     }
 
-    const output: Output = parseInput(filteredlines);
+    const output: Output = parseOutput(filteredlines);
 
-    const realOutput = (await runSearchseco(ghInfo)).ReturnData;
+    const realOutput = await runModule(ghInfo);
 
     expect(output).toEqual(realOutput);
 }
@@ -128,14 +171,14 @@ async function parseInputIntegration(): Promise<void> {
         "*Method functionName in project projName1 in file file.cpp line 33",
         "URL: https://github.com/user/project",
         "Method marked as vulnerable with code: 123(https://www.url-of-vulnerability.com)",
-        "Authors of function fuond in database:",
+        "Authors of function found in database:",
         "Rowin1",
         "Rowin2",
     ];
     const hashIndices: number[] = getHashIndices(databaseMock);
 
     const localMS: Method[] = [];
-    const parseInputMS: Method[] = parseInput(databaseMock).methods;
+    const parseInputMS: Method[] = parseOutput(databaseMock).methods;
 
     for (let i = 0; i < hashIndices.length - 1; i++) {
         const h = databaseMock[hashIndices[i]].split(" ")[1];

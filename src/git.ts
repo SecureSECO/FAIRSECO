@@ -1,8 +1,17 @@
+/**
+ * This module contains functions that retrieve data of the GitHub repository using Octokit.
+ * 
+ * @module
+ */
+
 import * as core from "@actions/core";
 import * as gh from "@actions/github";
-import * as log from "./log"
+import * as log from "./errorhandling/log"
 
-export interface GithubInfo {
+/**
+ * Object containing all info retrieved from Octokit about the repository.
+ */
+export interface GitHubInfo {
     Repo: string;
     GithubToken: string;
     Owner: string;
@@ -10,13 +19,14 @@ export interface GithubInfo {
     Stars: number;
     Forks: number;
     Watched: number;
-    Visibility: string | undefined;
+    Visibility: string;
     Readme: string;
     Badges: string[];
-    Contributors: GithubContributor[];
+    Contributors: GitHubContributor[];
 }
 
-export interface GithubContributor {
+/** Object containing GitHub contributor info. */
+export interface GitHubContributor {
     login?: string;
     id?: number;
     node_id?: string;
@@ -38,14 +48,22 @@ export interface GithubContributor {
     contributions?: number;
 }
 
+/** Object containing GitHub repository statistics. */
 export interface RepoStats {
     stars: number;
     forks: number;
     watchers: number;
-    visibility: string | undefined;
+    visibility: string;
 }
 
-// Get all repo contributors here
+/**
+ * Retrieves the stats of the repository from Octokit.
+ * 
+ * @param owner The username of the owner of the repository.
+ * @param repo The name of the repository.
+ * @param token The GitHub token associated with the owner.
+ * @returns A `RepoStats` object containing stats of the repository.
+ */
 export async function getRepoStats(
     owner: string,
     repo: string,
@@ -62,9 +80,11 @@ export async function getRepoStats(
     try {
         // First try our supplied token, if that doesn't work, we can already return the dummy.
         octokit = gh.getOctokit(token);
-    } catch {
-        log.LogMessage("Error while contacting octokit API, did you supply a valid token?", log.ErrorLevel.err);
-        return repostats; // We return the dummy when we can't do anything
+    } catch (error) {
+        log.LogMessage("Error while contacting Octokit API: " + (error.message as string), log.ErrorLevel.err);
+
+        // We return the dummy when we can't do anything
+        return repostats;
     }
     try {
         // Now we contact the api
@@ -76,16 +96,20 @@ export async function getRepoStats(
         repostats.forks = response.forks_count;
         repostats.watchers = response.watchers_count;
         repostats.visibility = response.visibility;
-    } catch {
-        log.LogMessage("Error when requesting repo information. Was the supplied repo name and owner correct?", log.ErrorLevel.err);
+    } catch (error) {
+        log.LogMessage("Error when requesting repo information: " + (error.message as string), log.ErrorLevel.err);
     }
 
     return repostats;
 }
 
-// Create github info object with all data collected from Octokit API
-export async function getGithubInfo(): Promise<GithubInfo> {
-    const ghinfo: GithubInfo = {
+/**
+ * Creates a `GitHubInfo` object with all data collected from the Octokit API.
+ * 
+ * @returns A `GitHubInfo` object containing all data recieved from Octokit.
+ */
+export async function getGitHubInfo(): Promise<GitHubInfo> {
+    const ghInfo: GitHubInfo = {
         Owner: "",
         Repo: "",
         GithubToken: "",
@@ -99,35 +123,42 @@ export async function getGithubInfo(): Promise<GithubInfo> {
         Contributors: [],
     };
     const ghtoken = core.getInput("myToken");
-    ghinfo.Repo = core.getInput("repository").split("/")[1];
-    ghinfo.Owner = core.getInput("repository").split("/")[0];
-    ghinfo.GithubToken = ghtoken;
-    ghinfo.FullURL = await getRepoUrl();
+    ghInfo.Repo = core.getInput("repository").split("/")[1];
+    ghInfo.Owner = core.getInput("repository").split("/")[0];
+    ghInfo.GithubToken = ghtoken;
+    ghInfo.FullURL = await getRepoUrl();
     const ghstats: RepoStats = await getRepoStats(
-        ghinfo.Owner,
-        ghinfo.Repo,
+        ghInfo.Owner,
+        ghInfo.Repo,
         ghtoken
     );
-    ghinfo.Stars = ghstats.stars;
-    ghinfo.Forks = ghstats.forks;
-    ghinfo.Watched = ghstats.forks;
-    ghinfo.Visibility = ghstats.visibility;
-    ghinfo.Readme = await getRepoReadme(ghinfo.Owner, ghinfo.Repo, ghtoken);
-    ghinfo.Badges = filterBadgeURLS(ghinfo.Readme);
-    ghinfo.Contributors = await getContributors(
-        ghinfo.Owner,
-        ghinfo.Repo,
+    ghInfo.Stars = ghstats.stars;
+    ghInfo.Forks = ghstats.forks;
+    ghInfo.Watched = ghstats.forks;
+    ghInfo.Visibility = ghstats.visibility;
+    ghInfo.Readme = await getRepoReadme(ghInfo.Owner, ghInfo.Repo, ghtoken);
+    ghInfo.Badges = filterBadgeURLS(ghInfo.Readme);
+    ghInfo.Contributors = await getContributors(
+        ghInfo.Owner,
+        ghInfo.Repo,
         ghtoken
     );
-    return ghinfo;
+    return ghInfo;
 }
 
+/**
+ * Retrieves the contributors of the repository.
+ * 
+ * @param owner The username of the owner of the repository.
+ * @param repo The name of the repository.
+ * @param token The GitHub token associated with the owner.
+ * @returns An array with the GitHub contributors of the repository.
+ */
 export async function getContributors(
     owner: string,
     repo: string,
     token: string
-): Promise<GithubContributor[]> {
-    // Get all repo contributors here
+): Promise<GitHubContributor[]> {
     try {
         const octokit = gh.getOctokit(token);
         const { data: contributors } =
@@ -135,25 +166,42 @@ export async function getContributors(
                 owner,
                 repo,
             });
+            
         return contributors;
     } catch {
         log.LogMessage("An error occured while retrieving contributors.", log.ErrorLevel.err);
+        
         return [];
     }
 }
 
+/**
+ * Constructs the full URL of the repository by combining the username and repo name.
+ * 
+ * @returns The URL of the repository.
+ */
 export async function getRepoUrl(): Promise<string> {
     const prefix = "https://github.com/";
     const repository: string = core.getInput("repository");
+    
     return prefix + repository;
 }
 
+/**
+ * Retrieves the readme.md file from the repository.
+ * 
+ * @param owner The username of the owner of the repository.
+ * @param repo The name of the repository.
+ * @param token The GitHub token associated with the owner.
+ * @returns A string with the contents of the readme.md file.
+ */
 export async function getRepoReadme(
     owner: string,
     repo: string,
     token: string
 ): Promise<string> {
     let result = "";
+
     try {
         const octokit = gh.getOctokit(token);
         const {
@@ -170,11 +218,17 @@ export async function getRepoReadme(
     return result;
 }
 
-// Filters readme.md's for badge links from shield.io
+/**
+ * Searches through the readme.md file for badge links from shields.io.
+ * 
+ * @param input The contents of the readme.md file.
+ * @returns An array of badge links.
+ */
 export function filterBadgeURLS(input: string): string[] {
     const rgexp: RegExp =
         /!\[.*\]\s*\(https:\/\/img\.shields\.io\/badge\/.*\)/g;
     const result: string[] | null = input.match(rgexp);
+    
     if (result == null) {
         return [];
     } else {

@@ -1,8 +1,9 @@
-<div class="footer">
+<div class="footer">  
+    <button class="citationgraphBtn" onclick="location.href='citationgraph.html';">Citationsgraph View</button>
     <p>Tool developed by students of Utrecht University, <br>
         in collaboration with the Netherlands eScience Center <br>
         ⓒ 2022
-        </p>
+     </p>   
 </div>
 
 <style>
@@ -16,5 +17,25 @@
         bottom: 0;
         margin: auto;
         width: 100%;
+        margin-left: 50px;
     }
+
+    .footer .citationgraphBtn{
+        z-index: 1;
+        border-radius: 12px;
+        width: 11.5vw;
+        height: 4vh;
+        color: #d9f8df;
+        background-color: transparent;
+        border: 2px solid #d9f8df;
+        font-size: 1.1rem;
+        float: right;
+        margin-right: 75px;
+        margin-top: 16px;
+    }
+
+    .footer .citationgraphBtn:hover{
+    background-color: #d9f8df;
+       color: #0c281e;
+    }    
 </style>

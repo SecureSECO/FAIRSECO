@@ -1,8 +1,8 @@
 import {
-    GithubInfo,
-    GithubContributor,
+    GitHubInfo,
+    GitHubContributor,
     RepoStats,
-    getGithubInfo,
+    getGitHubInfo,
     filterBadgeURLS,
     getContributors,
     getRepoReadme,
@@ -10,7 +10,7 @@ import {
 } from "../../src/git";
 
 test("Has correct properties", async () => {
-    const ghinfo: GithubInfo = await getGithubInfo();
+    const ghinfo: GitHubInfo = await getGitHubInfo();
     console.log(ghinfo);
     expect(ghinfo).toHaveProperty("Stars");
     expect(ghinfo).toHaveProperty("Watched");
@@ -21,7 +21,7 @@ test("Has correct properties", async () => {
 test("Filters text for badge urls properly", () => {
     //input readme.md
     const input = `
-# FairSECO
+# FAIRSECO
 
 ![fair-software.eu](https://img.shields.io/badge/fair--software.eu-%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F-green)
 ![test1](https://img.shields.io/badge/textafter) text after the line
@@ -46,12 +46,12 @@ This program has been developed by students from the bachelor Computer Science a
 });
 
 test("getContributors of a nonexistent repo without a token", async () => {
-    const output: GithubContributor[] = await getContributors(
+    const output: GitHubContributor[] = await getContributors(
         "blahblahblablahblahblahh",
         "asdfasdfasfasfsa112121cc",
         ""
     );
-    const expected: GithubContributor[] = [];
+    const expected: GitHubContributor[] = [];
     expect(output).toEqual(expected);
 });
 test("get repo of a nonexistent repo without a token", async () => {
