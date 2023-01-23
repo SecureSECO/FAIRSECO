@@ -1,4 +1,4 @@
-import { MetaDataPaper } from "../../src/resources/citations/Paper";
+import { MetaDataPaper } from "../../src/resources/citations/paper";
 import { selectReferencePapers } from "../../src/resources/citations/referencepaper";
 
 test("Empty map is handeled properly, returns empty array", () => {
