@@ -14,6 +14,20 @@ import fs from "fs";
 /** The name of the module. */
 export const ModuleName = "fairtally";
 
+/** An object containing the output from fairtally. */
+export interface FairtallyOutput {
+    badge: string,
+    checklist: boolean,
+    citation: boolean,
+    count: number,
+    license: boolean,
+    registry: boolean,
+    repository: boolean,
+    stderr: string,
+    stdout: string,
+    url: string
+}
+
 /**
  * Runs the fairtally docker image on the current repo,
  * and gives the checklist of FAIRness criteria.
@@ -21,7 +35,7 @@ export const ModuleName = "fairtally";
  * @param ghInfo Information about the GitHub repository.
  * @returns The result object from fairtally.
  */
-export async function runModule(ghInfo: GitHubInfo): Promise<any> {
+export async function runModule(ghInfo: GitHubInfo): Promise<FairtallyOutput> {
     const cmd = "docker";
     const args = [
         "run",

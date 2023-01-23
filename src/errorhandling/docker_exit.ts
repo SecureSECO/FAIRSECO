@@ -1,5 +1,5 @@
 /**
- * This module contains functions to handle Docker exit codes based on error status.
+ * This module contains functions for handling Docker exit codes based on error status.
  * 
  * @module
  */

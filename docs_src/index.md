@@ -27,16 +27,28 @@
         - Open/closed GitHub issues
     - Documentation
         - Presence of documentation directory
+<<<<<<< Updated upstream
+        - Presence of readme file
+=======
+>>>>>>> Stashed changes
 - **SBOM** (from  [sbom-action](https://github.com/anchore/sbom-action))
     - Dependency tree
 
 <br>
 
+<<<<<<< Updated upstream
+# How to Run
+
+---
+
+In your GitHub repository, put the following workflow code in a `.yml` file in the `.github/workflows` directory:
+=======
 # How to run
 
 ---
 
 In your Github repository, put the following workflow code in a `.yml` file in the `.github/workflows` folder:
+>>>>>>> Stashed changes
 
 ```yaml
 name: RunFAIRSECO
@@ -57,7 +69,11 @@ jobs:
                   path: .tortellini/out
             - uses: anchore/sbom-action@v0
               with:
+<<<<<<< Updated upstream
+                  artifact-name: SBOM.spdx
+=======
                   artifact-name: SBOM.spdx # Output is in JSON format
+>>>>>>> Stashed changes
             - uses: QDUNI/FAIRSECO@main
             - uses: actions/upload-artifact@v3
               with:
@@ -65,10 +81,17 @@ jobs:
                   path: .FAIRSECO/
 ```
 
+<<<<<<< Updated upstream
+The workflow creates an artifact in the `.FAIRSECO` directory that contains the following files:
+- dashboard.html
+    - Dashboard where you can see the results in a clear overview
+- report.yml
+=======
 The workflow creates an artifact in the folder `.FAIRSECO` containing the following files:
 - index.html
     - Dashboard where you can see the results in a nice overview
 - Report.yml
+>>>>>>> Stashed changes
     - Contains the data collected and processed by the action
 - program.log
     - The log of the program

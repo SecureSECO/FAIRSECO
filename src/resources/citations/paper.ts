@@ -287,7 +287,7 @@ export class Citations {
             };
 
             // Count the disciplines of all papers
-            const disciplineCounter = disciplines[paper.discipline] ?? 0 as number;
+            const disciplineCounter = disciplines[paper.discipline] ?? 0;
             disciplines[paper.discipline] = disciplineCounter + 1;
         };
         

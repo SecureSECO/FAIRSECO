@@ -9,15 +9,23 @@ import { data } from "./getdata";
 import { post } from "./post";
 import * as core from "@actions/core";
 
-/** The entrypoint of the program. */
+/**
+ * The entrypoint of the program.
+ * The program performs the following steps:
+ * - Handle preconditions required for the program to run
+ * - Call the modules that generate the data
+ * - Generates the output reports
+*/
 export async function main(): Promise<void> {
     try {
+        // Handle preconditions
         const check = await pre();
+
         if (check) {
-            // Call data check.
+            // Generate the data
             const result = await data();
             
-             // Call post check.
+            // Create output reports
             await post(result);
         }
     } catch (error) {
