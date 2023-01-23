@@ -75,6 +75,7 @@ The HTML page is built with the following structure:
 - `index.ejs` (main page)
     - Includes `head.ejs` (page head)
     - Includes `body.ejs` (page body)
+        - Includes `logo.ejs` (FAIRSECO logo)
         - Includes `leftpane.ejs` (left pane)
             - Includes `leftpanenav.ejs` (left pane tabs)
             - Includes `citations.ejs` (Citations page)
