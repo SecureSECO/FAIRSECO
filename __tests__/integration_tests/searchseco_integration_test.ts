@@ -13,7 +13,7 @@ import {
     Output,
     parseOutput,
     runModule,
-} from "../../src/resources/SearchSECO";
+} from "../../src/resources/searchseco";
 
 jest.setTimeout(30000);
 

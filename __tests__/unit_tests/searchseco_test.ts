@@ -1,4 +1,4 @@
-import * as ss from "../../src/resources/SearchSECO";
+import * as ss from "../../src/resources/searchseco";
 import { GitHubInfo } from "../../src/git";
 
 jest.setTimeout(100000);
