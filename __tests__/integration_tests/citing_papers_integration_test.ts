@@ -1,6 +1,6 @@
 import { runModule as runCff, ValidCffObject } from "../../src/resources/citation_cff";
 import {  mergeDuplicates, runModule } from "../../src/resources/citations/citing_papers";
-import { Author, Paper, Citations } from "../../src/resources/citations/Paper";
+import { Author, Paper, Citations } from "../../src/resources/citations/paper";
 import { openAlexCitations } from "../../src/resources/citations/apis/openalex_api";
 import { semanticScholarCitations } from "../../src/resources/citations/apis/semanticscholar_api";
 
