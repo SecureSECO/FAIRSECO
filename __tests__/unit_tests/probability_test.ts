@@ -1,25 +1,29 @@
-import { MetaDataPaper } from "../../src/resources/Paper";
-import { calculateProbabiltyOfReference } from "../../src/resources/probability";
+import { MetaDataPaper } from "../../src/resources/citations/Paper";
+import { selectReferencePapers } from "../../src/resources/citations/referencepaper";
 
-test("empty map is handeled properly, returns empty array", () => {
-    expect(calculateProbabiltyOfReference(new Map())).toStrictEqual([]);
+test("Empty map is handeled properly, returns empty array", () => {
+    expect(selectReferencePapers("", new Map(), 1)).toStrictEqual([]);
 });
 
-test("singleton map is handled properly", () => {
+test("Singleton map is handled properly", () => {
     expect(
-        calculateProbabiltyOfReference(
-            new Map([["id", new MetaDataPaper("title", 1, 1, "Paper", 0)]])
+        selectReferencePapers(
+            "title",
+            new Map([["id", new MetaDataPaper("title", 1, 1, "Paper")]]),
+            1
         )
-    ).toStrictEqual([1]);
+    ).toStrictEqual(["id"]);
 });
 
-test("multiple entries map is handled correctly", () => {
+test("Multiple entries map is handled correctly", () => {
     expect(
-        calculateProbabiltyOfReference(
+        selectReferencePapers(
+            "title1",
             new Map([
-                ["id1", new MetaDataPaper("title1", 1, 1, "Paper1", 0)],
-                ["id2", new MetaDataPaper("title2", 10, 10, "Paper2", 0)],
-            ])
+                ["id1", new MetaDataPaper("title1", 1, 1, "Paper1")],
+                ["id2", new MetaDataPaper("title2", 10, 10, "Paper2")],
+            ]),
+            1
         )
-    ).toStrictEqual([0, 1]);
+    ).toStrictEqual([]);
 });

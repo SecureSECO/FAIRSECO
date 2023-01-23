@@ -1,12 +1,12 @@
 import * as tort from "../../src/resources/tortellini";
-import * as input from "../../src/resources/tortellini-input";
+import * as input from "../../src/resources/tortellini_input";
 import * as art from "../../src/resources/helperfunctions/artifact";
 import { expect, test } from "@jest/globals";
 
-// Mock the tortellini-input module to replace used artifact object and file path for unit tests
-jest.mock("../../src/resources/tortellini-input", () => {
+// Mock the tortellini_input module to replace used artifact object and file path for unit tests
+jest.mock("../../src/resources/tortellini_input", () => {
     const actualModule = jest.requireActual(
-        "../../src/resources/tortellini-input"
+        "../../src/resources/tortellini_input"
     );
 
     // This code runs before modules are loaded so load the artifact module here
@@ -16,7 +16,7 @@ jest.mock("../../src/resources/tortellini-input", () => {
         __esModule: true,
         ...actualModule,
         artifactObject: art.testArtifactObject, // Unit testing artifact object
-        destination: "__tests__/unit_tests/.tortellini-unit-test",
+        destination: "__tests__/unit_tests/.tortellini_unit_test",
     };
 });
 
@@ -40,21 +40,17 @@ test("Check if a file can be retrieved with the downloadResponse", async () => {
         input.artifactObject
     );
 
-    const result = await art.getFileFromArtifact(dlResponse, "correct.yml");
+    const result = art.getFileFromArtifact(dlResponse, "correct.yml");
 
     // If the result is not truthy, it is either an empty string or undefined,
     // which is not correct
     expect(result).toBeTruthy();
 });
 
-describe("Test runTortellini", () => {
+describe("Test runModule", () => {
     test("Correct Input", async () => {
-        const result = await tort.runTortellini("correct.yml");
+        const data = await tort.runModule("correct.yml");
 
-        const data: any = result.ReturnData;
-
-        expect(result).not.toBeUndefined();
-        expect(result.ReturnName).toBe("Tortellini");
         expect(data).toHaveProperty("project");
         const proj = data.project;
         expect(proj).toHaveProperty("id");
@@ -84,12 +80,8 @@ describe("Test runTortellini", () => {
     });
 
     test("No Packages", async () => {
-        const result = await tort.runTortellini("no-packages.yml");
+        const data = await tort.runModule("no-packages.yml");
 
-        const data: any = result.ReturnData;
-
-        expect(result).not.toBeUndefined();
-        expect(result.ReturnName).toBe("Tortellini");
         expect(data).toHaveProperty("project");
         const proj = data.project;
         expect(proj).toHaveProperty("id");
@@ -113,12 +105,8 @@ describe("Test runTortellini", () => {
     });
 
     test("No Violations", async () => {
-        const result = await tort.runTortellini("no-violations.yml");
+        const data = await tort.runModule("no-violations.yml");
 
-        const data: any = result.ReturnData;
-
-        expect(result).not.toBeUndefined();
-        expect(result.ReturnName).toBe("Tortellini");
         expect(data).toHaveProperty("project");
         const proj = data.project;
         expect(proj).toHaveProperty("id");
@@ -141,12 +129,8 @@ describe("Test runTortellini", () => {
     });
 
     test("No Project Info", async () => {
-        const result = await tort.runTortellini("no-project-info.yml");
+        const data = await tort.runModule("no-project-info.yml");
 
-        const data: any = result.ReturnData;
-
-        expect(result).not.toBeUndefined();
-        expect(result.ReturnName).toBe("Tortellini");
         expect(data).toHaveProperty("project");
         const proj = data.project;
         expect(proj).toHaveProperty("id");
@@ -174,9 +158,9 @@ describe("Test runTortellini", () => {
         expect(viol).toHaveProperty("how_to_fix");
     });
 
-    test("Empty File", async () => {
-        const result = await tort.runTortellini("empty-file.yml");
-
-        expect(result.ReturnData).toEqual({});
+    test("Empty File", () => {
+        return expect(
+            tort.runModule("empty-file.yml")
+        ).rejects.toThrow();
     });
 });

@@ -1,0 +1,59 @@
+[command]"C:\Program Files\Docker\Docker\resources\bin\docker.exe" run --rm --name searchseco-container -e "github_token=" -e "worker_name=test" jarnohendriksen/mockseco:v1 check https://github.com/QDUNI/FAIRSECO
+-----------------------------------------------------------------------------------------------------
+Matched the project at "https://github.com/QDUNI/FairSECO" against the database.
+-----------------------------------------------------------------------------------------------------
+
+
+Summary:
+Methods in checked project: 4
+Matches: 2 (50%)
+
+Projects found in database:
+
+Local authors present in matches:
+
+Authors present in database matches:
+
+
+--------------------------------------------------------------------------------------------------------------------------------
+Details of matches found
+--------------------------------------------------------------------------------------------------------------------------------
+
+---------------
+Hash 1234567890
+---------------
+
+  *Method parseInput in file searchseco.ts line 110
+   Authors of local function: 
+  Quinn Donkers
+
+DATABASE
+  *Method parseInput in project SearchSECOController in file parse.cpp line 33
+  URL: https://github.com/SecureSECO/SearchSECOController
+  Method marked as vulnerable with code: 123(https://www.url-of-vulnerability.com)
+  Authors of function found in database: 
+  	Rowin Schouten
+  	Tjibbe Bolhuis
+
+  *Method Parse in project TrustSECO in file parser.cs line 39
+  URL: https://github.com/SecureSECO/TrustSECO
+  Method marked as vulnerable with code: 246(https://www.url-of-vulnerability.com)
+  Authors of function found in database: 
+  	Bram Lankhorst
+  	Valia Bykova
+
+---------------
+Hash 9876544322
+---------------
+
+  *Method getMethodInfo in file searchseco.ts line 180
+   Authors of local function: 
+  Bart Hageman
+
+DATABASE
+  *Method getInfo in project searchseco-output-parser in file parseOutput.js line 88
+  URL: https://github.com/jarnohendriksen/searchseco-output-parser
+  Method marked as vulnerable with code: 234(https://www.url-of-vulnerability.com)
+  Authors of function found in database: 
+  	Alina Aydin
+  	Jarno Hendriksen

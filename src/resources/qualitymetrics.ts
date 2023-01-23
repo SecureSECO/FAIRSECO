@@ -1,63 +1,110 @@
-import { ReturnObject } from "../../src/getdata";
-import { GithubInfo } from "../git";
+/**
+ * This module contains functions that get data from the previously run modules and new data from GitHub,
+ * and calculates a number of metrics used to calculate the quality score.
+ * 
+ * @module
+ */
+
+import { GitHubInfo } from "../git";
 
 import * as gh from "@actions/github";
 import * as fs from "fs";
+
+/** The name of the module. */
+export const ModuleName = "QualityMetrics";
 
 /**
  * Contains information about the quality of the repository.
  * The reported values are whole numbers.
 */
 export interface QualityMetrics {
-    /** The overall score 0-100 as a whole number */
+    /** The total score 0-100 as a whole number. */
     score: number;
-    /** The FAIRness score, percent score from howfairis 0-100. */
+
+    /** The FAIRness score, percent score from fairtally 0-100. */
     fairnessScore: number;
+
     /** The license score based on license violations 0-100. */
     licenseScore: number;
-    /** The maintability score, percentage of solved issues 0-100. */
+    
+    /** The maintainability score, percentage of solved issues 0-100. */
     maintainabilityScore: number;
-    /** The documentation score, 100 if documentation has been detected, 0 otherwise. */
+    
+    /** The documentation score 0-100, based on presence of documentation. */
     documentationScore: number;
-    /** Average time in days it took to solve closed github issues. Undefined if no issues have been solved. */
+
+    /** Average time in days it took to solve closed GitHub issues. Undefined if no issues have been solved. */
     avgSolveTime: number | undefined;
 }
 
 /**
- * Finds quality metrics about the repository.
- * @param ghInfo A {@link git.GithubInfo} containing information about the GitHub repository.
- * @param howfairisOutput The output from the howfairis module.
+ * Calculates the quality metrics of the repository.
+ * 
+ * @param ghInfo Information about the GitHub repository.
+ * @param fairtallyOutput The output from the fairtally module.
  * @param tortelliniOutput The output from the tortellini module.
- * @returns A {@link getdata.ReturnObject} containing a {@link QualityMetrics} object containing quality metrics about the repository.
+ * @returns The quality metrics of the repository.
+ * 
+ * @remarks
+ * #### FAIRness score
+ * Score between 0 and 100 proportional to how many of the five FAIRness criteria are met.
+ * #### Maintainability score
+ * The percentage of closed GitHub issues.
+ * #### License score
+ * Score between 0 and 100 indicating how compatible the license of the project is with those of its dependencies. The more violations there are, the lower the license score will be.
+ * #### Documentation
+ * Score between 0 and 100, depending on the presence of a documentation directory and readme.md file.
+ * #### Average Solve Time
+ * Average number of days between opening and closing an issue. This number is not used to calculate the quality score, but may be displayed separately. This is because the acceptable amount of time it takes to solve an issue can be different for each project.
  */
-export async function getQualityMetrics(
-    ghInfo: GithubInfo,
-    howfairisOutput: ReturnObject,
-    tortelliniOutput: ReturnObject
-): Promise<ReturnObject> {
-    const fairnessScore = (howfairisOutput.ReturnData as any[])[0].count * 20;
+export async function runModule(
+    ghInfo: GitHubInfo,
+    fairtallyOutput: any,
+    tortelliniOutput: any
+): Promise<QualityMetrics> {
+    // Check if fairtally and Tortellini output exist
+    if (fairtallyOutput === undefined || tortelliniOutput === undefined) {
+        throw new Error("fairtallyOutput or tortelliniOutput is undefined");
+    }
 
+    // FAIRness score
+    const fairnessScore = fairtallyOutput[0].count * 20;
+
+    // License score
     const licenseScore = getLicenseScore(tortelliniOutput);
 
     // Get github issues
     const issues = await getIssues(ghInfo);
 
-    const maintainabilityScore = await getMaintainabilityScore(issues);
+    // Maintainability score
+    const maintainabilityScore = getMaintainabilityScore(issues);
 
+    // Average solve time
     const avgSolveTime = getAvgSolveTime(issues);
 
-    const documentationScore = hasDocumentation() ? 100 : 0;
+    // Documentation score
+    const docsDirectoryScore = hasDocumentationDir() ? 50 : 0;
+    const readmeScore = ghInfo.Readme !== "" ? 50 : 0;
+    const documentationScore = docsDirectoryScore + readmeScore;
 
-    // Overall score
+    // Scoring weights
+    const fairnessWeight = 38;
+    const licenseWeight = 27;
+    const maintainabilityWeight = 23;
+    const documentationWeight = 12;
+    const totalWeight = fairnessWeight + licenseWeight + maintainabilityWeight + documentationWeight;
+
+    // Total score
     const score = Math.round(
-        fairnessScore * 0.38 +
-        licenseScore * 0.27 +
-        maintainabilityScore * 0.23 +
-        documentationScore * 0.12
+        (
+            fairnessScore * fairnessWeight +
+            licenseScore * licenseWeight +
+            maintainabilityScore * maintainabilityWeight +
+            documentationScore * documentationWeight
+        ) / totalWeight
     );
 
-    // Quality score to return
-    const qualityMetrics: QualityMetrics = {
+    return {
         score,
         fairnessScore,
         licenseScore,
@@ -65,25 +112,18 @@ export async function getQualityMetrics(
         documentationScore,
         avgSolveTime,
     };
-
-    return {
-        ReturnName: "QualityMetrics",
-        ReturnData: qualityMetrics,
-    };
 }
 
 /**
  * Calculates the percentage of license violations. The more violations there are,
  * the lower the score will be.
  *
- * @param licenseInfo The {@link getdata.ReturnObject} containing the (curated)
- * output from Tortellini.
- *
+ * @param licenseInfo The output from Tortellini.
  * @returns Score between 0 and 100 indicating how well licenses correspond with each other.
  */
-export function getLicenseScore(licenseInfo: ReturnObject): number {
-    const licenseCount : number = (licenseInfo.ReturnData as any).packages.length;
-    const violationCount : number = (licenseInfo.ReturnData as any).violations.length;
+export function getLicenseScore(licenseInfo: any): number {
+    const licenseCount : number = licenseInfo.packages.length;
+    const violationCount : number = licenseInfo.violations.length;
 
     // Check if there's no licenses
     if (licenseCount === 0) {
@@ -107,6 +147,7 @@ export function getLicenseScore(licenseInfo: ReturnObject): number {
  */
 export function getMaintainabilityScore(issues: any[]): number {
     const total = issues.length;
+    
     // Count amount of closed issues
     let closed = 0;
     for (const issue of issues) {
@@ -150,28 +191,27 @@ export function getAvgSolveTime(issues: any[]): number | undefined {
  *
  * @returns A boolean indicating the existence of a "docs" or "documentation" directory.
  */
-export function hasDocumentation(): boolean {
+export function hasDocumentationDir(): boolean {
     return fs.existsSync("./docs") || fs.existsSync("./documentation");
 }
 
 /**
- * Gets issues of the current repository from GitHub.
+ * Gets issues (excluding pull requests) of the current repository from GitHub.
  *
- * @param ghInfo {@link git.GithubInfo} object containing metadata about the current repository.
- * @returns Array of issue objects.
+ * @param ghInfo Information about the GitHub repository.
+ * @returns An array of GitHub issue objects.
  */
-export async function getIssues(ghInfo: GithubInfo): Promise<any[]> {
+export async function getIssues(ghInfo: GitHubInfo): Promise<any[]> {
     // Get octokit
     let octokit: any;
     try {
         octokit = gh.getOctokit(ghInfo.GithubToken);
-    } catch {
-        throw new Error(
-            "Error while contacting octokit API, did you supply a valid token?"
-        );
+    } catch (error) {
+        throw new Error("Error while contacting Octokit API: " + (error.message as string));
     }
 
-    // Request issues of the repo
+    // Request issues of the repo (pull requests are also counted as issues)
+    // https://docs.github.com/en/rest/issues/issues#list-repository-issues
     try {
         const response = await octokit.request(
             "GET /repos/" + ghInfo.Owner + "/" + ghInfo.Repo + "/issues",
@@ -181,11 +221,9 @@ export async function getIssues(ghInfo: GithubInfo): Promise<any[]> {
             }
         );
 
-        return response.data;
+        // Filter out pull requests and return the issues
+        return response.data.filter((issue: any) => issue.pull_request === undefined);
     } catch (error) {
-        throw new Error(
-            "Error getting issues: " +
-                (error instanceof Error ? error.message : "unknown")
-        );
+        throw new Error("Error getting issues: " + (error.message as string));
     }
 }

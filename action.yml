@@ -1,10 +1,10 @@
-name: "FairSECO-action"
+name: "FAIRSECO-action"
 description: "GitHub Action that assesses fairness in software"
 author: "Utrecht University"
 inputs:
     repository:
         required: false
-        description: "Github Repo running the Fairseco action"
+        description: "Github Repo running the FAIRSECO action"
         default: ${{ github.repository }}
     myToken:
         required: true

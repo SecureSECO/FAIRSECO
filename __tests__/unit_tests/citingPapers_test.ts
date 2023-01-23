@@ -1,5 +1,5 @@
-import { Paper } from "../../src/resources/Paper";
-import { mergeDuplicates } from "../../src/resources/citingPapers";
+import { Paper } from "../../src/resources/citations/Paper";
+import { mergeDuplicates } from "../../src/resources/citations/citing_papers";
 
 test("Check mergeDuplicates with two empty arrays", () => {
     expect(mergeDuplicates([], [])).toStrictEqual([]);

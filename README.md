@@ -1,6 +1,74 @@
-# FairSECO
+*FAIRSECO* is a GitHub Action that analyzes your repository to give information about:
 
-![fair-software.eu](https://img.shields.io/badge/fair--software.eu-%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F-green)
+- **Impact**
+    - Academic references
+        - Citations
+        - Academic fields
+    - Code reuse
+        - Methods matching those used in other projects (from [SearchSECO](https://github.com/SecureSECO/SearchSECOController))
+- **Quality**
+    - FAIRness criteria (from [fairtally](https://github.com/fair-software/fairtally))
+        - Findable
+            - Registered in a public repository
+        - Accessible
+            - Public repository
+        - Interoperable
+            - Using a quality checklist
+        - Reusable
+            - Citation file present
+            - License file present
+    - License information (from [Tortellini](https://github.com/tortellini-tools/action))
+        - Licenses of dependencies
+        - License violations
+    - Maintainability
+        - Open/closed GitHub issues
+    - Documentation
+        - Presence of documentation directory
+- **SBOM** (from  [sbom-action](https://github.com/anchore/sbom-action))
+    - Dependency tree
+
+<br>
+
+# How to run
+
+In your Github repository, put the following workflow code in a `.yml` file in the `.github/workflows` folder:
+
+```yaml
+name: RunFAIRSECO
+
+on:
+    # Allows you to run this workflow manually from the Actions tab
+    workflow_dispatch:
+
+jobs:
+    RunFAIRSECO:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - uses: tortellini-tools/action@v3
+            - uses: actions/upload-artifact@v3
+              with:
+                  name: tortellini-result
+                  path: .tortellini/out
+            - uses: anchore/sbom-action@v0
+              with:
+                  artifact-name: SBOM.spdx # Output is in JSON format
+            - uses: QDUNI/FAIRSECO@main
+            - uses: actions/upload-artifact@v3
+              with:
+                  name: FAIRSECO Result
+                  path: .FAIRSECO/
+```
+
+The workflow creates an artifact in the folder `.FAIRSECO` containing the following files:
+- index.html
+    - Dashboard where you can see the results in a nice overview
+- Report.yml
+    - Contains the data collected and processed by the action
+- program.log
+    - The log of the program
+
+<br>
 
 # License 
 

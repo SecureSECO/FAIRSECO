@@ -1,3 +1,9 @@
+/**
+ * This module contains the action.
+ * 
+ * @module
+ */
+
 import { pre } from "./pre";
 import { data } from "./getdata";
 import { post } from "./post";
@@ -8,8 +14,11 @@ export async function main(): Promise<void> {
     try {
         const check = await pre();
         if (check) {
-            const result = await data(); // call data check.
-            await post(result); // call post check.
+            // Call data check.
+            const result = await data();
+            
+             // Call post check.
+            await post(result);
         }
     } catch (error) {
         core.setFailed(error.message);

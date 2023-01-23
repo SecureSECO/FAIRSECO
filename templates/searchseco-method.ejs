@@ -1,6 +1,6 @@
-<div class="SearchSeco__ListObject SearchSeco__ArrowOwner<%- !method.vulnerable ? ' SearchSeco--NotVulnerable' : '' %>">
-    <div class="SearchSeco__ListObject__Header">
-        <div class="SearchSeco__ListObject__Header__Start">
+<div class="SearchSECO__ListObject SearchSECO__ArrowOwner<%- !method.vulnerable ? ' SearchSECO--NotVulnerable' : '' %>">
+    <div class="SearchSECO__ListObject__Header">
+        <div class="SearchSECO__ListObject__Header__Start">
             <h1>
                 <i class="fa-solid fa-angle-right" onClick="searchSecoClickArrow(event)"></i><%- method.data.name %> (<%- method.data.file %>:<%- method.data.line %>)
             </h1>
@@ -23,7 +23,7 @@
             }
         })(method.data.authors) %>
     </div>
-    <div class="SearchSeco__ListObject__MatchList SearchSeco__ArrowTarget" hidden>
+    <div class="SearchSECO__ListObject__MatchList SearchSECO__ArrowTarget" hidden>
         <% for (const match of method.matches) { %>
         <%- include('searchseco-match', {"match": match}); %>
         <% } %>
