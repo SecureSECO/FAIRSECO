@@ -8,6 +8,7 @@ return x ? '<p>Yes</p>' : '<p>No</p>'
     <h1 class="FairtallyReportTitle">FAIRness Report</h1>
     <div class="stars">
         <h2>
+        <%# Here we add the appropriate amount of filled stars, half stars, and hollow stars for displaying the fairness score. %>
         <% for (let i = 0; i < Math.floor(fairtally.count); i++) { %>
             <i class="fa-solid fa-star"></i>
         <% } %>

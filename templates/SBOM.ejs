@@ -61,6 +61,7 @@ function expandItem(ele){
 }
 </script>
 <div class="SBOMContainer Hidden">
+<%# Unless we don't have a rootelem, we recursively add sbomitems until we built our entire tree. %>
     <% if (rootelem !== undefined) { %>
         <%- include('SBOMItem', {"grapharr": Array.from(graph), parent: rootelem, lastItem : false})%>
     <% } %>

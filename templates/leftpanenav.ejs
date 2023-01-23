@@ -80,12 +80,16 @@
     }
 </style>
 <script>
+// When we load the page, find which tab is currently active and store this.
 window.addEventListener('load', 
   function() { 
   window.ActiveTab = document.querySelector(".ActiveTab")
   window.ActiveIndex = 0
   }, false);
 
+// Code for moving the block that moves around the nav when hovering items. We
+// have to adjust the width for each item's text length. As well as translating it
+// to the right position.
 function moveHighlightBlockTo(ele) {
     const padding = 20;
     const {top, left, width, height} = ele.getBoundingClientRect();
