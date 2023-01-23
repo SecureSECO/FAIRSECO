@@ -19278,7 +19278,7 @@ function createReport(result) {
     (0, log_1.LogMessage)("FAIRSECO report:\n" + JSON.stringify(result), log_1.ErrorLevel.info);
     try {
         fs_1.default.writeFileSync("./.FAIRSECO/report.yml", yaml_1.default.stringify(result));
-        fs_1.default.writeFileSync("./.FAIRSECO/report.json", yaml_1.default.stringify(result));
+        fs_1.default.writeFileSync("./.FAIRSECO/report.json", JSON.stringify(result));
         (0, log_1.LogMessage)("Successfully wrote YML file to dir.", log_1.ErrorLevel.info);
     }
     catch (_a) {
