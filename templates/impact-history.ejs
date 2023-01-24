@@ -1,4 +1,8 @@
 <%
+    if (typeof(history) === 'undefined') {
+        throw new Error("Missing history data");
+    }
+
     const count = history.length;
     
     const date = history[count- 1].date;
