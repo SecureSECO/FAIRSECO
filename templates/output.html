@@ -139,11 +139,21 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
     }
 </style>
 <script>
-window.addEventListener('load', 
-  function() { 
-  window.ActiveTab = document.querySelector(".ActiveTab")
-  window.ActiveIndex = 0
-  }, false);
+window.addEventListener('load', () => {
+    window.ActiveTab = document.querySelector(".ActiveTab");
+    window.ActiveIndex = 0;
+
+    
+    for (const tab of document.querySelectorAll(".LeftPaneNav .NavItem")) {
+        if (document.querySelector("." + tab.dataset.linkedClass).classList.contains("LeftPaneError")) {
+            const icon = tab.querySelector("i");
+            icon.classList.forEach((token) => {
+                icon.classList.remove(token);
+            });
+            icon.classList.add("fa-solid", "fa-triangle-exclamation");
+        }
+    }
+});
 
 function moveHighlightBlockTo(ele) {
     const padding = 20;
@@ -224,12 +234,9 @@ function clickNav(ele) {
 
 
     
-    
-    
-    
-    
-    <div class="CitationsContainer ActiveTab">
+     
 
+<div class="CitationsContainer ActiveTab">
     <div id="CitationsHeader">
         <h1 class="hTitle">Title, Authors, Description</h1>
         <h1 class="hDate">Date</h1>
@@ -3518,8 +3525,10 @@ a spatio-temporal calibration for ice-sheet modelling
     }
     }
 </style>
+ 
 
-    <div class="LicensesContainer Hidden">
+<div class="LicensesContainer Hidden">
+    <h3 class="Disclaimer">This information is retrievied from the Tortellini GitHub Action. Please be aware that we cannot make any guarantees about correct licensing. </h3>
     <h1 class="issuesheader"> Issues detected: 73</h1>
     <div class="LicensesContainerScroll">
         <div class="Licenses">
@@ -6447,10 +6456,19 @@ which may link to additional resources.</div>
         </div>
     </div>
 </div>
+
 <style>
     .LicensesContainer {
         height: 76%;
         width: 100%;
+    }
+
+    .Disclaimer{
+        color:#779C7E;
+        font-size: 0.9rem;
+        margin-bottom: 0px;
+        margin-left: 20px;
+        font-style: italic;
     }
 
     .Licenses {
@@ -6620,7 +6638,6 @@ for (var i = 0; i < details.length; ++i){
 
 </script>
 
-    
 
 
 <script>
@@ -19112,7 +19129,6 @@ flex-direction: row;
 }
 </style>
 
-    
 
 <div class="SearchSECO Hidden">
     <h1>Total matches: 3</h1>
@@ -19498,6 +19514,7 @@ flex-direction: row;
             }
         }
     }
+
 </script>
 
     <div class="footer">  
@@ -19541,6 +19558,13 @@ flex-direction: row;
     }    
 </style>
 
+
+<script>
+    if (document.querySelector(".CitationsContainer.LeftPaneError") !== null) {
+        document.querySelector(".citationgraphBtn").disabled = true;
+    };
+</script>
+
 </div>
 
 <style>
@@ -19583,27 +19607,28 @@ flex-direction: row;
         height: 2.5rem;
         margin: 0px -38px; 
     }
+
+    .LeftPaneError {
+        width: 92%;
+        margin: 4%;
+        word-wrap: break-word;
+        font-size: 1.5rem;
+        color: #779C7E;
+    }
 </style>
 
+ 
+
     
+
 <div class="RightPane">
     <div class="RightPaneContainer">
         <ul id="RightPaneNav">
-    <li class="RightPaneNav__Tab--Active" onClick="clickTab(this)" data-linked-class="Overview">
-        Overview
-    </li>
-    <li class="RightPaneNav__Tab--1Away" onClick="clickTab(this)" data-linked-class="FairtallyReport">
-        FAIRness
-    </li>
-    <li class="RightPaneNav__Tab--2Away" onClick="clickTab(this)" data-linked-class="ImpactScore">
-        Impact
-    </li>
-    <li class="RightPaneNav__Tab--3Away" onClick="clickTab(this)" data-linked-class="Quality">
-        Quality
-    </li>
-    <li class="RightPaneNav__Tab--4Away" onClick="clickTab(this)" data-linked-class="ImpactHistory">
-        Impact History
-    </li>
+    <li class="RightPaneNav__Tab--Active" onClick="clickTab(this)" data-linked-class="Overview">Overview</li>
+    <li class="RightPaneNav__Tab--1Away" onClick="clickTab(this)" data-linked-class="FairtallyReport">FAIRness</li>
+    <li class="RightPaneNav__Tab--2Away" onClick="clickTab(this)" data-linked-class="ImpactScore">Impact</li>
+    <li class="RightPaneNav__Tab--3Away" onClick="clickTab(this)" data-linked-class="Quality">Quality</li>
+    <li class="RightPaneNav__Tab--4Away" onClick="clickTab(this)" data-linked-class="ImpactHistory">Impact History</li>
 </ul>
 
 
@@ -19646,19 +19671,19 @@ flex-direction: row;
     transition: all 150ms ease;
 }
 #RightPaneNav li:nth-child(1) {
-    z-index: 4;
+    z-index: 5;
 }
 #RightPaneNav li:nth-child(2) {
-    z-index: 3;
+    z-index: 4;
 }
 #RightPaneNav li:nth-child(3) {
-    z-index: 2;
+    z-index: 3;
 }
 #RightPaneNav li:nth-child(4) {
-    z-index: 1;
+    z-index: 2;
 }
 #RightPaneNav li:nth-child(5) {
-    z-index: 0;
+    z-index: 1;
 }
 
 #RightPaneNav .RightPaneNav__Tab--Active {
@@ -19688,6 +19713,20 @@ flex-direction: row;
 </style>
 
 <script>
+    
+    window.addEventListener("load", () => {
+        for (const tab of document.getElementById("RightPaneNav").getElementsByTagName("li")) {
+            if (document.querySelector("." + tab.dataset.linkedClass).classList.contains("RightPaneError")) {
+                const textNode = tab.childNodes.item(0);
+                textNode.textContent = " " + textNode.textContent;
+
+                const icon = document.createElement("i");
+                icon.classList.add("fa-solid", "fa-triangle-exclamation");
+                tab.prepend(icon);
+            }
+        }
+    });
+
     function clickTab(tab) {
         const activeTab = document.querySelector(".RightPaneNav__Tab--Active");
 
@@ -19727,7 +19766,7 @@ flex-direction: row;
     
     function generatePDF() {
       var opt = {
-        // filename:     'FAIRECO-REPORT-'+ githubData.Repo + '.pdf',
+        filename:     'FAIRECO-REPORT-FairSECO.pdf',
         };
       const element = document.getElementById("pdf");
       var elementclone = element.cloneNode(true);
@@ -19745,7 +19784,7 @@ flex-direction: row;
         <div class="Repository__Info__Top">
             <div class="Repository__Info">
                 <h3>Repository title</h3>
-                <h2 class="Repository__Data">FAIRSECO</h2>
+                <h2 class="Repository__Data">FairSECO</h2>
             </div>
             <div class="Repository__Info">
                 <h3>Repository owner</h3>
@@ -19753,27 +19792,27 @@ flex-direction: row;
             </div>
             <div class="Repository__Info">
                 <h3>Date of issue</h3>
-                <h2 class="Repository__Data">22 dec 2022</h2>
+                <h2 class="Repository__Data">24/1/2023</h2>
             </div>
         </div>
         <div class="Repository__Info__Left">
             <div class="Repository__Info">
                 <h3>Top contributors</h3>
-                <h2 class="Repository__Data Repository__Contributors"><p>RageRaptor</p><p>Tjibbe75</p></h2>
+                <h2 class="Repository__Data Repository__Contributors"><p>RageRaptor</p><p>QDUNI</p><p>rowins</p></h2>
             </div>
         </div>
         <div class="Repository__Info__Right">
             <div class="Repository__Info">
                 <h3>Repository stars</h3>
-                <h2 class="Repository__Data">3100<i class="fa-solid fa-star"></i></h2>
+                <h2 class="Repository__Data">2<i class="fa-solid fa-star"></i></h2>
             </div>
             <div class="Repository__Info">
                 <h3>Repository watchers</h3>
-                <h2 class="Repository__Data">1600<i class="fa-solid fa-eye"></i></h2>
+                <h2 class="Repository__Data">0<i class="fa-solid fa-eye"></i></h2>
             </div>
             <div class="Repository__Info">
                 <h3>Repository Forks</h3>
-                <h2 class="Repository__Data">25<i class="fa-solid fa-code-fork"></i></h2>
+                <h2 class="Repository__Data">0<i class="fa-solid fa-code-fork"></i></h2>
             </div>
         </div>
     </div>
@@ -19781,19 +19820,19 @@ flex-direction: row;
     <div class="Meta-data__Row">
         <div class="Meta-data">
             <p>Times cited</p>
-            <div class = Meta-data__Data><p>123</p></div>
+            <div class = Meta-data__Data><p>137</p></div>
         </div>
         <div class="Meta-data">
             <p>Fairness</p>
-            <div class = Meta-data__Data><p>5/5</p></div>
+            <div class = Meta-data__Data><p>0/5</p></div>
         </div>
         <div class="Meta-data">
             <p>Methods reused in other projects</p>
-            <div class = Meta-data__Data><p>20</p></div>
+            <div class = Meta-data__Data><p>3</p></div>
         </div>
         <div class="Meta-data">
             <p>Quality Score</p>
-            <div class = Meta-data__Data><p>83/100</p></div>
+            <div class = Meta-data__Data><p>42/100</p></div>
         </div>
     </div>
     <button id="pdfbutton" onclick="generatePDF()"><i class="fa-solid fa-download"></i>  Download as PDF</button>
@@ -19937,11 +19976,9 @@ flex-direction: row;
 
 
 
-            
-
 
 <div class="FairtallyReport" hidden>
-    <h1 class="FairtallyReportTitle">FAIRness Report</h1>
+    <h1>FAIRness Report</h1>
     <div class="stars">
         <h2>
         
@@ -20014,6 +20051,8 @@ flex-direction: row;
     }
 
     .FairtallyReport h1 {
+        margin: 2%;
+        font-size: 2vw;
         color: #0C281E;
         text-align: center;
     }
@@ -20022,11 +20061,6 @@ flex-direction: row;
         text-align: center;
     }
     .FairtallyReport h4 {
-        font-weight: 400;
-        font-style: italic;
-        text-align: center;
-    }
-    .HowFairIsReport h4 {
         font-weight: 400;
         font-style: italic;
         text-align: center;
@@ -20096,8 +20130,9 @@ flex-direction: row;
         }
     }
 </script>
+ 
 
-            <div class="Quality" hidden>
+<div class="Quality" hidden>
     <h1>Quality Score</h1>
     <div class="QualityMeter">
         <div class="QualityMeter__Bar">
@@ -20368,7 +20403,6 @@ flex-direction: row;
 }
 </style>
 
-            
 
 <div class="ImpactScore" hidden>
     <h1 class="Impact__Title">Impact</h1>
@@ -20528,7 +20562,6 @@ new Chart("Citations__RadarChart", config);
 }
 
 </style>
-            
 
 <div class="ImpactHistory" hidden>
     <h1>Impact History</h1>
@@ -20911,7 +20944,15 @@ new Chart("Citations__RadarChart", config);
     color: #0C281E;
 }
 
+.RightPaneError {
+    width: 92%;
+    margin: 4%;
+    word-wrap: break-word;
+    font-size: 1.5rem;
+    color: #0C281E;
+}
 </style>
+
  
     <style>
     .page{
@@ -21041,7 +21082,7 @@ new Chart("Citations__RadarChart", config);
     
     function generatePDF() {
       var opt = {
-        // filename:     'FAIRECO-REPORT-'+ githubData.Repo + '.pdf',
+        filename:     'FAIRECO-REPORT-FairSECO.pdf',
         };
       const element = document.getElementById("pdf");
       var elementclone = element.cloneNode(true);
@@ -21059,7 +21100,7 @@ new Chart("Citations__RadarChart", config);
         <div class="Repository__Info__Top">
             <div class="Repository__Info">
                 <h3>Repository title</h3>
-                <h2 class="Repository__Data">FAIRSECO</h2>
+                <h2 class="Repository__Data">FairSECO</h2>
             </div>
             <div class="Repository__Info">
                 <h3>Repository owner</h3>
@@ -21067,27 +21108,27 @@ new Chart("Citations__RadarChart", config);
             </div>
             <div class="Repository__Info">
                 <h3>Date of issue</h3>
-                <h2 class="Repository__Data">22 dec 2022</h2>
+                <h2 class="Repository__Data">24/1/2023</h2>
             </div>
         </div>
         <div class="Repository__Info__Left">
             <div class="Repository__Info">
                 <h3>Top contributors</h3>
-                <h2 class="Repository__Data Repository__Contributors"><p>RageRaptor</p><p>Tjibbe75</p></h2>
+                <h2 class="Repository__Data Repository__Contributors"><p>RageRaptor</p><p>QDUNI</p><p>rowins</p></h2>
             </div>
         </div>
         <div class="Repository__Info__Right">
             <div class="Repository__Info">
                 <h3>Repository stars</h3>
-                <h2 class="Repository__Data">3100<i class="fa-solid fa-star"></i></h2>
+                <h2 class="Repository__Data">2<i class="fa-solid fa-star"></i></h2>
             </div>
             <div class="Repository__Info">
                 <h3>Repository watchers</h3>
-                <h2 class="Repository__Data">1600<i class="fa-solid fa-eye"></i></h2>
+                <h2 class="Repository__Data">0<i class="fa-solid fa-eye"></i></h2>
             </div>
             <div class="Repository__Info">
                 <h3>Repository Forks</h3>
-                <h2 class="Repository__Data">25<i class="fa-solid fa-code-fork"></i></h2>
+                <h2 class="Repository__Data">0<i class="fa-solid fa-code-fork"></i></h2>
             </div>
         </div>
     </div>
@@ -21095,19 +21136,19 @@ new Chart("Citations__RadarChart", config);
     <div class="Meta-data__Row">
         <div class="Meta-data">
             <p>Times cited</p>
-            <div class = Meta-data__Data><p>123</p></div>
+            <div class = Meta-data__Data><p>137</p></div>
         </div>
         <div class="Meta-data">
             <p>Fairness</p>
-            <div class = Meta-data__Data><p>5/5</p></div>
+            <div class = Meta-data__Data><p>0/5</p></div>
         </div>
         <div class="Meta-data">
             <p>Methods reused in other projects</p>
-            <div class = Meta-data__Data><p>20</p></div>
+            <div class = Meta-data__Data><p>3</p></div>
         </div>
         <div class="Meta-data">
             <p>Quality Score</p>
-            <div class = Meta-data__Data><p>83/100</p></div>
+            <div class = Meta-data__Data><p>42/100</p></div>
         </div>
     </div>
     <button id="pdfbutton" onclick="generatePDF()"><i class="fa-solid fa-download"></i>  Download as PDF</button>
@@ -21256,9 +21297,8 @@ new Chart("Citations__RadarChart", config);
         <div class="page">
         
 
-
 <div class="FairtallyReport" hidden>
-    <h1 class="FairtallyReportTitle">FAIRness Report</h1>
+    <h1>FAIRness Report</h1>
     <div class="stars">
         <h2>
         
@@ -21331,6 +21371,8 @@ new Chart("Citations__RadarChart", config);
     }
 
     .FairtallyReport h1 {
+        margin: 2%;
+        font-size: 2vw;
         color: #0C281E;
         text-align: center;
     }
@@ -21339,11 +21381,6 @@ new Chart("Citations__RadarChart", config);
         text-align: center;
     }
     .FairtallyReport h4 {
-        font-weight: 400;
-        font-style: italic;
-        text-align: center;
-    }
-    .HowFairIsReport h4 {
         font-weight: 400;
         font-style: italic;
         text-align: center;
@@ -21417,7 +21454,9 @@ new Chart("Citations__RadarChart", config);
         </div>    
 
         <div class="page">
-            <div class="Quality" hidden>
+             
+
+<div class="Quality" hidden>
     <h1>Quality Score</h1>
     <div class="QualityMeter">
         <div class="QualityMeter__Bar">

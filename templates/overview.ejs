@@ -3,7 +3,7 @@
     
     function generatePDF() {
       var opt = {
-        // filename:     'FAIRECO-REPORT-'+ githubData.Repo + '.pdf',
+        filename:     'FAIRECO-REPORT-<%-githubData.Repo %>.pdf',
         };
       const element = document.getElementById("pdf");
       var elementclone = element.cloneNode(true);

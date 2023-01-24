@@ -86,7 +86,7 @@
         const fairtally = data.find((ele) => (ele.ModuleName=== "fairtally"))?.Data[0]; 
         const sbom = data.find((ele) => (ele.ModuleName=== "SBOM"))?.Data; 
         const searchSECO = data.find((ele) => (ele.ModuleName=== "SearchSECO"))?.Data; 
-        const githubinfo = data.find((ele) => (ele.ModuleName=== "GithubInfo"))?.Data;   
+        const githubData = data.find((ele) => (ele.ModuleName === "GithubInfo"))?.Data;
         const quality = data.find((ele) => (ele.ModuleName=== "QualityMetrics"))?.Data;
         const paperData = data.find((ele) => (ele.ModuleName === "CitingPapers"))?.Data;
     
@@ -120,24 +120,24 @@
         <div class="title_page">
             <div> <%- include('logo-extend')%> </div>
             <div class="title-page-title">
-                <span class="title_page_header"> <%- githubinfo.Repo %></span><br>
+                <span class="title_page_header"> <%- githubData.Repo %></span><br>
                 <span class ="title_page_subheader"> FAIRSECO REPORT </span>
             </div>
 
             <div class="title_page_authors">
                 <span class="title_page_authors_header"> Project Authors </span><br><br>
-                <% githubinfo.Contributors?.forEach((contributor) => { %> 
+                <% githubData.Contributors?.forEach((contributor) => { %> 
                     <span> <%- contributor.login %></span><br>
                 <% }) %>
             </div>
 
             <div class="title_page_footer">
-                <span>This document provides an overview report of '<%- githubinfo.Repo %>' provided by FAIRSECO</span>
+                <span>This document provides an overview report of '<%- githubData.Repo %>' provided by FAIRSECO</span>
             </div>
         </div>
 
         <div class="page">
-            <%- include("overview") %>
+            <%- include('overview', {githubData, quality, searchSECO, paperData}, "Overview", false) %>
         </div>
 
         <div class="page">
