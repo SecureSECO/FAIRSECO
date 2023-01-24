@@ -104,3 +104,6 @@ The HTML page is built with the following structure:
     - Includes `leftpane-citationgraph.ejs` (left pane)
         - Includes `citations-citationgraph.ejs` (container showing info about selected things)
     - Includes `starfieldgraph.ejs` (chart)
+
+The inclusions of pages by `leftpane.ejs` and `rightpane.ejs` are all wrapped in separate try-catch blocks.
+When a page cannot be included, for example due to missing data, it will be replaced by the `leftpane-error.ejs` page or `rightpane-error.ejs` page respectively, which display the encountered error.

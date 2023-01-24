@@ -14,48 +14,78 @@
 
 </script>
 <%
+if (typeof(githubData) === 'undefined') {
+    throw new Error("Missing GitHub data");
+}
+if (typeof(quality) === 'undefined') {
+    throw new Error("Missing QualityMetrics data");
+}
+if (typeof(searchSECO) === 'undefined') {
+    throw new Error("Missing SearchSECO data");
+}
+if (typeof(paperData) === 'undefined') {
+    throw new Error("Missing CitingPapers data");
+}
+
 function getRepositoryTitle() {
-    return "FAIRSECO";
+    return githubData.Repo;
 }
 
 function getRepositoryOwner() {
-    return "QDUNI";
+    return githubData.Owner;
 }
 
-function getDate() {
-    return "22 dec 2022";
+function getFullDate() {
+    const date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let currentDate = day + "/" + month + "/" + year;
+    return currentDate;
 }
 
 function getTopContributors() {
-    return "<p>RageRaptor</p><p>Tjibbe75</p>";
+    let returnString = "";
+    let count = 0;
+    githubData.Contributors.forEach(cont => {
+        if (cont.type === "User" && count <= 6){
+            returnString += "<p>" + cont.login + "</p>";
+            count++;
+        }
+    });
+    return returnString;
 }
 
 function getRepositoryStars() {
-    return 3100;
+    return githubData.Stars;
 }
 
 function getrepositoryWatchers() {
-    return 1600;
+    return githubData.Watched;
 }
 
 function getRepositoryforks() {
-    return 25;
+    return githubData.Forks;
 }
 
 function getTimesCited() {
-    return 123;
+    return paperData.firstHandCitations;
 }
 
 function getFairness() {
-    return "5/5";
+    return quality.fairnessScore + "/5";
 }
 
 function getMethodsReuse() {
-    return 20;
+    let count = 0;
+    searchSECO.methods.forEach(meth =>{
+        count += meth.matches.length;
+    });
+    return count;
 }
 
 function getQualityScore() {
-    return "83/100";
+    return quality.score + "/100";
 }
 %>
 
@@ -73,7 +103,7 @@ function getQualityScore() {
             </div>
             <div class="Repository__Info">
                 <h3>Date of issue</h3>
-                <h2 class="Repository__Data"><%- getDate() %></h2>
+                <h2 class="Repository__Data"><%- getFullDate() %></h2>
             </div>
         </div>
         <div class="Repository__Info__Left">

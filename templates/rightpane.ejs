@@ -1,4 +1,5 @@
 <%
+const githubData = data.find((ele) => (ele.ModuleName === "GithubInfo"))?.Data;
 const fairtally = data.find((ele) => (ele.ModuleName === "fairtally"))?.Data[0];
 const quality = data.find((ele) => (ele.ModuleName === "QualityMetrics"))?.Data;
 const searchSECO = data.find((ele) => (ele.ModuleName === "SearchSECO"))?.Data;
@@ -28,17 +29,19 @@ const history = [
         matches: 23,
     }
 ];
-
 %>
+
 <div class="RightPane">
     <div class="RightPaneContainer">
         <%- include('rightpanenav') %>
         <div class="RightPaneWindow">
-            <%- include('overview', {data: githubinfo}) %>
-            <%- include('fairtally', {fairtally})%>
-            <%- include('quality', {quality}) %>
-            <%- include('impact', {ss: searchSECO, pp: paperData}) %>
-            <%- include('impact-history', {history}) %>
+            <%
+            includePage('overview', {githubData, quality, searchSECO, paperData}, "Overview", false);
+            includePage('fairtally', {fairtally}, "FairtallyReport", true);
+            includePage('quality', {quality}, "Quality", true);
+            includePage('impact', {ss: searchSECO, pp: paperData}, "ImpactScore", true);
+            includePage('impact-history', {history}, "ImpactHistory", true);
+            %>
         </div>
     </div>
 </div>
@@ -75,4 +78,21 @@ const history = [
     color: #0C281E;
 }
 
+.RightPaneError {
+    width: 92%;
+    margin: 4%;
+    word-wrap: break-word;
+    font-size: 1.5rem;
+    color: #0C281E;
+}
 </style>
+
+<%
+    function includePage(page, data, classes, hidden) {
+        try {
+            %><%- include(page, data) %><%
+        } catch(error) {
+            %><%- include('rightpane-error', {error, classes, hidden}) %><%
+        }
+    }
+%>
