@@ -1,4 +1,17 @@
 <%
+if (typeof(githubData) === 'undefined') {
+    throw new Error("Missing GitHub data");
+}
+if (typeof(quality) === 'undefined') {
+    throw new Error("Missing QualityMetrics data");
+}
+if (typeof(searchSECO) === 'undefined') {
+    throw new Error("Missing SearchSECO data");
+}
+if (typeof(paperData) === 'undefined') {
+    throw new Error("Missing CitingPapers data");
+}
+
 function getRepositoryTitle() {
     return githubData.Repo;
 }

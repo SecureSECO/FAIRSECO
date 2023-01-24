@@ -1,0 +1,13 @@
+<% 
+    // When an error is thrown in a EJS template, EJS catches it and throws a new error with more information.
+    // This function retrieves original error message from the last line. 
+    function getError(error) {
+        const lines = error?.message.split('\n');
+
+        return lines[lines.length - 1] ?? "Unknown error";
+    }
+%> 
+
+<div class="LeftPaneError <%- classes %>">
+    Error: <%- getError(error) %>
+</div>

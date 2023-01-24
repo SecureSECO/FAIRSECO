@@ -1,5 +1,10 @@
-<div class="CitationsContainer ActiveTab">
+<%
+    if (typeof(citations) === 'undefined') {
+        throw new Error("Missing CitingPapers data");
+    }
+%> 
 
+<div class="CitationsContainer ActiveTab">
     <div id="CitationsHeader">
         <h1 class="hTitle">Title, Authors, Description</h1>
         <h1 class="hDate">Date</h1>
