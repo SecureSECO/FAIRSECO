@@ -83,7 +83,11 @@ async function runModule(module: any, ...parameters: any): Promise<ReturnObject 
             ErrorLevel.err
         );
 
-        const noData: ReturnObject = {ModuleName:module.ModuleName, Data: {}};
+        var noData: ReturnObject = {ModuleName:module.ModuleName, Data: {}};
+
+        if(module.ModuleName == "SearchSECO"){
+            noData = {ModuleName:module.ModuleName, Data: { "methods": []}};
+        }
 
         return noData;
     }
