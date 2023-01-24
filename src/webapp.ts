@@ -19,8 +19,8 @@ export async function WriteHTML(
     data: ReturnObject[],
     filePath: string
 ): Promise<void> {
-    const template = await ejs.renderFile("./templates/index.ejs", { data });
-    const template2 = await ejs.renderFile("./templates/citationgraph.ejs", { data });
+    const template = await ejs.renderFile("./FAIRSECO_Assets/templates/index.ejs", { data });
+    const template2 = await ejs.renderFile("./FAIRSECO_Assets/templates/citationgraph.ejs", { data });
     const app = template.replace(
         "{{node inserts the data here}}",
         JSON.stringify(data)
