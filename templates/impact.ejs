@@ -1,23 +1,16 @@
 <%
-if (typeof(ss) === 'undefined') {
-    throw new Error("Missing SearchSECO data");
+if (ss === undefined && pp === undefined) {
+    throw new Error("Missing both SearchSECO and CitingPapers data");
 }
 
-if (typeof(pp) === 'undefined') {
-    throw new Error("Missing CitingPapers data");
-}
+// Get citations
+const citations = pp !== undefined ? pp.firstHandCitations + pp.secondHandCitations : "?";
 
-function getNumberOfCitations() {
-    return (pp.firstHandCitations + pp.secondHandCitations).toString();
-}
+// Get number of fields
+const fieldCount = pp !== undefined ? pp.uniqueFields.filter(x => x !== "Unknown").length : "?";
 
-function getNumberOfFields() {
-    return (pp.uniqueFields.filter(x => x !== "Unknown")).length.toString();
-}
-
-const mostNotablePaper = pp.papers.sort((a, b) => a.numberOfCitations > b.numberOfCitations)[0];
-const mostNotableTitle = mostNotablePaper.title;
-const mostNotableJournal = mostNotablePaper.journal;
+// Get most notable paper
+const mostNotablePaper = pp !== undefined && pp.papers.length > 0 ? pp.papers.sort((a, b) => b.numberOfCitations - a.numberOfCitations)[0] : {title: "missing data", journal: undefined};
 
 const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 
@@ -25,28 +18,54 @@ function setFontSize(text) {
     return clamp(35/text.length, 0.8, 2).toString() + "rem";
 }
 
-const uniqueProjects = getProjects();
-
-function getProjects() {
-    let uniqueProjects = new Set();
+// Process searchseco projects
+let projectCount = "?";
+let mostNotableProjectName = "missing data";
+let mostNotableProjectAuthors;
+if (ss !== undefined) {
+    // Fill map for project -> the matches involving that project
+    let projectMatches = {};
     for(const method of ss.methods) {
         for(const match of method.matches) {
-            uniqueProjects.add({project: match.data.project, authors: match.data.authors});
+            if (projectMatches[match.data.project] === undefined) {
+                projectMatches[match.data.project] = [match];
+            } else {
+                projectMatches[match.data.project].push(match);
+            }
         }
     }
 
-    return Array.from(uniqueProjects.values());
-}
+    // Get project count
+    projectCount = Object.keys(projectMatches).length;
 
-function getAuthors(proj) {
-    let authors = "";
+    // Get most notable project name
+    if (projectCount >= 1) {
+        let bestProjectMatches = 0;
+        for (const proj in projectMatches) {
+            let matchCount = projectMatches[proj].length;
+            if (matchCount > bestProjectMatches) {
+                mostNotableProjectName = proj;
+                bestProjectMatches = matchCount;
+            }
+        }
 
-    for (let i = 0; i < proj.authors.length; i++) {
-        if (i === proj.authors.length - 1) authors += proj.authors[i];
-        else authors += proj.authors[i] + ", ";
+        // Get most notable project authors
+        let authors = projectMatches[mostNotableProjectName][0].data.authors;
+        mostNotableProjectAuthors = "";
+        if (authors.length >= 1) {
+            for (let i = 0; i < authors.length; i++) {
+                if (i === authors.length - 1) {
+                    mostNotableProjectAuthors += authors[i];
+                } else {
+                    mostNotableProjectAuthors += authors[i] + ", ";
+                }
+            }
+        } else {
+            mostNotableProjectAuthors = "unknown authors";
+        }
+    } else {
+        mostNotableProjectName = "none";
     }
-
-    return authors;
 }
 
 const labels = [
@@ -57,16 +76,23 @@ const labels = [
     "Applied Sciences"
 ]
 
+// Generates data for the radar chart
 function getChartData() {
+    if (pp === undefined) {
+        return [];
+    }
+    
     const data = [];
 
     const disc = pp.disciplines;
-
+    
     data.push(disc["Humanities"] ?? 0);
     data.push(disc["Social Sciences"] ?? 0);
     data.push(disc["Natural Sciences"] ?? 0);
     data.push(disc["Formal Sciences"] ?? 0);
     data.push(disc["Applied Sciences"] ?? 0);
+
+    data.map((value) => value > 0 ? value : null);
 
     return data;
 }
@@ -81,18 +107,20 @@ function getChartData() {
             <div class="Impact__Row__Content">
                 <div class="Impact__Row__Block">
                     <p>Your project was cited</p>
-                    <div class="Row__Number"><%- getNumberOfCitations() %></div>
+                    <div class="Row__Number"><%- citations %></div>
                     <p>times</p>
                 </div>
                 <div class="Impact__Row__Block">
                     <p>in papers across</p>
-                    <div class="Row__Number"><%- getNumberOfFields() %></div>
+                    <div class="Row__Number"><%- fieldCount %></div>
                     <p>scientific fields</p>
                 </div>
                 <div class="Impact__Row__Block">
                     <p>The most notable of which was</p>
-                    <div class="Row__PaperTitle" style="font-size:<%- setFontSize(mostNotableTitle) %>"><%- mostNotableTitle %></div>
-                    <p>from <%- mostNotableJournal %></p>
+                    <div class="Row__PaperTitle" style="font-size:<%- setFontSize(mostNotablePaper.title) %>"><%- mostNotablePaper.title %></div>
+                    <% if (mostNotablePaper.journal !== undefined) { %>
+                        <p>from <%- mostNotablePaper.journal %></p>
+                    <% } %>
                 </div>
             </div>
         </div>
@@ -105,14 +133,16 @@ function getChartData() {
             <h2>Projects and Reuse</h2>
             <div class="Impact__Row__Content">
                 <div class="Impact__Row__Block">
-                    <p>Your code made its way into</p>
-                    <div class="Row__Number"><%- uniqueProjects.length %></div>
+                    <p>Your code matches methods in</p>
+                    <div class="Row__Number"><%- projectCount ?? "?" %></div>
                     <p>other projects</p>
                 </div>
                 <div class="Impact__Row__Block">
                     <p>The most notable of which was</p>
-                    <div class="Row__PaperTitle" style="font-size:<%- setFontSize(uniqueProjects[0].project) %>"><%- uniqueProjects[0].project %></div>
-                    <p>by <%- getAuthors(uniqueProjects[0]) %></p>
+                    <div class="Row__PaperTitle" style="font-size:<%- setFontSize(mostNotableProjectName) %>"><%- mostNotableProjectName %></div>
+                    <% if (mostNotableProjectAuthors !== undefined ) {%>
+                        <p>by <%- mostNotableProjectAuthors %></p>
+                    <% } %>
                 </div>
             </div>
         </div>

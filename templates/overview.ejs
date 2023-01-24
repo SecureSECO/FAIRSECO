@@ -1,77 +1,50 @@
 <%
-if (typeof(githubData) === 'undefined') {
-    throw new Error("Missing GitHub data");
-}
-if (typeof(quality) === 'undefined') {
-    throw new Error("Missing QualityMetrics data");
-}
-if (typeof(searchSECO) === 'undefined') {
-    throw new Error("Missing SearchSECO data");
-}
-if (typeof(paperData) === 'undefined') {
-    throw new Error("Missing CitingPapers data");
-}
+    // Handle missing GitHub data
+    if (githubData === undefined) {
+        githubData = {
+            Repo: "missing data",
+            Owner: "missing data",
+            Stars: "?",
+            Watched: "?",
+            Forks: "?",
+            Contributors: [
+                {
+                    type: "User",
+                    login: "missing data"
+                }
+            ]
+        };
+    }
 
-function getRepositoryTitle() {
-    return githubData.Repo;
-}
-
-function getRepositoryOwner() {
-    return githubData.Owner;
-}
-
-function getFullDate() {
-    const date = new Date();
-    let day = date.getDate();
-    let month = date.getMonth() + 1;
-    let year = date.getFullYear();
-    let currentDate = day + "/" + month + "/" + year;
-    return currentDate;
-}
-
-function getTopContributors() {
-    let returnString = "";
-    let count = 0;
-    githubData.Contributors.forEach(cont => {
-        if (cont.type === "User" && count <= 6){
-            returnString += "<p>" + cont.login + "</p>";
-            count++;
+    // Get top contributors
+    topContributors = "";
+    let contributorCount = 0;
+    for (const contributor of githubData.Contributors) {
+        if (contributor.type === "User" && contributorCount <= 6) {
+            topContributors += "<p>" + contributor.login + "</p>";
+            contributorCount++;
         }
-    });
-    return returnString;
-}
+    }
 
-function getRepositoryStars() {
-    return githubData.Stars;
-}
+    // Get date
+    const date = new Date();
+    const dateString = String(date.getDate()) + "/" + String(date.getMonth() + 1) + "/" + String(date.getFullYear());
 
-function getrepositoryWatchers() {
-    return githubData.Watched;
-}
+    // Get citations, fairness, quality score
+    const citations = paperData !== undefined ? paperData.firstHandCitations + paperData.secondHandCitations : "?";
+    const fairness = fairtally !== undefined ? fairtally.count : "?";
+    const qualityScore = quality !== undefined ? quality.score : "?";
 
-function getRepositoryforks() {
-    return githubData.Forks;
-}
-
-function getTimesCited() {
-    return paperData.firstHandCitations;
-}
-
-function getFairness() {
-    return quality.fairnessScore + "/5";
-}
-
-function getMethodsReuse() {
-    let count = 0;
-    searchSECO.methods.forEach(meth =>{
-        count += meth.matches.length;
-    });
-    return count;
-}
-
-function getQualityScore() {
-    return quality.score + "/100";
-}
+    // Get method matches
+    let methodMatches = 0;
+    if (searchSECO !== undefined) {
+        for (const method of searchSECO.methods) {
+            methodMatches += method.matches.length;
+        }
+    } else {
+        methodMatches = "?";
+    }
+    
 %>
 
 <div class="Overview">
@@ -80,35 +53,35 @@ function getQualityScore() {
         <div class="Repository__Info__Top">
             <div class="Repository__Info">
                 <h3>Repository title</h3>
-                <h2 class="Repository__Data"><%- getRepositoryTitle() %></h2>
+                <h2 class="Repository__Data"><%- githubData.Repo %></h2>
             </div>
             <div class="Repository__Info">
                 <h3>Repository owner</h3>
-                <h2 class="Repository__Data"><%- getRepositoryOwner() %></h2>
+                <h2 class="Repository__Data"><%- githubData.Owner %></h2>
             </div>
             <div class="Repository__Info">
                 <h3>Date of issue</h3>
-                <h2 class="Repository__Data"><%- getFullDate() %></h2>
+                <h2 class="Repository__Data"><%- dateString %></h2>
             </div>
         </div>
         <div class="Repository__Info__Left">
             <div class="Repository__Info">
                 <h3>Top contributors</h3>
-                <h2 class="Repository__Data Repository__Contributors"><%- getTopContributors() %></h2>
+                <h2 class="Repository__Data Repository__Contributors"><%- topContributors %></h2>
             </div>
         </div>
         <div class="Repository__Info__Right">
             <div class="Repository__Info">
                 <h3>Repository stars</h3>
-                <h2 class="Repository__Data"><%- getRepositoryStars() %><i class="fa-solid fa-star"></i></h2>
+                <h2 class="Repository__Data"><%- githubData.Stars %><i class="fa-solid fa-star"></i></h2>
             </div>
             <div class="Repository__Info">
                 <h3>Repository watchers</h3>
-                <h2 class="Repository__Data"><%- getrepositoryWatchers() %><i class="fa-solid fa-eye"></i></h2>
+                <h2 class="Repository__Data"><%- githubData.Watched %><i class="fa-solid fa-eye"></i></h2>
             </div>
             <div class="Repository__Info">
-                <h3>Repository Forks</h3>
-                <h2 class="Repository__Data"><%- getRepositoryforks() %><i class="fa-solid fa-code-fork"></i></h2>
+                <h3>Repository forks</h3>
+                <h2 class="Repository__Data"><%- githubData.Forks %><i class="fa-solid fa-code-fork"></i></h2>
             </div>
         </div>
     </div>
@@ -116,19 +89,19 @@ function getQualityScore() {
     <div class="Meta-data__Row">
         <div class="Meta-data">
             <p>Times cited</p>
-            <div class = Meta-data__Data><p><%- getTimesCited() %></p></div>
+            <div class = Meta-data__Data><p><%- citations %></p></div>
         </div>
         <div class="Meta-data">
-            <p>Fairness</p>
-            <div class = Meta-data__Data><p><%- getFairness() %></p></div>
+            <p>FAIRness</p>
+            <div class = Meta-data__Data><p><%- fairness %>/5</p></div>
         </div>
         <div class="Meta-data">
-            <p>Methods reused in other projects</p>
-            <div class = Meta-data__Data><p><%- getMethodsReuse() %></p></div>
+            <p>Methods matching those in other projects</p>
+            <div class = Meta-data__Data><p><%- methodMatches %></p></div>
         </div>
         <div class="Meta-data">
             <p>Quality Score</p>
-            <div class = Meta-data__Data><p><%- getQualityScore() %></p></div>
+            <div class = Meta-data__Data><p><%- qualityScore %>/100</p></div>
         </div>
     </div>
 </div>

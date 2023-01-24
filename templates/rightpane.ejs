@@ -35,7 +35,7 @@ const history = [
         <%- include('rightpanenav') %>
         <div class="RightPaneWindow">
             <%
-            includePage('overview', {githubData, quality, searchSECO, paperData}, "Overview", false);
+            includePage('overview', {githubData, fairtally, quality, searchSECO, paperData}, "Overview", false);
             includePage('fairtally', {fairtally}, "FairtallyReport", true);
             includePage('quality', {quality}, "Quality", true);
             includePage('impact', {ss: searchSECO, pp: paperData}, "ImpactScore", true);
