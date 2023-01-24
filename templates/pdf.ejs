@@ -137,23 +137,23 @@
         </div>
 
         <div class="page">
-            <%- includePage('overview', {githubData, quality, searchSECO, paperData}, "Overview", false) %>
+            <%- include('overview', {githubData, quality, searchSECO, paperData}, "Overview", false) %>
         </div>
 
         <div class="page">
-        <%- includePage('fairtally', {fairtally})%>
+        <%- include('fairtally', {fairtally})%>
         </div>    
 
         <div class="page">
-            <%- includePage('quality', {quality}) %>
+            <%- include('quality', {quality}) %>
         </div>
 
         <div class="page">
-            <%- includePage('impact', {ss: searchSECO, pp: paperData}) %>
+            <%- include('impact', {ss: searchSECO, pp: paperData}) %>
         </div>
 
         <div class="page">
-            <%- includePage('impact-history', {history}) %>
+            <%- include('impact-history', {history}) %>
         </div>
 
     </div>
@@ -179,13 +179,4 @@
 
 
 </script>
-<%
-    function includePage(page, data, classes, hidden) {
-        try {
-            %><%- include(page, data) %><%
-        } catch(error) {
-            %><%- include('rightpane-error', {error, classes, hidden}) %><%
-        }
-    }
-%>
-<!-- </html> -->
+

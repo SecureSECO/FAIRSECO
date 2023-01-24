@@ -78,7 +78,7 @@ function getFairness() {
 
 function getMethodsReuse() {
     let count = 0;
-    searchSECO.methods.forEach(meth =>{
+    searchSECO?.methods.forEach(meth =>{
         count += meth.matches.length;
     });
     return count;
