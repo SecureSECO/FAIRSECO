@@ -27,28 +27,28 @@ return x ? '<p>Yes</p>' : '<p>No</p>'
             <div onClick="togglePanel(this)">
                 <p><i class="fa-solid fa-arrow-up-from-bracket"></i>Registered in public repository?</p> <%- checkOrCross(fairtally.registry)%>
             </div>
-            <div>
+            <div class="info">
                 Whether your software is registered in a public registry, so that it is easily <b>F</b>indable.
                 <a href="https://fair-software.eu/recommendations/registry" target="_blank">Read more</a>
             </div>
             <div onClick="togglePanel(this)">
                 <p><i class="fa-solid fa-code-fork"></i>Repository is public?</p><%- checkOrCross(fairtally.repository)%>
             </div>
-            <div>
+            <div class="info">
                 Whether your repository is public, so that your software is <b>A</b>ccessible.
                 <a href="https://fair-software.eu/recommendations/repository" target="_blank">Read more</a>
             </div>
             <div onClick="togglePanel(this)">
                 <p><i class="fa-solid fa-list-check"></i>Using a quality checklist?</p> <%- checkOrCross(fairtally.checklist)%>
             </div>
-            <div>
+            <div class="info">
                 Whether your project uses a software quality checklist, so that your software is <b>I</b>nteroperable.
                 <a href="https://fair-software.eu/recommendations/checklist" target="_blank">Read more</a>
             </div>
             <div onClick="togglePanel(this)">
                 <p><i class="fa-solid fa-quote-right"></i>Citation file present?</p> <%- checkOrCross(fairtally.citation)%>
             </div>
-            <div>
+            <div class="info">
                 <p>Whether your repository contains a citation file, so that your software is <b>R</b>eusable.
                 <a href="https://fair-software.eu/recommendations/citation" target="_blank">Read more.</a>
                 <%- fairtally.citation ? '' : ' Need help creating a CFF File? <a href = "https://citation-file-format.github.io/cff-initializer-javascript/#/start">This tool can help.</a>' %>
@@ -57,7 +57,7 @@ return x ? '<p>Yes</p>' : '<p>No</p>'
             <div onClick="togglePanel(this)">
                 <p><i class="fa-solid fa-copyright"></i>License file present?</p> <%- checkOrCross(fairtally.license)%>
             </div>
-            <div>
+            <div class="info">
                 Whether you have a license file in your repository, so that your software is correctly <b>R</b>eusable.
                 <a href="https://fair-software.eu/recommendations/license" target="_blank">Read more</a>
             </div>

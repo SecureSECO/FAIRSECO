@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="en">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300;0,7..72,400;0,7..72,700;1,7..72,300;1,7..72,400;1,7..72,700&display=swap" rel="stylesheet"> 
+    <script src="https://kit.fontawesome.com/69be2ea766.js" crossorigin="anonymous"></script>
+
+<style>
+    body{
+        width: 210mm;
+    }
+    .page{
+        position: relative;
+        height: 290mm;
+        width: 210mm;
+        /* border: 1px solid black; */
+    }
+    .company_branding{
+        display: block;
+        margin: auto;
+        height: 40px;
+        margin-top: 80px;
+    }
+    .title_page{
+        position: relative;
+        height: 290mm;
+        width: 210mm;
+        /* border: 1px solid black; */
+    }
+    .title-page-title{
+        display: block;
+        margin: auto;
+        margin-top: 150px;
+        text-align: center;
+        line-height: 20px;
+    }
+
+    .title_page_subheader{
+        display: block;
+        margin: auto;
+        text-align: center;
+        line-height: 50px;
+    }
+    .title_page_header{ 
+        font-size: 3em;
+        border-bottom: 1px solid black;
+    }
+    .title_page_authors{
+        display: block;
+        margin: auto;
+        text-align: center;
+        margin-top: 30px;
+    }
+    .title_page_authors_header{
+        font-weight: bold;
+    }
+    .title_page_footer{
+        width: 100%;
+        text-align: center;
+        font-size: 10px;
+        display: block;
+        margin: auto;
+        color: gray;
+        position: absolute;
+        bottom: 80px;
+    }
+    .title_page_footer span {
+        width: 300px;
+    }
+
+    .page_header{
+        font-weight: bold;
+        font-size: 25px;
+        width: 100%;
+        border-bottom: 1px solid black;
+    }
+    .page_subtitle{
+        font-size: 10px;
+        color: darkslategray;
+        width: 100%;
+    }
+
+    .ImpactHistory h1{
+        margin-bottom: 50px !important;
+    }
+
+    .Impact__Title{
+        margin-bottom: 50px !important;
+    }
+    
+</style>
+
+    
+    <div id="pdf">
+
+        <div class="title_page">
+            <div> <svg class="company_branding" width="302" height="71" viewBox="0 0 302 71" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="19.4333" cy="51.0744" r="2.33828" fill="black"/>
+  <circle cx="19.4333" cy="23.9501" r="2.33828" fill="black"/>
+  <path d="M18.0304 24.4177H20.8363L20.613 25.3111C20.4517 25.9561 20.4208 26.6268 20.5219 27.284L21.0701 30.8473C21.2251 31.8551 21.2251 32.8807 21.0701 33.8885L20.6124 36.8636C20.4509 37.9128 20.4576 38.981 20.6321 40.0281L21.0176 42.3407C21.2071 43.4779 21.1986 44.6393 20.9923 45.7735L20.5978 47.9432C20.4475 48.7701 20.508 49.6215 20.7738 50.4188L20.8363 50.6065H18.0304L18.093 50.4188C18.3587 49.6215 18.4192 48.7701 18.2689 47.9432L17.8744 45.7735C17.6682 44.6393 17.6597 43.4779 17.8492 42.3407L18.2346 40.0281C18.4091 38.981 18.4158 37.9128 18.2544 36.8636L17.7967 33.8885C17.6416 32.8807 17.6416 31.8551 17.7967 30.8473L18.3449 27.284C18.446 26.6268 18.415 25.9561 18.2537 25.3111L18.0304 24.4177Z" fill="black"/>
+  <path d="M19.2546 16.3578C19.3283 16.2104 19.5387 16.2104 19.6124 16.3578L20.1594 17.4519C20.6009 18.3348 20.7711 19.3286 20.6487 20.3081L20.3688 22.5472H18.4982L18.2183 20.3081C18.0959 19.3286 18.2661 18.3348 18.7075 17.4519L19.2546 16.3578Z" fill="black"/>
+  <path d="M7.68042 54.2928C7.68042 53.2695 8.57438 52.4761 9.59038 52.5976L13.0095 53.0066C13.5009 53.0654 13.9984 53.0473 14.4842 52.9528L18.4007 52.1915C19.0309 52.0691 19.6787 52.0691 20.3088 52.1915L24.2254 52.9528C24.7111 53.0473 25.2086 53.0654 25.7 53.0066L29.1192 52.5976C30.1352 52.4761 31.0291 53.2695 31.0291 54.2928V54.2928C31.0291 55.2356 30.2648 56 29.3219 56H9.38762C8.44476 56 7.68042 55.2356 7.68042 54.2928V54.2928Z" fill="black"/>
+  <path d="M20.9561 22.4943L22.4297 22.1122C22.6893 22.0449 22.9652 22.0847 23.1952 22.2227L24.5503 23.0358C24.9221 23.2588 25.3952 23.2169 25.722 22.932L26.2254 22.493C26.7616 22.0255 27.4157 21.7138 28.1165 21.5917V21.5917C28.3371 21.5533 28.5607 21.534 28.7846 21.534L29.273 21.534C29.6574 21.534 30.0409 21.5709 30.4183 21.6443L31.1076 21.7783L33.1247 22.4697L35.463 23.4099L37.3336 23.8726L37.5979 23.9383C38.0436 24.049 38.501 24.105 38.9602 24.105V24.105V24.105C38.2125 24.5586 37.3269 24.7289 36.4643 24.5851L36.3983 24.5742L35.4597 24.4177C35.1506 24.3662 34.846 24.2905 34.5487 24.1915L33.5924 23.8727L32.1894 23.405L30.7058 23.0341C30.4488 22.9698 30.1848 22.9373 29.9198 22.9373L29.7159 22.9373C28.8892 22.9373 28.081 23.182 27.3932 23.6406V23.6406C27.1617 23.7949 26.9462 23.9719 26.7498 24.1689L25.7283 25.194C25.4041 25.5194 24.8999 25.582 24.5059 25.3459L23.1909 24.5578C22.9636 24.4215 22.6914 24.3811 22.4343 24.4454L20.9653 24.8127L20.9561 22.4943Z" fill="black"/>
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M33.2615 24.0491L38.8734 39.9494H37.9382L33.2616 24.5168L28.5851 39.9494H27.6497L33.2615 24.0491ZM28.5851 39.9494H37.9382L37.9382 39.9495H28.5851L28.5851 39.9494ZM38.8735 39.9495C38.8735 42.5323 36.361 44.6261 33.2616 44.6261C30.1623 44.6261 27.6497 42.5323 27.6497 39.9495C31.0554 39.9498 31.2528 39.9497 31.5744 39.9497H31.5748L33.2616 39.9496L38.8735 39.9495Z" fill="black"/>
+  <path d="M18.0609 22.4943L16.5842 22.1119C16.3248 22.0447 16.0493 22.0845 15.8195 22.2222L14.4601 23.0367C14.0886 23.2592 13.6161 23.2174 13.2895 22.933L12.7847 22.4935C12.2474 22.0256 11.5922 21.7138 10.8903 21.5917V21.5917C10.6694 21.5533 10.4457 21.534 10.2215 21.534L9.7307 21.534C9.34681 21.534 8.96381 21.5708 8.58695 21.644L7.89513 21.7783L5.87513 22.4697L3.53356 23.4099L1.66029 23.8726L1.39568 23.9383C0.949389 24.049 0.491277 24.105 0.0314591 24.105V24.105V24.105C0.780275 24.5586 1.66681 24.729 2.53045 24.5852L2.59693 24.5742L3.53805 24.4175C3.84679 24.3661 4.15104 24.2907 4.44801 24.1918L5.40682 23.8727L6.81177 23.405L8.29746 23.0341C8.55487 22.9698 8.81918 22.9373 9.08449 22.9373L9.28953 22.9373C10.1169 22.9373 10.9258 23.182 11.6145 23.6405V23.6405C11.8465 23.7949 12.0625 23.972 12.2593 24.1692L13.2831 25.1952C13.6072 25.52 14.1108 25.5825 14.5045 25.3469L15.8237 24.5573C16.0509 24.4213 16.3227 24.381 16.5795 24.4451L18.0517 24.8127L18.0609 22.4943Z" fill="black"/>
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M5.99081 23.4347L0.30724 39.4101H1.22891L1.2289 39.4101H10.7527L10.7527 39.4101H11.6744L5.99081 23.4347ZM10.7527 39.4101L5.99081 24.0492L1.22891 39.4101H10.7527ZM0.307239 39.4102C0.307239 41.9552 2.85186 44.0185 5.9908 44.0185C9.12975 44.0185 11.6744 41.9552 11.6744 39.4102C8.22425 39.4104 8.02514 39.4104 7.69929 39.4103L5.9908 39.4102L0.307239 39.4102Z" fill="black"/>
+  <path d="M53.304 56V54.128L55.464 53.888C56.072 53.824 56.472 53.632 56.664 53.312C56.856 52.96 56.952 52.304 56.952 51.344V25.904C56.952 25.104 56.84 24.544 56.616 24.224C56.424 23.904 55.992 23.712 55.32 23.648L53.304 23.456V21.584H77.544L78.936 30.8L76.728 31.232C76.216 29.664 75.704 28.4 75.192 27.44C74.68 26.448 74.136 25.696 73.56 25.184C72.984 24.64 72.312 24.272 71.544 24.08C70.776 23.888 69.848 23.792 68.76 23.792H64.968V37.952H68.04C68.936 37.952 69.608 37.856 70.056 37.664C70.536 37.44 70.904 37.04 71.16 36.464C71.448 35.856 71.736 34.976 72.024 33.824L73.848 33.632V44.672L72.024 44.96C71.768 43.616 71.496 42.608 71.208 41.936C70.92 41.264 70.52 40.816 70.008 40.592C69.528 40.336 68.856 40.208 67.992 40.208H64.968V51.44C64.968 52.272 65.064 52.88 65.256 53.264C65.48 53.616 66.008 53.824 66.84 53.888L69.912 54.128V56H53.304ZM80.4855 56V54.08L82.2615 53.792C82.8375 53.664 83.3015 53.44 83.6535 53.12C84.0055 52.8 84.3575 52.144 84.7095 51.152L94.9335 21.584H101.462L111.782 51.2C112.102 52.128 112.39 52.752 112.646 53.072C112.934 53.392 113.43 53.632 114.134 53.792L115.718 54.08V56H100.166V54.08L102.326 53.792C102.966 53.728 103.35 53.504 103.478 53.12C103.638 52.736 103.59 52.128 103.334 51.296L101.366 44.912H89.7495L87.6855 51.104C87.4295 51.904 87.3815 52.528 87.5415 52.976C87.7015 53.424 88.1815 53.712 88.9815 53.84L91.2855 54.128V56H80.4855ZM90.5175 42.656H100.646L95.7975 27.152H95.6535L90.5175 42.656ZM118.085 56V54.128L120.293 53.888C120.901 53.792 121.301 53.584 121.493 53.264C121.685 52.912 121.781 52.288 121.781 51.392V25.904C121.781 25.072 121.669 24.512 121.445 24.224C121.253 23.904 120.821 23.712 120.149 23.648L118.085 23.456V21.584H133.445V23.456L131.237 23.696C130.693 23.76 130.309 23.952 130.085 24.272C129.893 24.592 129.797 25.2 129.797 26.096V51.584C129.797 52.416 129.893 52.992 130.085 53.312C130.309 53.6 130.725 53.792 131.333 53.888L133.445 54.128V56H118.085ZM165.125 56.672C163.749 56.672 162.533 56.448 161.477 56C160.453 55.584 159.557 54.896 158.789 53.936C158.053 52.944 157.429 51.632 156.917 50L155.093 44.144C154.741 43.088 154.405 42.24 154.085 41.6C153.765 40.96 153.397 40.496 152.981 40.208C152.565 39.888 152.005 39.728 151.301 39.728C151.013 39.728 150.725 39.728 150.437 39.728C150.181 39.728 149.957 39.744 149.765 39.776V51.44C149.765 52.208 149.861 52.8 150.053 53.216C150.245 53.6 150.741 53.824 151.541 53.888L153.989 54.128V56H138.101V54.128L140.261 53.888C140.869 53.824 141.269 53.632 141.461 53.312C141.653 52.96 141.749 52.304 141.749 51.344V25.904C141.749 25.104 141.637 24.544 141.413 24.224C141.221 23.904 140.789 23.712 140.117 23.648L138.101 23.456V21.584H152.453C154.501 21.584 156.357 21.744 158.021 22.064C159.717 22.352 161.173 22.832 162.389 23.504C163.605 24.144 164.533 25.008 165.173 26.096C165.845 27.152 166.181 28.464 166.181 30.032C166.181 31.152 165.973 32.16 165.557 33.056C165.173 33.92 164.645 34.688 163.973 35.36C163.301 36.032 162.517 36.608 161.621 37.088C160.757 37.536 159.845 37.92 158.885 38.24C157.925 38.528 156.997 38.72 156.101 38.816V39.008C157.989 39.264 159.509 39.808 160.661 40.64C161.845 41.44 162.725 42.576 163.301 44.048L165.029 48.608C165.413 49.568 165.765 50.384 166.085 51.056C166.437 51.696 166.837 52.192 167.285 52.544C167.733 52.896 168.277 53.072 168.917 53.072C169.333 53.072 169.749 53.024 170.165 52.928C170.581 52.8 170.981 52.64 171.365 52.448L171.845 53.984C171.045 54.816 170.069 55.472 168.917 55.952C167.765 56.432 166.501 56.672 165.125 56.672ZM151.685 37.712C153.061 37.712 154.197 37.44 155.093 36.896C155.989 36.32 156.645 35.504 157.061 34.448C157.509 33.36 157.733 32.064 157.733 30.56C157.733 28.992 157.509 27.712 157.061 26.72C156.645 25.728 155.989 24.992 155.093 24.512C154.229 24.032 153.125 23.792 151.781 23.792H149.813V37.664C150.197 37.696 150.549 37.712 150.869 37.712C151.189 37.712 151.461 37.712 151.685 37.712ZM186.302 56.672C184.542 56.672 182.862 56.4 181.262 55.856C179.694 55.28 178.27 54.512 176.99 53.552L176.174 56.48H174.302L173.534 45.344L175.598 45.008C175.982 46.384 176.494 47.648 177.134 48.8C177.806 49.92 178.558 50.88 179.39 51.68C180.254 52.48 181.198 53.104 182.222 53.552C183.278 53.968 184.398 54.176 185.582 54.176C186.83 54.176 187.886 53.968 188.75 53.552C189.646 53.104 190.318 52.496 190.766 51.728C191.246 50.928 191.486 50 191.486 48.944C191.486 47.728 191.214 46.704 190.67 45.872C190.126 45.04 189.294 44.32 188.174 43.712C187.054 43.104 185.646 42.544 183.95 42.032C182.542 41.584 181.23 41.072 180.014 40.496C178.83 39.888 177.79 39.184 176.894 38.384C175.998 37.552 175.294 36.576 174.782 35.456C174.27 34.304 174.014 32.944 174.014 31.376C174.014 30.224 174.19 29.136 174.542 28.112C174.894 27.056 175.406 26.096 176.078 25.232C176.75 24.368 177.566 23.616 178.526 22.976C179.486 22.304 180.574 21.792 181.79 21.44C183.006 21.088 184.334 20.912 185.774 20.912C187.406 20.912 188.862 21.152 190.142 21.632C191.454 22.112 192.622 22.752 193.646 23.552L194.174 20.912H195.902L197.198 31.472L195.086 31.856C194.478 29.872 193.726 28.256 192.83 27.008C191.934 25.728 190.926 24.784 189.806 24.176C188.718 23.568 187.518 23.264 186.206 23.264C184.542 23.264 183.214 23.712 182.222 24.608C181.262 25.504 180.782 26.72 180.782 28.256C180.782 29.504 181.07 30.528 181.646 31.328C182.222 32.096 183.038 32.752 184.094 33.296C185.182 33.84 186.462 34.368 187.934 34.88C189.47 35.36 190.878 35.92 192.158 36.56C193.47 37.168 194.59 37.888 195.518 38.72C196.478 39.52 197.214 40.496 197.726 41.648C198.27 42.768 198.542 44.096 198.542 45.632C198.542 47.36 198.19 48.912 197.486 50.288C196.814 51.664 195.886 52.832 194.702 53.792C193.55 54.752 192.238 55.472 190.766 55.952C189.326 56.432 187.838 56.672 186.302 56.672ZM202.695 56V54.128L204.855 53.888C205.463 53.824 205.863 53.632 206.055 53.312C206.247 52.96 206.343 52.304 206.343 51.344V25.904C206.343 25.072 206.231 24.512 206.007 24.224C205.815 23.904 205.383 23.712 204.711 23.648L202.695 23.456V21.584H226.887L228.375 30.32L226.071 30.752C225.591 29.312 225.111 28.144 224.631 27.248C224.151 26.352 223.623 25.648 223.047 25.136C222.471 24.624 221.799 24.272 221.031 24.08C220.263 23.888 219.319 23.792 218.199 23.792H214.359V37.328H217.575C218.407 37.328 219.047 37.232 219.495 37.04C219.943 36.816 220.295 36.416 220.551 35.84C220.807 35.232 221.079 34.352 221.367 33.2L223.191 33.008V43.76L221.367 44C221.143 42.816 220.887 41.92 220.599 41.312C220.343 40.672 219.975 40.24 219.495 40.016C219.047 39.76 218.407 39.632 217.575 39.632H214.359V53.744H219.303C220.391 53.744 221.303 53.648 222.039 53.456C222.807 53.232 223.463 52.848 224.007 52.304C224.551 51.76 225.047 51.024 225.495 50.096C225.943 49.136 226.391 47.92 226.839 46.448H229.191L228.183 56H202.695ZM249.721 56.672C246.233 56.672 243.225 55.968 240.697 54.56C238.201 53.152 236.281 51.104 234.937 48.416C233.625 45.728 232.969 42.48 232.969 38.672C232.969 36.048 233.369 33.664 234.169 31.52C234.969 29.344 236.089 27.472 237.529 25.904C239.001 24.304 240.729 23.072 242.713 22.208C244.697 21.344 246.873 20.912 249.241 20.912C251.161 20.912 252.809 21.232 254.185 21.872C255.561 22.512 256.745 23.264 257.737 24.128L258.313 20.864H260.137L262.057 32.528L259.849 33.008C259.081 30.8 258.201 28.992 257.209 27.584C256.249 26.176 255.145 25.136 253.897 24.464C252.681 23.76 251.321 23.408 249.817 23.408C247.833 23.408 246.217 24 244.969 25.184C243.753 26.368 242.857 28.064 242.281 30.272C241.705 32.48 241.417 35.12 241.417 38.192C241.417 40.72 241.657 42.928 242.137 44.816C242.649 46.704 243.337 48.288 244.201 49.568C245.097 50.816 246.153 51.76 247.369 52.4C248.617 53.008 249.961 53.312 251.401 53.312C252.777 53.312 254.057 53.104 255.241 52.688C256.457 52.272 257.561 51.664 258.553 50.864C259.577 50.032 260.473 49.056 261.241 47.936L262.729 49.52C262.185 50.384 261.513 51.248 260.713 52.112C259.913 52.944 258.985 53.712 257.929 54.416C256.873 55.12 255.657 55.664 254.281 56.048C252.937 56.464 251.417 56.672 249.721 56.672ZM282.337 56.672C278.913 56.672 275.969 55.952 273.505 54.512C271.073 53.072 269.201 51.056 267.889 48.464C266.609 45.872 265.969 42.848 265.969 39.392C265.969 35.456 266.673 32.112 268.081 29.36C269.489 26.608 271.473 24.512 274.033 23.072C276.593 21.632 279.601 20.912 283.057 20.912C286.257 20.912 289.057 21.584 291.457 22.928C293.857 24.272 295.713 26.208 297.025 28.736C298.369 31.264 299.041 34.336 299.041 37.952C299.041 40.704 298.673 43.232 297.937 45.536C297.201 47.808 296.113 49.776 294.673 51.44C293.265 53.104 291.521 54.4 289.441 55.328C287.393 56.224 285.025 56.672 282.337 56.672ZM283.009 54.08C284.289 54.08 285.393 53.824 286.321 53.312C287.281 52.8 288.065 51.968 288.673 50.816C289.313 49.632 289.777 48.08 290.065 46.16C290.385 44.208 290.545 41.824 290.545 39.008C290.545 36.224 290.369 33.856 290.017 31.904C289.665 29.92 289.137 28.304 288.433 27.056C287.729 25.808 286.849 24.896 285.793 24.32C284.769 23.744 283.585 23.456 282.241 23.456C280.961 23.456 279.841 23.728 278.881 24.272C277.921 24.784 277.105 25.632 276.433 26.816C275.761 27.968 275.249 29.504 274.897 31.424C274.577 33.312 274.417 35.616 274.417 38.336C274.417 41.12 274.609 43.504 274.993 45.488C275.377 47.472 275.937 49.104 276.673 50.384C277.441 51.664 278.353 52.608 279.409 53.216C280.465 53.792 281.665 54.08 283.009 54.08Z" fill="black"/>
+  </svg> </div>
+            <div class="title-page-title">
+                <span class="title_page_header"> FairSECO</span><br>
+                <span class ="title_page_subheader"> FAIRSECO REPORT </span>
+            </div>
+
+            <div class="title_page_authors">
+                <span class="title_page_authors_header"> Project Authors </span><br><br>
+                 
+                    <span> RageRaptor</span><br>
+                 
+                    <span> QDUNI</span><br>
+                 
+                    <span> rowins</span><br>
+                 
+                    <span> github-actions[bot]</span><br>
+                
+            </div>
+
+            <div class="title_page_footer">
+                <span>This document provides an overview report of 'FairSECO' provided by FAIRSECO</span>
+            </div>
+        </div>
+
+        <div class="page">
+            <script>
+
+fetch('/output2.html').then(function (response) {
+	// The API call was successful!
+	return response.text();
+}).then(function (html) {
+	// This is the HTML from our response as a text string
+	// console.log(html);
+    generatePDF(html);
+}).catch(function (err) {
+	// There was an error
+	console.warn('Something went wrong.', err);
+});
+
+    function generatePDF(element) {
+      showall();
+      
+      var elementclone = element.cloneNode(true);
+      elementclone.style = "display:block";
+      html2pdf().from(elementclone).save();
+      elementclone.remove();
+    }
+
+</script>
+
+
+<div class="Overview">
+    <h1 class="Overview__Title">Overview</h1>
+    <div class="Overview__Content">
+        <div class="Repository__Info__Top">
+            <div class="Repository__Info">
+                <h3>Repository title</h3>
+                <h2 class="Repository__Data">FAIRSECO</h2>
+            </div>
+            <div class="Repository__Info">
+                <h3>Repository owner</h3>
+                <h2 class="Repository__Data">QDUNI</h2>
+            </div>
+            <div class="Repository__Info">
+                <h3>Date of issue</h3>
+                <h2 class="Repository__Data">22 dec 2022</h2>
+            </div>
+        </div>
+        <div class="Repository__Info__Left">
+            <div class="Repository__Info">
+                <h3>Top contributors</h3>
+                <h2 class="Repository__Data Repository__Contributors"><p>RageRaptor</p><p>Tjibbe75</p></h2>
+            </div>
+        </div>
+        <div class="Repository__Info__Right">
+            <div class="Repository__Info">
+                <h3>Repository stars</h3>
+                <h2 class="Repository__Data">3100<i class="fa-solid fa-star"></i></h2>
+            </div>
+            <div class="Repository__Info">
+                <h3>Repository watchers</h3>
+                <h2 class="Repository__Data">1600<i class="fa-solid fa-eye"></i></h2>
+            </div>
+            <div class="Repository__Info">
+                <h3>Repository Forks</h3>
+                <h2 class="Repository__Data">25<i class="fa-solid fa-code-fork"></i></h2>
+            </div>
+        </div>
+    </div>
+    <h1 class="Scores__Title">Your scores</h1>
+    <div class="Meta-data__Row">
+        <div class="Meta-data">
+            <p>Times cited</p>
+            <div class = Meta-data__Data><p>123</p></div>
+        </div>
+        <div class="Meta-data">
+            <p>Fairness</p>
+            <div class = Meta-data__Data><p>5/5</p></div>
+        </div>
+        <div class="Meta-data">
+            <p>Methods reused in other projects</p>
+            <div class = Meta-data__Data><p>20</p></div>
+        </div>
+        <div class="Meta-data">
+            <p>Quality Score</p>
+            <div class = Meta-data__Data><p>83/100</p></div>
+        </div>
+    </div>
+    <button onclick="generatePDF()">download pdf</button>
+</div>
+
+<style>
+.Overview__Title {
+    color: #0C281E;
+    text-align: center;
+    margin: 2%;
+    font-size: 2rem;
+}
+
+.Scores__Title {
+    color: #0C281E;
+    text-align: Left;
+    margin: 0;
+    margin-bottom: 2rem;
+    margin-left: 4.8vw;
+    font-size: 1.5rem;
+}
+
+.Overview__Content {
+    width: 80%;
+    margin: auto;
+    display: grid;
+    grid-template-areas: 
+            "a a a"
+            "b c d"
+            "b c d";
+    justify-content: space-between;
+}
+.Repository__Info__Top {
+    grid-area: a;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.Repository__Info__Top > *:nth-child(2){
+    text-align: center;
+}
+
+.Repository__Info__Top > *:nth-child(3){
+    text-align: right;
+}
+.Repository__Info__Left {
+    margin-top: 5vh;
+    grid-area: b;
+    display: flex;
+    flex-direction: column;
+}
+
+.Repository__Info__Right {
+    margin-top: 5vh;
+    grid-area: d;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.RightPaneWindow .Repository__Info h3{
+    color: #5A9575;
+    font-weight: bold;
+    font-size: 1rem;
+}
+.RightPaneWindow .Repository__Info h2{
+    color: #0c281e;
+    font-weight: bold;
+    font-size: 2rem;
+    margin: 0;
+}
+
+.RightPaneWindow .Repository__Info h2 i {
+    margin-left: 8px;
+}
+
+.Repository__Data {
+    font-size: 1.75vw;
+    font-weight: bold;
+    margin: 0.25vw;
+}
+
+.Repository__Contributors p{
+    font-size: 1rem;
+    margin: 0;
+}
+
+.Meta-data__Row {
+    width: 80%;
+    position: relative;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    justify-content: center;
+}
+.Meta-data {
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid #0c281e;
+    margin: 4px;
+    border-radius: 8px;
+}
+
+.Meta-data p {
+    margin: 0px 16px;
+}
+
+.Meta-data__Data {
+    font-size: 1.75vw;
+    font-weight: bold;
+    margin: 0.25vw;
+}
+</style>
+
+
+
+        </div>
+
+        <div class="page">
+        
+
+
+<div class="FairtallyReport" hidden>
+    <h1 class="FairtallyReportTitle">FAIRness Report</h1>
+    <div class="stars">
+        <h2>
+        
+         
+        
+            <i class="fa-regular fa-star"></i>
+        
+            <i class="fa-regular fa-star"></i>
+        
+            <i class="fa-regular fa-star"></i>
+        
+            <i class="fa-regular fa-star"></i>
+        
+            <i class="fa-regular fa-star"></i>
+        
+
+        </h2>
+        <h2>
+        0 / 5
+        </h2>
+    </div>
+        <div class="ChecklistContainer">
+            <div onClick="togglePanel(this)">
+                <p><i class="fa-solid fa-arrow-up-from-bracket"></i>Registered in public repository?</p> <p>No</p>
+            </div>
+            <div class="info">
+                Whether your software is registered in a public registry, so that it is easily <b>F</b>indable.
+                <a href="https://fair-software.eu/recommendations/registry" target="_blank">Read more</a>
+            </div>
+            <div onClick="togglePanel(this)">
+                <p><i class="fa-solid fa-code-fork"></i>Repository is public?</p><p>No</p>
+            </div>
+            <div class="info">
+                Whether your repository is public, so that your software is <b>A</b>ccessible.
+                <a href="https://fair-software.eu/recommendations/repository" target="_blank">Read more</a>
+            </div>
+            <div onClick="togglePanel(this)">
+                <p><i class="fa-solid fa-list-check"></i>Using a quality checklist?</p> <p>No</p>
+            </div>
+            <div class="info">
+                Whether your project uses a software quality checklist, so that your software is <b>I</b>nteroperable.
+                <a href="https://fair-software.eu/recommendations/checklist" target="_blank">Read more</a>
+            </div>
+            <div onClick="togglePanel(this)">
+                <p><i class="fa-solid fa-quote-right"></i>Citation file present?</p> <p>No</p>
+            </div>
+            <div class="info">
+                <p>Whether your repository contains a citation file, so that your software is <b>R</b>eusable.
+                <a href="https://fair-software.eu/recommendations/citation" target="_blank">Read more.</a>
+                 Need help creating a CFF File? <a href = "https://citation-file-format.github.io/cff-initializer-javascript/#/start">This tool can help.</a>
+                </p>
+            </div>
+            <div onClick="togglePanel(this)">
+                <p><i class="fa-solid fa-copyright"></i>License file present?</p> <p>No</p>
+            </div>
+            <div class="info">
+                Whether you have a license file in your repository, so that your software is correctly <b>R</b>eusable.
+                <a href="https://fair-software.eu/recommendations/license" target="_blank">Read more</a>
+            </div>
+        </div>
+        <h4>Click on a checklist item to learn more about it.</h4>
+</div>
+
+<style>
+
+    .FairtallyReport {
+        color: #0C281E;
+        max-height: 90%;
+        overflow-y: scroll;
+    }
+
+    .FairtallyReport h1 {
+        color: #0C281E;
+        text-align: center;
+    }
+
+    .FairtallyReport h2 {
+        text-align: center;
+    }
+    .FairtallyReport h4 {
+        font-weight: 400;
+        font-style: italic;
+        text-align: center;
+    }
+    .HowFairIsReport h4 {
+        font-weight: 400;
+        font-style: italic;
+        text-align: center;
+    }
+
+    .ChecklistContainer {
+        display: flex;
+        flex-direction: column;
+        width: 70%;
+        border: 1px solid #0C281E;
+        padding: 8px;
+        padding-top: 0;
+        border-radius: 8px;
+        margin: auto;
+    }
+    .ChecklistContainer p {
+        margin: 0;
+    }
+    .ChecklistContainer p i{
+        margin: 0px 8px;
+        width: 1rem;
+        text-align: center;
+    }
+
+    .ChecklistContainer div:nth-child(2n-1){ 
+        display: flex;
+        margin-top: 8px;
+        width: 100%;
+        padding: 1%;
+        font-size: 1.2rem;
+        flex-direction: row;
+        justify-content: space-between;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.4s;
+    }
+    .ChecklistContainer div:nth-child(2n-1):hover{ 
+        background-color: #abd2c5;
+    }
+    .ChecklistContainer div:nth-child(2n){ 
+        padding: 0px 16px;
+        height: 0;
+        opacity: 0;
+        font-size: 1rem;
+        overflow: hidden;
+        transition: all 0.2s ease-out;
+    }
+
+    .ChecklistContainer__PanelHead--Active {
+        background-color: #abd2c5;
+    }
+</style>
+
+<script>
+    function togglePanel(head) {
+        head.classList.toggle("ChecklistContainer__PanelHead--Active");
+        var panel = head.nextElementSibling;
+
+        if (panel.style.height) {
+            panel.style.height = null;
+            panel.style.opacity = 0;
+            panel.style.padding = "0px 16px";
+        } else {
+            panel.style.height = (panel.scrollHeight + 5 + 24).toString() + "px";
+            panel.style.opacity = 1
+            panel.style.padding = "16px 16px";
+        }
+    }
+</script>
+
+        </div>    
+
+        <div class="page">
+            <div class="Quality" hidden>
+    <h1>Quality Score</h1>
+    <div class="QualityMeter">
+        <div class="QualityMeter__Bar">
+            <div class="QualityMeter__Score">42</div>
+            <div class="QualityMeter__Text">bad
+            </div>
+            <div class="QualityMeter__Numbers">
+                <span class="QualityMeter__Zero">0</span>
+                <span class="QualityMeter__Hundred">100</span>
+            </div>
+        </div>
+        <div class="QualityMeter__Circle"></div>
+    </div>
+    <div class="QualityMetrics">
+        <div class="QualityMetrics__ScoreMetric" id="QualityFairness">
+            <i class="fa-solid fa-scale-balanced"></i>
+            <div class="QualityMetrics__ScoreMetric__BarContainer">
+                <h2>FAIRness</h2>
+                <div class="QualityMetrics__ScoreMetric__BarContainer__Bar">
+                    <div class="QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground"></div>
+                </div>
+                <p>Percentage of FAIRness criteria met</p>
+            </div>
+            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>0%</h2></div>
+        </div>
+        <div class="QualityMetrics__ScoreMetric" id="QualityLicenses">
+            <i class="fa-solid fa-copyright"></i>
+            <div class="QualityMetrics__ScoreMetric__BarContainer">
+                <h2>Licenses</h2>
+                <div class="QualityMetrics__ScoreMetric__BarContainer__Bar">
+                    <div class="QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground"></div>
+                </div>
+                <p>Correct usage of licenses (no violations)</p>
+            </div>
+            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>27%</h2></div>
+        </div>
+        <div class="QualityMetrics__ScoreMetric" id="QualityMaintainability">
+            <i class="fa-solid fa-wrench"></i>
+            <div class="QualityMetrics__ScoreMetric__BarContainer">
+                <h2>Maintainability</h2>
+                <div class="QualityMetrics__ScoreMetric__BarContainer__Bar">
+                    <div class="QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground"></div>
+                </div>
+                <p>Percentage of closed issues</p>
+            </div>
+            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>100%</h2></div>
+        </div>
+        <div class="QualityMetrics__ScoreMetric" id="QualityDocumentation">
+            <i class="fa-solid fa-file-lines"></i>
+            <div class="QualityMetrics__ScoreMetric__BarContainer">
+                <h2>Documentation</h2>
+                <div class="QualityMetrics__ScoreMetric__BarContainer__Bar">
+                    <div class="QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground"></div>
+                </div>
+                <p>Presence of a documentation directory and readme file</p>
+            </div>
+            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>100%</h2></div>
+        </div>
+        <p>
+            <i class="fa-regular fa-clock"></i>
+            Average time to solve issues: 
+            -
+        </p>
+    </div>
+</div>
+
+<style>
+
+.Quality {
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+}
+
+.Quality h1 {
+    color: #0C281E;
+    text-align: center;
+    margin: 2%;
+    font-size: 2vw;
+}
+
+.QualityMeter {
+    width: 20vw;
+    height: 10vw;
+    margin: auto;
+}
+
+.QualityMeter__Bar {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #3A9068; 
+    background: conic-gradient(
+        from -90deg at bottom,
+        #2D4B3D 0deg, #2D4B3D 43.5deg,
+        #D3EEE0 43.5deg, #D3EEE0 45.5deg,
+        #3A9068 45.5deg, #3A9068 89deg,
+        #D3EEE0 89deg, #D3EEE0 91deg,
+        #4BB784 91deg, #4BB784 134.5deg,
+        #D3EEE0 134.5deg, #D3EEE0 136.5deg,
+        #36DDA1 136.5deg, #36DDA1 180deg
+    );
+    border-radius: 50% 50% 50% 50% / 100% 100% 0% 0%;
+}
+.QualityMeter__Bar::before {
+    z-index: 2;
+    content: "";
+    position: absolute;
+    width: 18vw;
+    height: 9vw;
+    bottom: 0;
+    left: 5%;
+    border-radius: 50% 50% 50% 50% / 100% 100% 0% 0%;
+    background-color: #D3EEE0;
+}
+
+.QualityMeter__Circle {
+    z-index: 3;
+    position: relative;
+    width: 2vw;
+    height: 2vw;
+    top: -1vw;
+    left: 9vw;
+    border-radius: 50%;
+    background-color: #3A9068;
+    transform: translate(
+        -2.3625539280661205vw,
+        -9.201540030721995vw
+    );
+}
+.QualityMeter__Circle::before {
+    z-index: 4;
+    content: "";
+    position: absolute;
+    width: 1vw;
+    height: 1vw;
+    top: 25%;
+    left: 25%;
+    margin-right: -10vw;
+    margin-bottom: -10vw;
+    border-radius: 50%;
+    background-color: #D3EEE0;
+}
+
+.QualityMeter__Score {
+    z-index: 5;
+    position: absolute;
+    font-size: 3.5vw;
+    color: #204f35;
+    bottom: 1rem;
+    text-align: center;
+    width: 100%;
+    font-weight: bold;
+}
+.QualityMeter__Text {
+    z-index: 5;
+    position: absolute;
+    font-size: 1.2vw;
+    color: #5a9575;
+    bottom: 0;
+    text-align: center;
+    width: 100%;
+}
+
+.QualityMeter__Numbers {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    margin-left: 0.2vw;
+    color: #0C281E;
+}
+
+.QualityMeter__Zero {
+    position: absolute;
+    left: 0;
+}
+
+.QualityMeter__Hundred {
+    position: absolute;
+    right: 0;
+}
+
+.QualityMetrics {
+    margin: auto;
+    margin-top: 4%;
+    width: 70%;
+    height: calc(100% - 8% - 2vw*1.488 - 10vw - 8%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.QualityMetrics__ScoreMetric {
+    margin: auto;
+    width: 100%;
+    height: 20%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.QualityMetrics__ScoreMetric i {
+    margin: auto;
+    font-size: 1.5vw;
+    color: #204f35;
+}
+.QualityMetrics__ScoreMetric__BarContainer {
+    height: 100%;
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-content: center;
+}
+.QualityMetrics__ScoreMetric__BarContainer h2 {
+    margin: 0;
+    margin-bottom: 2px;
+    font-size: 1vw;
+    color: #204f35;
+}
+.QualityMetrics__ScoreMetric__BarContainer p {
+    margin-top: 2px !important;
+    margin-bottom: calc(0.25vw * 1.488) !important;
+    font-size: 0.75vw;
+    color: #204f35;
+}
+.QualityMetrics__ScoreMetric__BarContainer__Bar {
+    height: 20%;
+    width: 100%;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-content: center;
+    background-color: #B8D7CC;
+    border-radius: 4vw;
+}
+.QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
+    height: 100%;
+    border-radius: 4vw;
+}
+.QualityMetrics__ScoreMetric__Percentage {
+    width: 10%;
+    margin-left: 3%;
+    color: #204f35;
+    font-size: 0.75vw;
+}
+
+#QualityFairness .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
+    width: 0%;
+    background-color: #60415F;
+    filter: brightness(1);
+}
+#QualityLicenses .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
+    width: 27%;
+    background-color: #60415F;
+    filter: brightness(1.3375);
+}
+#QualityMaintainability .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
+    width: 100%;
+    background-color: #60415F;
+    filter: brightness(2.25);
+}
+#QualityDocumentation .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
+    width: 100%;
+    background-color: #60415F;
+    filter: brightness(2.25);
+}
+</style>
+
+        </div>
+
+        <div class="page">
+            
+
+<div class="ImpactScore" hidden>
+    <h1 class="Impact__Title">Impact</h1>
+    <div class="ImpactScore__Content">
+        <div class="Impact__Row">
+            <h2> Papers and Citations</h2>
+            <div class="Impact__Row__Content">
+                <div class="Impact__Row__Block">
+                    <p>Your project was cited</p>
+                    <div class="Row__Number">1145</div>
+                    <p>times</p>
+                </div>
+                <div class="Impact__Row__Block">
+                    <p>in papers across</p>
+                    <div class="Row__Number">12</div>
+                    <p>scientific fields</p>
+                </div>
+                <div class="Impact__Row__Block">
+                    <p>The most notable of which was</p>
+                    <div class="Row__PaperTitle" style="font-size:0.8rem">Sources of marine debris for Seychelles and other remote islands in the western Indian Ocean.</div>
+                    <p>from Marine pollution bulletin</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="Impact__Row">
+            <canvas id="Citations__RadarChart"></canvas>
+        </div>
+
+        <div class="Impact__Row">
+            <h2>Projects and Reuse</h2>
+            <div class="Impact__Row__Content">
+                <div class="Impact__Row__Block">
+                    <p>Your code made its way into</p>
+                    <div class="Row__Number">3</div>
+                    <p>other projects</p>
+                </div>
+                <div class="Impact__Row__Block">
+                    <p>The most notable of which was</p>
+                    <div class="Row__PaperTitle" style="font-size:1.75rem">SearchSECOController</div>
+                    <p>by Rowin Schouten, Tjibbe Bolhuis</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+function genData(){
+    let data = [];
+    for (let i = 0; i < 18; i++){
+        if (i % 3 == 0) data.push(null);
+        else data.push(i%5 + i%2);
+    }
+
+    return data;
+}
+
+const labels = [
+    "Humanities" ,
+    "Social Sciences",
+    "Natural Sciences",
+    "Formal Sciences",
+    "Applied Sciences"
+]
+
+const data = {
+    labels: labels,
+    datasets: [
+        {
+            data: [0,4,39,11,81],
+            borderColor: "rgb(170, 85, 183)",
+            backgroundColor: "rgba(175, 102, 186, 0.4)",
+            pointBackgroundColor: "rgb(175, 102, 186)"
+        }]
+};
+
+const config = {
+  type: 'radar',
+  data: data,
+  options: {
+    responsive: true,
+    spanGaps: true,
+    plugins: {
+        legend: false
+    },
+    scale: {
+        ticks: {
+            callback: function() {return ""},
+            backdropColor: "rgba(0, 0, 0, 0)"
+        },
+        pointLabels:{
+            fontSize: 16
+        }
+    }
+  }
+};
+
+new Chart("Citations__RadarChart", config);
+
+</script>
+
+<style>
+.Impact__Title {
+    color: #0C281E;
+    text-align: center;
+    margin: 2%;
+    font-size: 2vw;
+}
+
+.ImpactScore__Content {
+    width: 80%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.Impact__Row h2 {
+    margin-top: 0;
+}
+
+.Impact__Row__Content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+}
+
+.Impact__Row__Block .Row__PaperTitle {
+    font-weight: bold;
+    margin: 0.25vw;
+    max-width: 15vw;
+    text-align: center;
+}
+
+.Impact__Row__Block {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Impact__Row__Block p {
+    margin: 0;
+}
+
+.Impact__Row__Block .Row__Number {
+    font-size: 1.75vw;
+    font-weight: bold;
+    margin: 0.25vw;
+}
+
+#Citations__RadarChart {
+    margin: 5px;
+}
+
+</style>
+        </div>
+
+        <div class="page">
+            
+
+<div class="ImpactHistory" hidden>
+    <h1>Impact History</h1>
+    <h2>Overview</h2>
+    <div class="ImpactHistory__Overview">
+        <div>
+            <h3>Quality Score</h3>
+            69%
+            <div>
+                <b>+5%</b><br>since last time
+            </div>
+        </div>
+        <div>
+            <h3>Citations</h3>
+            1034
+            <div>
+                <b>+109</b><br>since last time
+            </div>
+        </div>
+        <div>
+            <h3>FAIRness</h3>
+            
+                <i class="fa-solid fa-star"></i>
+            
+                <i class="fa-solid fa-star"></i>
+            
+                <i class="fa-solid fa-star"></i>
+            
+                <i class="fa-solid fa-star"></i>
+            
+             
+            
+                <i class="fa-regular fa-star"></i>
+            
+            <div>
+                <b>+1 <i class="fa-solid fa-star"></i></b><br>since last time
+            </div>
+        </div>
+        <div>
+            <h3>Method Matches</h3>
+            23
+            <div>
+                <b>+5</b><br>since last time
+            </div>
+        </div>
+    </div>
+    <div class="ImpactHistory__Graphs">
+        <div>
+            <h2>Quality Score</h2>
+            
+
+<div>
+    <div class="ImpactHistory__Graphs__LeftAxis"> 
+            <div style="margin-top: 17.1vh;">60</div>
+        
+            <div style="margin-top: 8.100000000000001vh;">65</div>
+        
+            <div style="margin-top: -0.8999999999999986vh;">70</div>
+        
+    </div>
+    <div class="ImpactHistory__Graphs__Graph"> 
+            <div onMouseEnter="impactHistoryHoverData(0)" onMouseLeave="impactHistoryUnhoverData(0)" style="height:20%;">
+                <span>62</span>
+                <div>25/12/2022</div>
+            </div>
+            
+            <div onMouseEnter="impactHistoryHoverData(1)" onMouseLeave="impactHistoryUnhoverData(1)" style="height:40%;">
+                <span>64</span>
+                <div>01/01/2023</div>
+            </div>
+            
+            <div onMouseEnter="impactHistoryHoverData(2)" onMouseLeave="impactHistoryUnhoverData(2)" style="height:90%;">
+                <span>69</span>
+                <div>08/01/2023</div>
+            </div>
+            
+    </div>
+</div>
+        </div>
+        <div>
+            <h2>FAIRness</h2>
+            <div>
+                
+
+<div>
+    <div class="ImpactHistory__Graphs__LeftAxis"> 
+            <div style="margin-top: 17.1vh;">0</div>
+        
+            <div style="margin-top: 13.500000000000002vh;">1</div>
+        
+            <div style="margin-top: 9.900000000000002vh;">2</div>
+        
+            <div style="margin-top: 6.300000000000001vh;">3</div>
+        
+            <div style="margin-top: 2.700000000000001vh;">4</div>
+        
+            <div style="margin-top: -0.8999999999999986vh;">5</div>
+        
+    </div>
+    <div class="ImpactHistory__Graphs__Graph"> 
+            <div onMouseEnter="impactHistoryHoverData(0)" onMouseLeave="impactHistoryUnhoverData(0)" style="height:60%;">
+                <span>3</span>
+                <div>25/12/2022</div>
+            </div>
+            
+            <div onMouseEnter="impactHistoryHoverData(1)" onMouseLeave="impactHistoryUnhoverData(1)" style="height:60%;">
+                <span>3</span>
+                <div>01/01/2023</div>
+            </div>
+            
+            <div onMouseEnter="impactHistoryHoverData(2)" onMouseLeave="impactHistoryUnhoverData(2)" style="height:80%;">
+                <span>4</span>
+                <div>08/01/2023</div>
+            </div>
+            
+    </div>
+</div>
+            </div>
+        </div>
+        <div>
+            <h2>Citations</h2>
+            <div>
+                
+
+<div>
+    <div class="ImpactHistory__Graphs__LeftAxis"> 
+            <div style="margin-top: 17.1vh;">900</div>
+        
+            <div style="margin-top: 11.100000000000001vh;">950</div>
+        
+            <div style="margin-top: 5.100000000000001vh;">1000</div>
+        
+            <div style="margin-top: -0.8999999999999986vh;">1050</div>
+        
+    </div>
+    <div class="ImpactHistory__Graphs__Graph"> 
+            <div onMouseEnter="impactHistoryHoverData(0)" onMouseLeave="impactHistoryUnhoverData(0)" style="height:1%;">
+                <span>901</span>
+                <div>25/12/2022</div>
+            </div>
+            
+            <div onMouseEnter="impactHistoryHoverData(1)" onMouseLeave="impactHistoryUnhoverData(1)" style="height:16.666666666666668%;">
+                <span>925</span>
+                <div>01/01/2023</div>
+            </div>
+            
+            <div onMouseEnter="impactHistoryHoverData(2)" onMouseLeave="impactHistoryUnhoverData(2)" style="height:89.33333333333333%;">
+                <span>1034</span>
+                <div>08/01/2023</div>
+            </div>
+            
+    </div>
+</div>
+            </div>
+        </div>
+        <div>
+            <h2>Method Matches</h2>
+            <div>
+                
+
+<div>
+    <div class="ImpactHistory__Graphs__LeftAxis"> 
+            <div style="margin-top: 17.1vh;">0</div>
+        
+            <div style="margin-top: 13.500000000000002vh;">5</div>
+        
+            <div style="margin-top: 9.900000000000002vh;">10</div>
+        
+            <div style="margin-top: 6.300000000000001vh;">15</div>
+        
+            <div style="margin-top: 2.700000000000001vh;">20</div>
+        
+            <div style="margin-top: -0.8999999999999986vh;">25</div>
+        
+    </div>
+    <div class="ImpactHistory__Graphs__Graph"> 
+            <div onMouseEnter="impactHistoryHoverData(0)" onMouseLeave="impactHistoryUnhoverData(0)" style="height:60%;">
+                <span>15</span>
+                <div>25/12/2022</div>
+            </div>
+            
+            <div onMouseEnter="impactHistoryHoverData(1)" onMouseLeave="impactHistoryUnhoverData(1)" style="height:72%;">
+                <span>18</span>
+                <div>01/01/2023</div>
+            </div>
+            
+            <div onMouseEnter="impactHistoryHoverData(2)" onMouseLeave="impactHistoryUnhoverData(2)" style="height:92%;">
+                <span>23</span>
+                <div>08/01/2023</div>
+            </div>
+            
+    </div>
+</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+.ImpactHistory {
+    width: 85%;
+    height: 100%;
+    margin: auto;
+}
+.ImpactHistory h1 {
+    color: #0C281E;
+    text-align: center;
+    margin: 2.5%;
+    font-size: 2vw;
+}
+.ImpactHistory h2 {
+    color: #0C281E;
+    font-size: 1.1vw;
+}
+
+.ImpactHistory__Overview {
+    width: 100%;
+    margin-top: 0.75vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    font-size: 0.9vw;
+}
+.ImpactHistory__Overview > div {
+    width: 8vw;
+    height: 8vw;
+    border: 2px solid #5a9575;
+    border-radius: 16px;
+    text-align: center;
+}
+.ImpactHistory__Overview > div > h3 {
+    color: #0C281E;
+    font-size: 0.85vw;
+    margin-top: 0.35vw;
+    margin-bottom: 0;
+}
+.ImpactHistory__Overview > div > div {
+    width: 100%;
+    color: #5a9575;
+    border-top: 1px solid #5a9575;
+    padding-top: 0.5vw;
+}
+.ImpactHistory__Overview > div > div b {
+    font-size: 1.4vw;
+    color: #0C281E;
+}
+
+.ImpactHistory__Graphs {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.ImpactHistory__Graphs > div {
+    width: 50%;
+}
+.ImpactHistory__Graphs > div > h2 {
+    margin-bottom: 1.3vw;
+}
+.ImpactHistory__Graphs__LeftAxis > div {
+    position: absolute;
+    width: 2vw;
+    text-align: right;
+    margin-left: -0.9vw;
+    font-size: 0.6vw;
+}
+.ImpactHistory__Graphs__Graph {
+    width: calc(95% - 2vw);
+    margin-left: 2vw;
+    height: 18vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+.ImpactHistory__Graphs__Graph > div {
+    text-align: center;
+    transition: background-color 0.1s ease-out;
+    width: 26.666666666666668%;
+}
+.ImpactHistory__Graphs > div:nth-child(1) .ImpactHistory__Graphs__Graph > div {
+    background-color: #60415F;
+}
+.ImpactHistory__Graphs > div:nth-child(2) .ImpactHistory__Graphs__Graph > div {
+    background-color: #894586;
+}
+.ImpactHistory__Graphs > div:nth-child(3) .ImpactHistory__Graphs__Graph > div {
+    background-color: #A95F94;
+}
+.ImpactHistory__Graphs > div:nth-child(4) .ImpactHistory__Graphs__Graph > div {
+    background-color: #D991C5;
+}
+.ImpactHistory__Graphs__Graph > div > div {
+    display: none;
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 50%;
+    width: 6vw;
+    margin-left: -3vw;
+    background-color: white;
+    border-radius: 8px;
+    font-size: 0.9vw;
+}
+.ImpactHistory__Graphs__Graph > div > div:after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -6px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent transparent white transparent;
+}
+.ImpactHistory__Graphs__Graph > div:hover > div {
+    display: block;
+}
+.ImpactHistory__Graphs__Graph > div span {
+    display: none;
+    font-size: 1.2vw;
+    width: 10vw;
+    margin-left: calc(50% - 5vw);
+    margin-top: -2vw;
+}
+.ImpactHistory__Graphs__Graph > .ImpactHistory__HoveredData {
+    filter: brightness(1.2);
+}
+.ImpactHistory__Graphs__Graph > .ImpactHistory__HoveredData span {
+    display: block;
+}
+</style>
+
+<script>
+    function impactHistoryHoverData(index) {
+        for (const graph of document.getElementsByClassName("ImpactHistory__Graphs__Graph")) {
+            graph.children.item(index).classList.add("ImpactHistory__HoveredData");
+        }
+    }
+
+    function impactHistoryUnhoverData(index) {
+        for (const graph of document.getElementsByClassName("ImpactHistory__Graphs__Graph")) {
+            graph.children.item(index).classList.remove("ImpactHistory__HoveredData");
+        }
+    }
+</script>
+        </div>
+
+    </div>
+
+<script>
+
+    document.querySelector(".FairtallyReport").hidden = false;
+    document.querySelector(".Quality").hidden = false;
+    document.querySelector(".ImpactScore").hidden = false;
+    document.querySelector(".ImpactHistory").hidden = false;
+    for (const graph of document.getElementsByClassName("ImpactHistory__Graphs__Graph")) {
+        for (const child of graph.children) {
+            child.classList.add("ImpactHistory__HoveredData");
+        }
+    }
+    var info = document.querySelectorAll(".info");
+    info.forEach(div => { div.style = "opacity: 1; padding: 16px; height:65px; "; });
+    document.querySelector(".FairtallyReport h4").hidden = true;
+
+</script>
+<!-- </html> -->

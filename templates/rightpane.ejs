@@ -3,6 +3,7 @@ const fairtally = data.find((ele) => (ele.ModuleName === "fairtally"))?.Data[0];
 const quality = data.find((ele) => (ele.ModuleName === "QualityMetrics"))?.Data;
 const searchSECO = data.find((ele) => (ele.ModuleName === "SearchSECO"))?.Data;
 const paperData = data.find((ele) => (ele.ModuleName === "CitingPapers"))?.Data;
+const githubinfo = data.find((ele) => (ele.ModuleName=== "GithubInfo"))?.Data;   
 
 const history = [
     {
@@ -33,7 +34,7 @@ const history = [
     <div class="RightPaneContainer">
         <%- include('rightpanenav') %>
         <div class="RightPaneWindow">
-            <%- include('overview', {}) %>
+            <%- include('overview', {data: githubinfo}) %>
             <%- include('fairtally', {fairtally})%>
             <%- include('quality', {quality}) %>
             <%- include('impact', {ss: searchSECO, pp: paperData}) %>
