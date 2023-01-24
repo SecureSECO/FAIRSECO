@@ -29,13 +29,20 @@ const uniqueProjects = getProjects();
 
 function getProjects() {
     let uniqueProjects = new Set();
+    if (ss.methods.length === 0){
+        return [{project: "1", authors:"1"}];
+    } else{
+    
     for(const method of ss.methods) {
         for(const match of method.matches) {
             uniqueProjects.add({project: match.data.project, authors: match.data.authors});
         }
     }
+    
 
     return Array.from(uniqueProjects.values());
+}
+    
 }
 
 function getAuthors(proj) {

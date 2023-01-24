@@ -19131,209 +19131,23 @@ flex-direction: row;
 
 
 <div class="SearchSECO Hidden">
-    <h1>Total matches: 3</h1>
+    <h1>Total matches: 0</h1>
     <div class="SearchSECO__Nav">
         <button class="SearchSECO__Nav__Button--Active" id="SearchSECO__MethodsButton" onClick="searchsecoShowMethods()" data-linked-class="SearchSECO__Methods"><i class="fa-solid fa-file-code"></i> Methods</button>
         <button id="SearchSECO__ProjectsButton" onClick="searchsecoShowProjects()" data-linked-class="SearchSECO__Projects"><i class="fa-solid fa-box-archive"></i> Projects</button>
         <div style="display: flex; flex-direction: row; align-items: center">
-            <input type="checkbox" id="SearchSECO_ToggleShowVulnerable" onclick="searchsecoToggleShowVulnerabilities()">
-            <label for="SearchSECO_ToggleShowVulnerable">Show vulnerabilities only<br>3 matches / 2 methods / 3 projects</label>
+            <input type="checkbox" id="SearchSECO_ToggleShowVulnerable" onclick="searchsecoToggleShowVulnerabilities()" disabled>
+            <label for="SearchSECO_ToggleShowVulnerable">Show vulnerabilities only<br>0 matches / 0 methods / 0 projects</label>
         </div>
     </div>
     <div class="SearchSECO__List SearchSECO__MethodList">
-        <p>2 of your methods found matches</p>
+        <p>0 of your methods found matches</p>
 
-        
-        <div class="SearchSECO__ListObject SearchSECO__ArrowOwner">
-    <div class="SearchSECO__ListObject__Header">
-        <div class="SearchSECO__ListObject__Header__Start">
-            <h1>
-                <i class="fa-solid fa-angle-right" onClick="searchSecoClickArrow(event)"></i>parseInput (searchseco.ts:110)
-            </h1>
-            <p>
-                <span><i class="fa-solid fa-file-circle-exclamation"></i> Vulnerable</span>
-                2 matches
-            </p>
-        </div>
-        Author: Quinn Donkers
-    </div>
-    <div class="SearchSECO__ListObject__MatchList SearchSECO__ArrowTarget" hidden>
-        
-        <div class="SearchSECO__Match">
-    <div class="SearchSECO__Match__Header">
-        <h2>Project: SearchSECOController</h2>
-        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability reported</span>
-    </div>
-    Method: parseInput (parse.cpp:33)
-    <br>
-    Authors: Rowin Schouten, Tjibbe Bolhuis
-    
-        <br>
-        <br>
-        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability 123 reported: <a href="https://www.url-of-vulnerability.com">https://www.url-of-vulnerability.com</a></span> 
-    
-</div>
-        
-        <div class="SearchSECO__Match">
-    <div class="SearchSECO__Match__Header">
-        <h2>Project: TrustSECO</h2>
-        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability reported</span>
-    </div>
-    Method: Parse (parser.cs:39)
-    <br>
-    Authors: Bram Lankhorst, Valia Bykova
-    
-        <br>
-        <br>
-        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability 246 reported: <a href="https://www.url-of-vulnerability.com">https://www.url-of-vulnerability.com</a></span> 
-    
-</div>
-        
-    </div>
-</div>
-        
-        <div class="SearchSECO__ListObject SearchSECO__ArrowOwner">
-    <div class="SearchSECO__ListObject__Header">
-        <div class="SearchSECO__ListObject__Header__Start">
-            <h1>
-                <i class="fa-solid fa-angle-right" onClick="searchSecoClickArrow(event)"></i>getMethodInfo (searchseco.ts:180)
-            </h1>
-            <p>
-                <span><i class="fa-solid fa-file-circle-exclamation"></i> Vulnerable</span>
-                1 match
-            </p>
-        </div>
-        Author: Bart Hageman
-    </div>
-    <div class="SearchSECO__ListObject__MatchList SearchSECO__ArrowTarget" hidden>
-        
-        <div class="SearchSECO__Match">
-    <div class="SearchSECO__Match__Header">
-        <h2>Project: searchseco-output-parser</h2>
-        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability reported</span>
-    </div>
-    Method: getInfo (parseOutput.js:88)
-    <br>
-    Authors: Alina Aydin, Jarno Hendriksen
-    
-        <br>
-        <br>
-        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability 234 reported: <a href="https://www.url-of-vulnerability.com">https://www.url-of-vulnerability.com</a></span> 
-    
-</div>
-        
-    </div>
-</div>
         
     </div>
     <div class="SearchSECO__List SearchSECO__ProjectList" hidden>
-        <p>Your methods found matches with 3 projects</p>
+        <p>Your methods found matches with 0 projects</p>
 
-        
-        <div class="SearchSECO__ListObject SearchSECO__ArrowOwner">
-    <div class="SearchSECO__ListObject__Header">
-        <div class="SearchSECO__ListObject__Header__Start">
-            <h1>
-                <i class="fa-solid fa-angle-right" onClick="searchSecoClickArrow(event)"></i>SearchSECOController
-            </h1>
-            <p>
-                <span><i class="fa-solid fa-file-circle-exclamation"></i> Vulnerable   </span>
-                1 match
-            </p>
-        </div>
-    </div>
-    <div class="SearchSECO__ListObject__MatchList SearchSECO__ArrowTarget" hidden>
-        
-        
-<div class="SearchSECO__Match">
-    <div class="SearchSECO__Match__Header">
-        <h2>parseInput (parse.cpp:33)</h2>
-        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability reported</span>
-    </div>
-    Authors: Rowin Schouten, Tjibbe Bolhuis
-    <br>
-    <br>
-    <h3>Matches your parseInput (searchseco.ts:110)</h3>
-    Author: Quinn Donkers
-    
-        <br>
-        <br>
-        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability 123 reported: <a href="https://www.url-of-vulnerability.com">https://www.url-of-vulnerability.com</a></span> 
-    
-</div>
-        
-    </div>
-</div>
-        
-        <div class="SearchSECO__ListObject SearchSECO__ArrowOwner">
-    <div class="SearchSECO__ListObject__Header">
-        <div class="SearchSECO__ListObject__Header__Start">
-            <h1>
-                <i class="fa-solid fa-angle-right" onClick="searchSecoClickArrow(event)"></i>TrustSECO
-            </h1>
-            <p>
-                <span><i class="fa-solid fa-file-circle-exclamation"></i> Vulnerable   </span>
-                1 match
-            </p>
-        </div>
-    </div>
-    <div class="SearchSECO__ListObject__MatchList SearchSECO__ArrowTarget" hidden>
-        
-        
-<div class="SearchSECO__Match">
-    <div class="SearchSECO__Match__Header">
-        <h2>Parse (parser.cs:39)</h2>
-        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability reported</span>
-    </div>
-    Authors: Bram Lankhorst, Valia Bykova
-    <br>
-    <br>
-    <h3>Matches your parseInput (searchseco.ts:110)</h3>
-    Author: Quinn Donkers
-    
-        <br>
-        <br>
-        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability 246 reported: <a href="https://www.url-of-vulnerability.com">https://www.url-of-vulnerability.com</a></span> 
-    
-</div>
-        
-    </div>
-</div>
-        
-        <div class="SearchSECO__ListObject SearchSECO__ArrowOwner">
-    <div class="SearchSECO__ListObject__Header">
-        <div class="SearchSECO__ListObject__Header__Start">
-            <h1>
-                <i class="fa-solid fa-angle-right" onClick="searchSecoClickArrow(event)"></i>searchseco-output-parser
-            </h1>
-            <p>
-                <span><i class="fa-solid fa-file-circle-exclamation"></i> Vulnerable   </span>
-                1 match
-            </p>
-        </div>
-    </div>
-    <div class="SearchSECO__ListObject__MatchList SearchSECO__ArrowTarget" hidden>
-        
-        
-<div class="SearchSECO__Match">
-    <div class="SearchSECO__Match__Header">
-        <h2>getInfo (parseOutput.js:88)</h2>
-        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability reported</span>
-    </div>
-    Authors: Alina Aydin, Jarno Hendriksen
-    <br>
-    <br>
-    <h3>Matches your getMethodInfo (searchseco.ts:180)</h3>
-    Author: Bart Hageman
-    
-        <br>
-        <br>
-        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability 234 reported: <a href="https://www.url-of-vulnerability.com">https://www.url-of-vulnerability.com</a></span> 
-    
-</div>
-        
-    </div>
-</div>
         
     </div>
 </div>
@@ -19828,7 +19642,7 @@ flex-direction: row;
         </div>
         <div class="Meta-data">
             <p>Methods reused in other projects</p>
-            <div class = Meta-data__Data><p>3</p></div>
+            <div class = Meta-data__Data><p>0</p></div>
         </div>
         <div class="Meta-data">
             <p>Quality Score</p>
@@ -20437,13 +20251,13 @@ flex-direction: row;
             <div class="Impact__Row__Content">
                 <div class="Impact__Row__Block">
                     <p>Your code made its way into</p>
-                    <div class="Row__Number">3</div>
+                    <div class="Row__Number">1</div>
                     <p>other projects</p>
                 </div>
                 <div class="Impact__Row__Block">
                     <p>The most notable of which was</p>
-                    <div class="Row__PaperTitle" style="font-size:1.75rem">SearchSECOController</div>
-                    <p>by Rowin Schouten, Tjibbe Bolhuis</p>
+                    <div class="Row__PaperTitle" style="font-size:2rem">1</div>
+                    <p>by 1</p>
                 </div>
             </div>
         </div>
@@ -21144,7 +20958,7 @@ new Chart("Citations__RadarChart", config);
         </div>
         <div class="Meta-data">
             <p>Methods reused in other projects</p>
-            <div class = Meta-data__Data><p>3</p></div>
+            <div class = Meta-data__Data><p>0</p></div>
         </div>
         <div class="Meta-data">
             <p>Quality Score</p>
@@ -21765,13 +21579,13 @@ new Chart("Citations__RadarChart", config);
             <div class="Impact__Row__Content">
                 <div class="Impact__Row__Block">
                     <p>Your code made its way into</p>
-                    <div class="Row__Number">3</div>
+                    <div class="Row__Number">1</div>
                     <p>other projects</p>
                 </div>
                 <div class="Impact__Row__Block">
                     <p>The most notable of which was</p>
-                    <div class="Row__PaperTitle" style="font-size:1.75rem">SearchSECOController</div>
-                    <p>by Rowin Schouten, Tjibbe Bolhuis</p>
+                    <div class="Row__PaperTitle" style="font-size:2rem">1</div>
+                    <p>by 1</p>
                 </div>
             </div>
         </div>
@@ -22266,7 +22080,6 @@ new Chart("Citations__RadarChart", config);
 
 </script>
 
-<!-- </html> -->
 
 
     
