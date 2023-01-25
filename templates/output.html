@@ -19606,7 +19606,7 @@ flex-direction: row;
             </div>
             <div class="Repository__Info">
                 <h3>Date of issue</h3>
-                <h2 class="Repository__Data">24/1/2023</h2>
+                <h2 class="Repository__Data">25/1/2023</h2>
             </div>
         </div>
         <div class="Repository__Info__Left">
@@ -19625,7 +19625,7 @@ flex-direction: row;
                 <h2 class="Repository__Data">0<i class="fa-solid fa-eye"></i></h2>
             </div>
             <div class="Repository__Info">
-                <h3>Repository Forks</h3>
+                <h3>Repository forks</h3>
                 <h2 class="Repository__Data">0<i class="fa-solid fa-code-fork"></i></h2>
             </div>
         </div>
@@ -19634,14 +19634,14 @@ flex-direction: row;
     <div class="Meta-data__Row">
         <div class="Meta-data">
             <p>Times cited</p>
-            <div class = Meta-data__Data><p>137</p></div>
+            <div class = Meta-data__Data><p>1145</p></div>
         </div>
         <div class="Meta-data">
-            <p>Fairness</p>
+            <p>FAIRness</p>
             <div class = Meta-data__Data><p>0/5</p></div>
         </div>
         <div class="Meta-data">
-            <p>Methods reused in other projects</p>
+            <p>Methods matching those in other projects</p>
             <div class = Meta-data__Data><p>0</p></div>
         </div>
         <div class="Meta-data">
@@ -20236,8 +20236,10 @@ flex-direction: row;
                 </div>
                 <div class="Impact__Row__Block">
                     <p>The most notable of which was</p>
-                    <div class="Row__PaperTitle" style="font-size:0.8rem">Sources of marine debris for Seychelles and other remote islands in the western Indian Ocean.</div>
-                    <p>from Marine pollution bulletin</p>
+                    <div class="Row__PaperTitle" style="font-size:0.8rem">The physical oceanography of the transport of floating marine debris</div>
+                    
+                        <p>from IOP Publishing</p>
+                    
                 </div>
             </div>
         </div>
@@ -20250,14 +20252,14 @@ flex-direction: row;
             <h2>Projects and Reuse</h2>
             <div class="Impact__Row__Content">
                 <div class="Impact__Row__Block">
-                    <p>Your code made its way into</p>
-                    <div class="Row__Number">1</div>
+                    <p>Your code matches methods in</p>
+                    <div class="Row__Number">0</div>
                     <p>other projects</p>
                 </div>
                 <div class="Impact__Row__Block">
                     <p>The most notable of which was</p>
-                    <div class="Row__PaperTitle" style="font-size:2rem">1</div>
-                    <p>by 1</p>
+                    <div class="Row__PaperTitle" style="font-size:2rem">none</div>
+                    
                 </div>
             </div>
         </div>
@@ -20891,221 +20893,7 @@ new Chart("Citations__RadarChart", config);
         </div>
 
         <div class="page">
-            <script>
-
-    
-    function generatePDF() {
-      var opt = {
-        filename:     'FAIRECO-REPORT-FairSECO.pdf',
-        };
-      const element = document.getElementById("pdf");
-      var elementclone = element.cloneNode(true);
-      elementclone.style = "display:block";
-      html2pdf().set(opt).from(elementclone).save();
-      elementclone.remove();
-    }
-
-</script>
-
-
-<div class="Overview">
-    <h1 class="Overview__Title">Overview</h1>
-    <div class="Overview__Content">
-        <div class="Repository__Info__Top">
-            <div class="Repository__Info">
-                <h3>Repository title</h3>
-                <h2 class="Repository__Data">FairSECO</h2>
-            </div>
-            <div class="Repository__Info">
-                <h3>Repository owner</h3>
-                <h2 class="Repository__Data">QDUNI</h2>
-            </div>
-            <div class="Repository__Info">
-                <h3>Date of issue</h3>
-                <h2 class="Repository__Data">24/1/2023</h2>
-            </div>
-        </div>
-        <div class="Repository__Info__Left">
-            <div class="Repository__Info">
-                <h3>Top contributors</h3>
-                <h2 class="Repository__Data Repository__Contributors"><p>RageRaptor</p><p>QDUNI</p><p>rowins</p></h2>
-            </div>
-        </div>
-        <div class="Repository__Info__Right">
-            <div class="Repository__Info">
-                <h3>Repository stars</h3>
-                <h2 class="Repository__Data">2<i class="fa-solid fa-star"></i></h2>
-            </div>
-            <div class="Repository__Info">
-                <h3>Repository watchers</h3>
-                <h2 class="Repository__Data">0<i class="fa-solid fa-eye"></i></h2>
-            </div>
-            <div class="Repository__Info">
-                <h3>Repository Forks</h3>
-                <h2 class="Repository__Data">0<i class="fa-solid fa-code-fork"></i></h2>
-            </div>
-        </div>
-    </div>
-    <h1 class="Scores__Title">Your scores</h1>
-    <div class="Meta-data__Row">
-        <div class="Meta-data">
-            <p>Times cited</p>
-            <div class = Meta-data__Data><p>137</p></div>
-        </div>
-        <div class="Meta-data">
-            <p>Fairness</p>
-            <div class = Meta-data__Data><p>0/5</p></div>
-        </div>
-        <div class="Meta-data">
-            <p>Methods reused in other projects</p>
-            <div class = Meta-data__Data><p>0</p></div>
-        </div>
-        <div class="Meta-data">
-            <p>Quality Score</p>
-            <div class = Meta-data__Data><p>42/100</p></div>
-        </div>
-    </div>
-    <button id="pdfbutton" onclick="generatePDF()"><i class="fa-solid fa-download"></i>  Download as PDF</button>
-</div>
-
-<style>
-.Overview__Title {
-    color: #0C281E;
-    text-align: center;
-    margin: 2%;
-    font-size: 2rem;
-}
-
-.Scores__Title {
-    color: #0C281E;
-    text-align: Left;
-    margin: 0;
-    margin-bottom: 1rem;
-    margin-left: 4.8vw;
-    font-size: 1.5rem;
-}
-
-#pdfbutton{
-
-    display: block;
-    border-radius: 8px;
-    margin: auto;
-    margin-top: 20px;
-    border: 1px solid black;
-    padding: 10px;
-    background: none;
-}
-
-#pdfbutton:hover{
-    color: white;
-    background-color: #0c281e;
-}
-
-#pdfbutton i{
-    margin-right: 5px;
-    font-size: 15px;
-}
-
-.Overview__Content {
-    width: 80%;
-    margin: auto;
-    display: grid;
-    grid-template-areas: 
-            "a a a"
-            "b c d"
-            "b c d";
-    justify-content: space-between;
-}
-.Repository__Info__Top {
-    grid-area: a;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-.Repository__Info__Top > *:nth-child(2){
-    text-align: center;
-}
-
-.Repository__Info__Top > *:nth-child(3){
-    text-align: right;
-}
-.Repository__Info__Left {
-    margin-top: 5vh;
-    grid-area: b;
-    display: flex;
-    flex-direction: column;
-}
-
-.Repository__Info__Right {
-    margin-top: 5vh;
-    grid-area: d;
-    text-align: right;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.RightPaneWindow .Repository__Info h3{
-    color: #5A9575;
-    font-weight: bold;
-    font-size: 1rem;
-}
-.RightPaneWindow .Repository__Info h2{
-    color: #0c281e;
-    font-weight: bold;
-    font-size: 2rem;
-    margin: 0;
-}
-
-.RightPaneWindow .Repository__Info h2 i {
-    margin-left: 8px;
-}
-
-.Repository__Data {
-    font-size: 1.75vw;
-    font-weight: bold;
-    margin: 0.25vw;
-}
-
-.Repository__Contributors p{
-    font-size: 1rem;
-    margin: 0;
-}
-
-.Meta-data__Row {
-    width: 80%;
-    position: relative;
-    margin: auto;
-    display: flex;
-    flex-direction: row;
-    text-align: center;
-    justify-content: center;
-}
-.Meta-data {
-    padding: 8px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    border: 1px solid #0c281e;
-    margin: 4px;
-    border-radius: 8px;
-}
-
-.Meta-data p {
-    margin: 0px 16px;
-}
-
-.Meta-data__Data {
-    font-size: 1.75vw;
-    font-weight: bold;
-    margin: 0.25vw;
-}
-</style>
-
-
-
+            
         </div>
 
         <div class="page">
@@ -21564,8 +21352,10 @@ new Chart("Citations__RadarChart", config);
                 </div>
                 <div class="Impact__Row__Block">
                     <p>The most notable of which was</p>
-                    <div class="Row__PaperTitle" style="font-size:0.8rem">Sources of marine debris for Seychelles and other remote islands in the western Indian Ocean.</div>
-                    <p>from Marine pollution bulletin</p>
+                    <div class="Row__PaperTitle" style="font-size:0.8rem">The physical oceanography of the transport of floating marine debris</div>
+                    
+                        <p>from IOP Publishing</p>
+                    
                 </div>
             </div>
         </div>
@@ -21578,14 +21368,14 @@ new Chart("Citations__RadarChart", config);
             <h2>Projects and Reuse</h2>
             <div class="Impact__Row__Content">
                 <div class="Impact__Row__Block">
-                    <p>Your code made its way into</p>
-                    <div class="Row__Number">1</div>
+                    <p>Your code matches methods in</p>
+                    <div class="Row__Number">0</div>
                     <p>other projects</p>
                 </div>
                 <div class="Impact__Row__Block">
                     <p>The most notable of which was</p>
-                    <div class="Row__PaperTitle" style="font-size:2rem">1</div>
-                    <p>by 1</p>
+                    <div class="Row__PaperTitle" style="font-size:2rem">none</div>
+                    
                 </div>
             </div>
         </div>
