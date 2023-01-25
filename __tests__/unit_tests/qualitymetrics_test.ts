@@ -49,18 +49,19 @@ test("Test runModule", async () => {
 
     let qualityScore = (
         await quality.runModule(
-            {} as unknown as GitHubInfo,
+            {Readme: ""} as unknown as GitHubInfo,
             mockHowfairisOutput,
             mockTortelliniOutput
         )
     ) as quality.QualityMetrics;
 
-    const hasDocs =
-        fs.existsSync("./docs") || fs.existsSync("./documentation");
+    const docsDirectoryScore = fs.existsSync("./docs") || fs.existsSync("./documentation") ? 50 : 0;
+    const readmeScore = 0; // No readme
+    const docsScore = docsDirectoryScore + readmeScore;
 
     expect(qualityScore.fairnessScore).toBe(60);
     expect(qualityScore.licenseScore).toBe(34);
-    expect(qualityScore.documentationScore).toBe(hasDocs ? 100 : 0);
+    expect(qualityScore.documentationScore).toBe(docsScore);
 });
 
 describe("Test getLicenseScore", () => {
