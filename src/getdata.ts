@@ -82,13 +82,7 @@ async function runModule(module: any, ...parameters: any): Promise<ReturnObject 
             (module.ModuleName as string) + " encountered an error:\n" + (error.message as string),
             ErrorLevel.err
         );
-
-        var noData: ReturnObject = {ModuleName:module.ModuleName, Data: {}};
-
-        if(module.ModuleName == "SearchSECO"){
-            noData = {ModuleName:module.ModuleName, Data: { "methods": []}};
-        }
-
-        return noData;
+        
+        return undefined;
     }
 }

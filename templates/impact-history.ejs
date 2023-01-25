@@ -1,6 +1,6 @@
 <%
-    if (typeof(history) === 'undefined') {
-        throw new Error("Missing history data");
+    if (history === undefined) {
+        throw new Error("Missing History data");
     }
 
     const count = history.length;
