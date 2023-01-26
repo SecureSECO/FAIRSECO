@@ -19432,7 +19432,6 @@ function post(result) {
 exports.post = post;
 // Generate the report of FAIRSECO
 function createReport(result) {
-    //LogMessage("FAIRSECO report:\n" + JSON.stringify(result), ErrorLevel.info);
     try {
         fs_1.default.writeFileSync("./.FAIRSECO/report.yml", yaml_1.default.stringify(result));
         fs_1.default.writeFileSync("./.FAIRSECO/report.json", JSON.stringify(result));
