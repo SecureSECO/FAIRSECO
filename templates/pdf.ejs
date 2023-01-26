@@ -89,30 +89,17 @@
         const githubData = data.find((ele) => (ele.ModuleName === "GithubInfo"))?.Data;
         const quality = data.find((ele) => (ele.ModuleName=== "QualityMetrics"))?.Data;
         const paperData = data.find((ele) => (ele.ModuleName === "CitingPapers"))?.Data;
+        const history = data.find((ele) => (ele.ModuleName === "History"))?.Data;
     
-    const history = [
-        {
-            date: "25/12/2022",
-            quality: 62,
-            citations: 901,
-            fairness: 3,
-            matches: 15,
-        },
-        {
-            date: "01/01/2023",
-            quality: 64,
-            citations: 925,
-            fairness: 3,
-            matches: 18,
-        },
-        {
-            date: "08/01/2023",
-            quality: 69,
-            citations: 1034,
-            fairness: 4,
-            matches: 23,
+        let topContributors = "";
+        let contributorCount = 0;
+        for (const contributor of githubData.Contributors) {
+            if (contributor.type === "User" && contributorCount <= 6) {
+                topContributors += "<p>" + contributor.login + "</p>";
+                contributorCount++;
+            }
         }
-    ];
+
 
 
     function includePage(page, data, classes, hidden) {
@@ -122,7 +109,6 @@
             %><%- include('rightpane-error', {error, classes, hidden}) %><%
         }
     }
-
 
     %>
     <div id="pdf">
@@ -136,9 +122,7 @@
 
             <div class="title_page_authors">
                 <span class="title_page_authors_header"> Project Authors </span><br><br>
-                <% githubData.Contributors?.forEach((contributor) => { %> 
-                    <span> <%- contributor.login %></span><br>
-                <% }) %>
+                    <span> <%- topContributors %></span><br>
             </div>
 
             <div class="title_page_footer">
@@ -147,7 +131,7 @@
         </div>
 
         <div class="page">
-            <%includePage('overview', {githubData, fairtally, quality, searchSECO, paperData}, "Overview", false);%>
+            <%includePage('overview', {githubData, fairtally, quality, searchSECO, paperData});%>
         </div>
 
         <div class="page">
@@ -163,7 +147,7 @@
         </div>
 
         <div class="page">
-            <%- includePage('impact-history', {history}) %>
+            <%- includePage('impact-history', {history}); %>
         </div>
 
     </div>
