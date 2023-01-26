@@ -1,17 +1,33 @@
+<%
+    if (licenses === undefined) {
+        throw new Error("Missing licenses data");
+    }
+%> 
+
 <div class="LicensesContainer Hidden">
+    <h3 class="Disclaimer">This information is retrievied from the Tortellini GitHub Action. Please be aware that we cannot make any guarantees about correct licensing. </h3>
     <h1 class="issuesheader"> Issues detected: <%= licenses.violations?.length %></h1>
     <div class="LicensesContainerScroll">
         <div class="Licenses">
-            <% licenses.violations?.forEach((violation) => { %> 
+            <% licenses.violations.forEach((violation) => { %> 
             <%- include('violation', {"violation": violation})%> 
             <% }) %>
         </div>
     </div>
 </div>
+
 <style>
     .LicensesContainer {
         height: 76%;
         width: 100%;
+    }
+
+    .Disclaimer{
+        color:#779C7E;
+        font-size: 0.9rem;
+        margin-bottom: 0px;
+        margin-left: 20px;
+        font-style: italic;
     }
 
     .Licenses {

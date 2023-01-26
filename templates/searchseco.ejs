@@ -1,4 +1,8 @@
 <%
+    if (searchseco === undefined) {
+        throw new Error("Missing SearchSECO data");
+    }
+
     searchseco.methods = searchseco.methods.sort((a, b) => { return b.matches.length - a.matches.length; });
     searchseco.matchCount = 0;
     searchseco.vulnerableMethodCount = 0;
@@ -248,4 +252,5 @@
             }
         }
     }
+
 </script>
