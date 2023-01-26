@@ -38,3 +38,10 @@
        color: #0c281e;
     }    
 </style>
+
+<%# Disable citations graph button when citations page has an error %>
+<script>
+    if (document.querySelector(".CitationsContainer.LeftPaneError") !== null) {
+        document.querySelector(".citationgraphBtn").disabled = true;
+    };
+</script>

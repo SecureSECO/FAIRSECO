@@ -1,11 +1,15 @@
+<%
+if (fairtally === undefined) {
+    throw new Error("Missing fairtally data");
+}
 
-<% function checkOrCross(x) {
-return x ? '<p>Yes</p>' : '<p>No</p>'
+function checkOrCross(x) {
+    return x ? '<p>Yes</p>' : '<p>No</p>'
 }
 %>
 
 <div class="FairtallyReport" hidden>
-    <h1 class="FairtallyReportTitle">FAIRness Report</h1>
+    <h1>FAIRness Report</h1>
     <div class="stars">
         <h2>
         <% for (let i = 0; i < Math.floor(fairtally.count); i++) { %>
@@ -74,6 +78,8 @@ return x ? '<p>Yes</p>' : '<p>No</p>'
     }
 
     .FairtallyReport h1 {
+        margin: 2%;
+        font-size: 2vw;
         color: #0C281E;
         text-align: center;
     }
@@ -82,11 +88,6 @@ return x ? '<p>Yes</p>' : '<p>No</p>'
         text-align: center;
     }
     .FairtallyReport h4 {
-        font-weight: 400;
-        font-style: italic;
-        text-align: center;
-    }
-    .HowFairIsReport h4 {
         font-weight: 400;
         font-style: italic;
         text-align: center;

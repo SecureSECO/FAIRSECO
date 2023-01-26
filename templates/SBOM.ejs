@@ -1,4 +1,7 @@
 <%
+if (SBOM === undefined) {
+    throw new Error("Missing SBOM data");
+}
 
 // Node in the tree view
 class Node {

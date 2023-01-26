@@ -1,19 +1,9 @@
 <ul id="RightPaneNav">
-    <li class="RightPaneNav__Tab--Active" onClick="clickTab(this)" data-linked-class="Overview">
-        Overview
-    </li>
-    <li class="RightPaneNav__Tab--1Away" onClick="clickTab(this)" data-linked-class="FairtallyReport">
-        FAIRness
-    </li>
-    <li class="RightPaneNav__Tab--2Away" onClick="clickTab(this)" data-linked-class="ImpactScore">
-        Impact
-    </li>
-    <li class="RightPaneNav__Tab--3Away" onClick="clickTab(this)" data-linked-class="Quality">
-        Quality
-    </li>
-    <li class="RightPaneNav__Tab--4Away" onClick="clickTab(this)" data-linked-class="ImpactHistory">
-        Impact History
-    </li>
+    <li class="RightPaneNav__Tab--Active" onClick="clickTab(this)" data-linked-class="Overview">Overview</li>
+    <li class="RightPaneNav__Tab--1Away" onClick="clickTab(this)" data-linked-class="FairtallyReport">FAIRness</li>
+    <li class="RightPaneNav__Tab--2Away" onClick="clickTab(this)" data-linked-class="ImpactScore">Impact</li>
+    <li class="RightPaneNav__Tab--3Away" onClick="clickTab(this)" data-linked-class="Quality">Quality</li>
+    <li class="RightPaneNav__Tab--4Away" onClick="clickTab(this)" data-linked-class="ImpactHistory">Impact History</li>
 </ul>
 
 
@@ -56,19 +46,19 @@
     transition: all 150ms ease;
 }
 #RightPaneNav li:nth-child(1) {
-    z-index: 4;
+    z-index: 5;
 }
 #RightPaneNav li:nth-child(2) {
-    z-index: 3;
+    z-index: 4;
 }
 #RightPaneNav li:nth-child(3) {
-    z-index: 2;
+    z-index: 3;
 }
 #RightPaneNav li:nth-child(4) {
-    z-index: 1;
+    z-index: 2;
 }
 #RightPaneNav li:nth-child(5) {
-    z-index: 0;
+    z-index: 1;
 }
 
 #RightPaneNav .RightPaneNav__Tab--Active {
@@ -139,6 +129,20 @@
 </style>
 
 <script>
+    <%# Handle missing pages %>
+    window.addEventListener("load", () => {
+        for (const tab of document.getElementById("RightPaneNav").getElementsByTagName("li")) {
+            if (document.querySelector("." + tab.dataset.linkedClass).classList.contains("RightPaneError")) {
+                const textNode = tab.childNodes.item(0);
+                textNode.textContent = " " + textNode.textContent;
+
+                const icon = document.createElement("i");
+                icon.classList.add("fa-solid", "fa-triangle-exclamation");
+                tab.prepend(icon);
+            }
+        }
+    });
+
     function clickTab(tab) {
         const activeTab = document.querySelector(".RightPaneNav__Tab--Active");
         if (tab === activeTab) {

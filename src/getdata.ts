@@ -82,9 +82,7 @@ async function runModule(module: any, ...parameters: any): Promise<ReturnObject 
             (module.ModuleName as string) + " encountered an error:\n" + (error.message as string),
             ErrorLevel.err
         );
-
-        const noData: ReturnObject = {ModuleName:module.ModuleName, Data: {}};
-
-        return noData;
+        
+        return undefined;
     }
 }

@@ -133,11 +133,21 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
     }
 </style>
 <script>
-window.addEventListener('load', 
-  function() { 
-  window.ActiveTab = document.querySelector(".ActiveTab")
-  window.ActiveIndex = 0
-  }, false);
+window.addEventListener('load', () => {
+    window.ActiveTab = document.querySelector(".ActiveTab");
+    window.ActiveIndex = 0;
+
+    
+    for (const tab of document.querySelectorAll(".LeftPaneNav .NavItem")) {
+        if (document.querySelector("." + tab.dataset.linkedClass).classList.contains("LeftPaneError")) {
+            const icon = tab.querySelector("i");
+            icon.classList.forEach((token) => {
+                icon.classList.remove(token);
+            });
+            icon.classList.add("fa-solid", "fa-triangle-exclamation");
+        }
+    }
+});
 
 function moveHighlightBlockTo(ele) {
     const padding = 20;
@@ -218,12 +228,9 @@ function clickNav(ele) {
 
 
     
-    
-    
-    
-    
-    <div class="CitationsContainer ActiveTab">
+     
 
+<div class="CitationsContainer ActiveTab">
     <div id="CitationsHeader">
         <h1 class="hTitle">Title, Authors, Description</h1>
         <h1 class="hDate">Date</h1>
@@ -232,6 +239,28 @@ function clickNav(ele) {
     </div>
     <div class="CitationsContainerScroll">
     <div class="Citations">
+    
+        <div class="Citation">
+    <div class="info1">
+        <div class="info2">
+            <p class="title" data-hover="A blueprint for integrating scientific approaches and international communities to assess basin-wide ocean ecosystem status">
+                A blueprint for integrating scientific approaches and international communities to assess basin-wide ocean ecosystem status
+            </p>
+            <h2 class="authors">
+                Authors not found
+            </h2>
+            <h2 id="doiSmall">
+                10.1038/s43247-022-00645-w
+            </h2>
+        </div>
+        <h3 class="description">Collected from OpenAlex, SemanticScholar</h3>
+    </div>
+    <div class="year"><p>2023</p></div>
+    <div class="doi"><p>10.1038/s43247-022-00645-w</p></div>
+    <div class="link">
+        <a href="https://www.doi.org/10.1038/s43247-022-00645-w" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-link"></i></a>
+    </div>
+</div>
     
         <div class="Citation">
     <div class="info1">
@@ -1380,28 +1409,6 @@ function clickNav(ele) {
         <div class="Citation">
     <div class="info1">
         <div class="info2">
-            <p class="title" data-hover="On the Variability of the DWBC Transport Between 26.5°N and 16°N in an Eddy‐Rich Ocean Model">
-                On the Variability of the DWBC Transport Between 26.5°N and 16°N in an Eddy‐Rich Ocean Model
-            </p>
-            <h2 class="authors">
-                Authors not found
-            </h2>
-            <h2 id="doiSmall">
-                10.1029/2021jc017372
-            </h2>
-        </div>
-        <h3 class="description">Collected from OpenAlex, SemanticScholar</h3>
-    </div>
-    <div class="year"><p>2021</p></div>
-    <div class="doi"><p>10.1029/2021jc017372</p></div>
-    <div class="link">
-        <a href="https://www.doi.org/10.1029/2021jc017372" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-link"></i></a>
-    </div>
-</div>
-    
-        <div class="Citation">
-    <div class="info1">
-        <div class="info2">
             <p class="title" data-hover="Restricted dispersal in a sea of gene flow">
                 Restricted dispersal in a sea of gene flow
             </p>
@@ -1528,6 +1535,28 @@ function clickNav(ele) {
     <div class="doi"><p>10.1088/1748-9326/abecbd</p></div>
     <div class="link">
         <a href="https://www.doi.org/10.1088/1748-9326/abecbd" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-link"></i></a>
+    </div>
+</div>
+    
+        <div class="Citation">
+    <div class="info1">
+        <div class="info2">
+            <p class="title" data-hover="On the Variability of the DWBC Transport Between 26.5°N and 16°N in an Eddy‐Rich Ocean Model">
+                On the Variability of the DWBC Transport Between 26.5°N and 16°N in an Eddy‐Rich Ocean Model
+            </p>
+            <h2 class="authors">
+                Authors not found
+            </h2>
+            <h2 id="doiSmall">
+                10.1029/2021jc017372
+            </h2>
+        </div>
+        <h3 class="description">Collected from OpenAlex, SemanticScholar</h3>
+    </div>
+    <div class="year"><p>2021</p></div>
+    <div class="doi"><p>10.1029/2021jc017372</p></div>
+    <div class="link">
+        <a href="https://www.doi.org/10.1029/2021jc017372" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-link"></i></a>
     </div>
 </div>
     
@@ -2790,6 +2819,28 @@ a spatio-temporal calibration for ice-sheet modelling
         <div class="Citation">
     <div class="info1">
         <div class="info2">
+            <p class="title" data-hover="Hydrometeorological assessments of the transport of microplastic pellets in the Eastern Mediterranean">
+                Hydrometeorological assessments of the transport of microplastic pellets in the Eastern Mediterranean
+            </p>
+            <h2 class="authors">
+                Authors not found
+            </h2>
+            <h2 id="doiSmall">
+                10.1016/j.scitotenv.2022.153676
+            </h2>
+        </div>
+        <h3 class="description">Collected from OpenAlex</h3>
+    </div>
+    <div class="year"><p>2022</p></div>
+    <div class="doi"><p>10.1016/j.scitotenv.2022.153676</p></div>
+    <div class="link">
+        <a href="https://www.doi.org/10.1016/j.scitotenv.2022.153676" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-link"></i></a>
+    </div>
+</div>
+    
+        <div class="Citation">
+    <div class="info1">
+        <div class="info2">
             <p class="title" data-hover="Ordering of trajectories reveals hierarchical finite-time coherent sets in Lagrangian particle data: detecting Agulhas rings in the South Atlantic Ocean">
                 Ordering of trajectories reveals hierarchical finite-time coherent sets in Lagrangian particle data: detecting Agulhas rings in the South Atlantic Ocean
             </p>
@@ -2856,22 +2907,22 @@ a spatio-temporal calibration for ice-sheet modelling
         <div class="Citation">
     <div class="info1">
         <div class="info2">
-            <p class="title" data-hover="Hydrometeorological assessments of the transport of microplastic pellets in the Eastern Mediterranean">
-                Hydrometeorological assessments of the transport of microplastic pellets in the Eastern Mediterranean
+            <p class="title" data-hover="Using machine learning and beach cleanup data to explain litter quantities along the Dutch North Sea coast">
+                Using machine learning and beach cleanup data to explain litter quantities along the Dutch North Sea coast
             </p>
             <h2 class="authors">
                 Authors not found
             </h2>
             <h2 id="doiSmall">
-                10.1016/j.scitotenv.2022.153676
+                10.5194/os-18-269-2022
             </h2>
         </div>
         <h3 class="description">Collected from OpenAlex</h3>
     </div>
     <div class="year"><p>2022</p></div>
-    <div class="doi"><p>10.1016/j.scitotenv.2022.153676</p></div>
+    <div class="doi"><p>10.5194/os-18-269-2022</p></div>
     <div class="link">
-        <a href="https://www.doi.org/10.1016/j.scitotenv.2022.153676" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-link"></i></a>
+        <a href="https://www.doi.org/10.5194/os-18-269-2022" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-link"></i></a>
     </div>
 </div>
     
@@ -2916,28 +2967,6 @@ a spatio-temporal calibration for ice-sheet modelling
     <div class="doi"><p>10.1029/2021jc017567</p></div>
     <div class="link">
         <a href="https://www.doi.org/10.1029/2021jc017567" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-link"></i></a>
-    </div>
-</div>
-    
-        <div class="Citation">
-    <div class="info1">
-        <div class="info2">
-            <p class="title" data-hover="Using machine learning and beach cleanup data to explain litter quantities along the Dutch North Sea coast">
-                Using machine learning and beach cleanup data to explain litter quantities along the Dutch North Sea coast
-            </p>
-            <h2 class="authors">
-                Authors not found
-            </h2>
-            <h2 id="doiSmall">
-                10.5194/os-18-269-2022
-            </h2>
-        </div>
-        <h3 class="description">Collected from OpenAlex</h3>
-    </div>
-    <div class="year"><p>2022</p></div>
-    <div class="doi"><p>10.5194/os-18-269-2022</p></div>
-    <div class="link">
-        <a href="https://www.doi.org/10.5194/os-18-269-2022" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-link"></i></a>
     </div>
 </div>
     
@@ -3227,28 +3256,6 @@ a spatio-temporal calibration for ice-sheet modelling
     </div>
 </div>
     
-        <div class="Citation">
-    <div class="info1">
-        <div class="info2">
-            <p class="title" data-hover="A blueprint for integrating scientific approaches and international communities to assess basin-wide ocean ecosystem status">
-                A blueprint for integrating scientific approaches and international communities to assess basin-wide ocean ecosystem status
-            </p>
-            <h2 class="authors">
-                Authors not found
-            </h2>
-            <h2 id="doiSmall">
-                10.1038/s43247-022-00645-w
-            </h2>
-        </div>
-        <h3 class="description">Collected from OpenAlex</h3>
-    </div>
-    <div class="year"><p>2023</p></div>
-    <div class="doi"><p>10.1038/s43247-022-00645-w</p></div>
-    <div class="link">
-        <a href="https://www.doi.org/10.1038/s43247-022-00645-w" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-link"></i></a>
-    </div>
-</div>
-    
     </div>
     </div>
 </div>
@@ -3512,9 +3519,11 @@ a spatio-temporal calibration for ice-sheet modelling
     }
     }
 </style>
+ 
 
-    <div class="LicensesContainer Hidden">
-    <h1 class="issuesheader"> Issues detected: 41</h1>
+<div class="LicensesContainer Hidden">
+    <h3 class="Disclaimer">This information is retrievied from the Tortellini GitHub Action. Please be aware that we cannot make any guarantees about correct licensing. </h3>
+    <h1 class="issuesheader"> Issues detected: 74</h1>
     <div class="LicensesContainerScroll">
         <div class="Licenses">
              
@@ -3532,7 +3541,7 @@ a spatio-temporal calibration for ice-sheet modelling
         </p>
     </div> 
     <div class="PackageName">
-        <p>NPM::FAIRSECO:1.0.0</p>
+        <p>NPM::fairseco:1.0.0</p>
     </div>
     <div class="Licensetype"><p>ISC</p>
     </div>
@@ -3547,7 +3556,7 @@ a spatio-temporal calibration for ice-sheet modelling
         
         <div class="ViolationsContent">
             <div class="space3"></div>
-            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::FAIRSECO:1.0.0 </div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::fairseco:1.0.0 </div>
             <div class="space4"></div>
             <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
 which may link to additional resources.</div>
@@ -3628,6 +3637,1246 @@ which may link to additional resources.</div>
         <div class="ViolationsContent">
             <div class="space3"></div>
             <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::cliui:8.0.1 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::d3:7.7.0</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::d3:7.7.0 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::d3-array:3.2.1</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::d3-array:3.2.1 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::d3-axis:3.0.0</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::d3-axis:3.0.0 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::d3-brush:3.0.0</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::d3-brush:3.0.0 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::d3-chord:3.0.1</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::d3-chord:3.0.1 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::d3-color:3.1.0</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::d3-color:3.1.0 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::d3-contour:4.0.0</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::d3-contour:4.0.0 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::d3-delaunay:6.0.2</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::d3-delaunay:6.0.2 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::d3-dispatch:3.0.1</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::d3-dispatch:3.0.1 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::d3-drag:3.0.0</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::d3-drag:3.0.0 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::d3-dsv:3.0.1</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::d3-dsv:3.0.1 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::d3-fetch:3.0.1</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::d3-fetch:3.0.1 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::d3-force:3.0.0</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::d3-force:3.0.0 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::d3-format:3.1.0</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::d3-format:3.1.0 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::d3-geo:3.0.1</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::d3-geo:3.0.1 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::d3-hierarchy:3.1.2</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::d3-hierarchy:3.1.2 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::d3-interpolate:3.0.1</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::d3-interpolate:3.0.1 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::d3-path:3.0.1</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::d3-path:3.0.1 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::d3-polygon:3.0.1</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::d3-polygon:3.0.1 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::d3-quadtree:3.0.1</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::d3-quadtree:3.0.1 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::d3-random:3.0.1</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::d3-random:3.0.1 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::d3-scale:4.0.2</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::d3-scale:4.0.2 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::d3-scale-chromatic:3.0.0</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::d3-scale-chromatic:3.0.0 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::d3-selection:3.0.0</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::d3-selection:3.0.0 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::d3-shape:3.1.0</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::d3-shape:3.1.0 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::d3-time:3.1.0</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::d3-time:3.1.0 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::d3-time-format:4.1.0</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::d3-time-format:4.1.0 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::d3-timer:3.0.1</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::d3-timer:3.0.1 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::d3-transition:3.0.1</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::d3-transition:3.0.1 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::d3-zoom:3.0.0</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::d3-zoom:3.0.0 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::delaunator:5.0.0</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::delaunator:5.0.0 </div>
             <div class="space4"></div>
             <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
 which may link to additional resources.</div>
@@ -4252,6 +5501,46 @@ which may link to additional resources.</div>
         </p>
     </div> 
     <div class="PackageName">
+        <p>NPM::internmap:2.0.3</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::internmap:2.0.3 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
         <p>NPM::isexe:2.0.0</p>
     </div>
     <div class="Licensetype"><p>ISC</p>
@@ -4428,6 +5717,46 @@ which may link to additional resources.</div>
         <div class="ViolationsContent">
             <div class="space3"></div>
             <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::minimatch:5.1.0 </div>
+            <div class="space4"></div>
+            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
+which may link to additional resources.</div>
+        </div>
+    </div>
+        
+        
+</div>
+ 
+             
+            <div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            
+            Unhandled_license
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p>NPM::minimatch:5.1.6</p>
+    </div>
+    <div class="Licensetype"><p>ISC</p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::minimatch:5.1.6 </div>
             <div class="space4"></div>
             <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
 which may link to additional resources.</div>
@@ -5161,10 +6490,19 @@ which may link to additional resources.</div>
         </div>
     </div>
 </div>
+
 <style>
     .LicensesContainer {
         height: 76%;
         width: 100%;
+    }
+
+    .Disclaimer{
+        color:#779C7E;
+        font-size: 0.9rem;
+        margin-bottom: 0px;
+        margin-left: 20px;
+        font-style: italic;
     }
 
     .Licenses {
@@ -5334,7 +6672,6 @@ for (var i = 0; i < details.length; ++i){
 
 </script>
 
-    
 
 
 <script>
@@ -5607,6 +6944,31 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
+                SPDXRef-13c11460a1ffb037
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                pkg-up
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
                 SPDXRef-1571851c225153e6
             </span>
         </p>
@@ -5782,6 +7144,31 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
+                SPDXRef-1b05b4f319524382
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                d3-time
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
                 SPDXRef-1b7effec2d6736dc
             </span>
         </p>
@@ -5814,6 +7201,31 @@ function expandItem(ele){
         <p>
             <span class="SBOMPackageName">
                 yargs
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
+                SPDXRef-1c613344fc1b5d5
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                d3-array
             </span>
         </p>
     </div>
@@ -6007,6 +7419,31 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
+                SPDXRef-1e422ab8095bebae
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                d3-polygon
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
                 SPDXRef-1e8102c74fcd7e0b
             </span>
         </p>
@@ -6182,6 +7619,31 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
+                SPDXRef-1f8a58de84872c9c
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                shiki
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
                 SPDXRef-1f8d74ec0c2b5dc1
             </span>
         </p>
@@ -6189,6 +7651,56 @@ function expandItem(ele){
         <p>
             <span class="SBOMPackageName">
                 run-parallel
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
+                SPDXRef-1f9c301fb9c79cdb
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                d3-dsv
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
+                SPDXRef-20003585aed29fd4
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                d3-axis
             </span>
         </p>
     </div>
@@ -6282,6 +7794,31 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
+                SPDXRef-227c1b4242f7474c
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                safer-buffer
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
                 SPDXRef-233e286ffaa8d8f1
             </span>
         </p>
@@ -6289,6 +7826,31 @@ function expandItem(ele){
         <p>
             <span class="SBOMPackageName">
                 @babel/helper-module-transforms
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
+                SPDXRef-23ba6e4260ce9dc9
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                d3-force
             </span>
         </p>
     </div>
@@ -6489,6 +8051,31 @@ function expandItem(ele){
         <p>
             <span class="SBOMPackageName">
                 to-fast-properties
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
+                SPDXRef-2673b66417925862
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                d3-geo
             </span>
         </p>
     </div>
@@ -6789,6 +8376,31 @@ function expandItem(ele){
         <p>
             <span class="SBOMPackageName">
                 js-yaml
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
+                SPDXRef-2aeebf4a8e4da747
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                d3-drag
             </span>
         </p>
     </div>
@@ -7282,6 +8894,31 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
+                SPDXRef-32f97b1dcef0be3f
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                @knodes/typedoc-pluginutils
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
                 SPDXRef-336955c0536bd3f8
             </span>
         </p>
@@ -7564,6 +9201,31 @@ function expandItem(ele){
         <p>
             <span class="SBOMPackageName">
                 doctrine
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
+                SPDXRef-39a89ef257bd08a0
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                delaunator
             </span>
         </p>
     </div>
@@ -8082,6 +9744,31 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
+                SPDXRef-427a21a6d8b620f0
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                vscode-textmate
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
                 SPDXRef-42911dfaf49c0252
             </span>
         </p>
@@ -8164,6 +9851,31 @@ function expandItem(ele){
         <p>
             <span class="SBOMPackageName">
                 text-table
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
+                SPDXRef-453b0c079378dfe6
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                d3-hierarchy
             </span>
         </p>
     </div>
@@ -8314,6 +10026,31 @@ function expandItem(ele){
         <p>
             <span class="SBOMPackageName">
                 word-wrap
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
+                SPDXRef-4b913bbacbbe7f07
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                d3-quadtree
             </span>
         </p>
     </div>
@@ -8782,6 +10519,31 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
+                SPDXRef-575d6ea373631ac3
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                d3-scale
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
                 SPDXRef-58a01314f70e96a5
             </span>
         </p>
@@ -8814,6 +10576,31 @@ function expandItem(ele){
         <p>
             <span class="SBOMPackageName">
                 follow-redirects
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
+                SPDXRef-591bdf308caae918
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                marked
             </span>
         </p>
     </div>
@@ -9064,6 +10851,31 @@ function expandItem(ele){
         <p>
             <span class="SBOMPackageName">
                 is-path-inside
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
+                SPDXRef-60ccfa7b2b621bcd
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                d3-zoom
             </span>
         </p>
     </div>
@@ -9382,6 +11194,31 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
+                SPDXRef-671134bcc7017525
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                d3-interpolate
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
                 SPDXRef-676f88cb70e6743b
             </span>
         </p>
@@ -9489,6 +11326,31 @@ function expandItem(ele){
         <p>
             <span class="SBOMPackageName">
                 has-tostringtag
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
+                SPDXRef-69a990599cb76d1d
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                d3-color
             </span>
         </p>
     </div>
@@ -10082,13 +11944,13 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
-                SPDXRef-7365bebd225aa8cb
+                SPDXRef-7391ab80a01aa1d6
             </span>
         </p>
         </div>
         <p>
             <span class="SBOMPackageName">
-                shiki
+                d3-ease
             </span>
         </p>
     </div>
@@ -10114,6 +11976,31 @@ function expandItem(ele){
         <p>
             <span class="SBOMPackageName">
                 @octokit/request-error
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
+                SPDXRef-7565e959f564c6a2
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                internmap
             </span>
         </p>
     </div>
@@ -10882,6 +12769,31 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
+                SPDXRef-84c8a181e7ade842
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                d3-scale-chromatic
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
                 SPDXRef-84f0b88d76f3f0a7
             </span>
         </p>
@@ -11314,6 +13226,31 @@ function expandItem(ele){
         <p>
             <span class="SBOMPackageName">
                 minimatch
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
+                SPDXRef-8a270f747d7bc7d3
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                d3-delaunay
             </span>
         </p>
     </div>
@@ -11982,13 +13919,13 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
-                SPDXRef-96598381ea9dd970
+                SPDXRef-965747c5b7b50aaf
             </span>
         </p>
         </div>
         <p>
             <span class="SBOMPackageName">
-                object.values
+                d3-timer
             </span>
         </p>
     </div>
@@ -12007,13 +13944,13 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
-                SPDXRef-966be328d67a9c43
+                SPDXRef-96598381ea9dd970
             </span>
         </p>
         </div>
         <p>
             <span class="SBOMPackageName">
-                typedoc
+                object.values
             </span>
         </p>
     </div>
@@ -12064,6 +14001,31 @@ function expandItem(ele){
         <p>
             <span class="SBOMPackageName">
                 jest-watcher
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
+                SPDXRef-9893c5ec8401404d
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                d3-time-format
             </span>
         </p>
     </div>
@@ -12532,6 +14494,31 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
+                SPDXRef-a09fddc47d932235
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                d3-fetch
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
                 SPDXRef-a0b37ef6b27fa1f9
             </span>
         </p>
@@ -12857,6 +14844,31 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
+                SPDXRef-a5c9af68c959f393
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                robust-predicates
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
                 SPDXRef-a5cdfc900ee40a3f
             </span>
         </p>
@@ -12914,6 +14926,31 @@ function expandItem(ele){
         <p>
             <span class="SBOMPackageName">
                 @jest/schemas
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
+                SPDXRef-a698be90094bb3f7
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                json5
             </span>
         </p>
     </div>
@@ -13132,6 +15169,31 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
+                SPDXRef-ac84a8ea6bb7bdfa
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                d3-format
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
                 SPDXRef-acd0d313b5d64165
             </span>
         </p>
@@ -13189,6 +15251,56 @@ function expandItem(ele){
         <p>
             <span class="SBOMPackageName">
                 jsesc
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
+                SPDXRef-b49f7abc3842ac13
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                d3-shape
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
+                SPDXRef-b5092b95e81caa43
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                @knodes/typedoc-plugin-pages
             </span>
         </p>
     </div>
@@ -13439,6 +15551,31 @@ function expandItem(ele){
         <p>
             <span class="SBOMPackageName">
                 jest-runtime
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
+                SPDXRef-bb380f1f77465da
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                rw
             </span>
         </p>
     </div>
@@ -13757,6 +15894,31 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
+                SPDXRef-c077021f07c050d0
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                d3-random
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
                 SPDXRef-c0e73eeaa1925d0b
             </span>
         </p>
@@ -13764,6 +15926,31 @@ function expandItem(ele){
         <p>
             <span class="SBOMPackageName">
                 filelist
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
+                SPDXRef-c0eb8610210445d9
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                commander
             </span>
         </p>
     </div>
@@ -13882,13 +16069,13 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
-                SPDXRef-c4d835c5cb514f7d
+                SPDXRef-c4f91acfdd70e7f2
             </span>
         </p>
         </div>
         <p>
             <span class="SBOMPackageName">
-                marked
+                make-error
             </span>
         </p>
     </div>
@@ -13907,13 +16094,13 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
-                SPDXRef-c4f91acfdd70e7f2
+                SPDXRef-c5d5d7bd46c7c31d
             </span>
         </p>
         </div>
         <p>
             <span class="SBOMPackageName">
-                make-error
+                d3-selection
             </span>
         </p>
     </div>
@@ -13989,6 +16176,31 @@ function expandItem(ele){
         <p>
             <span class="SBOMPackageName">
                 @typescript-eslint/visitor-keys
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
+                SPDXRef-c852a24b2e37cae0
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                d3-contour
             </span>
         </p>
     </div>
@@ -14114,6 +16326,31 @@ function expandItem(ele){
         <p>
             <span class="SBOMPackageName">
                 ejs
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
+                SPDXRef-c9e5066ae260e27c
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                d3
             </span>
         </p>
     </div>
@@ -14632,6 +16869,31 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
+                SPDXRef-d42b4e16917bc955
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                d3-brush
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
                 SPDXRef-d4395d92193f0d81
             </span>
         </p>
@@ -14682,6 +16944,31 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
+                SPDXRef-d817ac54d86d4448
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                d3-dispatch
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
                 SPDXRef-d869355610a32a40
             </span>
         </p>
@@ -14689,6 +16976,31 @@ function expandItem(ele){
         <p>
             <span class="SBOMPackageName">
                 ajv-formats
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
+                SPDXRef-d8993bea053ab1d0
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                typedoc
             </span>
         </p>
     </div>
@@ -15007,13 +17319,13 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
-                SPDXRef-dfc49d77e71af1f7
+                SPDXRef-def6de29d883e06d
             </span>
         </p>
         </div>
         <p>
             <span class="SBOMPackageName">
-                gensync
+                d3-chord
             </span>
         </p>
     </div>
@@ -15032,13 +17344,13 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
-                SPDXRef-dfdaf1f3e6feab7a
+                SPDXRef-dfc49d77e71af1f7
             </span>
         </p>
         </div>
         <p>
             <span class="SBOMPackageName">
-                json5
+                gensync
             </span>
         </p>
     </div>
@@ -15214,6 +17526,31 @@ function expandItem(ele){
         <p>
             <span class="SBOMPackageName">
                 @jest/reporters
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
+                SPDXRef-e2fdd83e2674f352
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                vscode-oniguruma
             </span>
         </p>
     </div>
@@ -15432,13 +17769,13 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
-                SPDXRef-e612693df86f368a
+                SPDXRef-e5f267d680cb1cd6
             </span>
         </p>
         </div>
         <p>
             <span class="SBOMPackageName">
-                vscode-oniguruma
+                lodash
             </span>
         </p>
     </div>
@@ -15832,31 +18169,6 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
-                SPDXRef-ec56f95a2655c8f1
-            </span>
-        </p>
-        </div>
-        <p>
-            <span class="SBOMPackageName">
-                vscode-textmate
-            </span>
-        </p>
-    </div>
-    <div class="SBOMChildList Hidden">
-        
-        
-    </div>
-</div>
-
-        
-            
-
-<div class="SBOMItem">
-    <div class="SBOMParent">
-        <div class="ButtonAndSPDX">
-        
-        <p>
-            <span class="SBOMSPDX">
                 SPDXRef-ecb1285581584e14
             </span>
         </p>
@@ -16032,6 +18344,31 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
+                SPDXRef-f04f047a4a25314
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                d3-transition
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
                 SPDXRef-f07588085e3239d0
             </span>
         </p>
@@ -16139,6 +18476,31 @@ function expandItem(ele){
         <p>
             <span class="SBOMPackageName">
                 argparse
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
+                SPDXRef-f3449e1b1f880432
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                iconv-lite
             </span>
         </p>
     </div>
@@ -16776,6 +19138,31 @@ function expandItem(ele){
         
             
 
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
+                SPDXRef-ffd682b6db1ede4b
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                d3-path
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
 <div class="SBOMItem LastChild">
     <div class="SBOMParent">
         <div class="ButtonAndSPDX">
@@ -16875,394 +19262,11 @@ flex-direction: row;
     padding: 0;
 }
 </style>
+ 
 
-    
-
-<div class="SearchSECO Hidden">
-    <h1>Total matches: 3</h1>
-    <div class="SearchSECO__Nav">
-        <button class="SearchSECO__Nav__Button--Active" id="SearchSECO__MethodsButton" onClick="searchsecoShowMethods()" data-linked-class="SearchSECO__Methods"><i class="fa-solid fa-file-code"></i> Methods</button>
-        <button id="SearchSECO__ProjectsButton" onClick="searchsecoShowProjects()" data-linked-class="SearchSECO__Projects"><i class="fa-solid fa-box-archive"></i> Projects</button>
-        <div style="display: flex; flex-direction: row; align-items: center">
-            <input type="checkbox" id="SearchSECO_ToggleShowVulnerable" onclick="searchsecoToggleShowVulnerabilities()">
-            <label for="SearchSECO_ToggleShowVulnerable">Show vulnerabilities only<br>3 matches / 2 methods / 3 projects</label>
-        </div>
-    </div>
-    <div class="SearchSECO__List SearchSECO__MethodList">
-        <p>2 of your methods found matches</p>
-
-        
-        <div class="SearchSECO__ListObject SearchSECO__ArrowOwner">
-    <div class="SearchSECO__ListObject__Header">
-        <div class="SearchSECO__ListObject__Header__Start">
-            <h1>
-                <i class="fa-solid fa-angle-right" onClick="searchSecoClickArrow(event)"></i>parseInput (searchseco.ts:110)
-            </h1>
-            <p>
-                <span><i class="fa-solid fa-file-circle-exclamation"></i> Vulnerable</span>
-                2 matches
-            </p>
-        </div>
-        Author: Quinn Donkers
-    </div>
-    <div class="SearchSECO__ListObject__MatchList SearchSECO__ArrowTarget" hidden>
-        
-        <div class="SearchSECO__Match">
-    <div class="SearchSECO__Match__Header">
-        <h2>Project: SearchSECOController</h2>
-        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability reported</span>
-    </div>
-    Method: parseInput (parse.cpp:33)
-    <br>
-    Authors: Rowin Schouten, Tjibbe Bolhuis
-    
-        <br>
-        <br>
-        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability 123 reported: <a href="https://www.url-of-vulnerability.com">https://www.url-of-vulnerability.com</a></span> 
-    
+<div class="LeftPaneError SearchSECO Hidden">
+    Error: Missing SearchSECO data
 </div>
-        
-        <div class="SearchSECO__Match">
-    <div class="SearchSECO__Match__Header">
-        <h2>Project: TrustSECO</h2>
-        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability reported</span>
-    </div>
-    Method: Parse (parser.cs:39)
-    <br>
-    Authors: Bram Lankhorst, Valia Bykova
-    
-        <br>
-        <br>
-        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability 246 reported: <a href="https://www.url-of-vulnerability.com">https://www.url-of-vulnerability.com</a></span> 
-    
-</div>
-        
-    </div>
-</div>
-        
-        <div class="SearchSECO__ListObject SearchSECO__ArrowOwner">
-    <div class="SearchSECO__ListObject__Header">
-        <div class="SearchSECO__ListObject__Header__Start">
-            <h1>
-                <i class="fa-solid fa-angle-right" onClick="searchSecoClickArrow(event)"></i>getMethodInfo (searchseco.ts:180)
-            </h1>
-            <p>
-                <span><i class="fa-solid fa-file-circle-exclamation"></i> Vulnerable</span>
-                1 match
-            </p>
-        </div>
-        Author: Bart Hageman
-    </div>
-    <div class="SearchSECO__ListObject__MatchList SearchSECO__ArrowTarget" hidden>
-        
-        <div class="SearchSECO__Match">
-    <div class="SearchSECO__Match__Header">
-        <h2>Project: searchseco-output-parser</h2>
-        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability reported</span>
-    </div>
-    Method: getInfo (parseOutput.js:88)
-    <br>
-    Authors: Alina Aydin, Jarno Hendriksen
-    
-        <br>
-        <br>
-        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability 234 reported: <a href="https://www.url-of-vulnerability.com">https://www.url-of-vulnerability.com</a></span> 
-    
-</div>
-        
-    </div>
-</div>
-        
-    </div>
-    <div class="SearchSECO__List SearchSECO__ProjectList" hidden>
-        <p>Your methods found matches with 3 projects</p>
-
-        
-        <div class="SearchSECO__ListObject SearchSECO__ArrowOwner">
-    <div class="SearchSECO__ListObject__Header">
-        <div class="SearchSECO__ListObject__Header__Start">
-            <h1>
-                <i class="fa-solid fa-angle-right" onClick="searchSecoClickArrow(event)"></i>SearchSECOController
-            </h1>
-            <p>
-                <span><i class="fa-solid fa-file-circle-exclamation"></i> Vulnerable   </span>
-                1 match
-            </p>
-        </div>
-    </div>
-    <div class="SearchSECO__ListObject__MatchList SearchSECO__ArrowTarget" hidden>
-        
-        
-<div class="SearchSECO__Match">
-    <div class="SearchSECO__Match__Header">
-        <h2>parseInput (parse.cpp:33)</h2>
-        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability reported</span>
-    </div>
-    Authors: Rowin Schouten, Tjibbe Bolhuis
-    <br>
-    <br>
-    <h3>Matches your parseInput (searchseco.ts:110)</h3>
-    Author: Quinn Donkers
-    
-        <br>
-        <br>
-        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability 123 reported: <a href="https://www.url-of-vulnerability.com">https://www.url-of-vulnerability.com</a></span> 
-    
-</div>
-        
-    </div>
-</div>
-        
-        <div class="SearchSECO__ListObject SearchSECO__ArrowOwner">
-    <div class="SearchSECO__ListObject__Header">
-        <div class="SearchSECO__ListObject__Header__Start">
-            <h1>
-                <i class="fa-solid fa-angle-right" onClick="searchSecoClickArrow(event)"></i>TrustSECO
-            </h1>
-            <p>
-                <span><i class="fa-solid fa-file-circle-exclamation"></i> Vulnerable   </span>
-                1 match
-            </p>
-        </div>
-    </div>
-    <div class="SearchSECO__ListObject__MatchList SearchSECO__ArrowTarget" hidden>
-        
-        
-<div class="SearchSECO__Match">
-    <div class="SearchSECO__Match__Header">
-        <h2>Parse (parser.cs:39)</h2>
-        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability reported</span>
-    </div>
-    Authors: Bram Lankhorst, Valia Bykova
-    <br>
-    <br>
-    <h3>Matches your parseInput (searchseco.ts:110)</h3>
-    Author: Quinn Donkers
-    
-        <br>
-        <br>
-        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability 246 reported: <a href="https://www.url-of-vulnerability.com">https://www.url-of-vulnerability.com</a></span> 
-    
-</div>
-        
-    </div>
-</div>
-        
-        <div class="SearchSECO__ListObject SearchSECO__ArrowOwner">
-    <div class="SearchSECO__ListObject__Header">
-        <div class="SearchSECO__ListObject__Header__Start">
-            <h1>
-                <i class="fa-solid fa-angle-right" onClick="searchSecoClickArrow(event)"></i>searchseco-output-parser
-            </h1>
-            <p>
-                <span><i class="fa-solid fa-file-circle-exclamation"></i> Vulnerable   </span>
-                1 match
-            </p>
-        </div>
-    </div>
-    <div class="SearchSECO__ListObject__MatchList SearchSECO__ArrowTarget" hidden>
-        
-        
-<div class="SearchSECO__Match">
-    <div class="SearchSECO__Match__Header">
-        <h2>getInfo (parseOutput.js:88)</h2>
-        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability reported</span>
-    </div>
-    Authors: Alina Aydin, Jarno Hendriksen
-    <br>
-    <br>
-    <h3>Matches your getMethodInfo (searchseco.ts:180)</h3>
-    Author: Bart Hageman
-    
-        <br>
-        <br>
-        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability 234 reported: <a href="https://www.url-of-vulnerability.com">https://www.url-of-vulnerability.com</a></span> 
-    
-</div>
-        
-    </div>
-</div>
-        
-    </div>
-</div>
-
-<style>
-    .SearchSECO {
-        width: 100%;
-        height: 70%;
-        -webkit-mask-image: linear-gradient( to bottom, black 90%, transparent 100% );
-        mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
-        overflow: hidden scroll;
-        word-break: break-word;
-        padding: 16px;
-    }
-    .SearchSECO--HideNonVulnerable .SearchSECO--NotVulnerable {
-        display: none;
-    }
-
-    .SearchSECO__Nav {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        margin-left: 1%;
-    }
-    .SearchSECO__Nav > * {
-        margin-right: 0.6vw;
-        font-size: 1vw;
-    }
-    .SearchSECO__Nav button {
-        padding: 0.5vw;
-        border: 1px solid #779C7E;
-        background: transparent;
-        border-radius: 8px;
-        color: #D9F8DF;
-        cursor: pointer;
-        transition: all 300ms ease;
-    }
-    .SearchSECO__Nav button.SearchSECO__Nav__Button--Active {
-        background: #D9F8DF;
-        color: #0C281E;
-        border: 1px solid #D9F8DF;
-
-    }
-    .SearchSECO__Nav input {
-        width: 1.15vw;
-        height: 1.15vw;
-    }
-    .SearchSECO__Nav label {
-        color: #D9F8DF;
-        font-size: 0.8vw;
-        margin-left: 0.4vw;
-    }
-
-    .SearchSECO__List {
-        width: 98%;
-        margin: 1%;
-    }
-    .SearchSECO__List h1 {
-        font-size: 1.7vw;
-    }
-
-    .SearchSECO__ListObject__Header {
-        color: #D9F8DF;
-        font-size: 0.8rem;
-        /* background-color: #47715A; */
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        padding: 8px;
-        padding-left: calc(1.8vw + 5px);
-        margin-top: 5px;
-        margin-bottom: 5px;
-    }
-    .SearchSECO__ListObject__Header__Start {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-    }
-    .SearchSECO__ListObject__Header h1 {
-        font-size: 1.1rem;
-    }
-    .SearchSECO__ListObject__Header p, .SearchSECO__ListObject__Header h1 {
-        margin: 0;
-    }
-    .SearchSECO__ListObject__Header h1 i {
-        font-size: 1.5vw;
-        width: 1.8vw;
-        margin-left: -1.8vw;
-        text-align: center;
-    }
-    .SearchSECO__ListObject__Header h1 i:hover {
-        color: #b8d7cc;
-        cursor: pointer;
-    }
-    .SearchSECO__ListObject__Header span {
-        margin-right: 1.5vw;
-        color: #fcec69;
-    }
-    .SearchSECO__ListObject__MatchList {
-        width: 95%;
-        margin-left: 5%;
-    }
-
-    .SearchSECO__Match {
-        color: #D9F8DF;
-        font-size: 0.7rem;
-        /* background-color: #47715A; */
-        border: 1px solid #779C7E;
-        border-radius: 7px;
-        padding: 12px;
-        margin-top: 5px;
-        margin-bottom: 5px;
-    }
-    .SearchSECO__Match span {
-        /* color: yellow; */
-        color: #fcec69;
-    }
-    .SearchSECO__Match__Header {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-    }
-    .SearchSECO__Match__Header h2 {
-        font-size: 1rem;
-        margin: 0;
-    }
-    .SearchSECO__Match h3 {
-        font-size: 0.9rem;
-        margin: 0;
-    }
-    .SearchSECO__Match a {
-        color: #D9F8DF; 
-    }
-</style>
-
-<script>
-    const searchseco = document.querySelector(".SearchSECO");
-    const searchsecoMethodsButton = document.getElementById("SearchSECO__MethodsButton");
-    const searchsecoProjectsButton = document.getElementById("SearchSECO__ProjectsButton");
-    const searchsecoMethodList = document.querySelector(".SearchSECO__MethodList");
-    const searchsecoProjectList = document.querySelector(".SearchSECO__ProjectList");
-
-    function searchsecoToggleShowVulnerabilities() {
-        searchseco.classList.toggle("SearchSECO--HideNonVulnerable");
-    }
-
-    function searchsecoShowMethods() {
-        searchsecoProjectList.hidden = true;
-        searchsecoMethodList.hidden = false;
-        
-        searchsecoProjectsButton.classList.remove("SearchSECO__Nav__Button--Active");
-        searchsecoMethodsButton.classList.add("SearchSECO__Nav__Button--Active");
-    }
-
-    function searchsecoShowProjects() {
-        searchsecoMethodList.hidden = true;
-        searchsecoProjectList.hidden = false;
-        
-        searchsecoMethodsButton.classList.remove("SearchSECO__Nav__Button--Active");
-        searchsecoProjectsButton.classList.add("SearchSECO__Nav__Button--Active");
-    }
-
-    function searchSecoClickArrow(event) {
-        event.target.classList.toggle("fa-angle-right");
-        event.target.classList.toggle("fa-angle-down");
-
-        let elem = event.target;
-        while (elem = elem.parentNode) {
-            if (elem.classList?.contains("SearchSECO__ArrowOwner")) {
-                let target = elem.querySelector(".SearchSECO__ArrowTarget");
-                target.hidden = !target.hidden;
-                break;
-            }
-        }
-    }
-</script>
 
     <div class="footer">  
     <button class="citationgraphBtn" onclick="location.href='citationgraph.html';">Citationsgraph View</button>
@@ -17306,6 +19310,13 @@ flex-direction: row;
     }    
 </style>
 
+
+<script>
+    if (document.querySelector(".CitationsContainer.LeftPaneError") !== null) {
+        document.querySelector(".citationgraphBtn").disabled = true;
+    };
+</script>
+
 </div>
 
 <style>
@@ -17348,27 +19359,28 @@ flex-direction: row;
         height: 2.5rem;
         margin: 0px -38px; 
     }
+
+    .LeftPaneError {
+        width: 92%;
+        margin: 4%;
+        word-wrap: break-word;
+        font-size: 1.5rem;
+        color: #779C7E;
+    }
 </style>
 
+ 
+
     
+
 <div class="RightPane">
     <div class="RightPaneContainer">
         <ul id="RightPaneNav">
-    <li class="RightPaneNav__Tab--Active" onClick="clickTab(this)" data-linked-class="Overview">
-        Overview
-    </li>
-    <li class="RightPaneNav__Tab--1Away" onClick="clickTab(this)" data-linked-class="FairtallyReport">
-        FAIRness
-    </li>
-    <li class="RightPaneNav__Tab--2Away" onClick="clickTab(this)" data-linked-class="ImpactScore">
-        Impact
-    </li>
-    <li class="RightPaneNav__Tab--3Away" onClick="clickTab(this)" data-linked-class="Quality">
-        Quality
-    </li>
-    <li class="RightPaneNav__Tab--4Away" onClick="clickTab(this)" data-linked-class="ImpactHistory">
-        Impact History
-    </li>
+    <li class="RightPaneNav__Tab--Active" onClick="clickTab(this)" data-linked-class="Overview">Overview</li>
+    <li class="RightPaneNav__Tab--1Away" onClick="clickTab(this)" data-linked-class="FairtallyReport">FAIRness</li>
+    <li class="RightPaneNav__Tab--2Away" onClick="clickTab(this)" data-linked-class="ImpactScore">Impact</li>
+    <li class="RightPaneNav__Tab--3Away" onClick="clickTab(this)" data-linked-class="Quality">Quality</li>
+    <li class="RightPaneNav__Tab--4Away" onClick="clickTab(this)" data-linked-class="ImpactHistory">Impact History</li>
 </ul>
 
 
@@ -17411,19 +19423,19 @@ flex-direction: row;
     transition: all 150ms ease;
 }
 #RightPaneNav li:nth-child(1) {
-    z-index: 4;
+    z-index: 5;
 }
 #RightPaneNav li:nth-child(2) {
-    z-index: 3;
+    z-index: 4;
 }
 #RightPaneNav li:nth-child(3) {
-    z-index: 2;
+    z-index: 3;
 }
 #RightPaneNav li:nth-child(4) {
-    z-index: 1;
+    z-index: 2;
 }
 #RightPaneNav li:nth-child(5) {
-    z-index: 0;
+    z-index: 1;
 }
 
 #RightPaneNav .RightPaneNav__Tab--Active {
@@ -17463,6 +19475,20 @@ flex-direction: row;
 </style>
 
 <script>
+    
+    window.addEventListener("load", () => {
+        for (const tab of document.getElementById("RightPaneNav").getElementsByTagName("li")) {
+            if (document.querySelector("." + tab.dataset.linkedClass).classList.contains("RightPaneError")) {
+                const textNode = tab.childNodes.item(0);
+                textNode.textContent = " " + textNode.textContent;
+
+                const icon = document.createElement("i");
+                icon.classList.add("fa-solid", "fa-triangle-exclamation");
+                tab.prepend(icon);
+            }
+        }
+    });
+
     function clickTab(tab) {
         const activeTab = document.querySelector(".RightPaneNav__Tab--Active");
 
@@ -17505,7 +19531,7 @@ flex-direction: row;
         <div class="Repository__Info__Top">
             <div class="Repository__Info">
                 <h3>Repository title</h3>
-                <h2 class="Repository__Data">FAIRSECO</h2>
+                <h2 class="Repository__Data">FairSECO</h2>
             </div>
             <div class="Repository__Info">
                 <h3>Repository owner</h3>
@@ -17513,27 +19539,27 @@ flex-direction: row;
             </div>
             <div class="Repository__Info">
                 <h3>Date of issue</h3>
-                <h2 class="Repository__Data">22 dec 2022</h2>
+                <h2 class="Repository__Data">25/1/2023</h2>
             </div>
         </div>
         <div class="Repository__Info__Left">
             <div class="Repository__Info">
                 <h3>Top contributors</h3>
-                <h2 class="Repository__Data Repository__Contributors"><p>RageRaptor</p><p>Tjibbe75</p></h2>
+                <h2 class="Repository__Data Repository__Contributors"><p>RageRaptor</p><p>QDUNI</p><p>rowins</p></h2>
             </div>
         </div>
         <div class="Repository__Info__Right">
             <div class="Repository__Info">
                 <h3>Repository stars</h3>
-                <h2 class="Repository__Data">3100<i class="fa-solid fa-star"></i></h2>
+                <h2 class="Repository__Data">2<i class="fa-solid fa-star"></i></h2>
             </div>
             <div class="Repository__Info">
                 <h3>Repository watchers</h3>
-                <h2 class="Repository__Data">1600<i class="fa-solid fa-eye"></i></h2>
+                <h2 class="Repository__Data">0<i class="fa-solid fa-eye"></i></h2>
             </div>
             <div class="Repository__Info">
-                <h3>Repository Forks</h3>
-                <h2 class="Repository__Data">25<i class="fa-solid fa-code-fork"></i></h2>
+                <h3>Repository forks</h3>
+                <h2 class="Repository__Data">0<i class="fa-solid fa-code-fork"></i></h2>
             </div>
         </div>
     </div>
@@ -17541,19 +19567,19 @@ flex-direction: row;
     <div class="Meta-data__Row">
         <div class="Meta-data">
             <p>Times cited</p>
-            <div class = Meta-data__Data><p>123</p></div>
+            <div class = Meta-data__Data><p>1157</p></div>
         </div>
         <div class="Meta-data">
-            <p>Fairness</p>
-            <div class = Meta-data__Data><p>5/5</p></div>
+            <p>FAIRness</p>
+            <div class = Meta-data__Data><p>3/5</p></div>
         </div>
         <div class="Meta-data">
-            <p>Methods reused in other projects</p>
-            <div class = Meta-data__Data><p>20</p></div>
+            <p>Methods matching those in other projects</p>
+            <div class = Meta-data__Data><p>?</p></div>
         </div>
         <div class="Meta-data">
             <p>Quality Score</p>
-            <div class = Meta-data__Data><p>83/100</p></div>
+            <div class = Meta-data__Data><p>59/100</p></div>
         </div>
     </div>
 </div>
@@ -17673,21 +19699,19 @@ flex-direction: row;
 }
 </style>
 
-            
-
 
 <div class="FairtallyReport" hidden>
-    <h1 class="FairtallyReportTitle">FAIRness Report</h1>
+    <h1>FAIRness Report</h1>
     <div class="stars">
         <h2>
         
+            <i class="fa-solid fa-star"></i>
+        
+            <i class="fa-solid fa-star"></i>
+        
+            <i class="fa-solid fa-star"></i>
+        
          
-        
-            <i class="fa-regular fa-star"></i>
-        
-            <i class="fa-regular fa-star"></i>
-        
-            <i class="fa-regular fa-star"></i>
         
             <i class="fa-regular fa-star"></i>
         
@@ -17696,7 +19720,7 @@ flex-direction: row;
 
         </h2>
         <h2>
-        0 / 5
+        3 / 5
         </h2>
     </div>
         <div class="ChecklistContainer">
@@ -17708,7 +19732,7 @@ flex-direction: row;
                 <a href="https://fair-software.eu/recommendations/registry" target="_blank">Read more</a>
             </div>
             <div onClick="togglePanel(this)">
-                <p><i class="fa-solid fa-code-fork"></i>Repository is public?</p><p>No</p>
+                <p><i class="fa-solid fa-code-fork"></i>Repository is public?</p><p>Yes</p>
             </div>
             <div>
                 Whether your repository is public, so that your software is <b>A</b>ccessible.
@@ -17722,16 +19746,16 @@ flex-direction: row;
                 <a href="https://fair-software.eu/recommendations/checklist" target="_blank">Read more</a>
             </div>
             <div onClick="togglePanel(this)">
-                <p><i class="fa-solid fa-quote-right"></i>Citation file present?</p> <p>No</p>
+                <p><i class="fa-solid fa-quote-right"></i>Citation file present?</p> <p>Yes</p>
             </div>
             <div>
                 <p>Whether your repository contains a citation file, so that your software is <b>R</b>eusable.
                 <a href="https://fair-software.eu/recommendations/citation" target="_blank">Read more.</a>
-                 Need help creating a CFF File? <a href = "https://citation-file-format.github.io/cff-initializer-javascript/#/start">This tool can help.</a>
+                
                 </p>
             </div>
             <div onClick="togglePanel(this)">
-                <p><i class="fa-solid fa-copyright"></i>License file present?</p> <p>No</p>
+                <p><i class="fa-solid fa-copyright"></i>License file present?</p> <p>Yes</p>
             </div>
             <div>
                 Whether you have a license file in your repository, so that your software is correctly <b>R</b>eusable.
@@ -17750,6 +19774,8 @@ flex-direction: row;
     }
 
     .FairtallyReport h1 {
+        margin: 2%;
+        font-size: 2vw;
         color: #0C281E;
         text-align: center;
     }
@@ -17758,11 +19784,6 @@ flex-direction: row;
         text-align: center;
     }
     .FairtallyReport h4 {
-        font-weight: 400;
-        font-style: italic;
-        text-align: center;
-    }
-    .HowFairIsReport h4 {
         font-weight: 400;
         font-style: italic;
         text-align: center;
@@ -17832,128 +19853,14 @@ flex-direction: row;
         }
     }
 </script>
+ 
 
-            <style>
-    .CreateCffContainer {
-        width: 100%;
-        height: 100%;
-        display: none;
-    }
-
-    .Cffinit {
-        width: 96%;
-        height: 96%;
-        border: none;
-        margin: 2%;
-        border-radius: 16px;
-    }
-    
-    .CffinitPopup {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgb(0,0,0);
-        background-color: rgba(0,0,0,0.3);
-        border-radius: 16px;
-    }
-    
-    .CffinitPopup > div {
-        width: 80%;
-        margin: 20% auto;
-        padding: 3% 5%;
-        background-color: #fefefe;
-        border-radius: 100vw;
-        border: 1px solid #888;
-    }
-    .CffinitPopup > div > span {
-        color: #aaa;
-        float: right;
-        font-size: 2vw;
-        font-weight: bold;
-    }
-    .CffinitPopup > div > span:hover {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
-</style>
-
-<script>
-    function closeCreateCffTab(event) {
-        document.getElementById("CreateCffTab").remove();
-        document.querySelector(".CreateCffContainer").remove();
-        
-        let tab = document.getElementById("RightPaneNav").getElementsByTagName("li")[0];
-        showTab(tab);
-        
-        event.stopPropagation();
-    }
-    
-    function createCreateCffTab() {
-        let activeTab = getActiveTab();
-        hideTab(activeTab);
-        
-        let existingCffTab = document.getElementById("CreateCffTab");
-        if (existingCffTab) {
-            showTab(existingCffTab);
-            return;
-        }
-
-        const container = document.createElement("div");
-        container.classList.add("CreateCffContainer");
-        
-        const popup = document.createElement("div");
-        popup.classList.add("CffinitPopup");
-        popup.onclick = function () {
-            popup.style.display = "none";
-        };
-        const popupContent = document.createElement("div");
-        const popupClose = document.createElement("span");
-        popupClose.innerHTML = "&times;";
-        popupContent.appendChild(popupClose);
-        const popupText = document.createElement("p");
-        popupText.innerHTML = `Here you can fill out information about the project to generate a CITATION.cff file.
-            After downloading the file, you should put it in the root of the repository, so others
-            can easily cite your software correctly.`;
-        popupContent.appendChild(popupText);
-        popup.appendChild(popupContent);
-        
-        const frame = document.createElement("iframe");
-        frame.classList.add("Cffinit");
-        frame.setAttribute("src", "https://citation-file-format.github.io/cff-initializer-javascript/#/start");
-        frame.setAttribute("title", "Create CITATION.CFF file");
-        frame.setAttribute("allowFullscreen", "false");
-        
-        container.appendChild(popup);
-        container.appendChild(frame);
-        document.querySelector(".RightPaneWindow").appendChild(container);
-        
-        const tab = document.createElement("li");
-        tab.setAttribute("onClick", "clickTab(this)");
-        tab.setAttribute("data-linked-class", "CreateCffContainer");
-        tab.setAttribute("id", "CreateCffTab");
-        tab.appendChild(document.createTextNode("Create CFF "));
-        const tabClose = document.createElement("i");
-        tabClose.setAttribute("onClick", "closeCreateCffTab(event)");
-        tabClose.setAttribute("style", "margin-left: 0.7em; color: white");
-        tabClose.classList.add("fa-solid");
-        tabClose.classList.add("fa-x");
-        tab.appendChild(tabClose);
-        
-        document.getElementById("RightPaneNav").appendChild(tab);
-        showTab(tab);
-    }
-
-</script>
-
-            <div class="Quality" hidden>
+<div class="Quality" hidden>
     <h1>Quality Score</h1>
     <div class="QualityMeter">
         <div class="QualityMeter__Bar">
-            <div class="QualityMeter__Score">25</div>
-            <div class="QualityMeter__Text">bad
+            <div class="QualityMeter__Score">59</div>
+            <div class="QualityMeter__Text">good
             </div>
             <div class="QualityMeter__Numbers">
                 <span class="QualityMeter__Zero">0</span>
@@ -17972,7 +19879,7 @@ flex-direction: row;
                 </div>
                 <p>Percentage of FAIRness criteria met</p>
             </div>
-            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>0%</h2></div>
+            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>60%</h2></div>
         </div>
         <div class="QualityMetrics__ScoreMetric" id="QualityLicenses">
             <i class="fa-solid fa-copyright"></i>
@@ -17983,7 +19890,7 @@ flex-direction: row;
                 </div>
                 <p>Correct usage of licenses (no violations)</p>
             </div>
-            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>47%</h2></div>
+            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>27%</h2></div>
         </div>
         <div class="QualityMetrics__ScoreMetric" id="QualityMaintainability">
             <i class="fa-solid fa-wrench"></i>
@@ -17994,7 +19901,7 @@ flex-direction: row;
                 </div>
                 <p>Percentage of closed issues</p>
             </div>
-            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>0%</h2></div>
+            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>100%</h2></div>
         </div>
         <div class="QualityMetrics__ScoreMetric" id="QualityDocumentation">
             <i class="fa-solid fa-file-lines"></i>
@@ -18005,7 +19912,7 @@ flex-direction: row;
                 </div>
                 <p>Presence of a documentation directory and readme file</p>
             </div>
-            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>100%</h2></div>
+            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>50%</h2></div>
         </div>
         <p>
             <i class="fa-regular fa-clock"></i>
@@ -18073,10 +19980,10 @@ flex-direction: row;
     top: -1vw;
     left: 9vw;
     border-radius: 50%;
-    background-color: #3A9068;
+    background-color: #4BB784;
     transform: translate(
-        -6.717514421272201vw,
-        -6.7175144212722016vw
+        2.650415507372677vw,
+        -9.12279001393096vw
     );
 }
 .QualityMeter__Circle::before {
@@ -18198,28 +20105,27 @@ flex-direction: row;
 }
 
 #QualityFairness .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
-    width: 0%;
+    width: 60%;
     background-color: #60415F;
-    filter: brightness(1);
+    filter: brightness(1.75);
 }
 #QualityLicenses .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
-    width: 47%;
+    width: 27%;
     background-color: #60415F;
-    filter: brightness(1.5875);
+    filter: brightness(1.3375);
 }
 #QualityMaintainability .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
-    width: 0%;
-    background-color: #60415F;
-    filter: brightness(1);
-}
-#QualityDocumentation .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
     width: 100%;
     background-color: #60415F;
     filter: brightness(2.25);
 }
+#QualityDocumentation .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
+    width: 50%;
+    background-color: #60415F;
+    filter: brightness(1.625);
+}
 </style>
 
-            
 
 <div class="ImpactScore" hidden>
     <h1 class="Impact__Title">Impact</h1>
@@ -18229,7 +20135,7 @@ flex-direction: row;
             <div class="Impact__Row__Content">
                 <div class="Impact__Row__Block">
                     <p>Your project was cited</p>
-                    <div class="Row__Number">1136</div>
+                    <div class="Row__Number">1157</div>
                     <p>times</p>
                 </div>
                 <div class="Impact__Row__Block">
@@ -18239,8 +20145,10 @@ flex-direction: row;
                 </div>
                 <div class="Impact__Row__Block">
                     <p>The most notable of which was</p>
-                    <div class="Row__PaperTitle" style="font-size:0.8rem">Sources of marine debris for Seychelles and other remote islands in the western Indian Ocean.</div>
-                    <p>from Marine pollution bulletin</p>
+                    <div class="Row__PaperTitle" style="font-size:0.8rem">The physical oceanography of the transport of floating marine debris</div>
+                    
+                        <p>from IOP Publishing</p>
+                    
                 </div>
             </div>
         </div>
@@ -18253,14 +20161,14 @@ flex-direction: row;
             <h2>Projects and Reuse</h2>
             <div class="Impact__Row__Content">
                 <div class="Impact__Row__Block">
-                    <p>Your code made its way into</p>
-                    <div class="Row__Number">3</div>
+                    <p>Your code matches methods in</p>
+                    <div class="Row__Number">?</div>
                     <p>other projects</p>
                 </div>
                 <div class="Impact__Row__Block">
                     <p>The most notable of which was</p>
-                    <div class="Row__PaperTitle" style="font-size:1.75rem">SearchSECOController</div>
-                    <p>by Rowin Schouten, Tjibbe Bolhuis</p>
+                    <div class="Row__PaperTitle" style="font-size:2rem">missing data</div>
+                    
                 </div>
             </div>
         </div>
@@ -18379,7 +20287,6 @@ new Chart("Citations__RadarChart", config);
 }
 
 </style>
-            
 
 <div class="ImpactHistory" hidden>
     <h1>Impact History</h1>
@@ -18762,7 +20669,15 @@ new Chart("Citations__RadarChart", config);
     color: #0C281E;
 }
 
+.RightPaneError {
+    width: 92%;
+    margin: 4%;
+    word-wrap: break-word;
+    font-size: 1.5rem;
+    color: #0C281E;
+}
 </style>
+
 
     
     <style>

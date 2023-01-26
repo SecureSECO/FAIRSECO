@@ -80,11 +80,21 @@
     }
 </style>
 <script>
-window.addEventListener('load', 
-  function() { 
-  window.ActiveTab = document.querySelector(".ActiveTab")
-  window.ActiveIndex = 0
-  }, false);
+window.addEventListener('load', () => {
+    window.ActiveTab = document.querySelector(".ActiveTab");
+    window.ActiveIndex = 0;
+
+    <%# Handle missing pages %>
+    for (const tab of document.querySelectorAll(".LeftPaneNav .NavItem")) {
+        if (document.querySelector("." + tab.dataset.linkedClass).classList.contains("LeftPaneError")) {
+            const icon = tab.querySelector("i");
+            icon.classList.forEach((token) => {
+                icon.classList.remove(token);
+            });
+            icon.classList.add("fa-solid", "fa-triangle-exclamation");
+        }
+    }
+});
 
 function moveHighlightBlockTo(ele) {
     const padding = 20;
