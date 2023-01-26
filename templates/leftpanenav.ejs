@@ -121,6 +121,16 @@ function clickNav(ele) {
         return;
     }
 
+    const elementCSS = document.querySelector('.citationgraphBtn');
+
+    if (ele.lastElementChild.firstChild.nodeValue == "Citations"){
+        elementCSS.style.visibility = 'visible';
+        elementCSS.style.display = 'block';
+    } else{
+        elementCSS.style.visibility = 'hidden';
+        elementCSS.style.display = 'none';
+    }
+
     active.classList.remove("Active");
     ele.classList.add('Active');
     const padding = 20;
