@@ -27,7 +27,7 @@ jobs:
         needs: [RunTortellini, RunSBOM]
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/chechout@v3
+            - uses: actions/checkout@v3
             - uses: actions/checkout@v3
               with:
                 repository: QDUNI/FairSECO
