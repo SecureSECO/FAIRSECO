@@ -28,6 +28,9 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
+              with:
+                repository: QDUNI/FairSECO
+                path: FAIRSECO_Assets
             - uses: ./
               with:
                   myToken: ${{ secrets.GITHUB_TOKEN }}
