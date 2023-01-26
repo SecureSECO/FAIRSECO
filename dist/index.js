@@ -21646,19 +21646,19 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.WriteHTML = void 0;
 const fs = __importStar(__nccwpck_require__(7147));
 const ejs_1 = __importDefault(__nccwpck_require__(8431));
+const path_1 = __importDefault(__nccwpck_require__(1017));
 /**
  * Creates a webapp that reports the data gathered by FAIRSECO.
  *
  * @param data The gathered data.
  * @param filePath The path to which the HTML file will be written.
  */
-function WriteHTML(data, filePath) {
+function WriteHTML(data, filePath = "./.FAIRSECO/", templatePath = "./FAIRSECO_Assets/templates/") {
     return __awaiter(this, void 0, void 0, function* () {
-        const template = yield ejs_1.default.renderFile("./FAIRSECO_Assets/templates/index.ejs", { data });
-        const template2 = yield ejs_1.default.renderFile("./FAIRSECO_Assets/templates/citationgraph.ejs", { data });
-        const app = template.replace("{{node inserts the data here}}", JSON.stringify(data));
-        yield fs.promises.writeFile(filePath, app, "utf8");
-        yield fs.promises.writeFile("./.FAIRSECO/citationgraph.html", template2, "utf8");
+        const template = yield ejs_1.default.renderFile(path_1.default.join(templatePath, "index.ejs"), { data });
+        const template2 = yield ejs_1.default.renderFile(path_1.default.join(templatePath, "citationgraph.ejs"), { data });
+        yield fs.promises.writeFile(path_1.default.join(filePath, "dashboard.html"), template, "utf8");
+        yield fs.promises.writeFile(path_1.default.join(filePath, "citationgraph.html"), template2, "utf8");
     });
 }
 exports.WriteHTML = WriteHTML;
