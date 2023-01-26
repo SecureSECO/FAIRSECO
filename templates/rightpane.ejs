@@ -4,31 +4,7 @@ const fairtally = data.find((ele) => (ele.ModuleName === "fairtally"))?.Data[0];
 const quality = data.find((ele) => (ele.ModuleName === "QualityMetrics"))?.Data;
 const searchSECO = data.find((ele) => (ele.ModuleName === "SearchSECO"))?.Data;
 const paperData = data.find((ele) => (ele.ModuleName === "CitingPapers"))?.Data;
-const githubinfo = data.find((ele) => (ele.ModuleName=== "GithubInfo"))?.Data;   
-
-const history = [
-    {
-        date: "25/12/2022",
-        quality: 62,
-        citations: 901,
-        fairness: 3,
-        matches: 15,
-    },
-    {
-        date: "01/01/2023",
-        quality: 64,
-        citations: 925,
-        fairness: 3,
-        matches: 18,
-    },
-    {
-        date: "08/01/2023",
-        quality: 69,
-        citations: 1034,
-        fairness: 4,
-        matches: 23,
-    }
-];
+const history = data.find((ele) => (ele.ModuleName === "History"))?.Data;
 %>
 
 <div class="RightPane">
@@ -47,6 +23,11 @@ const history = [
 </div>
 
 <style>
+.Overview {
+    height: 100%;
+    overflow-y: auto;
+}
+
 .RightPane{
     display: flex;
     justify-content: center;

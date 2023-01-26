@@ -153,7 +153,7 @@ export async function getCitationPapers(paperID: string): Promise<Paper[]> {
                 pmcid,
                 year,
                 "OpenAlex",
-                [],
+                authors,
                 fields,
                 journal,
                 url,

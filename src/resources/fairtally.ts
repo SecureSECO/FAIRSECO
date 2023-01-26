@@ -33,9 +33,9 @@ export interface FairtallyOutput {
  * and gives the checklist of FAIRness criteria.
  * 
  * @param ghInfo Information about the GitHub repository.
- * @returns The result object from fairtally.
+ * @returns The result objects from fairtally.
  */
-export async function runModule(ghInfo: GitHubInfo): Promise<FairtallyOutput> {
+export async function runModule(ghInfo: GitHubInfo): Promise<FairtallyOutput[]> {
     const cmd = "docker";
     const args = [
         "run",

@@ -8,6 +8,7 @@
 import * as fs from "fs";
 import { ReturnObject } from "./getdata";
 import ejs from "ejs";
+import path from 'path';
 
 /**
  * Creates a webapp that reports the data gathered by FAIRSECO.
@@ -17,15 +18,11 @@ import ejs from "ejs";
  */
 export async function WriteHTML(
     data: ReturnObject[],
-    filePath: string
+    filePath: string = "./.FAIRSECO/",
+    templatePath: string = "./FAIRSECO_Assets/templates/"
 ): Promise<void> {
-    const template = await ejs.renderFile("./templates/index.ejs", { data });
-    const template2 = await ejs.renderFile("./templates/citationgraph.ejs", { data });
-    const app = template.replace(
-        "{{node inserts the data here}}",
-        JSON.stringify(data)
-    );
-
-    await fs.promises.writeFile(filePath, app, "utf8");
-    await fs.promises.writeFile("./.FAIRSECO/citationgraph.html", template2, "utf8");
+    const template = await ejs.renderFile(path.join(templatePath, "index.ejs"), { data });
+    const template2 = await ejs.renderFile(path.join(templatePath, "citationgraph.ejs"), { data });
+    await fs.promises.writeFile(path.join(filePath, "dashboard.html"), template, "utf8");
+    await fs.promises.writeFile(path.join(filePath, "citationgraph.html"), template2, "utf8");
 }
