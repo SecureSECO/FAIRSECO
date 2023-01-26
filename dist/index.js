@@ -19300,7 +19300,7 @@ function createReport(result) {
 function generateHTML(result) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            yield (0, webapp_1.WriteHTML)(result, "./.FAIRSECO/dashboard.html");
+            yield (0, webapp_1.WriteHTML)(result, "./.FAIRSECO/");
             (0, log_1.LogMessage)("Successfully wrote HTML file to dir.", log_1.ErrorLevel.info);
         }
         catch (err) {
