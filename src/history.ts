@@ -27,7 +27,7 @@ export interface HistoryData {
 /**
  * Gets history data and updates the history file with new data.
  * - If the history file can not be read, the history is reset.
- * - If the last entry in the history has the current date, it will be overwritten with the new data.
+ * - If the last entry in the history has the current date, it will be updated with the new data.
  * 
  * @param filePath The path to read history from and write history to.
  * @param result The data gathered by FAIRSECO.
@@ -69,17 +69,35 @@ export function getHistoryData(filePath: string, result: ReturnObject[]): Histor
         }
     }
 
-    // Read the history file
-    const historyData = readHistoryFile(filePath, date);
-
-    // Append new data to the history
-    historyData.push({
+    // New data object
+    const newData = {
         date,
         quality,
         citations,
         fairness,
         matches
-    });
+    }
+
+    // Read the history file
+    const historyData = readHistoryFile(filePath);
+
+    // Check if the last entry is of the current date.
+    // If it is, update it with the new data.
+    // Otherwise, add a new entry.
+    if (historyData.length >= 1 && historyData[historyData.length - 1].date === date) {
+        // Update the last entry
+        const lastEntry = historyData[historyData.length - 1];
+        Object.assign(lastEntry, newData);
+    } else {
+        // Append new data to the history
+        historyData.push({
+            date,
+            quality,
+            citations,
+            fairness,
+            matches
+        });
+    }
 
     // Write new history to the history file
     try {
@@ -91,7 +109,7 @@ export function getHistoryData(filePath: string, result: ReturnObject[]): Histor
     return historyData;
 }
 
-function readHistoryFile(filePath: string, date: string): HistoryData[] {
+function readHistoryFile(filePath: string): HistoryData[] {
     // Get the history data
     let historyData: HistoryData[] = [];
     try {
@@ -118,13 +136,6 @@ function readHistoryFile(filePath: string, date: string): HistoryData[] {
         } else {
             // Error reading history file
             LogMessage("Failed to read FAIRSECO history file (history will be reset!):\n" + (error.message as string), ErrorLevel.warn);
-        }
-    }
-
-    // Clear the last entry from the history if its date matches the current date.
-    if (historyData.length >= 1) {
-        if (historyData[historyData.length - 1].date === date) {
-            historyData.pop();
         }
     }
 
