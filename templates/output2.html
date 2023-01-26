@@ -1,0 +1,863 @@
+<html>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,700;1,7..72,400&display=swap');
+
+        body{
+            margin: 0px;
+        }
+
+    </style>
+    <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'> -->
+    <!-- <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'> -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300;0,7..72,400;0,7..72,700;1,7..72,300;1,7..72,400;1,7..72,700&display=swap" rel="stylesheet"> 
+    <script src="https://kit.fontawesome.com/69be2ea766.js" crossorigin="anonymous"></script>
+    <!-- <script src="https://kit.fontawesome.com/db5b01b4db.js" crossorigin="anonymous"></script> -->
+    <!-- <script src="https://code.jquery.com/jquery-3.5.0.js"></script> -->
+    <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->
+    <title>FairSECO</title>
+    <style>
+    * {
+        box-sizing: border-box;
+        font-family: "Literata", "Serif";
+    }
+</style>
+
+<script
+src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+</script>
+    <!--  -->
+</head>
+
+
+    <body>
+         <div class="LeftPane">
+    <div class="Branding">
+        <h1 class="Name"><svg class="Logo" width="127" height="131" viewBox="0 0 127 131" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="63.2556" cy="114.967" r="7.61111" fill="#D8F8E0"/>
+<circle cx="63.2556" cy="26.6778" r="7.61111" fill="#D8F8E0"/>
+<path d="M58.6892 28.2H67.8225L66.5447 33.3115C66.3834 33.9566 66.3524 34.6273 66.4535 35.2845L69.1108 52.5572C69.2659 53.5649 69.2659 54.5905 69.1108 55.5983L66.544 72.2828C66.3826 73.332 66.3893 74.4002 66.5638 75.4473L69.0583 90.4147C69.2479 91.5518 69.2393 92.7132 69.0331 93.8475L66.5295 107.617C66.3791 108.444 66.4396 109.296 66.7054 110.093L67.8225 113.444H58.6892L59.8064 110.093C60.0721 109.296 60.1326 108.444 59.9823 107.617L57.4787 93.8475C57.2724 92.7132 57.2639 91.5518 57.4534 90.4147L59.948 75.4473C60.1225 74.4002 60.1292 73.332 59.9678 72.2828L57.4009 55.5983C57.2459 54.5905 57.2459 53.5649 57.4009 52.5572L60.0583 35.2845C60.1594 34.6273 60.1284 33.9566 59.9671 33.3115L58.6892 28.2Z" fill="#D8F8E0"/>
+<path d="M63.0767 1.15782C63.1505 1.01041 63.3608 1.01041 63.4345 1.15782L67.1453 8.57933C67.5867 9.46224 67.757 10.4561 67.6345 11.4356L66.3001 22.1112H60.2112L58.8767 11.4356C58.7543 10.4561 58.9245 9.46224 59.366 8.57933L63.0767 1.15782Z" fill="#D8F8E0"/>
+<path d="M25 124.816C25 121.819 27.6182 119.495 30.5939 119.851L43.9816 121.452C44.4974 121.514 45.0196 121.495 45.5295 121.396L62.046 118.185C62.6761 118.063 63.3239 118.063 63.954 118.185L80.4705 121.396C80.9804 121.495 81.5026 121.514 82.0184 121.452L95.4061 119.851C98.3818 119.495 101 121.819 101 124.816V126C101 128.761 98.7614 131 96 131H30C27.2386 131 25 128.761 25 126V124.816Z" fill="#D8F8E0"/>
+<path d="M68.2114 21.9394L73.9234 20.4583C74.183 20.391 74.4589 20.4308 74.6889 20.5688L81.3168 24.5456C81.6886 24.7687 82.1618 24.7268 82.4885 24.4419L86.7683 20.7101C87.5944 19.9898 88.6022 19.5095 89.682 19.3214L92.087 18.9026C92.427 18.8434 92.7713 18.8136 93.1164 18.8136L96.5862 18.8136C96.9706 18.8136 97.3542 18.8505 97.7315 18.9239L101.255 19.6089L107.82 21.8593L115.431 24.9198L121.52 26.426L123.852 27.0053C124.325 27.1229 124.811 27.1823 125.299 27.1823L126.815 27.1823L124.945 28.3162C123.718 29.0609 122.264 29.3407 120.847 29.1046L118.476 28.7094L114.374 28.0257C114.065 27.9741 113.76 27.8985 113.463 27.7994L109.343 26.426L104.776 24.9038L99.1648 23.501C98.8475 23.4217 98.5217 23.3816 98.1946 23.3816L94.4145 23.3816C93.23 23.3816 92.0719 23.7322 91.0863 24.3893L88.5299 26.0935C88.1983 26.3146 87.8895 26.5682 87.6082 26.8505L82.5006 31.9758C82.1764 32.3012 81.6722 32.3638 81.2782 32.1277L74.6853 28.1763C74.4579 28.04 74.1858 27.9996 73.9287 28.0639L68.2413 29.4857L68.2114 21.9394Z" fill="#D8F8E0"/>
+<path d="M125.533 76.7556C125.533 85.1626 117.355 91.9778 107.267 91.9778C97.1783 91.9778 89 85.1626 89 76.7556C107.267 76.757 97.1783 76.7557 107.267 76.7557C117.355 76.7557 112.248 76.7557 125.533 76.7556Z" fill="#D8F8E0"/>
+<path d="M107.267 25L125.533 76.7556H89L107.267 25Z" fill="#D8F8E0"/>
+<path d="M107.267 26.5222L122.489 76.7556H92.0444L107.267 26.5222Z" fill="#2F4D40"/>
+<path d="M58.7883 21.9394L53.0672 20.4581C52.8078 20.3909 52.5324 20.4306 52.3025 20.5683L45.6629 24.5465C45.2914 24.7691 44.8189 24.7273 44.4923 24.4429L40.2031 20.7082C39.3771 19.9891 38.3702 19.5097 37.2912 19.3221L34.8776 18.9023C34.5382 18.8433 34.1942 18.8136 33.8497 18.8136L30.3719 18.8136C29.988 18.8136 29.605 18.8504 29.2281 18.9236L25.6986 19.6089L19.1235 21.8593L11.5017 24.9198L5.40422 26.426L3.0674 27.0057C2.59474 27.123 2.10956 27.1823 1.62258 27.1823L0.102363 27.1823L1.97883 28.319C3.20545 29.062 4.65767 29.341 6.07238 29.1056L8.45295 28.7094L12.5622 28.0255C12.871 27.9741 13.1752 27.8986 13.4722 27.7998L17.5992 26.426L22.1723 24.9038L27.7926 23.5007C28.1095 23.4216 28.4349 23.3816 28.7615 23.3816L32.553 23.3816C33.7362 23.3816 34.8929 23.7314 35.8778 24.387L38.4418 26.094C38.7735 26.3148 39.0823 26.5681 39.3638 26.8501L44.4801 31.977C44.8042 32.3018 45.3078 32.3643 45.7015 32.1286L52.3061 28.1758C52.5333 28.0399 52.8051 27.9995 53.0619 28.0636L58.7583 29.4857L58.7883 21.9394Z" fill="#D8F8E0"/>
+<path d="M1 77C1 85.2843 9.28273 92 19.5 92C29.7173 92 38 85.2843 38 77C19.5 77.0013 29.7173 77.0001 19.5 77.0001C9.28273 77.0001 14.4545 77.0001 1 77Z" fill="#D8F8E0"/>
+<path d="M19.5 25L1 77H38L19.5 25Z" fill="#D8F8E0"/>
+<path d="M19.5 27L4 77H35L19.5 27Z" fill="#2F4D40"/>
+</svg>
+</i>FAIRSECO</h1>
+        <h2 class="Tagline">FAIR is fair.</h2>
+    </div>
+    <div class="Buttons">
+        <button class="citationgraphBtn" id="backBtn" onclick="location.href='dashboard.html';"><i class="arrow left"></i></button>
+        <button class="citationgraphBtn" id="helpBtn"><i class="questionmark">&#63</i></button>
+    </div>
+    <div class="Citationgraph">
+        <h1 class="Title">Citations Graph View</h1>
+    </div> 
+    <div class="border"></div>
+    <div class="HelpInfo">
+        <h1>Welcome.</h1>
+        This graph shows an overview of all the papers citing this project (small nodes) and their corresponding fields (large nodes).
+        <br>The size of the paper node depends on how often the paper is cited. 
+        The more citations, the larger the node.
+        <h2>Interaction</h2>
+        You can zoom in and out using your mouse wheel
+        <h3>Nodes</h3>
+        <ul>
+            <li><b>Hover</b> over a paper to highlight the fields it is connected with.<br> A small card wil appear showing some information about the paper </li>
+            <li><b>Click</b> on a paper node to show more information in this dark green section (left part of the screen)</li>
+        </ul>
+        <h3>Fields</h3>
+        <ul>            
+            <li><b>Click</b> on a field to show all the papers connected to this field in this dark green section.<br> You can select multiple fields at the same time, this will then show the papers that are connected to all these fields</li>
+
+        </ul>
+        If you wish to see this information again later, press the question mark button at the top of the green section, or reload the page.
+        <br> Press the back (left arrow) button to go back to the main FAIRSECO page.
+    </div>
+    <div class="CitationgraphInfo">
+        
+        <div class="CitationsContainer ActiveTab">
+</div>
+<style>
+    .CitationsContainer {
+        max-height: 99%;
+        -webkit-mask-image: linear-gradient(
+            to bottom,
+            black 90%,
+            transparent 100%
+        );
+        mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+        animation: fade-in 600ms ease-out 1 forwards;
+        width: 100%;
+        padding: 8px;
+    }
+    .CitationsContainer h3{
+        text-align: left;
+        font-size: 1.2rem;            
+        color: #779C7E;
+        font-family: 'Literata', serif ;
+    }
+
+    .Citation h2{
+        color: #D9F8DF;
+        font-family: 'Literata', serif ;
+    }
+
+    .Citation{
+        height: 99%;
+    }
+    
+    .listedPapersContainer{
+        height: 75%;
+        overflow: auto;
+    }
+
+    @media screen and (min-width: 1000px) {
+        .Citation td {
+            max-width: 420px;
+        }
+        .info2 h1 {
+            font-size: 1rem;
+        }
+    }
+
+    @media screen and (min-width: 2500px) {
+        .Citation td {
+            max-width: 700px;
+        }
+        .info2 h1 {
+            font-size: 1.2rem;
+        }
+    }
+</style>
+
+    </div>
+</div>
+<script>
+    const backbutton = document.getElementById("helpBtn");
+    backbutton.addEventListener("click",showhelppage);
+
+    function showhelppage(){
+        //delete selectedpapers from html
+        d3.select("body").select(".LeftPane").select(".CitationgraphInfo").select(".CitationsContainer").selectAll(".Citation").remove();
+        //display help page
+        d3.select("body").select(".LeftPane").select(".HelpInfo").style("display","");
+    }
+</script>
+<style>
+    .Logo {
+        height: 2.5rem;
+        margin: 0px -38px; 
+    }
+
+    hr{
+        border-top: #0c281e 2px solid;
+        color: #779C7E;
+    }
+
+    .arrow {
+    border: solid;
+    border-width: 0 5px 5px 0;
+    display: inline-block;
+    padding: 5px;
+    }
+
+    .left {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+    }
+
+    .questionmark{
+        display: inline-block;
+        padding: 1px;
+        font-weight: 900;
+        font-size: 1.3rem;
+    }
+
+    .LeftPane {
+        width: 40vw;
+        height: 100vh;
+        padding: 0;
+        margin: 0;
+        background: rgba(15, 45, 30, 0.82);
+        backdrop-filter: blur(30px);
+        overflow: hidden;
+        z-index: 1;
+        position: absolute;
+    }
+
+    .LeftPane .Branding {
+        display: flex;
+        flex-direction: row;
+        justify-content: start;
+        align-items: center;
+        padding: 8px;
+    }
+
+    .LeftPane .Branding .Name {
+        color: #d9f8df;
+        margin: 0 8px;
+    }
+
+    .LeftPane .Branding .Tagline {
+        align-self: center;
+        color: #88bf93;
+        font-size: 0.8rem;
+        position: relative;
+        top: 8px;
+        font-style: italic;
+        
+    }
+
+    .LeftPane .Buttons{
+        padding:8px;
+        color: #3A5347;
+        margin-left: 10px;
+    }
+
+    .LeftPane .Buttons .citationgraphBtn{
+        border-radius: 50%;
+        width: 33px;
+        height: 33px;
+        background-color: #779C7E;
+        border: none;
+        color: #3A5347;
+    }
+
+    .LeftPane .Buttons .citationgraphBtn:hover{
+        background-color: #d9f8df;
+    }
+    
+
+    .LeftPane .Citationgraph {
+        padding: 8px;
+    }
+
+    .LeftPane .border {
+        padding: 8px;
+        border-bottom: 3px #779C7E solid;
+        margin-left: 40px;
+        margin-right: 40px;
+        margin-bottom: 10px;
+    }
+
+    .LeftPane .Citationgraph .Title {
+        text-align: center;
+        color: #d9f8df;
+        margin: 0 8px;
+        font-size: 2rem;
+    }
+    
+    .LeftPane .CitationgraphInfo {
+        display: flex;
+        flex-direction: row;
+        justify-content: start;
+        align-items: center;
+        padding: 8px;
+        margin-left: 30px;
+        margin-right: 30px;
+        height: 99%;
+    }
+
+    .LeftPane .HelpInfo {
+        text-align: left;
+        font-size: 1rem;            
+        color:  #d9f8df;
+        padding: 8px;
+        margin-left: 30px;
+        margin-right: 30px;
+        list-style-type: none;
+        display: "";
+        height: 70%;
+        overflow-y: auto;
+    }
+
+    .LeftPane .HelpInfo h1{
+        font-size: 1.4rem;
+        color: #D3ECDE;
+    }
+
+    .LeftPane .HelpInfo h2{
+        font-size: 1.2rem;
+        color: #D3ECDE;
+    }
+
+    .LeftPane .HelpInfo h3{
+        font-size: 1rem;
+        color: #D3ECDE;
+    }
+
+    .LeftPane a {
+        display:inline-flex;
+        margin-top: 10px;
+        background-color:#D9F8DF;
+        text-decoration-line: none;
+        padding: 10px;
+        text-align: left;
+        font-size: 1.3rem;
+        color:rgba(15, 45, 30, 0.82);
+        border-radius: 8px;
+    }
+
+    .listedPapersContainer h1{
+        font-size: 1.3rem;
+        color: #D3ECDE;
+        float: left;
+    }
+
+    .listedPaper {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-right: 20px;
+    }
+
+    .listedPaper h2{
+        font-size: 1.1rem;
+        color: #D3ECDE;
+        width: 30vw;
+        float: left;
+        margin-right: 50px;
+    }
+
+    .listedPaper h3{
+        font-size: 1.1rem;
+        color: #D3ECDE;
+        float: right;
+    }
+
+</style>
+
+         <style>
+    div.tooltip {
+        background-color: lightblue;
+    }
+    #mainContainer h2{
+    text-align: left;
+    font-size: 1.3rem;
+    color: #D9F8DF;
+    }
+
+    #mainContainer h3{
+        text-align: left;
+        font-size: 0.9rem;            
+        color: #0C281E;
+    }
+    #mainContainer {
+        text-align: center;
+        margin-left: 40vw;
+    }
+
+    /* SVG */
+    #svgchart {
+        background-color: #D3ECDE;
+    }
+
+    .node {
+        fill: #164434;
+        stroke: #D3ECDE;
+        stroke-width: 1px;
+    }
+
+    .links {
+        stroke: #538475;
+        stroke-width: 0.5px;
+    }
+    div.tooltip {
+        position: absolute;
+        text-align: left;
+        padding: 12px;
+        background: rgba(234,254,237, 0.55);
+        -webkit-backdrop-filter: blur(50px);
+        backdrop-filter: blur(50px);
+        font: 8px 'Literata', serif;
+        text-align: left;
+        font-weight: bold;
+        border-radius: 8px;
+        pointer-events: none; /* keep the mouseover when over the tooltip */
+        word-wrap: break-word;
+        max-width: 280px;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    }
+
+    .label {
+        color: white;
+        display: flex;
+        font: 7px "Literata", serif;
+        font-style: italic;
+        text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        width: 60px;
+        height: 60px;
+    }
+
+    #footer {
+    color: black;
+    text-align: center;
+    }
+    #footer a{
+        color: blue;
+    }
+</style>
+<div id="mainContainer"><svg id="svgChart"></svg></div>
+
+
+<script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+<script>
+    'use strict'
+class link {
+    source; // int
+    target; // int
+    constructor(source, target) {
+        this.source = source;
+        this.target = target;
+    }
+}
+
+class node {
+    name; // string
+    id; // int -- 0 = "Philosophy" 1 = "Art" 2 ="History" 3 = "Economics" 4 = "Geography" 5 = "Psychology"
+        //        6 = "Sociology" 7 ="Biology" 8 = "Chemistry" 9 = "Geology" 10 = "Physics" 11 = "Mathematics"
+        //        12 = "Computer science" 13 = "Business" 14 = "Engineering" 15 = "Environmental science" 16 = "Medicine" 17 = "Political science" 18 = "Materials science" 19... = [papers]
+    size; // int
+
+    constructor(name, id, size) {
+        this.name = name;
+        this.id = id;
+        this.size = size;
+    }
+}
+
+class starField {
+    nodes; // [node]
+    links; // [link]
+    fieldIndexMap; // Map<string, int>
+
+    constructor(citations) {
+        let nodes = [];
+        let links = [];
+        let fieldIndexMap = new Map();
+        for (let i = 0; i < citations.uniqueFields.length; i++) {
+            nodes.push(new node(citations.uniqueFields[i], i, 30));
+            fieldIndexMap.set(citations.uniqueFields[i], i);
+        }
+        for (let i = 0; i < citations.papers.length; i++) {
+            nodes.push(new node("", i + citations.uniqueFields.length, 6 + (citations.papers[i].numberOfCitations / citations.highestCitations) * 6));
+            citations.papers[i].fields.forEach(field => {
+                links.push(new link(i + citations.uniqueFields.length, fieldIndexMap.get(field)));
+            });
+        }
+        this.nodes = nodes;
+        this.links = links;
+        this.fieldIndexMap = fieldIndexMap;
+    }
+}
+
+function renderStarField() {
+    let input = {"papers":[{"title":"Sources of marine debris for Seychelles and other remote islands in the western Indian Ocean.","year":2023,"doi":"10.1016/j.marpolbul.2022.114497","pmid":"36646000","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"Marine pollution bulletin","url":"https://www.semanticscholar.org/paper/d264ab6cf3fc2cdc8f8c034533e0a4f2836ac4f5","numberOfCitations":0},{"title":"Oceanographic conditions of the continental slope and deep waters in Santos Basin: the SANSED cruise (winter 2019)","year":2023,"doi":"10.1590/2675-2824071.2206icas","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Geology","Geography","Environmental science"],"discipline":"Natural Sciences","journal":"SciELO","url":"https://www.scielo.br/j/ocr/a/8vBBJRYm8wchsMt46nVJfGk/?lang=en&format=pdf","numberOfCitations":0},{"title":"Robust estimates for the decadal evolution of Agulhas leakage from the 1960s to the 2010s","year":2022,"doi":"10.1038/s43247-022-00643-y","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science","Geology"],"discipline":"Applied Sciences","journal":"Springer Nature","url":"https://www.nature.com/articles/s43247-022-00643-y.pdf","numberOfCitations":0},{"title":"A Global Simulation of the Dynamo, Zonal Jets, and Vortices on Saturn","year":2022,"doi":"10.3847/1538-4357/ac9d94","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Physics"],"discipline":"Natural Sciences","journal":"IOP Publishing","url":"https://doi.org/10.3847/1538-4357/ac9d94","numberOfCitations":0},{"title":"Pathways and destinations of floating marine plastic debris from 10 major rivers in Java and Bali, Indonesia: A Lagrangian particle tracking perspective","year":2022,"doi":"10.1016/j.marpolbul.2022.114331","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science","Geography","Geology","Unknown"],"discipline":"Applied Sciences","journal":"Elsevier BV","url":"https://openalex.org/W4309567670","numberOfCitations":0},{"title":"Drift prediction of pyroclasts released through the volcanic activity of Fukutoku-Okanoba into the marine environment","year":2023,"doi":"10.1016/j.marpolbul.2022.114402","pmid":"36462416","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Geology","Environmental science"],"discipline":"Natural Sciences","journal":"Elsevier BV","url":"https://doi.org/10.1016/j.marpolbul.2022.114402","numberOfCitations":0},{"title":"Synthetic microplastic abundance and composition along a longitudinal gradient traversing the subtropical gyre in the North Atlantic Ocean","year":2022,"doi":"10.1016/j.marpolbul.2022.114371","pmid":"36423567","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science","Geology"],"discipline":"Applied Sciences","journal":"Elsevier BV","url":"https://doi.org/10.1016/j.marpolbul.2022.114371","numberOfCitations":0},{"title":"Effects of oceanography on North Pacific armorhead recruitment in the Emperor Seamounts","year":2022,"doi":"10.1111/fog.12612","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Geology","Environmental science"],"discipline":"Natural Sciences","journal":"Wiley-Blackwell","url":"https://openalex.org/W4309451665","numberOfCitations":0},{"title":"Exceptional freshening and cooling in the eastern subpolar North Atlantic caused by reduced Labrador Sea surface heat loss","year":2022,"doi":"10.5194/os-18-1507-2022","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Geology","Environmental science"],"discipline":"Natural Sciences","journal":"Copernicus Publications","url":"https://os.copernicus.org/articles/18/1507/2022/os-18-1507-2022.pdf","numberOfCitations":0},{"title":"Influence of Particle Size and Fragmentation on Large-Scale Microplastic Transport in the Mediterranean Sea","year":2022,"doi":"10.1021/acs.est.2c03363","pmid":"36270631","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"American Chemical Society","url":"https://openalex.org/W4307029492","numberOfCitations":1},{"title":"Biophysical larval dispersal models of observed bonefish (Albula vulpes) spawning events in Abaco, The Bahamas: An assessment of population connectivity and ocean dynamics","year":2022,"doi":"10.1371/journal.pone.0276528","pmid":"36264943","pmcid":"9584404","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Biology","Geography","Environmental science"],"discipline":"Natural Sciences","journal":"Public Library of Science","url":"https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0276528&type=printable","numberOfCitations":0},{"title":"Detecting the most effective cleanup locations using network theory to reduce marine plastic debris: a case study in the Galapagos Marine Reserve","year":2022,"doi":"10.5194/os-18-1477-2022","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science","Computer science","Geology"],"discipline":"Applied Sciences","journal":"Copernicus Publications","url":"https://os.copernicus.org/articles/18/1477/2022/os-18-1477-2022.pdf","numberOfCitations":0},{"title":"Major sources of North Atlantic Deep Water in the subpolar North Atlantic from Lagrangian analyses in an eddy-rich ocean model","year":2022,"doi":"10.5194/os-18-1431-2022","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Geology","Environmental science"],"discipline":"Natural Sciences","journal":"Copernicus Publications","url":null,"numberOfCitations":0},{"title":"Data Fusion for Connectivity Analysis between Ocean Regions","year":2022,"doi":"10.1109/escience55777.2022.00046","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"2022 IEEE 18th International Conference on e-Science (e-Science)","url":"https://zenodo.org/record/7152069/files/2022-10-07_eScience2022_Trahms.pdf","numberOfCitations":1},{"title":"Modelling of tuna around fish aggregating devices: the importance of ocean flow and prey","year":2022,"doi":"10.1101/2022.09.20.508652","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"bioRxiv","url":"https://dspace.library.uu.nl/bitstream/handle/1874/423890/1_s2.0_S0304380022002861_main.pdf?sequence=1&isAllowed=y","numberOfCitations":0},{"title":"Mesoscale oceanographic features drive divergent patterns in connectivity for co‐occurring estuarine portunid crabs","year":2022,"doi":"10.1111/fog.12608","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Biology","Geography","Environmental science"],"discipline":"Natural Sciences","journal":"Wiley-Blackwell","url":"https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/fog.12608","numberOfCitations":0},{"title":"Perceptual multivariate visualisation of volumetric Lagrangian fluid-flow processes","year":2022,"doi":"10.3389/fenvs.2022.941910","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Computer science","Geology","Environmental science"],"discipline":"Formal Sciences","journal":"Frontiers Media","url":"https://www.frontiersin.org/articles/10.3389/fenvs.2022.941910/pdf","numberOfCitations":0},{"title":"The Natal Bight Coastal Counter-Current: A modeling study","year":2022,"doi":"10.1016/j.csr.2022.104852","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Geology","Geography","Unknown"],"discipline":"Natural Sciences","journal":"Elsevier BV","url":"https://openalex.org/W4297359458","numberOfCitations":0},{"title":"The Plastic Pathfinder: A macroplastic transport and fate model for terrestrial environments","year":2022,"doi":"10.3389/fenvs.2022.979685","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science","Computer science"],"discipline":"Applied Sciences","journal":"Frontiers Media","url":"https://www.frontiersin.org/articles/10.3389/fenvs.2022.979685/pdf","numberOfCitations":1},{"title":"Hydrodynamic drivers of fine‐scale connectivity within a coral reef atoll","year":2022,"doi":"10.1002/lno.12198","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science","Geology","Geography"],"discipline":"Applied Sciences","journal":"Wiley-Blackwell","url":"https://zenodo.org/record/6866015/files/Metadata_Grimaldi_etal_LO.pdf","numberOfCitations":0},{"title":"Attribution of Plastic Sources Using Bayesian Inference: Application to River-Sourced Floating Plastic in the South Atlantic Ocean","year":2022,"doi":"10.3389/fmars.2022.925437","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science","Geology","Geography"],"discipline":"Applied Sciences","journal":"Frontiers Media","url":"https://www.frontiersin.org/articles/10.3389/fmars.2022.925437/pdf","numberOfCitations":0},{"title":"Climate-Change Refugia for the Bubblegum Coral Paragorgia arborea in the Northwest Atlantic","year":2022,"doi":"10.3389/fmars.2022.863693","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Geography","Environmental science"],"discipline":"Social Sciences","journal":"Frontiers Media","url":"https://www.frontiersin.org/articles/10.3389/fmars.2022.863693/pdf","numberOfCitations":0},{"title":"Investigating microscale patchiness of motile microbes under turbulence in a simulated convective mixed layer","year":2022,"doi":"10.1371/journal.pcbi.1010291","pmid":"35895753","pmcid":"9380958","database":"SemanticScholar","authors":[],"fields":["Environmental science","Physics"],"discipline":"Applied Sciences","journal":"PLoS Computational Biology","url":"https://journals.plos.org/ploscompbiol/article/file?id=10.1371/journal.pcbi.1010291&type=printable","numberOfCitations":0},{"title":"Individual-based modeling of shelled pteropods","year":2022,"doi":"10.1016/j.ecolmodel.2022.109944","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science","Biology"],"discipline":"Applied Sciences","journal":"Elsevier BV","url":"https://doi.org/10.1016/j.ecolmodel.2022.109944","numberOfCitations":0},{"title":"Biological Carbon Pump Sequestration Efficiency in the North Atlantic: A Leaky or a Long‐Term Sink?","year":2022,"doi":"10.1029/2021gb007286","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science","Geology","Chemistry"],"discipline":"Applied Sciences","journal":"Wiley-Blackwell","url":"http://nora.nerc.ac.uk/id/eprint/532745/1/Global%20Biogeochemical%20Cycles%20-%202022%20-%20Baker%20-%20Biological%20Carbon%20Pump%20Sequestration%20Efficiency%20in%20the%20North%20Atlantic%20%20A.pdf","numberOfCitations":1},{"title":"A new model-based coastal retention index (CORE) identifies bays as hotspots of retention, biological production and cumulative anthropogenic pressures","year":2022,"doi":"10.1016/j.ecss.2022.107909","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science","Geography"],"discipline":"Applied Sciences","journal":"Elsevier BV","url":"https://doi.org/10.1016/j.ecss.2022.107909","numberOfCitations":1},{"title":"Predictability of thermal fluctuations influences functional traits of a cosmopolitan marine diatom","year":2022,"doi":"10.1098/rspb.2021.2581","pmid":"35473374","pmcid":"9043731","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Biology","Environmental science"],"discipline":"Natural Sciences","journal":"Royal Society","url":"https://doi.org/10.1098/rspb.2021.2581","numberOfCitations":4},{"title":"Tracking a Rain-Induced Low-Salinity Pool in the South China Sea Using Satellite and Quasi-Lagrangian Field Observations","year":2022,"doi":"10.3390/rs14092030","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Geology","Environmental science"],"discipline":"Natural Sciences","journal":"MDPI","url":"https://www.mdpi.com/2072-4292/14/9/2030/pdf?version=1650706870","numberOfCitations":1},{"title":"A DNN Framework for Learning Lagrangian Drift With Uncertainty","year":2022,"doi":"10.48550/arxiv.2204.05891","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"ArXiv","url":"https://www.semanticscholar.org/paper/172af3186ae734eb08f40cf3120692f214722111","numberOfCitations":0},{"title":"Persistence and material coherence of a mesoscale ocean eddy","year":2022,"doi":"10.1103/physrevfluids.7.034501","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Geology","Physics","Environmental science"],"discipline":"Natural Sciences","journal":"American Physical Society","url":"http://arxiv.org/pdf/2111.08351","numberOfCitations":1},{"title":"Limited Lateral Transport Bias During Export of Sea Surface Temperature Proxy Carriers in the Mediterranean Sea","year":2022,"doi":"10.1029/2021gl096859","pmid":"35865999","pmcid":"9286692","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science","Geology","Geography"],"discipline":"Applied Sciences","journal":"American Geophysical Union","url":"https://dspace.library.uu.nl/bitstream/handle/1874/417690/Geophysical_Research_Letters_2022_Rice_Limited_Lateral_Transport_Bias_During_Export_of_Sea_Surface_Temperature_Proxy.pdf?sequence=1&isAllowed=y","numberOfCitations":1},{"title":"Simulating Lagrangian Subgrid‐Scale Dispersion on Neutral Surfaces in the Ocean","year":2022,"doi":"10.1029/2021ms002850","pmid":"35860619","pmcid":"9285416","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Mathematics","Physics","Environmental science"],"discipline":"Formal Sciences","journal":"Wiley-Blackwell","url":"https://dspace.library.uu.nl/bitstream/handle/1874/419199/J_Adv_Model_Earth_Syst_2022_Reijnders_Simulating_Lagrangian_Subgrid_Scale_Dispersion_on_Neutral_Surfaces_in_the_Ocean.pdf?sequence=1&isAllowed=y","numberOfCitations":3},{"title":"Identifying Marine Sources of Beached Plastics Through a Bayesian Framework: Application to Southwest Netherlands","year":2022,"doi":"10.1029/2021gl097214","pmid":"35860482","pmcid":"9285463","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science","Computer science","Geology"],"discipline":"Applied Sciences","journal":"American Geophysical Union","url":"https://onlinelibrary.wiley.com/doi/pdfdirect/10.1029/2021GL097214","numberOfCitations":4},{"title":"Transport Structure of the South Atlantic Ocean Derived From a High-Resolution Numerical Model and Observations","year":2022,"doi":"10.3389/fmars.2022.811398","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Geology","Environmental science"],"discipline":"Natural Sciences","journal":"Frontiers Media","url":"https://www.frontiersin.org/articles/10.3389/fmars.2022.811398/pdf","numberOfCitations":0},{"title":"Efficiently Simulating Lagrangian Particles in Large-Scale Ocean","year":2022,"doi":"","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"unknown journal","url":"https://www.semanticscholar.org/paper/8f75433a996c0baf7bb26c42c54b1c72f1866a4d","numberOfCitations":0},{"title":"The 2019 northeast Brazil oil spill: scenarios.","year":2022,"doi":"10.1590/0001-3765202220210391","pmid":"36074487","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"Anais da Academia Brasileira de Ciencias","url":"https://www.scielo.br/j/aabc/a/KJtdXzjnSt7DKQfNBQJMnqg/?lang=en&format=pdf","numberOfCitations":1},{"title":"Major sources of North Atlantic Deep Water in the subpolar North Atlantic from Lagrangian analyses in a high–resolution ocean model","year":2022,"doi":"","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"unknown journal","url":"https://www.semanticscholar.org/paper/7f99ec635b958ea7291e7da1e005d06d19157f42","numberOfCitations":0},{"title":"Human and ecosystem health in coastal systems","year":2022,"doi":"","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"unknown journal","url":"https://www.semanticscholar.org/paper/eb4da8c89e0a267b8e809e7859eb1b6ff2e124f2","numberOfCitations":1},{"title":"Life in the Fast Lane: Modeling the Fate of Glass Sponge Larvae in the Gulf Stream","year":2021,"doi":"10.3389/fmars.2021.701218","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Geography","Geology","Environmental science"],"discipline":"Social Sciences","journal":"Frontiers Media","url":"https://www.frontiersin.org/articles/10.3389/fmars.2021.701218/pdf","numberOfCitations":4},{"title":"Empirical Lagrangian parametrization for wind-driven mixing of buoyant particles at the ocean surface","year":2021,"doi":"10.5194/gmd-2021-195","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"Geoscientific Model Development","url":"https://gmd.copernicus.org/articles/15/1995/2022/gmd-15-1995-2022.pdf","numberOfCitations":8},{"title":"Advective pathways and transit times of the Red Sea Overflow Water in the Arabian Sea from Lagrangian simulations","year":2021,"doi":"10.1016/j.pocean.2021.102697","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Geology","Environmental science"],"discipline":"Natural Sciences","journal":"Elsevier BV","url":"https://doi.org/10.1016/j.pocean.2021.102697","numberOfCitations":2},{"title":"The Impact of Sea‐Ice Drift and Ocean Circulation on Dispersal of Toothfish Eggs and Juveniles in the Ross Gyre and Amundsen Sea","year":2021,"doi":"10.1029/2021jc017329","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science","Geology"],"discipline":"Applied Sciences","journal":"Wiley-Blackwell","url":"https://openalex.org/W3140145754","numberOfCitations":0},{"title":"A New Open Source Implementation of Lagrangian Filtering: A Method to Identify Internal Waves in High‐Resolution Simulations","year":2021,"doi":"10.1029/2021ms002616","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Computer science","Geology","Physics","Environmental science"],"discipline":"Formal Sciences","journal":"Wiley-Blackwell","url":"https://onlinelibrary.wiley.com/doi/pdfdirect/10.1029/2021MS002616","numberOfCitations":5},{"title":"Passive tracer advection in the equatorial Pacific region: statistics, correlations, and a model of fractional Brownian motion","year":2021,"doi":"10.5194/os-2021-94","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"Ocean Science Discussions","url":"https://os.copernicus.org/articles/18/307/2022/os-18-307-2022.pdf","numberOfCitations":0},{"title":"Modeling submerged biofouled microplastics and their vertical trajectories","year":2021,"doi":"10.5194/bg-2021-236","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"Biogeosciences Discussions","url":"https://bg.copernicus.org/articles/19/2211/2022/bg-19-2211-2022.pdf","numberOfCitations":7},{"title":"Using machine learning and beach cleanup data to explain litter quantities along the Dutch North Sea coast","year":2021,"doi":"10.5194/os-2021-83","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"Ocean Science","url":"https://os.copernicus.org/articles/18/269/2022/os-18-269-2022.pdf","numberOfCitations":4},{"title":"Interaction of an Upwelling Front with External Vortices: Impact on Cross-shore Particle Exchange","year":2021,"doi":"10.1134/s1560354721050063","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Physics","Geology","Environmental science"],"discipline":"Natural Sciences","journal":"Springer Science+Business Media","url":"https://openalex.org/W3206226750","numberOfCitations":0},{"title":"Investigating the internal structure of the Antarctic Ice Sheet: the utility of isochrones for spatio-temporal ice sheet model calibration","year":2021,"doi":"10.5194/egusphere-egu21-9446","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"The Cryosphere","url":"https://boris.unibe.ch/164883/1/sutter21tc_isochronemodelingANT.pdf","numberOfCitations":9},{"title":"Source, sea and sink—A holistic approach to understanding plastic pollution in the Southern Caribbean","year":2021,"doi":"10.1016/j.scitotenv.2021.149098","pmid":"34303234","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science","Geography"],"discipline":"Applied Sciences","journal":"Elsevier BV","url":"http://plymsea.ac.uk/id/eprint/9338/1/1-s2.0-S004896972104170X-main.pdf","numberOfCitations":8},{"title":"Investigating microscale patchiness of motile microbes driven by the interaction of turbulence and gyrotaxis in a 3D simulated convective mixed layer.","year":2021,"doi":"10.21203/rs.3.rs-152503/v2","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"","url":"https://www.researchsquare.com/article/rs-152503/latest.pdf","numberOfCitations":0},{"title":"Revisiting the Atlantic South Equatorial Current","year":2021,"doi":"10.1029/2021jc017387","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Geology","Geography","History"],"discipline":"Natural Sciences","journal":"Wiley-Blackwell","url":"https://openalex.org/W3167258239","numberOfCitations":6},{"title":"Potential sources of marine plastic from survey beaches in the Arctic and Northeast Atlantic","year":2021,"doi":"10.1016/j.scitotenv.2021.148009","pmid":"34380264","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"Elsevier BV","url":"https://doi.org/10.1016/j.scitotenv.2021.148009","numberOfCitations":17},{"title":"Restricted dispersal in a sea of gene flow","year":2021,"doi":"10.1098/rspb.2021.0458","pmid":"34004134","pmcid":"/articles/8131118","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Biology","Geography","Environmental science"],"discipline":"Natural Sciences","journal":"Royal Society","url":"https://royalsocietypublishing.org/doi/pdf/10.1098/rspb.2021.0458","numberOfCitations":14},{"title":"Speeding up Python-based Lagrangian Fluid-Flow Particle Simulations via Dynamic Collection Data Structures","year":2021,"doi":"","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Computer science"],"discipline":"Formal Sciences","journal":"ArXiv","url":"https://www.semanticscholar.org/paper/5e42bf697c55bc41f73157d0c34dddc0ff3e38ee","numberOfCitations":3},{"title":"Modeling the Exposure of the Macaronesia Islands (NE Atlantic) to Marine Plastic Pollution","year":2021,"doi":"10.3389/fmars.2021.653502","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":{"volume":"8"},"url":"https://www.frontiersin.org/articles/10.3389/fmars.2021.653502/pdf","numberOfCitations":7},{"title":"Tracking Marine Litter With a Global Ocean Model: Where Does It Go? Where Does It Come From?","year":2021,"doi":"10.3389/fmars.2021.667591","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"Frontiers Media","url":"https://www.frontiersin.org/articles/10.3389/fmars.2021.667591/pdf","numberOfCitations":13},{"title":"Towards a particle trajectory modelling approach in support of South African search and rescue operations at sea","year":2021,"doi":"10.1080/1755876x.2021.1911485","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Computer science","Geology","Unknown"],"discipline":"Formal Sciences","journal":"Taylor & Francis","url":"https://openalex.org/W3144599240","numberOfCitations":1},{"title":"Global simulations of marine plastic transport show plastic trapping in coastal zones","year":2021,"doi":"10.1088/1748-9326/abecbd","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science","Geology"],"discipline":"Applied Sciences","journal":"IOP Publishing","url":"https://doi.org/10.1088/1748-9326/abecbd","numberOfCitations":50},{"title":"On the Variability of the DWBC Transport Between 26.5°N and 16°N in an Eddy‐Rich Ocean Model","year":2021,"doi":"10.1029/2021jc017372","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Geology","Environmental science"],"discipline":"Natural Sciences","journal":"Wiley-Blackwell","url":"https://doi.org/10.1029/2021jc017372","numberOfCitations":2},{"title":"Characteristics and robustness of Agulhas leakage estimates: an inter-comparison study of Lagrangian methods","year":2021,"doi":"10.5194/os-17-1067-2021","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Geology","Environmental science"],"discipline":"Natural Sciences","journal":"Copernicus Publications","url":"https://os.copernicus.org/articles/17/1067/2021/os-17-1067-2021.pdf","numberOfCitations":6},{"title":"Global Modeled Sinking Characteristics of Biofouled Microplastic","year":2021,"doi":"10.1029/2020jc017098","pmid":"34221786","pmcid":"/articles/8243974","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science","Geology"],"discipline":"Applied Sciences","journal":"Wiley-Blackwell","url":"https://onlinelibrary.wiley.com/doi/pdfdirect/10.1029/2020JC017098","numberOfCitations":39},{"title":"The Role of Stokes Drift in the Dispersal of North Atlantic Surface Marine Debris","year":2021,"doi":"10.3389/fmars.2021.697430","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science","Geology","Geography","Physics"],"discipline":"Applied Sciences","journal":"Frontiers Media","url":"https://www.frontiersin.org/articles/10.3389/fmars.2021.697430/pdf","numberOfCitations":2},{"title":"Strongly Coupled Assimilation of a Hypothetical Ocean Current Observing Network within a Regional Ocean–Atmosphere Coupled Model: An OSSE Case Study of Typhoon Hato","year":2021,"doi":"10.1175/mwr-d-20-0108.1","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"American Meteorological Society","url":"https://journals.ametsoc.org/downloadpdf/journals/mwre/149/5/MWR-D-20-0108.1.pdf","numberOfCitations":2},{"title":"The Trash-Tracker: A Macroplastic Transport and Fate Model at River Basin Scale","year":2021,"doi":"10.31223/x5303g","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"unknown journal","url":"http://eartharxiv.org/repository/object/2084/download/6591/","numberOfCitations":2},{"title":"Fast lagrangian particle tracking in unstructured ocean model grids","year":2021,"doi":"10.1007/s10236-020-01436-7","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Computer science","Geology","Physics","Environmental science"],"discipline":"Formal Sciences","journal":"Springer Science+Business Media","url":"https://openalex.org/W3129912602","numberOfCitations":6},{"title":"A mechanism for the increased wave-induced drift of floating marine litter","year":2021,"doi":"10.1017/jfm.2021.72","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science","Physics"],"discipline":"Applied Sciences","journal":"Cambridge University Press","url":"https://repository.tudelft.nl/islandora/object/uuid%3A36b3c294-9c46-41e9-b6aa-e132fb8cf040/datastream/OBJ/download","numberOfCitations":3},{"title":"On the Impact of the Caribbean Counter Current in the Guajira Upwelling System","year":2021,"doi":"10.3389/fmars.2021.626823","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Geography","Geology","Environmental science"],"discipline":"Social Sciences","journal":"Frontiers Media","url":"https://www.frontiersin.org/articles/10.3389/fmars.2021.626823/pdf","numberOfCitations":5},{"title":"Lagrangian Reconstruction to Extract Small‐Scale Salinity Variability From SMAP Observations","year":2021,"doi":"10.1029/2020jc016477","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Geology","Environmental science"],"discipline":"Natural Sciences","journal":"Wiley-Blackwell","url":"https://digital.csic.es/bitstream/10261/230392/1/Lagrangian_Reconstruction.pdf","numberOfCitations":0},{"title":"The influence of depositional environment on the abundance of microplastic pollution on beaches in the Bristol Channel, UK","year":2021,"doi":"10.1016/j.marpolbul.2021.111997","pmid":"33485018","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science","Geology"],"discipline":"Applied Sciences","journal":"Elsevier BV","url":"https://openalex.org/W3125402581","numberOfCitations":16},{"title":"Ocean Plastic Assimilator v0.1: Assimilation of Plastics Concentration Data Into Lagrangian Dispersion Models","year":2021,"doi":"10.5194/gmd-2020-385","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"unknown journal","url":"https://gmd.copernicus.org/articles/14/4769/2021/gmd-14-4769-2021.pdf","numberOfCitations":1},{"title":"Modelling size distributions of marine plastics under the influence of continuous cascading fragmentation","year":2021,"doi":"10.1088/1748-9326/abe9ea","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science","Physics"],"discipline":"Applied Sciences","journal":"IOP Publishing","url":"https://doi.org/10.1088/1748-9326/abe9ea","numberOfCitations":11},{"title":"Comparing models and observations of the surface accumulation zone of floating plastic in the North Atlantic subtropical gyre","year":2021,"doi":"","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"unknown journal","url":"https://www.semanticscholar.org/paper/d3f0bee127057dd01a2a79530064c8efa184171a","numberOfCitations":0},{"title":"A mechanism for the increased wave-induced drift of ﬂoating marine litter","year":2021,"doi":"","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Engineering"],"discipline":"Applied Sciences","journal":"unknown journal","url":"https://www.semanticscholar.org/paper/3b843a87e6320c79c57d0fc67cd6d20f8bc59fed","numberOfCitations":0},{"title":"Lagrangian Methods for Visualizing and Assessing Frontal Dynamics of Floating Marine Litter with a Focus on Tidal Basins","year":2021,"doi":"10.1007/698_2021_812","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"The Handbook of Environmental Chemistry","url":"https://www.semanticscholar.org/paper/bb6e54a799f0c78fea623685c12da0eaff72fe3f","numberOfCitations":0},{"title":"PRACTICES, PITFALLS AND GUIDELINES IN VISUALISING LAGRANGIAN OCEAN ANALYSES","year":2021,"doi":"10.5194/isprs-annals-v-4-2021-217-2021","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"unknown journal","url":"https://www.isprs-ann-photogramm-remote-sens-spatial-inf-sci.net/V-4-2021/217/2021/isprs-annals-V-4-2021-217-2021.pdf","numberOfCitations":1},{"title":"Processes and flows in marginal seas","year":2021,"doi":"10.1016/b978-0-12-816059-6.00011-5","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Unknown"],"discipline":"Unknown","journal":"Ocean Currents","url":"https://www.semanticscholar.org/paper/21d39595cf4cf88625b09cb40ca784753d933a0a","numberOfCitations":0},{"title":"Dispersion of Surface Drifters in the Tropical Atlantic","year":2021,"doi":"10.3389/fmars.2020.607426","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science","Geography","Geology"],"discipline":"Applied Sciences","journal":"Frontiers Media","url":"https://www.frontiersin.org/articles/10.3389/fmars.2020.607426/pdf","numberOfCitations":8},{"title":"3-D ocean particle tracking modeling reveals extensive vertical movement and downstream interdependence of closed areas in the northwest Atlantic","year":2020,"doi":"10.1038/s41598-020-76617-x","pmid":"33293594","pmcid":"/articles/7722887","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science","Geology","Geography"],"discipline":"Applied Sciences","journal":"Nature Portfolio","url":"https://www.nature.com/articles/s41598-020-76617-x.pdf","numberOfCitations":5},{"title":"Simulating the internal structure of the Antarctic Ice Sheet – towards\na spatio-temporal calibration for ice-sheet modelling","year":2020,"doi":"10.5194/tc-2020-349","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science","Geography"],"discipline":"Applied Sciences","journal":"The Cryosphere Discussions","url":"https://tc.copernicus.org/articles/15/3839/2021/tc-15-3839-2021.pdf","numberOfCitations":2},{"title":"Automatic Smart UAV search of lost floating target in ocean environment based on high dense clustering","year":2020,"doi":"10.1109/smart-tech49988.2020.00039","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Computer science"],"discipline":"Formal Sciences","journal":"2020 First International Conference of Smart Systems and Emerging Technologies (SMARTTECH)","url":"https://www.semanticscholar.org/paper/3b508a3e8935204b74a325cd6a3d5f5551d04fb0","numberOfCitations":0},{"title":"Population connectivity of fan-shaped sponge holobionts in the deep Cantabrian Sea","year":2021,"doi":"10.1016/j.dsr.2020.103427","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Biology","Geology","Environmental science"],"discipline":"Natural Sciences","journal":"Elsevier BV","url":"https://doi.org/10.1016/j.dsr.2020.103427","numberOfCitations":6},{"title":"Sinking microplastics in the water column: simulations in the Mediterranean Sea","year":2020,"doi":"10.5194/os-2020-95","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"Ocean Science","url":"https://os.copernicus.org/articles/17/431/2021/os-17-431-2021.pdf","numberOfCitations":16},{"title":"Microplastics quantification in surface waters of the Barents, Kara and White Seas","year":2020,"doi":"10.1016/j.marpolbul.2020.111745","pmid":"33080384","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science","Geology"],"discipline":"Applied Sciences","journal":"Elsevier BV","url":"https://openalex.org/W3094458011","numberOfCitations":16},{"title":"Resolution dependency of sinking Lagrangian particles in ocean general circulation models","year":2020,"doi":"10.1371/journal.pone.0238650","pmid":"32911487","pmcid":"/articles/7482921","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science","Geology","Physics"],"discipline":"Applied Sciences","journal":"Public Library of Science","url":"https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0238650&type=printable","numberOfCitations":12},{"title":"Effects of swimming behaviour and oceanography on sea turtle hatchling dispersal at the intersection of two ocean current systems","year":2020,"doi":"10.1016/j.ecolmodel.2020.109130","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science","Geography","Geology","Biology"],"discipline":"Applied Sciences","journal":"Elsevier BV","url":"https://openalex.org/W3033337936","numberOfCitations":8},{"title":"Closing the Mediterranean Marine Floating Plastic Mass Budget: Inverse Modeling of Sources and Sinks","year":2020,"doi":"10.1021/acs.est.0c01984","pmid":"32852202","pmcid":"/articles/7547878","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"American Chemical Society","url":"https://pubs.acs.org/doi/pdf/10.1021/acs.est.0c01984","numberOfCitations":49},{"title":"Phylogeographic structure and population connectivity of a small benthic fish ( Tripterygion tripteronotum ) in the Adriatic Sea","year":2020,"doi":"10.1111/jbi.13946","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Geography","Geology","Biology","Environmental science"],"discipline":"Social Sciences","journal":"Wiley-Blackwell","url":"https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/jbi.13946","numberOfCitations":4},{"title":"Point-by-point reply to reviewer 1","year":2020,"doi":"10.5194/os-2020-25-ac2","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Unknown"],"discipline":"Unknown","journal":"","url":"https://doi.org/10.5194/os-2020-25-ac1","numberOfCitations":0},{"title":"Multiple spawning events promote increased larval dispersal of a predatory fish in a western boundary current","year":2020,"doi":"10.1111/fog.12473","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"Fisheries Oceanography","url":"https://www.semanticscholar.org/paper/b5ba3b596af824fd77f96e004d1505c9241c4ceb","numberOfCitations":20},{"title":"Ordering of trajectories reveals hierarchical finite-time coherent sets in Lagrangian particle data: detecting Agulhas rings in the South Atlantic Ocean","year":2020,"doi":"10.5194/npg-2020-28","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Physics","Computer science"],"discipline":"Natural Sciences","journal":"Nonlinear Processes in Geophysics","url":"https://npg.copernicus.org/articles/28/43/2021/npg-28-43-2021.pdf","numberOfCitations":5},{"title":"Unsteady Ekman‐Stokes Dynamics: Implications for Surface Wave‐Induced Drift of Floating Marine Litter","year":2020,"doi":"10.1029/2020gl089189","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science","Geology","Physics"],"discipline":"Applied Sciences","journal":"American Geophysical Union","url":"https://doi.org/10.1029/2020gl089189","numberOfCitations":2},{"title":"Observations of a Deep Submesoscale Cyclonic Vortex in the Arabian Sea","year":2020,"doi":"10.1029/2020gl087881","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Geology","Environmental science"],"discipline":"Natural Sciences","journal":"American Geophysical Union","url":"https://archimer.ifremer.fr/doc/00695/80731/84552.pdf","numberOfCitations":13},{"title":"Beaching patterns of plastic debris along the Indian Ocean rim","year":2020,"doi":"10.5194/os-2020-50","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"Ocean Science","url":"https://os.copernicus.org/articles/16/1317/2020/os-16-1317-2020.pdf","numberOfCitations":22},{"title":"Depth-Dependent Correction for Wind-Driven Drift Current in Particle Tracking Applications","year":2020,"doi":"10.3389/fmars.2020.00305","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science","Geology","Physics"],"discipline":"Applied Sciences","journal":"Frontiers Media","url":"https://www.frontiersin.org/articles/10.3389/fmars.2020.00305/pdf","numberOfCitations":14},{"title":"Multidecadal preconditioning of the Maud Rise polynya region","year":2020,"doi":"10.5194/os-2020-25","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"Ocean Science","url":"https://os.copernicus.org/articles/16/1443/2020/os-16-1443-2020.pdf","numberOfCitations":8},{"title":"Resolution-dependent variations of sinking Lagrangian particles in general circulation models","year":2020,"doi":"","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"arXiv: Atmospheric and Oceanic Physics","url":"https://www.semanticscholar.org/paper/6666034d86c7b2f0e9f21a161561da85fc6419be","numberOfCitations":1},{"title":"Evaluation of isotopes and elements in planktonic foraminifera from the Mediterranean Sea as recorders of seawater oxygen isotopes and salinity","year":2020,"doi":"10.5194/cp-2020-26","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science","Geography"],"discipline":"Applied Sciences","journal":"Climate of The Past Discussions","url":"https://cp.copernicus.org/articles/16/2401/2020/cp-16-2401-2020.pdf","numberOfCitations":1},{"title":"Ongoing Dispersal of the 7 August 2019 Pumice Raft From the Tonga Arc in the Southwestern Pacific Ocean","year":2020,"doi":"10.1029/2019gl086768","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Geology","Environmental science"],"discipline":"Natural Sciences","journal":"American Geophysical Union","url":"https://rss.onlinelibrary.wiley.com/doi/am-pdf/10.1029/2019gl086768","numberOfCitations":16},{"title":"The physical oceanography of the transport of floating marine debris","year":2020,"doi":"10.1088/1748-9326/ab6d7d","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science","Geology"],"discipline":"Applied Sciences","journal":"IOP Publishing","url":"https://doi.org/10.1088/1748-9326/ab6d7d","numberOfCitations":274},{"title":"Unraveling the choice of the north Atlantic subpolar gyre index","year":2020,"doi":"10.1038/s41598-020-57790-5","pmid":"31969636","pmcid":"/articles/6976698","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Geology","Environmental science"],"discipline":"Natural Sciences","journal":"Nature Portfolio","url":"https://www.nature.com/articles/s41598-020-57790-5.pdf","numberOfCitations":16},{"title":"Analysis of spatiotemporal patterns of plastics in the Baltic Sea","year":2020,"doi":"","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"unknown journal","url":"https://www.semanticscholar.org/paper/314ff565a257d1c1cb8d051097f36913bbd8aa76","numberOfCitations":0},{"title":"Evaluation of oxygen isotopes and trace elements in planktonic foraminifera from the Mediterranean Sea as recorders of seawater oxygen isotopes and salinity","year":2020,"doi":"10.5194/cp-16-2401-2020","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Geology","Chemistry","Environmental science","Geography"],"discipline":"Natural Sciences","journal":"Copernicus Publications","url":"https://cp.copernicus.org/articles/16/2401/2020/cp-16-2401-2020.pdf","numberOfCitations":7},{"title":"Mixing of passive tracers at the ocean surface and its implications for plastic transport modelling","year":2019,"doi":"10.1088/2515-7620/ab4e77","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science","Geology"],"discipline":"Applied Sciences","journal":"IOP Publishing","url":"https://doi.org/10.1088/2515-7620/ab4e77","numberOfCitations":4},{"title":"Influence of Near‐Surface Currents on the Global Dispersal of Marine Microplastic","year":2019,"doi":"10.1029/2019jc015328","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Environmental science","Geology"],"discipline":"Applied Sciences","journal":"Wiley-Blackwell","url":"https://doi.org/10.1029/2019jc015328","numberOfCitations":62},{"title":"Transport Bias by Ocean Currents in Sedimentary Microplankton Assemblages: Implications for Paleoceanographic Reconstructions","year":2019,"doi":"10.1029/2019pa003606","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science","Geography"],"discipline":"Applied Sciences","journal":"Paleoceanography and Paleoclimatology","url":"https://agupubs.onlinelibrary.wiley.com/doi/pdfdirect/10.1029/2019PA003606","numberOfCitations":24},{"title":"Validating Ocean General Circulation Models via Lagrangian Particle Simulation and Data from Drifting Buoys","year":2019,"doi":"10.1007/978-3-030-22747-0_20","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":{"pages":"253-264"},"url":"https://eprints.ucm.es/id/eprint/63391/1/gomez-ullate44%20postprint.pdf","numberOfCitations":1},{"title":"Regional connectivity and spatial densities of drifting fish aggregating devices, simulated from fishing events in the Western and Central Pacific Ocean","year":2019,"doi":"10.1088/2515-7620/ab21e9","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"Environmental Research Communications","url":"https://www.semanticscholar.org/paper/9b737f0b86746fd5c2ff1ddc63ea47f5e88d2f79","numberOfCitations":8},{"title":"Basin-scale sources and pathways of microplastic that ends up in the Galápagos Archipelago","year":2019,"doi":"10.5194/os-15-1341-2019","pmid":"","pmcid":"","database":"OpenAlex, SemanticScholar","authors":[],"fields":["Geology","Geography","Environmental science"],"discipline":"Natural Sciences","journal":"Copernicus Publications","url":"https://eprints.whiterose.ac.uk/152083/8/os_15_1341_2019.pdf","numberOfCitations":20},{"title":"Computational Science – ICCS 2019","year":2019,"doi":"10.1007/978-3-030-22747-0","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Computer science"],"discipline":"Formal Sciences","journal":{"volume":"11539"},"url":"https://bird.bcamath.org/bitstream/20.500.11824/1058/1/2019-SM-ICCS.pdf","numberOfCitations":6},{"title":"Comparison of Physical Connectivity Particle Tracking Models in the Flemish Cap Region","year":2019,"doi":"","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Mathematics"],"discipline":"Formal Sciences","journal":"unknown journal","url":"https://www.semanticscholar.org/paper/ac3bb5877802dc855c0c0e1f1789db911fe54d76","numberOfCitations":0},{"title":"Developments in Lagrangian Data Assimilation and Coupled Data Assimilation to Support Earth System Model Initialization","year":2019,"doi":"10.13016/9jq0-u5br","pmid":"","pmcid":"","database":"SemanticScholar","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"","url":"https://www.semanticscholar.org/paper/3584a47173b0df797728cee92347c5476d65b9d1","numberOfCitations":0},{"title":"Beaching patterns of plastic debris along the Indian Ocean rim","year":2020,"doi":"10.5194/os-16-1317-2020","pmid":"","pmcid":"","database":"OpenAlex","authors":[],"fields":["Geology","Environmental science"],"discipline":"Natural Sciences","journal":"Copernicus Publications","url":"https://os.copernicus.org/articles/16/1317/2020/os-16-1317-2020.pdf","numberOfCitations":18},{"title":"Sinking microplastics in the water column: simulations in the Mediterranean Sea","year":2021,"doi":"10.5194/os-17-431-2021","pmid":"","pmcid":"","database":"OpenAlex","authors":[],"fields":["Environmental science","Geology","Physics"],"discipline":"Applied Sciences","journal":"Copernicus Publications","url":"https://os.copernicus.org/articles/17/431/2021/os-17-431-2021.pdf","numberOfCitations":14},{"title":"Investigating the internal structure of the Antarctic ice sheet: the utility of isochrones for spatiotemporal ice-sheet model calibration","year":2021,"doi":"10.5194/tc-15-3839-2021","pmid":"","pmcid":"","database":"OpenAlex","authors":[],"fields":["Geology"],"discipline":"Natural Sciences","journal":"Copernicus Publications","url":"https://tc.copernicus.org/articles/15/3839/2021/tc-15-3839-2021.pdf","numberOfCitations":7},{"title":"Multidecadal preconditioning of the Maud Rise polynya region","year":2020,"doi":"10.5194/os-16-1443-2020","pmid":"","pmcid":"","database":"OpenAlex","authors":[],"fields":["Geology","Environmental science"],"discipline":"Natural Sciences","journal":"Copernicus Publications","url":"https://os.copernicus.org/articles/16/1443/2020/os-16-1443-2020.pdf","numberOfCitations":6},{"title":"A novel UAV path planning algorithm to search for floating objects on the ocean surface based on object’s trajectory prediction by regression","year":2021,"doi":"10.1016/j.robot.2020.103673","pmid":"","pmcid":"","database":"OpenAlex","authors":[],"fields":["Computer science"],"discipline":"Formal Sciences","journal":"Elsevier BV","url":"https://openalex.org/W3097611529","numberOfCitations":6},{"title":"Ordering of trajectories reveals hierarchical finite-time coherent sets in Lagrangian particle data: detecting Agulhas rings in the South Atlantic Ocean","year":2021,"doi":"10.5194/npg-28-43-2021","pmid":"","pmcid":"","database":"OpenAlex","authors":[],"fields":["Physics","Computer science"],"discipline":"Natural Sciences","journal":"Copernicus Publications","url":"https://npg.copernicus.org/articles/28/43/2021/npg-28-43-2021.pdf","numberOfCitations":5},{"title":"Empirical Lagrangian parametrization for wind-driven mixing of buoyant particles at the ocean surface","year":2022,"doi":"10.5194/gmd-15-1995-2022","pmid":"","pmcid":"","database":"OpenAlex","authors":[],"fields":["Environmental science","Physics","Mathematics"],"discipline":"Applied Sciences","journal":"Copernicus Publications","url":"https://gmd.copernicus.org/articles/15/1995/2022/gmd-15-1995-2022.pdf","numberOfCitations":5},{"title":"Modelling submerged biofouled microplastics and their vertical trajectories","year":2022,"doi":"10.5194/bg-19-2211-2022","pmid":"","pmcid":"","database":"OpenAlex","authors":[],"fields":["Environmental science","Geology"],"discipline":"Applied Sciences","journal":"Copernicus Publications","url":"https://bg.copernicus.org/articles/19/2211/2022/bg-19-2211-2022.pdf","numberOfCitations":5},{"title":"Hydrometeorological assessments of the transport of microplastic pellets in the Eastern Mediterranean","year":2022,"doi":"10.1016/j.scitotenv.2022.153676","pmid":"35122859","pmcid":"","database":"OpenAlex","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"Elsevier BV","url":"https://openalex.org/W4210524347","numberOfCitations":4},{"title":"Including the effects of subsurface currents on buoyant particles in Lagrangian particle tracking models: Model development and its application to the study of riverborne plastics over the Louisiana/Texas shelf","year":2021,"doi":"10.1016/j.ocemod.2021.101879","pmid":"","pmcid":"","database":"OpenAlex","authors":[],"fields":["Geology","Environmental science"],"discipline":"Natural Sciences","journal":"Elsevier BV","url":"https://openalex.org/W3197340961","numberOfCitations":3},{"title":"Seasonal Modulation of Dissolved Oxygen in the Equatorial Pacific by Tropical Instability Vortices","year":2021,"doi":"10.1029/2021jc017567","pmid":"","pmcid":"","database":"OpenAlex","authors":[],"fields":["Environmental science","Geology","Physics"],"discipline":"Applied Sciences","journal":"Wiley-Blackwell","url":"https://doi.org/10.1002/essoar.10507949.1","numberOfCitations":3},{"title":"Using machine learning and beach cleanup data to explain litter quantities along the Dutch North Sea coast","year":2022,"doi":"10.5194/os-18-269-2022","pmid":"","pmcid":"","database":"OpenAlex","authors":[],"fields":["Environmental science","Geology","Geography"],"discipline":"Applied Sciences","journal":"Copernicus Publications","url":"https://os.copernicus.org/articles/18/269/2022/os-18-269-2022.pdf","numberOfCitations":2},{"title":"Ocean Plastic Assimilator v0.2: assimilation of plastic concentration data into Lagrangian dispersion models","year":2021,"doi":"10.5194/gmd-14-4769-2021","pmid":"","pmcid":"","database":"OpenAlex","authors":[],"fields":["Computer science","Environmental science","Mathematics"],"discipline":"Formal Sciences","journal":"Copernicus Publications","url":"https://gmd.copernicus.org/articles/14/4769/2021/gmd-14-4769-2021.pdf","numberOfCitations":1},{"title":"A perfect storm: An anomalous offshore phytoplankton bloom event in the NE Atlantic (March 2009)","year":2022,"doi":"10.1016/j.scitotenv.2021.151253","pmid":"34710413","pmcid":"","database":"OpenAlex","authors":[],"fields":["Environmental science","Geology"],"discipline":"Applied Sciences","journal":"Elsevier BV","url":"https://doi.org/10.1016/j.scitotenv.2021.151253","numberOfCitations":1},{"title":"Influence of the Gulf of Guinea Islands on the Atlantic Equatorial Undercurrent Circulation","year":2021,"doi":"10.1029/2021jc017999","pmid":"","pmcid":"","database":"OpenAlex","authors":[],"fields":["Geology"],"discipline":"Natural Sciences","journal":"Wiley-Blackwell","url":"https://archimer.ifremer.fr/doc/00793/90511/96083.pdf","numberOfCitations":1},{"title":"Exchange of Plankton, Pollutants, and Particles Across the Nearshore Region","year":2022,"doi":"10.1146/annurev-marine-032122-115057","pmid":"35973720","pmcid":"","database":"OpenAlex","authors":[],"fields":["Environmental science","Geology"],"discipline":"Applied Sciences","journal":"Annual Reviews","url":"https://openalex.org/W4293870275","numberOfCitations":1},{"title":"Cross-jurisdictional larval supply essential for eastern Australian spanner crabs (","year":2022,"doi":"10.1071/mf21348","pmid":"","pmcid":"","database":"OpenAlex","authors":[],"fields":["Biology","Geography"],"discipline":"Natural Sciences","journal":"CSIRO Publishing","url":"https://www.publish.csiro.au/mf/pdf/MF21348","numberOfCitations":1},{"title":"Impacts of the Lagrangian Data Assimilation of Surface Drifters on Estimating Ocean Circulation During the Gulf of Mexico Grand Lagrangian Deployment","year":2022,"doi":"10.1175/mwr-d-21-0123.1","pmid":"","pmcid":"","database":"OpenAlex","authors":[],"fields":["Environmental science","Geology"],"discipline":"Applied Sciences","journal":"American Meteorological Society","url":"https://openalex.org/W4210973707","numberOfCitations":0},{"title":"An ASBPA White Paper: Human and ecosystem health in coastal systems","year":2022,"doi":"10.34237/1009018","pmid":"","pmcid":"","database":"OpenAlex","authors":[],"fields":["Environmental science"],"discipline":"Applied Sciences","journal":"American Shore and Beach Preservation Association","url":"https://openalex.org/W4214720442","numberOfCitations":0},{"title":"Water Mass Transports and Pathways in the North Brazil‐Equatorial Undercurrent Retroflection","year":2022,"doi":"10.1029/2021jc018150","pmid":"","pmcid":"","database":"OpenAlex","authors":[],"fields":["Geology"],"discipline":"Natural Sciences","journal":"Wiley-Blackwell","url":"https://digital.csic.es/bitstream/10261/272067/1/Valles_et_al_2022.pdf","numberOfCitations":0},{"title":"Pathways, form drag, and turbulence in simulations of an ocean flowing through an ice mélange","year":2022,"doi":"10.1029/2021jc018228","pmid":"","pmcid":"","database":"OpenAlex","authors":[],"fields":["Geology","Physics"],"discipline":"Natural Sciences","journal":"Wiley-Blackwell","url":"https://openalex.org/W4281486043","numberOfCitations":0},{"title":"The role of the unsteady surface wave‐driven Ekman–Stokes flow in the accumulation of floating marine litter","year":2022,"doi":"10.1029/2021jc018106","pmid":"","pmcid":"","database":"OpenAlex","authors":[],"fields":["Physics"],"discipline":"Natural Sciences","journal":"Wiley-Blackwell","url":"https://ora.ox.ac.uk/objects/uuid:4ae637bd-ead6-49fa-8680-640861145a8e/download_file?safe_filename=Cunningham_et_al_2022_the_role_of&file_format=application%2Fpdf&type_of_work=Journal+article","numberOfCitations":0},{"title":"Diagnosing Frontal Dynamics From Observations Using a Variational Approach","year":2022,"doi":"10.1029/2021jc018336","pmid":"","pmcid":"","database":"OpenAlex","authors":[],"fields":["Geology","Physics"],"discipline":"Natural Sciences","journal":"Wiley-Blackwell","url":"https://openalex.org/W4298125957","numberOfCitations":0},{"title":"Modelling of tuna around fish aggregating devices: The importance of ocean flow and prey","year":2023,"doi":"10.1016/j.ecolmodel.2022.110188","pmid":"","pmcid":"","database":"OpenAlex","authors":[],"fields":["Environmental science","Biology"],"discipline":"Applied Sciences","journal":"Elsevier BV","url":"https://doi.org/10.1016/j.ecolmodel.2022.110188","numberOfCitations":0},{"title":"Water Exchange Due to Wind and Waves in a Monsoon Prevailing Tropical Atoll","year":2023,"doi":"10.3390/jmse11010109","pmid":"","pmcid":"","database":"OpenAlex","authors":[],"fields":["Geology","Environmental science"],"discipline":"Natural Sciences","journal":"MDPI","url":"https://www.mdpi.com/2077-1312/11/1/109/pdf?version=1672907875","numberOfCitations":0},{"title":"A blueprint for integrating scientific approaches and international communities to assess basin-wide ocean ecosystem status","year":2023,"doi":"10.1038/s43247-022-00645-w","pmid":"","pmcid":"","database":"OpenAlex","authors":[],"fields":["Business","Environmental science","Geography","Political science"],"discipline":"Applied Sciences","journal":"Springer Nature","url":"https://www.nature.com/articles/s43247-022-00645-w.pdf","numberOfCitations":0}],"firstHandCitations":137,"uniqueFields":["Environmental science","Geology","Geography","Physics","Unknown","Biology","Computer science","Chemistry","Mathematics","History","Engineering","Business","Political science"],"firstYear":2019,"secondHandCitations":1008,"highestCitations":400,"disciplines":{"Applied Sciences":81,"Natural Sciences":39,"Formal Sciences":11,"Social Sciences":4,"Unknown":2}};
+    var starfield = new starField(input);
+
+    const chartHeight = window.innerHeight,
+        chartWidth = 0.6 * window.innerWidth;
+
+    //initial height 800, width 900
+
+    const svg = d3.select("#svgChart")
+        .attr("width", chartWidth)
+        .attr("height", chartHeight);
+    
+    var g = svg.append("g")
+        .attr("class", "everything");
+    
+    // functions to avoid nodes and links going outside the svg container, when calculating the position:
+    function getNodeXCoordinate(x, r) {
+        return Math.max(0, Math.min(chartWidth - r, x))
+    }
+    function getNodeYCoordinate(y, r) {
+        return Math.max(0, Math.min(chartHeight - r, y))
+    }
+
+    // create a new simulation (a simulation starts with alpha = 1 and decrese it slowly to 0):
+    const simulation = d3.forceSimulation()
+        .force("charge", d3.forceManyBody().distanceMax(300).strength(function (d) { return -(d.size * 20) }))
+        .force("collide", d3.forceCollide(function (d) { return d.size + 2 }).iterations(10))
+        .force("center", d3.forceCenter(chartWidth / 2, chartHeight / 2))
+        .force("link", d3.forceLink());
+
+
+    const nodes = starfield.nodes
+    const links = starfield.links
+
+    // add links
+    const link = g.append("g")
+        .attr("class", "links")
+        .selectAll("line")
+        .data(links)
+        .enter().append("line") // line to connect nodes
+        .attr("stroke-width", 0.5) // line width
+
+    // use a g element to contain nodes:
+    const nodeWrapper = g.append("g")
+        .attr("class", "nodes")
+        .selectAll(".node")
+        .data(nodes)
+        .enter().append("g")
+        .attr("class", "nodeWrapper")
+
+    // add nodes
+    const node = nodeWrapper
+        .append("circle")
+        .attr("class", "node")
+        .attr("r", d => d.size);
+
+    const label = nodeWrapper.append("foreignObject")
+        .attr("width", d => d.size * 2)
+        .attr("height", d => d.size * 2)
+        .attr("x", d => -d.size)
+        .attr("y", d => -d.size)
+        .append("xhtml:div")
+        .attr("class", "label")
+        .append("xhtml:p")
+        .html(function (d) { return d.name });
+
+    // tooltip div:
+    const tooltip = d3.select('#mainContainer').append("div")
+        .classed("tooltip", true)
+        .style("opacity", 0) // start invisible
+    
+    var clickedNodes = [];
+    var connectedNodesClick = [];
+    var isZoomed = false;
+
+    nodeWrapper
+        .on("mouseenter", function (d) {
+            var connectedNodesHover = [];
+            var nodes = clickedNodes.concat([d]);
+            if (!isZoomed) {
+                if (d.id > input.uniqueFields.length) {
+                    var html = "<h3>" + input.papers[d.id - input.uniqueFields.length].title + "</h3>"
+                    tooltip.transition()
+                        .duration(300)
+                        .style("opacity", 1); // show the tooltip
+                    if (input.papers[d.id - input.uniqueFields.length].year !== null) {
+                        html += "<hr/><h3>" + input.papers[d.id - input.uniqueFields.length].year + "</h3>"
+                    }
+                    var x = d3.event.pageX - d3.select('.tooltip').node().offsetWidth - 5
+                    var chartMiddle = ((chartWidth - d3.select('.tooltip').node().offsetWidth) / 2)
+                    //html += "\nx: \n" + x + "offsetwidt: \n" +  chartmiddle
+                    if (x < chartMiddle) {
+                        tooltip.html(html)
+                            .style("left", (d3.event.pageX - d3.select('.tooltip').node().offsetWidth - 5) + "px")
+                            .style("top", (d3.event.pageY - d3.select('.tooltip').node().offsetHeight) + "px");
+                    }
+                    else {
+                        tooltip.html(html)
+                            .style("left", (d3.event.pageX - d3.select('.tooltip').node().offsetWidth + 335) + "px")
+                            .style("top", (d3.event.pageY - d3.select('.tooltip').node().offsetHeight) + "px");
+                    }
+                }
+                link.each(function (l) {
+                    if (d == l.source || d == l.target) {
+                        connectedNodesHover.push(l.source);
+                        connectedNodesHover.push(l.target);
+                    }
+                })
+                    .transition()
+                    .duration(300)
+                    .style("stroke-width", function (l) {
+                        if (clickedNodes.length > 0) {
+                            if (d.id < input.uniqueFields.length && connectedNodesClick.includes(l.source) && connectedNodesHover.includes(l.source) && (nodes.includes(l.target)))
+                                return "1.5px";
+                            else if (d.id < input.uniqueFields.length && connectedNodesClick.includes(l.source) && (nodes.includes(l.target)))
+                                return "1px";
+                            else
+                                return "0.5px";
+                        }
+                        else {
+                            if (nodes.includes(l.source) || nodes.includes(l.target)) {
+                                return "1.5px";
+                            }
+                            else
+                                return "0.5px";
+                        }
+                    });
+                node.transition()
+                    .duration(300)
+                    .style("stroke", function (d2) {
+                        if (clickedNodes.length > 0) {
+                            if (nodes.includes(d2) || (connectedNodesClick.includes(d2)))
+                                return "#538475";
+                            else
+                                return "#D3ECDE";
+                        }
+                        else {
+                            if (connectedNodesHover.includes(d2))
+                                return "#538475";
+                            else
+                                return "#D3ECDE";
+                        }
+                    })
+                    .style("stroke-width", function (d2) {
+                        if (clickedNodes.length > 0) {
+                            if (nodes.includes(d2) || (connectedNodesClick.includes(d2) && connectedNodesHover.includes(d2)))
+                                return "1.5px";
+                            else
+                                return "1px";
+                        }
+                        else {
+                            if (connectedNodesHover.includes(d2))
+                                return "1.5px";
+                            else
+                                return "1px";
+                        }
+                    })
+                    .style("fill", function (d2) {
+                        if (clickedNodes.length > 0) {
+                            if (nodes.includes(d2) || (connectedNodesClick.includes(d2) && connectedNodesHover.includes(d2)))
+                                return "#0c271d";
+                            else
+                                return "#648579";
+                        }
+                        else {
+                            if (connectedNodesHover.includes(d2))
+                                return "#0c271d";
+                            else
+                                return "#648579";
+                        }
+                    });
+            }
+        })
+        .on("mouseleave", function (d) {
+            tooltip.transition()
+                .duration(200)
+                .style("opacity", 0);
+            link.transition()
+                .duration(300)
+                .style("stroke-width", function (l) {
+                    if (clickedNodes.includes(l.target) && connectedNodesClick.includes(l.source))
+                        return "1.5px";
+                    else
+                        return "0.5px";
+                });
+            node.transition()
+                .duration(300)
+                .style("stroke", function (d2) {
+                    if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2))
+                        return "#538475";
+                    else
+                        return "#D3ECDE";
+                })
+                .style("stroke-width", function (d2) {
+                    if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2))
+                        return "1.5px";
+                    else
+                        return "1px";
+                })
+                .style("fill", function (d2) {
+                    if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2) || clickedNodes == 0)
+                        return "#0c271d";
+                    else
+                        return "#648579";
+                });
+        })
+        .on("click", function (d) {
+            
+            
+            //remove help page
+            const help = d3.select("body").select(".LeftPane").select(".HelpInfo");
+            help.style("display","none");
+            
+            // make sure previous generated Citation is removed
+            const citationContainer = d3.select("body").select(".LeftPane").select(".CitationgraphInfo").select(".CitationsContainer");
+            citationContainer.selectAll(".Citation").remove();
+
+            // nodes that aren't fields
+            if (d.id > input.uniqueFields.length && !isZoomed) {
+                citationContainer.select()
+                var html =  "<h3>Title</h3><h2>" + input.papers[d.id - input.uniqueFields.length].title + "</h2>"
+                if(input.papers[d.id - input.uniqueFields.length].year !== null)
+                    html += "<h3>Year</h3><h2>" + input.papers[d.id - input.uniqueFields.length].year + "</h2>"
+                
+                if (input.papers[d.id - input.uniqueFields.length].authors.length > 0) {
+                    html += "<h3>Authors</h3>";
+                    for (let i = 0; i < input.papers[d.id - input.uniqueFields.length].authors.length || i < 4; i++)
+                        html += "<h2>" + input.papers[d.id - input.uniqueFields.length].authors[i].name + "</h2>";
+                }
+                else 
+                    html += "<h3>Authors</h3><h2> No known authors. </h2>";
+                
+                html += "<h3>Fields</h3>";
+                input.papers[d.id - input.uniqueFields.length].fields.forEach(field => {
+                    html += "<h2>" + field + "</h2>";
+                });
+                if (input.papers[d.id - input.uniqueFields.length].url !== null)
+                    html += "<a href=" + input.papers[d.id - input.uniqueFields.length].url + ">Link to Paper</a>";
+
+                // add Citation element and append html to show data of citation
+                citationContainer
+                    .append("div")
+                    .classed("Citation", true)
+                    .html(html)
+                
+                //handle zoom event
+                clickedNodes = [d];
+                connectedNodesClick = [];
+                // zoom in on node
+                var scaleZoom = 15;
+                svg.transition()
+                    .duration(750)
+                    .call(zoom_handler.transform,
+                        d3.zoomIdentity
+                            .translate(chartWidth * 0.5 - scaleZoom * d.x,
+                                chartHeight * 0.5 - scaleZoom * d.y)
+                            .scale(scaleZoom));
+                setTimeout(() => { isZoomed = true; }, 1000);
+            }
+            // selected node is a field that is not alrady connected
+            else if (d.id < input.uniqueFields.length && !clickedNodes.includes(d)) {
+                var newConnectedNodesClick = [];
+                clickedNodes.push(d);
+                if (clickedNodes.length == 1) {
+                    link.each(function (l) {
+                        if (l.target == d)
+                            newConnectedNodesClick.push(l.source);
+                    });
+                }
+                else {
+                    link.each(function (l) {
+                        if (l.target == d && connectedNodesClick.includes(l.source))
+                            newConnectedNodesClick.push(l.source);
+                    });
+                }
+                connectedNodesClick = newConnectedNodesClick;
+                var html = "<div class=listedPapersContainer> <div class=listedPaper> <h2>Selected Papers</h2> <h3>Citations</h3> </div>";
+                connectedNodesClick.forEach(ele => {
+                    html += "<div class=listedPaper> <h2>" + input.papers[ele.id - input.uniqueFields.length].title + "</h2> <h3>" + input.papers[ele.id - input.uniqueFields.length].numberOfCitations + "</h3></div>";
+                });
+                html+= "</div>";
+                citationContainer
+                    .append("div")
+                    .classed("Citation", true)
+                    .html(html)
+
+            }
+            else if (d.id < input.uniqueFields.length && clickedNodes.includes(d)) {
+                clickedNodes = [];
+                connectedNodesClick = [];
+                link.transition()
+                .duration(300)
+                .style("stroke-width", function (l) {
+                    if (clickedNodes.includes(l.target) && connectedNodesClick.includes(l.source))
+                        return "1.5px";
+                    else
+                        return "0.5px";
+                });
+                node.transition()
+                    .duration(300)
+                    .style("stroke", function (d2) {
+                        if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2))
+                            return "#538475";
+                        else
+                            return "#D3ECDE";
+                    })
+                    .style("stroke-width", function (d2) {
+                        if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2))
+                            return "1.5px";
+                        else
+                            return "1px";
+                    });
+            };
+            d3.event.stopPropagation();
+
+        })
+
+    d3.select("body").on("click", function () {
+        clickedNodes = [];
+        connectedNodesClick = [];
+        link.transition()
+            .duration(300)
+            .style("stroke-width", function (l) {
+                if (clickedNodes.includes(l.target) && connectedNodesClick.includes(l.source))
+                    return "1.5px";
+                else
+                    return "0.5px";
+            });
+        node.transition()
+            .duration(300)
+            .style("stroke", function (d2) {
+                if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2))
+                        return "#538475";
+                    else
+                        return "#D3ECDE";
+            })
+            .style("stroke-width", function (d2) {
+                if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2))
+                        return "1.5px";
+                    else
+                        return "1px";
+            })
+            .style("fill", function (d2) {
+                if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2) || clickedNodes == 0)
+                    return "#123b2c";
+                else
+                    return "#6e9184";
+            });  
+    })
+
+    //zoom actions
+    var zoom_handler = d3.zoom()
+        .on("zoom", zoom_actions);
+    
+    zoom_handler(svg);
+    
+    function zoom_actions(){
+        g.attr("transform", d3.event.transform);
+        if (isZoomed) {
+            isZoomed = false;
+            clickedNodes = [];
+            node.transition()
+                .duration(300)
+                .style("stroke", "#D3ECDE")
+                .style("stroke-width", "1px")
+                .style("fill", "#0c271d");
+        }
+    }
+    
+
+    simulation
+        .nodes(nodes)
+        .on("tick", () => {
+            // set each node's position on each tick of the simulation:
+            nodeWrapper.attr("transform", d => "translate(" + getNodeXCoordinate(d.x, 30) + "," + getNodeYCoordinate(d.y, 30) + ")")
+            // set start (x1,y1) and point (x2,y2) coordinate of each link on each tick of the simulation:
+            link.attr("x1", d => getNodeXCoordinate(d.source.x, 30))
+            link.attr("y1", d => getNodeYCoordinate(d.source.y, 30))
+            link.attr("x2", d => getNodeXCoordinate(d.target.x, 30))
+            link.attr("y2", d => getNodeYCoordinate(d.target.y, 30))
+        })
+
+    // pass the links to the link force:
+    simulation
+        .force("link")
+        .links(links)
+        .distance(30)
+}
+
+renderStarField();
+
+
+</script>
+    </body>
+</html>

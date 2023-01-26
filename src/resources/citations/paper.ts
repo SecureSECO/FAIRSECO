@@ -257,6 +257,7 @@ export class Citations {
     papers: Paper[];
     uniqueFields: Field[];
     firstYear: number;
+    highestCitations: number;
     firstHandCitations: number;
     secondHandCitations: number;
     disciplines: {[index: string]: number};
@@ -269,7 +270,7 @@ export class Citations {
      */
     constructor(papers: Paper[]) {
         let firstYear = Number.MAX_SAFE_INTEGER;
-        
+        let highestCitations = 1;
         let secondHandCitations = 0;
         const uniqueFields: Set<Field> = new Set();
         let disciplines: {[index: string]: number} = {};
@@ -280,6 +281,10 @@ export class Citations {
             
             // Find secondhand citations
             secondHandCitations += paper.numberOfCitations;
+
+            // find highest citation
+            if (paper.numberOfCitations > highestCitations)
+                highestCitations = paper.numberOfCitations;
 
             // Find all fields occuring in papers
             for (const field of paper.fields) {
@@ -297,5 +302,6 @@ export class Citations {
         this.firstYear = firstYear;
         this.secondHandCitations = secondHandCitations;
         this.disciplines = disciplines;
+        this.highestCitations = highestCitations;
     }
 }

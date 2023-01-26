@@ -73,6 +73,7 @@
 </style>
 <div id="mainContainer"><svg id="svgChart"></svg></div>
 <%# For the Citations Graph we use the D3 Javascript library (https://d3js.org/)  %>
+<% let starfieldInput = data.find((ele) => (ele.ModuleName === "CitingPapers"))?.Data; %>
 <script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
 <script>
     'use strict'
@@ -125,7 +126,7 @@ class starField {
 }
 
 function renderStarField() {
-    var input = citations;
+    let input = <%- JSON.stringify(starfieldInput) %>;
     var starfield = new starField(input);
 
     const chartHeight = window.innerHeight,

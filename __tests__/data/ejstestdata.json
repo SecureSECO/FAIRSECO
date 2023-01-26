@@ -38306,7 +38306,7 @@
               "pmid": "36646000",
               "pmcid": "",
               "database": "SemanticScholar",
-              "authors": [],
+              "authors": [{"name": "Rob de Nijs", "orcid": ""}, {"name": "Ken Burn", "orcid": ""}, {"name": "Ken Burn", "orcid": ""}, {"name": "Ken Burn", "orcid": ""}, {"name": "Ken Burn", "orcid": ""}],
               "fields": [
                 "Environmental science"
               ],
@@ -40651,6 +40651,7 @@
           ],
           "firstYear": 2019,
           "secondHandCitations": 1008,
+          "highestCitations": 400,
           "disciplines": {
             "Applied Sciences": 81,
             "Natural Sciences": 39,
