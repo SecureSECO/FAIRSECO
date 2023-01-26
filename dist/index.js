@@ -18719,15 +18719,22 @@ const pre_1 = __nccwpck_require__(4153);
 const getdata_1 = __nccwpck_require__(5622);
 const post_1 = __nccwpck_require__(7051);
 const core = __importStar(__nccwpck_require__(2186));
-/** The entrypoint of the program. */
+/**
+ * The entrypoint of the program.
+ * The program performs the following steps:
+ * - Handle preconditions required for the program to run
+ * - Call the modules that generate the data
+ * - Generates the output reports
+*/
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            // Handle preconditions
             const check = yield (0, pre_1.pre)();
             if (check) {
-                // Call data check.
+                // Generate the data
                 const result = yield (0, getdata_1.data)();
-                // Call post check.
+                // Create output reports
                 yield (0, post_1.post)(result);
             }
         }
@@ -18747,7 +18754,7 @@ exports.main = main;
 "use strict";
 
 /**
- * This module contains functions to handle Docker exit codes based on error status.
+ * This module contains functions for handling Docker exit codes based on error status.
  *
  * @module
  */
@@ -18829,7 +18836,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.formatMessage = exports.createLogFile = exports.LogMessage = exports.ErrorLevel = void 0;
 const fs_1 = __importDefault(__nccwpck_require__(7147));
 /**
- * Enum describing the severity of an error when logged by {@link LogMessage}.
+ * Enum describing the severity of an error when logged by {@link LogMessage | LogMessage()}.
  */
 var ErrorLevel;
 (function (ErrorLevel) {
@@ -18912,7 +18919,7 @@ exports.formatMessage = formatMessage;
 
 /**
  * This module handles the main part of the action. It runs each resource module and compiles
- * them into an array of {@link ReturnObject}s.
+ * the results into an array of {@link ReturnObject | ReturnObjects}.
  *
  * @remarks
  * Because every function is wrapped in a try-catch block separately,
@@ -18964,6 +18971,11 @@ const sbom = __importStar(__nccwpck_require__(147));
 const qualityMetrics = __importStar(__nccwpck_require__(2829));
 const log_1 = __nccwpck_require__(8375);
 const git_1 = __nccwpck_require__(6350);
+/**
+ * Runs each FAIRSECO data collection module and compiles the results.
+ *
+ * @returns An array containing data generation outputs from all modules that did not encounter fatal errors.
+ */
 function data() {
     return __awaiter(this, void 0, void 0, function* () {
         // Get GitHub repository info
@@ -19007,8 +19019,7 @@ function runModule(module, ...parameters) {
         }
         catch (error) {
             (0, log_1.LogMessage)(module.ModuleName + " encountered an error:\n" + error.message, log_1.ErrorLevel.err);
-            const noData = { ModuleName: module.ModuleName, Data: {} };
-            return noData;
+            return undefined;
         }
     });
 }
@@ -19109,9 +19120,9 @@ function getRepoStats(owner, repo, token) {
 }
 exports.getRepoStats = getRepoStats;
 /**
- * Creates a `GitHubInfo` object with all data collected from the Octokit API.
+ * Creates a GitHubInfo object with all data collected from the Octokit API.
  *
- * @returns A `GitHubInfo` object containing all data recieved from Octokit.
+ * @returns A GitHubInfo object containing all data recieved from Octokit.
  */
 function getGitHubInfo() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -19308,7 +19319,7 @@ function generateHTML(result) {
 
 /**
  * This module contains functions that are called before the main action is run,
- * to set up the directory and files used by the program.
+ * to set up the directory and files used by the program and make sure the program has the necessary input to run.
  *
  * @module
  */
@@ -19353,9 +19364,14 @@ const core = __importStar(__nccwpck_require__(2186));
 const log_1 = __nccwpck_require__(8375);
 const fs_1 = __importDefault(__nccwpck_require__(7147));
 /**
- * Handles preconditions for getting the data.
+ * Handles preconditions for running the program.
  *
- * @returns Whether the preconditions for getting the data are satisfied.
+ * The function performs the following:
+ * - Creating the FAIRSECO directory
+ * - Creating the log file
+ * - Checking the necessary inputs that are required for the program to run
+ *
+ * @returns Whether the preconditions for running the program are satisfied.
  */
 function pre() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -19396,6 +19412,11 @@ exports.createFAIRSECODir = createFAIRSECODir;
 
 "use strict";
 
+/**
+ * This module contains functions for reading and validating a CITATION.cff file.
+ *
+ * @module
+ */
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -19577,7 +19598,7 @@ function getLastLine(input) {
 /**
  * This module contains functions for finding papers that cite a piece of research software, making use of OpenAlex.
  *
- * The main function to be used by other modules is {@link openAlexCitations}.
+ * The main function to be used by other modules is {@link openAlexCitations | openAlexCitations()}.
  *
  * @module
  */
@@ -19861,7 +19882,7 @@ exports.getOpenAlexPaperID = getOpenAlexPaperID;
 
 /**
  * This module contains functions for finding papers that cite a piece of research software, making use of Semantic Scholar.
- * <br>The main function to be used by other modules is {@link semanticScholarCitations}.
+ * <br>The main function to be used by other modules is {@link semanticScholarCitations | semanticScholarCitations()}.
  *
  * @module
  */
@@ -20157,7 +20178,7 @@ exports.ModuleName = "CitingPapers";
  *
  * @param cffFile The information from the CITATION.cff file.
  *
- * @returns An array of unique papers citing the software.
+ * @returns An object containing information about the citations.
  */
 function runModule(cffFile) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -20711,7 +20732,7 @@ exports.runModule = runModule;
 /**
  * This module contains functions to retrieve GitHub workflow artifacts.
  *
- * The custom interfaces allow @actions/artifact to be mocked in the unit tests.
+ * The custom interfaces allow `@actions/artifact` to be mocked in the unit tests.
  *
  * @module
  */
@@ -20756,7 +20777,7 @@ const path = __importStar(__nccwpck_require__(1017));
  *
  * @param artifactName The name of the artifact given by the action that created it.
  * @param destination The directory in which the artifact files should be downloaded.
- * @param artifactObject The artifact module that is used. During normal operation of the program, this should simply be \@actions/artifact, but for the unit tests a mock is passed instead.
+ * @param artifactObject The artifact module that is used. During normal operation of the program, this should simply be `@actions/artifact`, but for the unit tests a mock is passed instead.
  * @returns The download reponse.
  */
 function getArtifactData(artifactName, destination, artifactObject) {
@@ -20770,7 +20791,7 @@ exports.getArtifactData = getArtifactData;
 /**
  * Gets a file from the artifact as a string.
  *
- * @param dlResponse The object that was returned by {@link getArtifactData}.
+ * @param dlResponse The object that was returned by {@link getArtifactData | getArtifactData()}.
  * @param fileName The name of the file that should be read.
  * @returns The contents of the file.
  */
@@ -20782,8 +20803,8 @@ function getFileFromArtifact(dlResponse, fileName) {
 exports.getFileFromArtifact = getFileFromArtifact;
 /**
  * An Artifact object that can be used for unit testing.
- * the {@link ArtifactClient} provided by create() does not download anything
- * when downloadArtifact is called, but it returns a download response
+ * the {@link ArtifactClient artifact client} provided by {@link Artifact.create | create()} does not download anything
+ * when {@link ArtifactClient.downloadArtifact | downloadArtifact()} is called, but it returns a download response
  * as if a file was correctly downloaded.
  */
 exports.testArtifactObject = {
@@ -21633,8 +21654,8 @@ const ejs_1 = __importDefault(__nccwpck_require__(8431));
  */
 function WriteHTML(data, filePath) {
     return __awaiter(this, void 0, void 0, function* () {
-        const template = yield ejs_1.default.renderFile("./templates/index.ejs", { data });
-        const template2 = yield ejs_1.default.renderFile("./templates/citationgraph.ejs", { data });
+        const template = yield ejs_1.default.renderFile("./FAIRSECO_Assets/templates/index.ejs", { data });
+        const template2 = yield ejs_1.default.renderFile("./FAIRSECO_Assets/templates/citationgraph.ejs", { data });
         const app = template.replace("{{node inserts the data here}}", JSON.stringify(data));
         yield fs.promises.writeFile(filePath, app, "utf8");
         yield fs.promises.writeFile("./.FAIRSECO/citationgraph.html", template2, "utf8");
@@ -30165,6 +30186,7 @@ var exports = __webpack_exports__;
 
 /**
  * This module is the entrypoint of the program.
+ * It calls {@link action.main | main()} in {@link action | action.ts}.
  *
  * @module
  */
