@@ -6,14 +6,12 @@
     text-align: left;
     font-size: 1.3rem;
     color: #D9F8DF;
-    font-family: 'Literata', serif ;
     }
 
     #mainContainer h3{
         text-align: left;
         font-size: 0.9rem;            
         color: #0C281E;
-        font-family: 'Literata', serif ;
     }
     #mainContainer {
         text-align: center;
@@ -74,6 +72,8 @@
     }
 </style>
 <div id="mainContainer"><svg id="svgChart"></svg></div>
+<%# For the Citations Graph we use the D3 Javascript library (https://d3js.org/)  %>
+<script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
 <script>
     'use strict'
 class link {
