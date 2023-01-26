@@ -19019,8 +19019,7 @@ function runModule(module, ...parameters) {
         }
         catch (error) {
             (0, log_1.LogMessage)(module.ModuleName + " encountered an error:\n" + error.message, log_1.ErrorLevel.err);
-            const noData = { ModuleName: module.ModuleName, Data: {} };
-            return noData;
+            return undefined;
         }
     });
 }
