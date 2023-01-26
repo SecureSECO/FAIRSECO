@@ -40,7 +40,7 @@ function createReport(result: ReturnObject[]): void {
 // Make a webapp from the report
 async function generateHTML(result: ReturnObject[]): Promise<void> {
     try {
-        await WriteHTML(result, "./.FAIRSECO/dashboard.html");
+        await WriteHTML(result, "./.FAIRSECO/");
         LogMessage("Successfully wrote HTML file to dir.", ErrorLevel.info);
     } catch (err: any) {
         LogMessage("Error writing HTML file: " + (err.message as string), ErrorLevel.err);
