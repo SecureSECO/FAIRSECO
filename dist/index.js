@@ -19889,7 +19889,7 @@ function getCitationPapers(paperID) {
                 }
                 ;
                 // Add the paper data to the results
-                const paper = new paper_1.Paper(title, doi, pmid, pmcid, year, "OpenAlex", [], fields, journal, url, numberOfCitations);
+                const paper = new paper_1.Paper(title, doi, pmid, pmcid, year, "OpenAlex", authors, fields, journal, url, numberOfCitations);
                 output.push(paper);
             }
             ;
