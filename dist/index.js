@@ -19241,6 +19241,143 @@ exports.filterBadgeURLS = filterBadgeURLS;
 
 /***/ }),
 
+/***/ 8655:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+/**
+ * This module contains a function that handles getting and updating FAIRSECO history data.
+ *
+ * @module
+ */
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getHistoryData = void 0;
+const fs = __importStar(__nccwpck_require__(7147));
+const log_1 = __nccwpck_require__(8375);
+/**
+ * Gets history data and updates the history file with new data.
+ * - If the history file can not be read, the history is reset.
+ * - If the last entry in the history has the current date, it will be overwritten with the new data.
+ *
+ * @param filePath The path to read history from and write history to.
+ * @param result The data gathered by FAIRSECO.
+ * @returns The history data with the new data added.
+ */
+function getHistoryData(filePath, result) {
+    var _a, _b, _c, _d, _e;
+    // Get current date
+    const currentDate = new Date();
+    const day = currentDate.getDate();
+    const month = currentDate.getMonth() + 1;
+    const year = currentDate.getFullYear();
+    const date = (day <= 9 ? "0" + String(day) : String(day)) +
+        "/" +
+        (month <= 9 ? "0" + String(month) : String(month)) +
+        "/" +
+        year;
+    // Get quality score
+    const quality = (_b = (_a = result.find((ele) => (ele.ModuleName === "QualityMetrics"))) === null || _a === void 0 ? void 0 : _a.Data) === null || _b === void 0 ? void 0 : _b.score;
+    // Get citations
+    const citationsData = (_c = result.find((ele) => (ele.ModuleName === "CitingPapers"))) === null || _c === void 0 ? void 0 : _c.Data;
+    const firstHandCitations = citationsData === null || citationsData === void 0 ? void 0 : citationsData.firstHandCitations;
+    const secondHandCitations = citationsData === null || citationsData === void 0 ? void 0 : citationsData.secondHandCitations;
+    const citations = firstHandCitations === undefined || secondHandCitations === undefined ? undefined : firstHandCitations + secondHandCitations;
+    // Get fairness
+    const fairnessOutput = (_d = result.find((ele) => (ele.ModuleName === "fairtally"))) === null || _d === void 0 ? void 0 : _d.Data;
+    const fairness = fairnessOutput !== undefined ? fairnessOutput[0].count : undefined;
+    // Get method matches
+    const searchsecoOutput = (_e = result.find((ele) => (ele.ModuleName === "SearchSECO"))) === null || _e === void 0 ? void 0 : _e.Data;
+    let matches;
+    if ((searchsecoOutput === null || searchsecoOutput === void 0 ? void 0 : searchsecoOutput.methods) !== undefined) {
+        matches = 0;
+        for (const method of searchsecoOutput.methods) {
+            matches += method.matches.length;
+        }
+    }
+    // Read the history file
+    const historyData = readHistoryFile(filePath, date);
+    // Append new data to the history
+    historyData.push({
+        date,
+        quality,
+        citations,
+        fairness,
+        matches
+    });
+    // Write new history to the history file
+    try {
+        fs.writeFileSync(filePath, JSON.stringify(historyData));
+    }
+    catch (error) {
+        (0, log_1.LogMessage)("Failed to write to FAIRSECO history file:\n" + error.message, log_1.ErrorLevel.err);
+    }
+    return historyData;
+}
+exports.getHistoryData = getHistoryData;
+function readHistoryFile(filePath, date) {
+    // Get the history data
+    let historyData = [];
+    try {
+        // Read the history file
+        const readData = JSON.parse(fs.readFileSync(filePath).toString());
+        // Verify that the history data is an array
+        if (readData.constructor !== Array) {
+            throw new Error("Incorrect format (history is not an array)");
+        }
+        // Verify that the children are objects
+        for (const data of readData) {
+            if (typeof (data) !== "object") {
+                throw new Error("Incorrect format (element of history is not an object)");
+            }
+        }
+        historyData = readData;
+    }
+    catch (error) {
+        if (error.code === "ENOENT") {
+            // File not found
+            (0, log_1.LogMessage)("No FAIRSECO history file found:\n" + error.message, log_1.ErrorLevel.info);
+        }
+        else {
+            // Error reading history file
+            (0, log_1.LogMessage)("Failed to read FAIRSECO history file (history will be reset!):\n" + error.message, log_1.ErrorLevel.warn);
+        }
+    }
+    // Clear the last entry from the history if its date matches the current date.
+    if (historyData.length >= 1) {
+        if (historyData[historyData.length - 1].date === date) {
+            historyData.pop();
+        }
+    }
+    return historyData;
+}
+
+
+/***/ }),
+
 /***/ 7051:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -19270,6 +19407,7 @@ const yaml_1 = __importDefault(__nccwpck_require__(4083));
 const fs_1 = __importDefault(__nccwpck_require__(7147));
 const webapp_1 = __nccwpck_require__(6137);
 const log_1 = __nccwpck_require__(8375);
+const history_1 = __nccwpck_require__(8655);
 /**
  * Creates reports showing the gathered data in .yml and .html format.
  *
@@ -19279,6 +19417,14 @@ function post(result) {
     return __awaiter(this, void 0, void 0, function* () {
         // Create report.yml file
         createReport(result);
+        // Get (and update) history data.
+        // Add this after generating the raw data report to not include it there.
+        // It will be used by the dashboard.
+        const historyData = (0, history_1.getHistoryData)("./.fairseco_history.json", result);
+        result.push({
+            ModuleName: "History",
+            Data: historyData
+        });
         // Create dashboard.html file
         yield generateHTML(result);
     });
@@ -19286,7 +19432,6 @@ function post(result) {
 exports.post = post;
 // Generate the report of FAIRSECO
 function createReport(result) {
-    (0, log_1.LogMessage)("FAIRSECO report:\n" + JSON.stringify(result), log_1.ErrorLevel.info);
     try {
         fs_1.default.writeFileSync("./.FAIRSECO/report.yml", yaml_1.default.stringify(result));
         fs_1.default.writeFileSync("./.FAIRSECO/report.json", JSON.stringify(result));
@@ -19478,6 +19623,7 @@ function runModule(path = ".") {
         catch (e) {
             if (e.code === "ENOENT") {
                 // File not found, return MissingCffObject to indicate missing CITATION.cff file
+                (0, log_1.LogMessage)("No CITATION.cff file found.", log_1.ErrorLevel.info);
                 const Data = { status: "missing_file" };
                 return Data;
             }
@@ -19494,6 +19640,7 @@ function runModule(path = ".") {
         catch (_a) {
             // Parsing failed, incorrect YAML.
             // Return IncorrectYamlCffObject to indicate incorrect yaml
+            (0, log_1.LogMessage)("CITATION.cff file contains incorrect yaml", log_1.ErrorLevel.warn);
             const Data = { status: "incorrect_yaml" };
             return Data;
         }
@@ -19514,10 +19661,10 @@ function runModule(path = ".") {
             if (!fs.existsSync("./cffOutputFiles"))
                 fs.mkdirSync("./cffOutputFiles/");
             else
-                (0, log_1.LogMessage)("Folder cffOutputFiles already exists!", log_1.ErrorLevel.info);
+                (0, log_1.LogMessage)("Directory cffOutputFiles already exists!", log_1.ErrorLevel.info);
         }
         catch (_b) {
-            (0, log_1.LogMessage)("Could not create cffOutputFiles folder", log_1.ErrorLevel.err);
+            (0, log_1.LogMessage)("Could not create cffOutputFiles directory", log_1.ErrorLevel.err);
         }
         const stdOutStream = fs.createWriteStream("./cffOutputFiles/cffOutput.txt");
         const stdErrStream = fs.createWriteStream("./cffOutputFiles/cffError.txt");
@@ -19543,6 +19690,7 @@ function runModule(path = ".") {
         // Check cffconvert exit code for success
         if (!dockerExit.isError(exitCode)) {
             // CITATION.cff file is valid, return ValidCffObject with data and validation message
+            (0, log_1.LogMessage)("Read valid CITATION.cff file", log_1.ErrorLevel.info);
             const Data = {
                 status: "valid",
                 citation: result,
@@ -19552,10 +19700,12 @@ function runModule(path = ".") {
         }
         else {
             // CITATION.cff file is invalid, return ValidationErrorCffObject with data and error message
+            const error = getError(stderr);
+            (0, log_1.LogMessage)("Read CITATION.cff file has is invalid: " + error, log_1.ErrorLevel.warn);
             const Data = {
                 status: "validation_error",
                 citation: result,
-                validation_message: getError(stderr),
+                validation_message: error,
             };
             return Data;
         }
@@ -19738,7 +19888,7 @@ function getCitationPapers(paperID) {
                 }
                 ;
                 // Add the paper data to the results
-                const paper = new paper_1.Paper(title, doi, pmid, pmcid, year, "OpenAlex", [], fields, journal, url, numberOfCitations);
+                const paper = new paper_1.Paper(title, doi, pmid, pmcid, year, "OpenAlex", authors, fields, journal, url, numberOfCitations);
                 output.push(paper);
             }
             ;
@@ -20183,9 +20333,13 @@ exports.ModuleName = "CitingPapers";
 function runModule(cffFile) {
     return __awaiter(this, void 0, void 0, function* () {
         // Check cff output
-        if (cffFile === undefined || cffFile.status !== "valid") {
-            throw new Error("Invalid CITATION.cff file");
+        if (cffFile === undefined) {
+            throw new Error("Missing CitationCff module data");
         }
+        if (cffFile.status !== "valid") {
+            throw new Error("Missing CITATION.cff file data (status: \"" + cffFile.status + "\")");
+        }
+        // Get title
         const title = cffFile.citation.title;
         // Get reference paper titles from CITATION.cff file
         const refTitles = [];
@@ -20666,7 +20820,7 @@ exports.ModuleName = "fairtally";
  * and gives the checklist of FAIRness criteria.
  *
  * @param ghInfo Information about the GitHub repository.
- * @returns The result object from fairtally.
+ * @returns The result objects from fairtally.
  */
 function runModule(ghInfo) {
     return __awaiter(this, void 0, void 0, function* () {

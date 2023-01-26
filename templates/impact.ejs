@@ -10,7 +10,15 @@ const citations = pp !== undefined ? pp.firstHandCitations + pp.secondHandCitati
 const fieldCount = pp !== undefined ? pp.uniqueFields.filter(x => x !== "Unknown").length : "?";
 
 // Get most notable paper
-const mostNotablePaper = pp !== undefined && pp.papers.length > 0 ? pp.papers.sort((a, b) => b.numberOfCitations - a.numberOfCitations)[0] : {title: "missing data", journal: undefined};
+const mostNotablePaper = {title: "missing data", journal: undefined};
+if (pp !== undefined) {
+    if (pp.papers.length >= 1) {
+        mostNotablePaper = pp.papers.sort((a, b) => b.numberOfCitations - a.numberOfCitations)[0]
+    }
+    else {
+        mostNotablePaper.title = "none";
+    }
+};
 
 const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 
