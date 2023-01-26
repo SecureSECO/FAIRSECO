@@ -1,8 +1,13 @@
 <%
+    // Gets the value of the maximum step for the left axis,
+    // a value greater than the given value, which is divible by the step size.
     function maxStep(value, stepSize) {
         return Math.ceil(value / stepSize) * stepSize;
     }
 
+    // Gets the value of the minimum step for the left axis,
+    // given the step size and the value of the maximum step.
+    // If the maximum step is low enough, the minimum step will be zero.
     function minStep(value, stepSize, max) {
         if (max / stepSize <= 5) {
             return 0;
@@ -11,48 +16,62 @@
         }
     }
 
+    // Get the minimum and maximum values in the graph
     let min = Infinity;
     let max = -Infinity;
     for (const data of history) {
-        min = Math.min(min, data[field]);
-        max = Math.max(max, data[field]);
+        min = Math.min(min, data[field] ?? Infinity);
+        max = Math.max(max, data[field] ?? -Infinity);
     }
 
+    // Check for no values
+    if (isNaN(min)) {
+        min = 0;
+        max = 1;
+    }
+
+    // Make sure the axis is correct when the maximum and minimum values are the same
+    if (max === min) {
+        if (min >= 1 && min % 5 === 0) {
+            min--;
+        }
+        max++;
+    }
+
+    // Initialize variables for finding the optimal left axis;
+    // values on the left axis will be multiples of the step.
     let step = 1;
     let nextStep = 5;
     let increaseIndex = 0;
 
+    // Initialize the axis maximum and minimum, round to values of 5
     let axisMax = maxStep(max, 5);
     let axisMin = minStep(min, 5, axisMax);
 
+    // Increases for next step size:
+    // steps will be in sizes: 1 (step), 5 (next step), [10, 25, 50], [100, 250, 500], [1000, 2500, 5000], ...
     const stepIncrease = [2, 2.5, 2];
 
+    // Find the optimal step size and axis bounds:
+    // stop when the maximum of the axis is 5 steps above the minimum or less.
     while ((axisMax - axisMin) / step > 5) {
+        // Increase step
         step = nextStep;
         nextStep *= stepIncrease[increaseIndex];
         increaseIndex = (increaseIndex + 1) % 3;
 
-        const max1 = maxStep(max, step);
-        const min1 = minStep(min, step, max1);
-        const max2 = maxStep(max, nextStep);
-        const min2 = minStep(min, nextStep, max2);
-
-        if((max1 - min1) <= (max2 - min2)) {
-            axisMin = min1;
-            axisMax = max1;
-        } else {
-            axisMin = min2;
-            axisMax = max2;
-        }
+        // Get the new axis bounds 
+        axisMax = maxStep(max, step);
+        axisMin = minStep(min, step, axisMax);
     }
 
-    const difference = axisMax - axisMin;
+    const axisDifference = axisMax - axisMin;
 %>
 
 <div>
     <div class="ImpactHistory__Graphs__LeftAxis"> <%
         for (let i = axisMin; i <= axisMax; i += step) { %>
-            <div style="margin-top: <%- (i - axisMin) * -18 / difference + 17.1 %>vh;"><%- i %></div>
+            <div style="margin-top: <%- (i - axisMin) * -18 / axisDifference + 17.1 %>vh;"><%- i %></div>
         <% } %>
     </div>
     <div class="ImpactHistory__Graphs__Graph"> <%
@@ -60,7 +79,7 @@
         for (const data of history) { %>
             <div onMouseEnter="impactHistoryHoverData(<%- i %>)" onMouseLeave="impactHistoryUnhoverData(<%- i %>)" style="height:<%- Math.max(1, (data[field] - axisMin) * 100 / (axisMax - axisMin)) %>%;">
                 <span><%- data[field] %></span>
-                <div><%- data.date %></div>
+                <div><%- data.date ?? "missing date"%></div>
             </div>
             <% i++;
         } %>

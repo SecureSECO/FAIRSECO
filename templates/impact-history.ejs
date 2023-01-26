@@ -4,35 +4,41 @@
     }
 
     const count = history.length;
-    
-    const date = history[count- 1].date;
 
+    // Latest stats data
     const quality = history[count - 1].quality;
     const citations = history[count - 1].citations;
     const fairness = history[count - 1].fairness;
     const matches = history[count - 1].matches;
 
-    const qualityChange = count <= 1 ? quality : quality - history[count - 2].quality;
-    const citationsChange = count <= 1 ? citations : citations - history[count - 2].citations;
-    const fairnessChange = count <= 1 ? fairness : fairness - history[count - 2].fairness;
-    const matchesChange = count <= 1 ? matches : matches - history[count - 2].matches;
+    // Generates the element that shows the value and change of a field
+    function showChange(field, suffix) {
+        // New value
+        const newValue = history[count - 1][field];
 
-    function showChange(change) {
-        return change >= 0 ? "+" + change : change;
-    }
+        // Look for an older value that is not undefined to find the change
+        for (let i = count - 2; i >= 0; i--) {
+            const value = history[i][field];
 
-    function maxStep(value, stepSize) {
-        return Math.ceil(value / stepSize) * stepSize;
-    }
-
-    function minStep(value, stepSize, max) {
-        if (max / stepSize <= 5) {
-            return 0;
-        } else {
-            return Math.floor(value / stepSize) * stepSize;
+            if (value !== undefined) {
+                // Found older value
+                if (newValue === undefined) {
+                    // No current value, show old value
+                    %><b><%- String(value) + suffix %></b><br>last time<%
+                } else {
+                    // Show change
+                    const change = newValue - value;
+                    %><b><%- (change >= 0 ? "+" + change : change) + suffix %></b><br>since last time<%
+                }
+                
+                return;
+            }
         }
+
+        // No historical data found
+        %>No<br>historical data<%
     }
-%>
+%> 
 
 <div class="ImpactHistory" hidden>
     <h1>Impact History</h1>
@@ -40,38 +46,43 @@
     <div class="ImpactHistory__Overview">
         <div>
             <h3>Quality Score</h3>
-            <%- quality %>%
+            <%- quality ?? "no data" %>
             <div>
-                <b><%- showChange(qualityChange) %>%</b><br>since last time
+                <% showChange("quality", ""); %>
             </div>
         </div>
         <div>
             <h3>Citations</h3>
-            <%- citations %>
+            <%- citations ?? "no data" %>
             <div>
-                <b><%- showChange(citationsChange) %></b><br>since last time
+                <% showChange("citations", ""); %>
             </div>
         </div>
         <div>
             <h3>FAIRness</h3>
-            <% for (let i = 0; i < Math.floor(fairness); i++) { %>
-                <i class="fa-solid fa-star"></i>
-            <% } %>
-            <% if (fairness % 1 > 0) {%>
-                <i class="fa-solid fa-star-half-stroke"></i>
-            <%}%> 
-            <% for (let i = 0; i < (5 - Math.ceil(fairness)); i++) { %>
-                <i class="fa-regular fa-star"></i>
-            <% } %>
+            <%
+            for (let i = 0; i < Math.floor(fairness); i++) {
+                %><i class="fa-solid fa-star"></i><%
+            }
+            if (fairness % 1 > 0) {
+                %><i class="fa-solid fa-star-half-stroke"></i><%
+            }
+            for (let i = 0; i < (5 - Math.ceil(fairness)); i++) {
+                %><i class="fa-regular fa-star"></i><%
+            }
+               if (fairness === undefined) {
+                %>no data<%
+            }
+            %>
             <div>
-                <b><%- showChange(fairnessChange) %> <i class="fa-solid fa-star"></i></b><br>since last time
+                <% showChange("fairness", ' <i class="fa-solid fa-star"></i>'); %>
             </div>
         </div>
         <div>
             <h3>Method Matches</h3>
-            <%- matches %>
+            <%- matches ?? "no data" %>
             <div>
-                <b><%- showChange(matchesChange) %></b><br>since last time
+                <% showChange("matches", ""); %>
             </div>
         </div>
     </div>

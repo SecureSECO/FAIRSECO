@@ -220,7 +220,7 @@ describe("Test getAvgSolveTime", () => {
 });
 
 describe("Test hasDocumentation", () => {
-    test("Existing docs folder", () => {
+    test("Existing docs directory", () => {
         const result = quality.hasDocumentationDir();
 
         const hasDocs =

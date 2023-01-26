@@ -23,16 +23,20 @@ export async function runModule(
     cffFile: CffObject | undefined 
 ): Promise<Citations> {
     // Check cff output
-    if (cffFile === undefined || cffFile.status !== "valid") {
-        throw new Error("Invalid CITATION.cff file");
+    if (cffFile === undefined) {
+        throw new Error("Missing CitationCff module data");
     }
-
-    const title: string = cffFile.citation.title;
+    if (cffFile.status !== "valid") {
+        throw new Error("Missing CITATION.cff file data (status: \"" + cffFile.status + "\")");
+    }
     
+    // Get title
+    const title = cffFile.citation.title;
+
     // Get reference paper titles from CITATION.cff file
     const refTitles: string[] = [];
     if (cffFile.citation.references !== undefined) {
-        for (const ref of cffFile.citation.references){
+        for (const ref of cffFile.citation.references) {
             if (ref.type === "article" || ref.type === "journal-article") {
                 refTitles.push(ref.title);
             }
@@ -41,7 +45,7 @@ export async function runModule(
 
     // Get authors from CITATION.cff file
     const authors: Author[] = [];
-    for (const author of cffFile.citation.authors){
+    for (const author of cffFile.citation.authors) {
         let familyName = "";
         let givenNames = "";
         let orchidID = "";
