@@ -44,7 +44,7 @@ jobs:
                   git config --local user.email "github-actions[bot]@users.noreply.github.com"
                   git config --local user.name "github-actions[bot]"
                   git pull
-                  git add ./.fairseco_history.json
+                  git add -f ./.fairseco_history.json
                   git commit -m "Update FAIRSECO history file"
             - name: Push changes
               uses: ad-m/github-push-action@master
