@@ -127,3 +127,4 @@ out
 .pnp.*
 
 .FAIRSECO/
+.fairseco_history.json
