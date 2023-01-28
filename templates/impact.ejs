@@ -112,7 +112,7 @@ function getChartData() {
     <div class="ImpactScore__Content">
         <div class="Impact__Row">
             <h2> Papers and Citations</h2>
-            <div class="Impact__Row__Content">
+            <div id="Impact__Citation__Row" class="Impact__Row__Content">
                 <div class="Impact__Row__Block">
                     <p>Your project was cited</p>
                     <div class="Row__Number"><%- citations %></div>
@@ -133,13 +133,15 @@ function getChartData() {
             </div>
         </div>
 
-        <div class="Impact__Row">
-            <canvas id="Citations__RadarChart"></canvas>
+        <div id="Impact__Chart__Row" class="Impact__Row">
+            <div class="Citations__Chart__Container">
+                <canvas id="Citations__RadarChart"></canvas>
+            </div>
         </div>
 
         <div class="Impact__Row">
             <h2>Projects and Reuse</h2>
-            <div class="Impact__Row__Content">
+            <div id="Impact__Project__Row" class="Impact__Row__Content">
                 <div class="Impact__Row__Block">
                     <p>Your code matches methods in</p>
                     <div class="Row__Number"><%- projectCount ?? "?" %></div>
@@ -239,11 +241,29 @@ new Chart("Citations__RadarChart", config);
 }
 
 .Impact__Row__Content {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-
+    width: 100%;
+    display: grid;
 }
+#Impact__Citation__Row {
+    grid-template-columns: repeat(3, 1fr)
+}
+#Impact__Project__Row{
+    grid-template-columns: repeat(2, 1fr)
+}
+
+#Impact__Project__Row{
+    grid-template-columns: repeat(2, 1fr)
+}
+#Impact__Chart__Row{
+    margin: 2vw 0;
+}
+.Citations__Chart__Container{
+    position: relative;
+    width: 25vw;
+    margin: auto;
+}
+
+
 
 .Impact__Row__Block .Row__PaperTitle {
     font-weight: bold;
@@ -261,6 +281,7 @@ new Chart("Citations__RadarChart", config);
 
 .Impact__Row__Block p {
     margin: 0;
+    text-align: center;
 }
 
 .Impact__Row__Block .Row__Number {
@@ -269,8 +290,8 @@ new Chart("Citations__RadarChart", config);
     margin: 0.25vw;
 }
 
-#Citations__RadarChart {
+/*#Citations__RadarChart {
     margin: 5px;
-}
+}*/
 
 </style>
