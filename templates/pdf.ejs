@@ -83,6 +83,7 @@
 
     <%   
 
+            
         const licenses = data.find((ele) => (ele.ModuleName=== "Tortellini"))?.Data; 
         const fairtally = data.find((ele) => (ele.ModuleName=== "fairtally"))?.Data[0]; 
         const sbom = data.find((ele) => (ele.ModuleName=== "SBOM"))?.Data; 
@@ -92,23 +93,25 @@
         const paperData = data.find((ele) => (ele.ModuleName === "CitingPapers"))?.Data;
         const history = data.find((ele) => (ele.ModuleName === "History"))?.Data;
 
+        // Handle missing GitHub data
         if (githubData === undefined) {
-                githubData = {
-                    Repo: "missing data",
-                    Owner: "missing data",
-                    Stars: "?",
-                    Watched: "?",
-                    Forks: "?",
-                    Contributors: [
-                        {
-                            type: "User",
-                            login: "missing data"
-                        }
-                    ]
-                };
+            githubData = {
+                Repo: "missing data",
+                Owner: "missing data",
+                Stars: "?",
+                Watched: "?",
+                Forks: "?",
+                Contributors: [
+                    {
+                        type: "User",
+                        login: "missing data"
+                    }
+                ]
+            };
         }
-    
-        let topContributors = "";
+
+        // Get top contributors
+        topContributors = "";
         let contributorCount = 0;
         for (const contributor of githubData.Contributors) {
             if (contributor.type === "User" && contributorCount <= 6) {
