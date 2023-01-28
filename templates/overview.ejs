@@ -31,9 +31,9 @@
     const dateString = String(date.getDate()) + "/" + String(date.getMonth() + 1) + "/" + String(date.getFullYear());
 
     // Get citations, fairness, quality score
-    const citations = paperData !== undefined ? paperData.firstHandCitations + paperData.secondHandCitations : "?";
-    const fairness = fairtally !== undefined ? fairtally.count : "?";
-    const qualityScore = quality !== undefined ? quality.score : "?";
+    const citations = paperData !== undefined ? paperData.firstHandCitations + paperData.secondHandCitations : "-";
+    const fairness = fairtally !== undefined ? fairtally.count : "-";
+    const qualityScore = quality !== undefined ? quality.score : "-";
 
     // Get method matches
     let methodMatches = 0;
@@ -42,7 +42,7 @@
             methodMatches += method.matches.length;
         }
     } else {
-        methodMatches = "?";
+        methodMatches = "-";
     }
     
 %>

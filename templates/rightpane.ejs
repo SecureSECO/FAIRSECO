@@ -4,7 +4,14 @@ const fairtally = data.find((ele) => (ele.ModuleName === "fairtally"))?.Data[0];
 const quality = data.find((ele) => (ele.ModuleName === "QualityMetrics"))?.Data;
 const searchSECO = data.find((ele) => (ele.ModuleName === "SearchSECO"))?.Data;
 const paperData = data.find((ele) => (ele.ModuleName === "CitingPapers"))?.Data;
-const history = data.find((ele) => (ele.ModuleName === "History"))?.Data;
+//const history = data.find((ele) => (ele.ModuleName === "History"))?.Data;
+
+const history = [
+    {"date":"24/01/2023","quality":52,"citations":2,"fairness":2,"matches":5},
+    {"date":"25/01/2023","quality":50,"citations":3,"fairness":3,"matches":6},
+    {"date":"26/01/2023","quality":59,"citations":0,"fairness":3}
+];
+
 %>
 
 <div class="RightPane">
