@@ -147,6 +147,21 @@ window.addEventListener('load', () => {
             icon.classList.add("fa-solid", "fa-triangle-exclamation");
         }
     }
+
+    
+    const elementCSS = document.querySelector('.citationgraphBtn');
+
+    const citations = document.getElementsByClassName("Citations");
+    const citation = citations[0].children;
+
+    if ((citation.length > 0)){
+        elementCSS.style.visibility = 'visible';
+        elementCSS.style.display = 'block';
+    } else {
+        elementCSS.style.visibility = 'hidden';
+        elementCSS.style.display = 'none';
+    }
+
 });
 
 function moveHighlightBlockTo(ele) {
@@ -182,6 +197,19 @@ function clickNav(ele) {
     let active = document.querySelector(".Active");
     if (active === ele) {
         return;
+    }
+
+    const elementCSS = document.querySelector('.citationgraphBtn');
+
+    const citations = document.getElementsByClassName("Citations");
+    const citation = citations[0].children;
+
+    if (ele.lastElementChild.firstChild.nodeValue == "Citations" && (citation.length > 0)){
+        elementCSS.style.visibility = 'visible';
+        elementCSS.style.display = 'block';
+    } else{
+        elementCSS.style.visibility = 'hidden';
+        elementCSS.style.display = 'none';
     }
 
     active.classList.remove("Active");
@@ -243,33 +271,14 @@ function clickNav(ele) {
         <div class="Citation">
     <div class="info1">
         <div class="info2">
-            <p class="title" data-hover="A blueprint for integrating scientific approaches and international communities to assess basin-wide ocean ecosystem status">
-                A blueprint for integrating scientific approaches and international communities to assess basin-wide ocean ecosystem status
-            </p>
-            <h2 class="authors">
-                Authors not found
-            </h2>
-            <h2 id="doiSmall">
-                10.1038/s43247-022-00645-w
-            </h2>
-        </div>
-        <h3 class="description">Collected from OpenAlex, SemanticScholar</h3>
-    </div>
-    <div class="year"><p>2023</p></div>
-    <div class="doi"><p>10.1038/s43247-022-00645-w</p></div>
-    <div class="link">
-        <a href="https://www.doi.org/10.1038/s43247-022-00645-w" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-link"></i></a>
-    </div>
-</div>
-    
-        <div class="Citation">
-    <div class="info1">
-        <div class="info2">
             <p class="title" data-hover="Sources of marine debris for Seychelles and other remote islands in the western Indian Ocean.">
                 Sources of marine debris for Seychelles and other remote islands in the western Indian Ocean.
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Rob de Nijs Ken Burn Ken Burn et al.</h2>
+                <!-- <script>console.log(Rob de Nijs)</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1016/j.marpolbul.2022.114497
@@ -290,8 +299,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Oceanographic conditions of the continental slope and deep waters in Santos Basin: the SANSED cruise (winter 2019)">
                 Oceanographic conditions of the continental slope and deep waters in Santos Basin: the SANSED cruise (winter 2019)
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1590/2675-2824071.2206icas
@@ -312,8 +324,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Robust estimates for the decadal evolution of Agulhas leakage from the 1960s to the 2010s">
                 Robust estimates for the decadal evolution of Agulhas leakage from the 1960s to the 2010s
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1038/s43247-022-00643-y
@@ -334,8 +349,11 @@ function clickNav(ele) {
             <p class="title" data-hover="A Global Simulation of the Dynamo, Zonal Jets, and Vortices on Saturn">
                 A Global Simulation of the Dynamo, Zonal Jets, and Vortices on Saturn
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.3847/1538-4357/ac9d94
@@ -356,8 +374,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Pathways and destinations of floating marine plastic debris from 10 major rivers in Java and Bali, Indonesia: A Lagrangian particle tracking perspective">
                 Pathways and destinations of floating marine plastic debris from 10 major rivers in Java and Bali, Indonesia: A Lagrangian particle tracking perspective
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1016/j.marpolbul.2022.114331
@@ -378,8 +399,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Drift prediction of pyroclasts released through the volcanic activity of Fukutoku-Okanoba into the marine environment">
                 Drift prediction of pyroclasts released through the volcanic activity of Fukutoku-Okanoba into the marine environment
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1016/j.marpolbul.2022.114402
@@ -400,8 +424,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Synthetic microplastic abundance and composition along a longitudinal gradient traversing the subtropical gyre in the North Atlantic Ocean">
                 Synthetic microplastic abundance and composition along a longitudinal gradient traversing the subtropical gyre in the North Atlantic Ocean
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1016/j.marpolbul.2022.114371
@@ -422,8 +449,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Effects of oceanography on North Pacific armorhead recruitment in the Emperor Seamounts">
                 Effects of oceanography on North Pacific armorhead recruitment in the Emperor Seamounts
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1111/fog.12612
@@ -444,8 +474,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Exceptional freshening and cooling in the eastern subpolar North Atlantic caused by reduced Labrador Sea surface heat loss">
                 Exceptional freshening and cooling in the eastern subpolar North Atlantic caused by reduced Labrador Sea surface heat loss
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.5194/os-18-1507-2022
@@ -466,8 +499,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Influence of Particle Size and Fragmentation on Large-Scale Microplastic Transport in the Mediterranean Sea">
                 Influence of Particle Size and Fragmentation on Large-Scale Microplastic Transport in the Mediterranean Sea
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1021/acs.est.2c03363
@@ -488,8 +524,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Biophysical larval dispersal models of observed bonefish (Albula vulpes) spawning events in Abaco, The Bahamas: An assessment of population connectivity and ocean dynamics">
                 Biophysical larval dispersal models of observed bonefish (Albula vulpes) spawning events in Abaco, The Bahamas: An assessment of population connectivity and ocean dynamics
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1371/journal.pone.0276528
@@ -510,8 +549,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Detecting the most effective cleanup locations using network theory to reduce marine plastic debris: a case study in the Galapagos Marine Reserve">
                 Detecting the most effective cleanup locations using network theory to reduce marine plastic debris: a case study in the Galapagos Marine Reserve
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.5194/os-18-1477-2022
@@ -532,8 +574,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Major sources of North Atlantic Deep Water in the subpolar North Atlantic from Lagrangian analyses in an eddy-rich ocean model">
                 Major sources of North Atlantic Deep Water in the subpolar North Atlantic from Lagrangian analyses in an eddy-rich ocean model
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.5194/os-18-1431-2022
@@ -554,8 +599,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Data Fusion for Connectivity Analysis between Ocean Regions">
                 Data Fusion for Connectivity Analysis between Ocean Regions
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1109/escience55777.2022.00046
@@ -576,8 +624,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Modelling of tuna around fish aggregating devices: the importance of ocean flow and prey">
                 Modelling of tuna around fish aggregating devices: the importance of ocean flow and prey
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1101/2022.09.20.508652
@@ -598,8 +649,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Mesoscale oceanographic features drive divergent patterns in connectivity for co‐occurring estuarine portunid crabs">
                 Mesoscale oceanographic features drive divergent patterns in connectivity for co‐occurring estuarine portunid crabs
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1111/fog.12608
@@ -620,8 +674,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Perceptual multivariate visualisation of volumetric Lagrangian fluid-flow processes">
                 Perceptual multivariate visualisation of volumetric Lagrangian fluid-flow processes
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.3389/fenvs.2022.941910
@@ -642,8 +699,11 @@ function clickNav(ele) {
             <p class="title" data-hover="The Natal Bight Coastal Counter-Current: A modeling study">
                 The Natal Bight Coastal Counter-Current: A modeling study
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1016/j.csr.2022.104852
@@ -664,8 +724,11 @@ function clickNav(ele) {
             <p class="title" data-hover="The Plastic Pathfinder: A macroplastic transport and fate model for terrestrial environments">
                 The Plastic Pathfinder: A macroplastic transport and fate model for terrestrial environments
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.3389/fenvs.2022.979685
@@ -686,8 +749,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Hydrodynamic drivers of fine‐scale connectivity within a coral reef atoll">
                 Hydrodynamic drivers of fine‐scale connectivity within a coral reef atoll
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1002/lno.12198
@@ -708,8 +774,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Attribution of Plastic Sources Using Bayesian Inference: Application to River-Sourced Floating Plastic in the South Atlantic Ocean">
                 Attribution of Plastic Sources Using Bayesian Inference: Application to River-Sourced Floating Plastic in the South Atlantic Ocean
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.3389/fmars.2022.925437
@@ -730,8 +799,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Climate-Change Refugia for the Bubblegum Coral Paragorgia arborea in the Northwest Atlantic">
                 Climate-Change Refugia for the Bubblegum Coral Paragorgia arborea in the Northwest Atlantic
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.3389/fmars.2022.863693
@@ -752,8 +824,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Investigating microscale patchiness of motile microbes under turbulence in a simulated convective mixed layer">
                 Investigating microscale patchiness of motile microbes under turbulence in a simulated convective mixed layer
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1371/journal.pcbi.1010291
@@ -774,8 +849,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Individual-based modeling of shelled pteropods">
                 Individual-based modeling of shelled pteropods
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1016/j.ecolmodel.2022.109944
@@ -796,8 +874,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Biological Carbon Pump Sequestration Efficiency in the North Atlantic: A Leaky or a Long‐Term Sink?">
                 Biological Carbon Pump Sequestration Efficiency in the North Atlantic: A Leaky or a Long‐Term Sink?
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1029/2021gb007286
@@ -818,8 +899,11 @@ function clickNav(ele) {
             <p class="title" data-hover="A new model-based coastal retention index (CORE) identifies bays as hotspots of retention, biological production and cumulative anthropogenic pressures">
                 A new model-based coastal retention index (CORE) identifies bays as hotspots of retention, biological production and cumulative anthropogenic pressures
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1016/j.ecss.2022.107909
@@ -840,8 +924,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Predictability of thermal fluctuations influences functional traits of a cosmopolitan marine diatom">
                 Predictability of thermal fluctuations influences functional traits of a cosmopolitan marine diatom
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1098/rspb.2021.2581
@@ -862,8 +949,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Tracking a Rain-Induced Low-Salinity Pool in the South China Sea Using Satellite and Quasi-Lagrangian Field Observations">
                 Tracking a Rain-Induced Low-Salinity Pool in the South China Sea Using Satellite and Quasi-Lagrangian Field Observations
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.3390/rs14092030
@@ -884,8 +974,11 @@ function clickNav(ele) {
             <p class="title" data-hover="A DNN Framework for Learning Lagrangian Drift With Uncertainty">
                 A DNN Framework for Learning Lagrangian Drift With Uncertainty
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.48550/arxiv.2204.05891
@@ -906,8 +999,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Persistence and material coherence of a mesoscale ocean eddy">
                 Persistence and material coherence of a mesoscale ocean eddy
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1103/physrevfluids.7.034501
@@ -928,8 +1024,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Limited Lateral Transport Bias During Export of Sea Surface Temperature Proxy Carriers in the Mediterranean Sea">
                 Limited Lateral Transport Bias During Export of Sea Surface Temperature Proxy Carriers in the Mediterranean Sea
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1029/2021gl096859
@@ -950,8 +1049,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Simulating Lagrangian Subgrid‐Scale Dispersion on Neutral Surfaces in the Ocean">
                 Simulating Lagrangian Subgrid‐Scale Dispersion on Neutral Surfaces in the Ocean
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1029/2021ms002850
@@ -972,8 +1074,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Identifying Marine Sources of Beached Plastics Through a Bayesian Framework: Application to Southwest Netherlands">
                 Identifying Marine Sources of Beached Plastics Through a Bayesian Framework: Application to Southwest Netherlands
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1029/2021gl097214
@@ -994,8 +1099,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Transport Structure of the South Atlantic Ocean Derived From a High-Resolution Numerical Model and Observations">
                 Transport Structure of the South Atlantic Ocean Derived From a High-Resolution Numerical Model and Observations
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.3389/fmars.2022.811398
@@ -1016,8 +1124,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Efficiently Simulating Lagrangian Particles in Large-Scale Ocean">
                 Efficiently Simulating Lagrangian Particles in Large-Scale Ocean
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 
@@ -1038,8 +1149,11 @@ function clickNav(ele) {
             <p class="title" data-hover="The 2019 northeast Brazil oil spill: scenarios.">
                 The 2019 northeast Brazil oil spill: scenarios.
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1590/0001-3765202220210391
@@ -1060,8 +1174,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Major sources of North Atlantic Deep Water in the subpolar North Atlantic from Lagrangian analyses in a high–resolution ocean model">
                 Major sources of North Atlantic Deep Water in the subpolar North Atlantic from Lagrangian analyses in a high–resolution ocean model
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 
@@ -1082,8 +1199,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Human and ecosystem health in coastal systems">
                 Human and ecosystem health in coastal systems
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 
@@ -1104,8 +1224,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Life in the Fast Lane: Modeling the Fate of Glass Sponge Larvae in the Gulf Stream">
                 Life in the Fast Lane: Modeling the Fate of Glass Sponge Larvae in the Gulf Stream
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.3389/fmars.2021.701218
@@ -1126,8 +1249,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Empirical Lagrangian parametrization for wind-driven mixing of buoyant particles at the ocean surface">
                 Empirical Lagrangian parametrization for wind-driven mixing of buoyant particles at the ocean surface
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.5194/gmd-2021-195
@@ -1148,8 +1274,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Advective pathways and transit times of the Red Sea Overflow Water in the Arabian Sea from Lagrangian simulations">
                 Advective pathways and transit times of the Red Sea Overflow Water in the Arabian Sea from Lagrangian simulations
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1016/j.pocean.2021.102697
@@ -1170,8 +1299,11 @@ function clickNav(ele) {
             <p class="title" data-hover="The Impact of Sea‐Ice Drift and Ocean Circulation on Dispersal of Toothfish Eggs and Juveniles in the Ross Gyre and Amundsen Sea">
                 The Impact of Sea‐Ice Drift and Ocean Circulation on Dispersal of Toothfish Eggs and Juveniles in the Ross Gyre and Amundsen Sea
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1029/2021jc017329
@@ -1192,8 +1324,11 @@ function clickNav(ele) {
             <p class="title" data-hover="A New Open Source Implementation of Lagrangian Filtering: A Method to Identify Internal Waves in High‐Resolution Simulations">
                 A New Open Source Implementation of Lagrangian Filtering: A Method to Identify Internal Waves in High‐Resolution Simulations
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1029/2021ms002616
@@ -1214,8 +1349,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Passive tracer advection in the equatorial Pacific region: statistics, correlations, and a model of fractional Brownian motion">
                 Passive tracer advection in the equatorial Pacific region: statistics, correlations, and a model of fractional Brownian motion
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.5194/os-2021-94
@@ -1236,8 +1374,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Modeling submerged biofouled microplastics and their vertical trajectories">
                 Modeling submerged biofouled microplastics and their vertical trajectories
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.5194/bg-2021-236
@@ -1258,8 +1399,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Using machine learning and beach cleanup data to explain litter quantities along the Dutch North Sea coast">
                 Using machine learning and beach cleanup data to explain litter quantities along the Dutch North Sea coast
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.5194/os-2021-83
@@ -1280,8 +1424,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Interaction of an Upwelling Front with External Vortices: Impact on Cross-shore Particle Exchange">
                 Interaction of an Upwelling Front with External Vortices: Impact on Cross-shore Particle Exchange
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1134/s1560354721050063
@@ -1302,8 +1449,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Investigating the internal structure of the Antarctic Ice Sheet: the utility of isochrones for spatio-temporal ice sheet model calibration">
                 Investigating the internal structure of the Antarctic Ice Sheet: the utility of isochrones for spatio-temporal ice sheet model calibration
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.5194/egusphere-egu21-9446
@@ -1324,8 +1474,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Source, sea and sink—A holistic approach to understanding plastic pollution in the Southern Caribbean">
                 Source, sea and sink—A holistic approach to understanding plastic pollution in the Southern Caribbean
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1016/j.scitotenv.2021.149098
@@ -1346,8 +1499,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Investigating microscale patchiness of motile microbes driven by the interaction of turbulence and gyrotaxis in a 3D simulated convective mixed layer.">
                 Investigating microscale patchiness of motile microbes driven by the interaction of turbulence and gyrotaxis in a 3D simulated convective mixed layer.
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.21203/rs.3.rs-152503/v2
@@ -1368,8 +1524,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Revisiting the Atlantic South Equatorial Current">
                 Revisiting the Atlantic South Equatorial Current
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1029/2021jc017387
@@ -1390,8 +1549,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Potential sources of marine plastic from survey beaches in the Arctic and Northeast Atlantic">
                 Potential sources of marine plastic from survey beaches in the Arctic and Northeast Atlantic
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1016/j.scitotenv.2021.148009
@@ -1412,8 +1574,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Restricted dispersal in a sea of gene flow">
                 Restricted dispersal in a sea of gene flow
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1098/rspb.2021.0458
@@ -1434,8 +1599,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Speeding up Python-based Lagrangian Fluid-Flow Particle Simulations via Dynamic Collection Data Structures">
                 Speeding up Python-based Lagrangian Fluid-Flow Particle Simulations via Dynamic Collection Data Structures
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 
@@ -1456,8 +1624,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Modeling the Exposure of the Macaronesia Islands (NE Atlantic) to Marine Plastic Pollution">
                 Modeling the Exposure of the Macaronesia Islands (NE Atlantic) to Marine Plastic Pollution
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.3389/fmars.2021.653502
@@ -1478,8 +1649,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Tracking Marine Litter With a Global Ocean Model: Where Does It Go? Where Does It Come From?">
                 Tracking Marine Litter With a Global Ocean Model: Where Does It Go? Where Does It Come From?
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.3389/fmars.2021.667591
@@ -1500,8 +1674,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Towards a particle trajectory modelling approach in support of South African search and rescue operations at sea">
                 Towards a particle trajectory modelling approach in support of South African search and rescue operations at sea
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1080/1755876x.2021.1911485
@@ -1522,8 +1699,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Global simulations of marine plastic transport show plastic trapping in coastal zones">
                 Global simulations of marine plastic transport show plastic trapping in coastal zones
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1088/1748-9326/abecbd
@@ -1544,8 +1724,11 @@ function clickNav(ele) {
             <p class="title" data-hover="On the Variability of the DWBC Transport Between 26.5°N and 16°N in an Eddy‐Rich Ocean Model">
                 On the Variability of the DWBC Transport Between 26.5°N and 16°N in an Eddy‐Rich Ocean Model
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1029/2021jc017372
@@ -1566,8 +1749,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Characteristics and robustness of Agulhas leakage estimates: an inter-comparison study of Lagrangian methods">
                 Characteristics and robustness of Agulhas leakage estimates: an inter-comparison study of Lagrangian methods
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.5194/os-17-1067-2021
@@ -1588,8 +1774,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Global Modeled Sinking Characteristics of Biofouled Microplastic">
                 Global Modeled Sinking Characteristics of Biofouled Microplastic
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1029/2020jc017098
@@ -1610,8 +1799,11 @@ function clickNav(ele) {
             <p class="title" data-hover="The Role of Stokes Drift in the Dispersal of North Atlantic Surface Marine Debris">
                 The Role of Stokes Drift in the Dispersal of North Atlantic Surface Marine Debris
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.3389/fmars.2021.697430
@@ -1632,8 +1824,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Strongly Coupled Assimilation of a Hypothetical Ocean Current Observing Network within a Regional Ocean–Atmosphere Coupled Model: An OSSE Case Study of Typhoon Hato">
                 Strongly Coupled Assimilation of a Hypothetical Ocean Current Observing Network within a Regional Ocean–Atmosphere Coupled Model: An OSSE Case Study of Typhoon Hato
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1175/mwr-d-20-0108.1
@@ -1654,8 +1849,11 @@ function clickNav(ele) {
             <p class="title" data-hover="The Trash-Tracker: A Macroplastic Transport and Fate Model at River Basin Scale">
                 The Trash-Tracker: A Macroplastic Transport and Fate Model at River Basin Scale
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.31223/x5303g
@@ -1676,8 +1874,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Fast lagrangian particle tracking in unstructured ocean model grids">
                 Fast lagrangian particle tracking in unstructured ocean model grids
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1007/s10236-020-01436-7
@@ -1698,8 +1899,11 @@ function clickNav(ele) {
             <p class="title" data-hover="A mechanism for the increased wave-induced drift of floating marine litter">
                 A mechanism for the increased wave-induced drift of floating marine litter
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1017/jfm.2021.72
@@ -1720,8 +1924,11 @@ function clickNav(ele) {
             <p class="title" data-hover="On the Impact of the Caribbean Counter Current in the Guajira Upwelling System">
                 On the Impact of the Caribbean Counter Current in the Guajira Upwelling System
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.3389/fmars.2021.626823
@@ -1742,8 +1949,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Lagrangian Reconstruction to Extract Small‐Scale Salinity Variability From SMAP Observations">
                 Lagrangian Reconstruction to Extract Small‐Scale Salinity Variability From SMAP Observations
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1029/2020jc016477
@@ -1764,8 +1974,11 @@ function clickNav(ele) {
             <p class="title" data-hover="The influence of depositional environment on the abundance of microplastic pollution on beaches in the Bristol Channel, UK">
                 The influence of depositional environment on the abundance of microplastic pollution on beaches in the Bristol Channel, UK
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1016/j.marpolbul.2021.111997
@@ -1786,8 +1999,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Ocean Plastic Assimilator v0.1: Assimilation of Plastics Concentration Data Into Lagrangian Dispersion Models">
                 Ocean Plastic Assimilator v0.1: Assimilation of Plastics Concentration Data Into Lagrangian Dispersion Models
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.5194/gmd-2020-385
@@ -1808,8 +2024,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Modelling size distributions of marine plastics under the influence of continuous cascading fragmentation">
                 Modelling size distributions of marine plastics under the influence of continuous cascading fragmentation
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1088/1748-9326/abe9ea
@@ -1830,8 +2049,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Comparing models and observations of the surface accumulation zone of floating plastic in the North Atlantic subtropical gyre">
                 Comparing models and observations of the surface accumulation zone of floating plastic in the North Atlantic subtropical gyre
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 
@@ -1852,8 +2074,11 @@ function clickNav(ele) {
             <p class="title" data-hover="A mechanism for the increased wave-induced drift of ﬂoating marine litter">
                 A mechanism for the increased wave-induced drift of ﬂoating marine litter
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 
@@ -1874,8 +2099,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Lagrangian Methods for Visualizing and Assessing Frontal Dynamics of Floating Marine Litter with a Focus on Tidal Basins">
                 Lagrangian Methods for Visualizing and Assessing Frontal Dynamics of Floating Marine Litter with a Focus on Tidal Basins
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1007/698_2021_812
@@ -1896,8 +2124,11 @@ function clickNav(ele) {
             <p class="title" data-hover="PRACTICES, PITFALLS AND GUIDELINES IN VISUALISING LAGRANGIAN OCEAN ANALYSES">
                 PRACTICES, PITFALLS AND GUIDELINES IN VISUALISING LAGRANGIAN OCEAN ANALYSES
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.5194/isprs-annals-v-4-2021-217-2021
@@ -1918,8 +2149,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Processes and flows in marginal seas">
                 Processes and flows in marginal seas
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1016/b978-0-12-816059-6.00011-5
@@ -1940,8 +2174,11 @@ function clickNav(ele) {
             <p class="title" data-hover="Dispersion of Surface Drifters in the Tropical Atlantic">
                 Dispersion of Surface Drifters in the Tropical Atlantic
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.3389/fmars.2020.607426
@@ -1962,8 +2199,11 @@ function clickNav(ele) {
             <p class="title" data-hover="3-D ocean particle tracking modeling reveals extensive vertical movement and downstream interdependence of closed areas in the northwest Atlantic">
                 3-D ocean particle tracking modeling reveals extensive vertical movement and downstream interdependence of closed areas in the northwest Atlantic
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1038/s41598-020-76617-x
@@ -1986,8 +2226,11 @@ a spatio-temporal calibration for ice-sheet modelling">
                 Simulating the internal structure of the Antarctic Ice Sheet – towards
 a spatio-temporal calibration for ice-sheet modelling
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.5194/tc-2020-349
@@ -2008,8 +2251,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Automatic Smart UAV search of lost floating target in ocean environment based on high dense clustering">
                 Automatic Smart UAV search of lost floating target in ocean environment based on high dense clustering
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1109/smart-tech49988.2020.00039
@@ -2030,8 +2276,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Population connectivity of fan-shaped sponge holobionts in the deep Cantabrian Sea">
                 Population connectivity of fan-shaped sponge holobionts in the deep Cantabrian Sea
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1016/j.dsr.2020.103427
@@ -2052,8 +2301,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Sinking microplastics in the water column: simulations in the Mediterranean Sea">
                 Sinking microplastics in the water column: simulations in the Mediterranean Sea
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.5194/os-2020-95
@@ -2074,8 +2326,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Microplastics quantification in surface waters of the Barents, Kara and White Seas">
                 Microplastics quantification in surface waters of the Barents, Kara and White Seas
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1016/j.marpolbul.2020.111745
@@ -2096,8 +2351,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Resolution dependency of sinking Lagrangian particles in ocean general circulation models">
                 Resolution dependency of sinking Lagrangian particles in ocean general circulation models
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1371/journal.pone.0238650
@@ -2118,8 +2376,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Effects of swimming behaviour and oceanography on sea turtle hatchling dispersal at the intersection of two ocean current systems">
                 Effects of swimming behaviour and oceanography on sea turtle hatchling dispersal at the intersection of two ocean current systems
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1016/j.ecolmodel.2020.109130
@@ -2140,8 +2401,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Closing the Mediterranean Marine Floating Plastic Mass Budget: Inverse Modeling of Sources and Sinks">
                 Closing the Mediterranean Marine Floating Plastic Mass Budget: Inverse Modeling of Sources and Sinks
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1021/acs.est.0c01984
@@ -2162,8 +2426,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Phylogeographic structure and population connectivity of a small benthic fish ( Tripterygion tripteronotum ) in the Adriatic Sea">
                 Phylogeographic structure and population connectivity of a small benthic fish ( Tripterygion tripteronotum ) in the Adriatic Sea
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1111/jbi.13946
@@ -2184,8 +2451,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Point-by-point reply to reviewer 1">
                 Point-by-point reply to reviewer 1
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.5194/os-2020-25-ac2
@@ -2206,8 +2476,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Multiple spawning events promote increased larval dispersal of a predatory fish in a western boundary current">
                 Multiple spawning events promote increased larval dispersal of a predatory fish in a western boundary current
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1111/fog.12473
@@ -2228,8 +2501,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Ordering of trajectories reveals hierarchical finite-time coherent sets in Lagrangian particle data: detecting Agulhas rings in the South Atlantic Ocean">
                 Ordering of trajectories reveals hierarchical finite-time coherent sets in Lagrangian particle data: detecting Agulhas rings in the South Atlantic Ocean
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.5194/npg-2020-28
@@ -2250,8 +2526,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Unsteady Ekman‐Stokes Dynamics: Implications for Surface Wave‐Induced Drift of Floating Marine Litter">
                 Unsteady Ekman‐Stokes Dynamics: Implications for Surface Wave‐Induced Drift of Floating Marine Litter
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1029/2020gl089189
@@ -2272,8 +2551,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Observations of a Deep Submesoscale Cyclonic Vortex in the Arabian Sea">
                 Observations of a Deep Submesoscale Cyclonic Vortex in the Arabian Sea
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1029/2020gl087881
@@ -2294,8 +2576,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Beaching patterns of plastic debris along the Indian Ocean rim">
                 Beaching patterns of plastic debris along the Indian Ocean rim
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.5194/os-2020-50
@@ -2316,8 +2601,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Depth-Dependent Correction for Wind-Driven Drift Current in Particle Tracking Applications">
                 Depth-Dependent Correction for Wind-Driven Drift Current in Particle Tracking Applications
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.3389/fmars.2020.00305
@@ -2338,8 +2626,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Multidecadal preconditioning of the Maud Rise polynya region">
                 Multidecadal preconditioning of the Maud Rise polynya region
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.5194/os-2020-25
@@ -2360,8 +2651,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Resolution-dependent variations of sinking Lagrangian particles in general circulation models">
                 Resolution-dependent variations of sinking Lagrangian particles in general circulation models
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 
@@ -2382,8 +2676,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Evaluation of isotopes and elements in planktonic foraminifera from the Mediterranean Sea as recorders of seawater oxygen isotopes and salinity">
                 Evaluation of isotopes and elements in planktonic foraminifera from the Mediterranean Sea as recorders of seawater oxygen isotopes and salinity
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.5194/cp-2020-26
@@ -2404,8 +2701,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Ongoing Dispersal of the 7 August 2019 Pumice Raft From the Tonga Arc in the Southwestern Pacific Ocean">
                 Ongoing Dispersal of the 7 August 2019 Pumice Raft From the Tonga Arc in the Southwestern Pacific Ocean
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1029/2019gl086768
@@ -2426,8 +2726,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="The physical oceanography of the transport of floating marine debris">
                 The physical oceanography of the transport of floating marine debris
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1088/1748-9326/ab6d7d
@@ -2448,8 +2751,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Unraveling the choice of the north Atlantic subpolar gyre index">
                 Unraveling the choice of the north Atlantic subpolar gyre index
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1038/s41598-020-57790-5
@@ -2470,8 +2776,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Analysis of spatiotemporal patterns of plastics in the Baltic Sea">
                 Analysis of spatiotemporal patterns of plastics in the Baltic Sea
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 
@@ -2492,8 +2801,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Evaluation of oxygen isotopes and trace elements in planktonic foraminifera from the Mediterranean Sea as recorders of seawater oxygen isotopes and salinity">
                 Evaluation of oxygen isotopes and trace elements in planktonic foraminifera from the Mediterranean Sea as recorders of seawater oxygen isotopes and salinity
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.5194/cp-16-2401-2020
@@ -2514,8 +2826,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Mixing of passive tracers at the ocean surface and its implications for plastic transport modelling">
                 Mixing of passive tracers at the ocean surface and its implications for plastic transport modelling
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1088/2515-7620/ab4e77
@@ -2536,8 +2851,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Influence of Near‐Surface Currents on the Global Dispersal of Marine Microplastic">
                 Influence of Near‐Surface Currents on the Global Dispersal of Marine Microplastic
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1029/2019jc015328
@@ -2558,8 +2876,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Transport Bias by Ocean Currents in Sedimentary Microplankton Assemblages: Implications for Paleoceanographic Reconstructions">
                 Transport Bias by Ocean Currents in Sedimentary Microplankton Assemblages: Implications for Paleoceanographic Reconstructions
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1029/2019pa003606
@@ -2580,8 +2901,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Validating Ocean General Circulation Models via Lagrangian Particle Simulation and Data from Drifting Buoys">
                 Validating Ocean General Circulation Models via Lagrangian Particle Simulation and Data from Drifting Buoys
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1007/978-3-030-22747-0_20
@@ -2602,8 +2926,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Regional connectivity and spatial densities of drifting fish aggregating devices, simulated from fishing events in the Western and Central Pacific Ocean">
                 Regional connectivity and spatial densities of drifting fish aggregating devices, simulated from fishing events in the Western and Central Pacific Ocean
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1088/2515-7620/ab21e9
@@ -2624,8 +2951,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Basin-scale sources and pathways of microplastic that ends up in the Galápagos Archipelago">
                 Basin-scale sources and pathways of microplastic that ends up in the Galápagos Archipelago
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.5194/os-15-1341-2019
@@ -2646,8 +2976,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Computational Science – ICCS 2019">
                 Computational Science – ICCS 2019
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1007/978-3-030-22747-0
@@ -2668,8 +3001,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Comparison of Physical Connectivity Particle Tracking Models in the Flemish Cap Region">
                 Comparison of Physical Connectivity Particle Tracking Models in the Flemish Cap Region
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 
@@ -2690,8 +3026,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Developments in Lagrangian Data Assimilation and Coupled Data Assimilation to Support Earth System Model Initialization">
                 Developments in Lagrangian Data Assimilation and Coupled Data Assimilation to Support Earth System Model Initialization
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.13016/9jq0-u5br
@@ -2712,8 +3051,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Beaching patterns of plastic debris along the Indian Ocean rim">
                 Beaching patterns of plastic debris along the Indian Ocean rim
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.5194/os-16-1317-2020
@@ -2734,8 +3076,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Sinking microplastics in the water column: simulations in the Mediterranean Sea">
                 Sinking microplastics in the water column: simulations in the Mediterranean Sea
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.5194/os-17-431-2021
@@ -2756,8 +3101,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Investigating the internal structure of the Antarctic ice sheet: the utility of isochrones for spatiotemporal ice-sheet model calibration">
                 Investigating the internal structure of the Antarctic ice sheet: the utility of isochrones for spatiotemporal ice-sheet model calibration
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.5194/tc-15-3839-2021
@@ -2778,8 +3126,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Multidecadal preconditioning of the Maud Rise polynya region">
                 Multidecadal preconditioning of the Maud Rise polynya region
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.5194/os-16-1443-2020
@@ -2800,8 +3151,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="A novel UAV path planning algorithm to search for floating objects on the ocean surface based on object’s trajectory prediction by regression">
                 A novel UAV path planning algorithm to search for floating objects on the ocean surface based on object’s trajectory prediction by regression
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1016/j.robot.2020.103673
@@ -2819,33 +3173,14 @@ a spatio-temporal calibration for ice-sheet modelling
         <div class="Citation">
     <div class="info1">
         <div class="info2">
-            <p class="title" data-hover="Hydrometeorological assessments of the transport of microplastic pellets in the Eastern Mediterranean">
-                Hydrometeorological assessments of the transport of microplastic pellets in the Eastern Mediterranean
-            </p>
-            <h2 class="authors">
-                Authors not found
-            </h2>
-            <h2 id="doiSmall">
-                10.1016/j.scitotenv.2022.153676
-            </h2>
-        </div>
-        <h3 class="description">Collected from OpenAlex</h3>
-    </div>
-    <div class="year"><p>2022</p></div>
-    <div class="doi"><p>10.1016/j.scitotenv.2022.153676</p></div>
-    <div class="link">
-        <a href="https://www.doi.org/10.1016/j.scitotenv.2022.153676" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-link"></i></a>
-    </div>
-</div>
-    
-        <div class="Citation">
-    <div class="info1">
-        <div class="info2">
             <p class="title" data-hover="Ordering of trajectories reveals hierarchical finite-time coherent sets in Lagrangian particle data: detecting Agulhas rings in the South Atlantic Ocean">
                 Ordering of trajectories reveals hierarchical finite-time coherent sets in Lagrangian particle data: detecting Agulhas rings in the South Atlantic Ocean
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.5194/npg-28-43-2021
@@ -2866,8 +3201,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Empirical Lagrangian parametrization for wind-driven mixing of buoyant particles at the ocean surface">
                 Empirical Lagrangian parametrization for wind-driven mixing of buoyant particles at the ocean surface
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.5194/gmd-15-1995-2022
@@ -2888,8 +3226,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Modelling submerged biofouled microplastics and their vertical trajectories">
                 Modelling submerged biofouled microplastics and their vertical trajectories
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.5194/bg-19-2211-2022
@@ -2907,22 +3248,25 @@ a spatio-temporal calibration for ice-sheet modelling
         <div class="Citation">
     <div class="info1">
         <div class="info2">
-            <p class="title" data-hover="Using machine learning and beach cleanup data to explain litter quantities along the Dutch North Sea coast">
-                Using machine learning and beach cleanup data to explain litter quantities along the Dutch North Sea coast
+            <p class="title" data-hover="Hydrometeorological assessments of the transport of microplastic pellets in the Eastern Mediterranean">
+                Hydrometeorological assessments of the transport of microplastic pellets in the Eastern Mediterranean
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
-                10.5194/os-18-269-2022
+                10.1016/j.scitotenv.2022.153676
             </h2>
         </div>
         <h3 class="description">Collected from OpenAlex</h3>
     </div>
     <div class="year"><p>2022</p></div>
-    <div class="doi"><p>10.5194/os-18-269-2022</p></div>
+    <div class="doi"><p>10.1016/j.scitotenv.2022.153676</p></div>
     <div class="link">
-        <a href="https://www.doi.org/10.5194/os-18-269-2022" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-link"></i></a>
+        <a href="https://www.doi.org/10.1016/j.scitotenv.2022.153676" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-link"></i></a>
     </div>
 </div>
     
@@ -2932,8 +3276,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Including the effects of subsurface currents on buoyant particles in Lagrangian particle tracking models: Model development and its application to the study of riverborne plastics over the Louisiana/Texas shelf">
                 Including the effects of subsurface currents on buoyant particles in Lagrangian particle tracking models: Model development and its application to the study of riverborne plastics over the Louisiana/Texas shelf
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1016/j.ocemod.2021.101879
@@ -2954,8 +3301,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Seasonal Modulation of Dissolved Oxygen in the Equatorial Pacific by Tropical Instability Vortices">
                 Seasonal Modulation of Dissolved Oxygen in the Equatorial Pacific by Tropical Instability Vortices
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1029/2021jc017567
@@ -2973,11 +3323,39 @@ a spatio-temporal calibration for ice-sheet modelling
         <div class="Citation">
     <div class="info1">
         <div class="info2">
+            <p class="title" data-hover="Using machine learning and beach cleanup data to explain litter quantities along the Dutch North Sea coast">
+                Using machine learning and beach cleanup data to explain litter quantities along the Dutch North Sea coast
+            </p>
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
+            </h2>
+            <h2 id="doiSmall">
+                10.5194/os-18-269-2022
+            </h2>
+        </div>
+        <h3 class="description">Collected from OpenAlex</h3>
+    </div>
+    <div class="year"><p>2022</p></div>
+    <div class="doi"><p>10.5194/os-18-269-2022</p></div>
+    <div class="link">
+        <a href="https://www.doi.org/10.5194/os-18-269-2022" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-link"></i></a>
+    </div>
+</div>
+    
+        <div class="Citation">
+    <div class="info1">
+        <div class="info2">
             <p class="title" data-hover="Ocean Plastic Assimilator v0.2: assimilation of plastic concentration data into Lagrangian dispersion models">
                 Ocean Plastic Assimilator v0.2: assimilation of plastic concentration data into Lagrangian dispersion models
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.5194/gmd-14-4769-2021
@@ -2998,8 +3376,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="A perfect storm: An anomalous offshore phytoplankton bloom event in the NE Atlantic (March 2009)">
                 A perfect storm: An anomalous offshore phytoplankton bloom event in the NE Atlantic (March 2009)
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1016/j.scitotenv.2021.151253
@@ -3020,8 +3401,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Influence of the Gulf of Guinea Islands on the Atlantic Equatorial Undercurrent Circulation">
                 Influence of the Gulf of Guinea Islands on the Atlantic Equatorial Undercurrent Circulation
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1029/2021jc017999
@@ -3042,8 +3426,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Exchange of Plankton, Pollutants, and Particles Across the Nearshore Region">
                 Exchange of Plankton, Pollutants, and Particles Across the Nearshore Region
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1146/annurev-marine-032122-115057
@@ -3064,8 +3451,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Cross-jurisdictional larval supply essential for eastern Australian spanner crabs (">
                 Cross-jurisdictional larval supply essential for eastern Australian spanner crabs (
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1071/mf21348
@@ -3086,8 +3476,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Impacts of the Lagrangian Data Assimilation of Surface Drifters on Estimating Ocean Circulation During the Gulf of Mexico Grand Lagrangian Deployment">
                 Impacts of the Lagrangian Data Assimilation of Surface Drifters on Estimating Ocean Circulation During the Gulf of Mexico Grand Lagrangian Deployment
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1175/mwr-d-21-0123.1
@@ -3108,8 +3501,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="An ASBPA White Paper: Human and ecosystem health in coastal systems">
                 An ASBPA White Paper: Human and ecosystem health in coastal systems
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.34237/1009018
@@ -3130,8 +3526,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Water Mass Transports and Pathways in the North Brazil‐Equatorial Undercurrent Retroflection">
                 Water Mass Transports and Pathways in the North Brazil‐Equatorial Undercurrent Retroflection
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1029/2021jc018150
@@ -3152,8 +3551,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Pathways, form drag, and turbulence in simulations of an ocean flowing through an ice mélange">
                 Pathways, form drag, and turbulence in simulations of an ocean flowing through an ice mélange
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1029/2021jc018228
@@ -3174,8 +3576,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="The role of the unsteady surface wave‐driven Ekman–Stokes flow in the accumulation of floating marine litter">
                 The role of the unsteady surface wave‐driven Ekman–Stokes flow in the accumulation of floating marine litter
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1029/2021jc018106
@@ -3196,8 +3601,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Diagnosing Frontal Dynamics From Observations Using a Variational Approach">
                 Diagnosing Frontal Dynamics From Observations Using a Variational Approach
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1029/2021jc018336
@@ -3218,8 +3626,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Modelling of tuna around fish aggregating devices: The importance of ocean flow and prey">
                 Modelling of tuna around fish aggregating devices: The importance of ocean flow and prey
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.1016/j.ecolmodel.2022.110188
@@ -3240,8 +3651,11 @@ a spatio-temporal calibration for ice-sheet modelling
             <p class="title" data-hover="Water Exchange Due to Wind and Waves in a Monsoon Prevailing Tropical Atoll">
                 Water Exchange Due to Wind and Waves in a Monsoon Prevailing Tropical Atoll
             </p>
-            <h2 class="authors">
-                Authors not found
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
             </h2>
             <h2 id="doiSmall">
                 10.3390/jmse11010109
@@ -3253,6 +3667,31 @@ a spatio-temporal calibration for ice-sheet modelling
     <div class="doi"><p>10.3390/jmse11010109</p></div>
     <div class="link">
         <a href="https://www.doi.org/10.3390/jmse11010109" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-link"></i></a>
+    </div>
+</div>
+    
+        <div class="Citation">
+    <div class="info1">
+        <div class="info2">
+            <p class="title" data-hover="A blueprint for integrating scientific approaches and international communities to assess basin-wide ocean ecosystem status">
+                A blueprint for integrating scientific approaches and international communities to assess basin-wide ocean ecosystem status
+            </p>
+            <!-- <h2 class="authors"> -->
+
+                
+                <h2 class="authors">Authors not found</h2>
+                <!-- <script>console.log()</script>  -->
+            </h2>
+            <h2 id="doiSmall">
+                10.1038/s43247-022-00645-w
+            </h2>
+        </div>
+        <h3 class="description">Collected from OpenAlex</h3>
+    </div>
+    <div class="year"><p>2023</p></div>
+    <div class="doi"><p>10.1038/s43247-022-00645-w</p></div>
+    <div class="link">
+        <a href="https://www.doi.org/10.1038/s43247-022-00645-w" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-link"></i></a>
     </div>
 </div>
     
@@ -3522,8 +3961,8 @@ a spatio-temporal calibration for ice-sheet modelling
  
 
 <div class="LicensesContainer Hidden">
-    <h3 class="Disclaimer">This information is retrievied from the Tortellini GitHub Action. Please be aware that we cannot make any guarantees about correct licensing. </h3>
-    <h1 class="issuesheader"> Issues detected: 74</h1>
+    <h3 class="Disclaimer">This information is retrievied from the <a href="https://github.com/tortellini-tools/action" target="_blank" rel="noopener noreferrer">Tortellini GitHub Action</a>. Please be aware that we cannot make any guarantees about correct licensing. </h3>
+    <h1 class="issuesheader"> Issues detected: 73</h1>
     <div class="LicensesContainerScroll">
         <div class="Licenses">
              
@@ -3541,7 +3980,7 @@ a spatio-temporal calibration for ice-sheet modelling
         </p>
     </div> 
     <div class="PackageName">
-        <p>NPM::fairseco:1.0.0</p>
+        <p>NPM::FAIRSECO:1.0.0</p>
     </div>
     <div class="Licensetype"><p>ISC</p>
     </div>
@@ -3556,7 +3995,7 @@ a spatio-temporal calibration for ice-sheet modelling
         
         <div class="ViolationsContent">
             <div class="space3"></div>
-            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::fairseco:1.0.0 </div>
+            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::FAIRSECO:1.0.0 </div>
             <div class="space4"></div>
             <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
 which may link to additional resources.</div>
@@ -5741,46 +6180,6 @@ which may link to additional resources.</div>
         </p>
     </div> 
     <div class="PackageName">
-        <p>NPM::minimatch:5.1.6</p>
-    </div>
-    <div class="Licensetype"><p>ISC</p>
-    </div>
-
-    <div class="ViolationDetails" hidden>
-        <div class="ViolationDetailsHeader">
-            <div class="space1"></div>
-            <div class="issue">Issue</div>
-            <div class="space2"></div>
-            <div class="howToSolve">How to solve</div>
-        </div>
-        
-        <div class="ViolationsContent">
-            <div class="space3"></div>
-            <div class="message"> The license ISC is currently not covered by policy rules. The license was declared in package NPM::minimatch:5.1.6 </div>
-            <div class="space4"></div>
-            <div class="howToFix"> A text written in MarkDown to help users resolve policy violations
-which may link to additional resources.</div>
-        </div>
-    </div>
-        
-        
-</div>
- 
-             
-            <div class="Violation">
-    <div class="Arrow">
-        <h1><i class="fa-solid fa-angle-right"></i></h1>
-    </div>
-    <div class="Warning">
-        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
-    </div>
-    <div class="Rule">
-        <p>
-            
-            Unhandled_license
-        </p>
-    </div> 
-    <div class="PackageName">
         <p>NPM::once:1.4.0</p>
     </div>
     <div class="Licensetype"><p>ISC</p>
@@ -6520,7 +6919,7 @@ which may link to additional resources.</div>
 
     .LicensesContainerScroll{
         overflow-y: scroll;
-        height: 93%;
+        height: 86%;
         padding: 0;
         margin: 0;
         -webkit-mask-image: linear-gradient(
@@ -6926,31 +7325,6 @@ function expandItem(ele){
         <p>
             <span class="SBOMPackageName">
                 valid-url
-            </span>
-        </p>
-    </div>
-    <div class="SBOMChildList Hidden">
-        
-        
-    </div>
-</div>
-
-        
-            
-
-<div class="SBOMItem">
-    <div class="SBOMParent">
-        <div class="ButtonAndSPDX">
-        
-        <p>
-            <span class="SBOMSPDX">
-                SPDXRef-13c11460a1ffb037
-            </span>
-        </p>
-        </div>
-        <p>
-            <span class="SBOMPackageName">
-                pkg-up
             </span>
         </p>
     </div>
@@ -7601,31 +7975,6 @@ function expandItem(ele){
         <p>
             <span class="SBOMPackageName">
                 fs.realpath
-            </span>
-        </p>
-    </div>
-    <div class="SBOMChildList Hidden">
-        
-        
-    </div>
-</div>
-
-        
-            
-
-<div class="SBOMItem">
-    <div class="SBOMParent">
-        <div class="ButtonAndSPDX">
-        
-        <p>
-            <span class="SBOMSPDX">
-                SPDXRef-1f8a58de84872c9c
-            </span>
-        </p>
-        </div>
-        <p>
-            <span class="SBOMPackageName">
-                shiki
             </span>
         </p>
     </div>
@@ -8894,31 +9243,6 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
-                SPDXRef-32f97b1dcef0be3f
-            </span>
-        </p>
-        </div>
-        <p>
-            <span class="SBOMPackageName">
-                @knodes/typedoc-pluginutils
-            </span>
-        </p>
-    </div>
-    <div class="SBOMChildList Hidden">
-        
-        
-    </div>
-</div>
-
-        
-            
-
-<div class="SBOMItem">
-    <div class="SBOMParent">
-        <div class="ButtonAndSPDX">
-        
-        <p>
-            <span class="SBOMSPDX">
                 SPDXRef-336955c0536bd3f8
             </span>
         </p>
@@ -9744,31 +10068,6 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
-                SPDXRef-427a21a6d8b620f0
-            </span>
-        </p>
-        </div>
-        <p>
-            <span class="SBOMPackageName">
-                vscode-textmate
-            </span>
-        </p>
-    </div>
-    <div class="SBOMChildList Hidden">
-        
-        
-    </div>
-</div>
-
-        
-            
-
-<div class="SBOMItem">
-    <div class="SBOMParent">
-        <div class="ButtonAndSPDX">
-        
-        <p>
-            <span class="SBOMSPDX">
                 SPDXRef-42911dfaf49c0252
             </span>
         </p>
@@ -10576,31 +10875,6 @@ function expandItem(ele){
         <p>
             <span class="SBOMPackageName">
                 follow-redirects
-            </span>
-        </p>
-    </div>
-    <div class="SBOMChildList Hidden">
-        
-        
-    </div>
-</div>
-
-        
-            
-
-<div class="SBOMItem">
-    <div class="SBOMParent">
-        <div class="ButtonAndSPDX">
-        
-        <p>
-            <span class="SBOMSPDX">
-                SPDXRef-591bdf308caae918
-            </span>
-        </p>
-        </div>
-        <p>
-            <span class="SBOMPackageName">
-                marked
             </span>
         </p>
     </div>
@@ -11926,6 +12200,31 @@ function expandItem(ele){
         <p>
             <span class="SBOMPackageName">
                 source-map-support
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
+                SPDXRef-7365bebd225aa8cb
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                shiki
             </span>
         </p>
     </div>
@@ -13969,6 +14268,31 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
+                SPDXRef-966be328d67a9c43
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                typedoc
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
                 SPDXRef-96b4556f8c767f2e
             </span>
         </p>
@@ -15294,31 +15618,6 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
-                SPDXRef-b5092b95e81caa43
-            </span>
-        </p>
-        </div>
-        <p>
-            <span class="SBOMPackageName">
-                @knodes/typedoc-plugin-pages
-            </span>
-        </p>
-    </div>
-    <div class="SBOMChildList Hidden">
-        
-        
-    </div>
-</div>
-
-        
-            
-
-<div class="SBOMItem">
-    <div class="SBOMParent">
-        <div class="ButtonAndSPDX">
-        
-        <p>
-            <span class="SBOMSPDX">
                 SPDXRef-b6223d28f2960a1c
             </span>
         </p>
@@ -16051,6 +16350,31 @@ function expandItem(ele){
         <p>
             <span class="SBOMPackageName">
                 yargs-parser
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
+                SPDXRef-c4d835c5cb514f7d
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                marked
             </span>
         </p>
     </div>
@@ -16994,31 +17318,6 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
-                SPDXRef-d8993bea053ab1d0
-            </span>
-        </p>
-        </div>
-        <p>
-            <span class="SBOMPackageName">
-                typedoc
-            </span>
-        </p>
-    </div>
-    <div class="SBOMChildList Hidden">
-        
-        
-    </div>
-</div>
-
-        
-            
-
-<div class="SBOMItem">
-    <div class="SBOMParent">
-        <div class="ButtonAndSPDX">
-        
-        <p>
-            <span class="SBOMSPDX">
                 SPDXRef-d8b71803e6c79b16
             </span>
         </p>
@@ -17544,31 +17843,6 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
-                SPDXRef-e2fdd83e2674f352
-            </span>
-        </p>
-        </div>
-        <p>
-            <span class="SBOMPackageName">
-                vscode-oniguruma
-            </span>
-        </p>
-    </div>
-    <div class="SBOMChildList Hidden">
-        
-        
-    </div>
-</div>
-
-        
-            
-
-<div class="SBOMItem">
-    <div class="SBOMParent">
-        <div class="ButtonAndSPDX">
-        
-        <p>
-            <span class="SBOMSPDX">
                 SPDXRef-e3310e7da9649cda
             </span>
         </p>
@@ -17769,13 +18043,13 @@ function expandItem(ele){
         
         <p>
             <span class="SBOMSPDX">
-                SPDXRef-e5f267d680cb1cd6
+                SPDXRef-e612693df86f368a
             </span>
         </p>
         </div>
         <p>
             <span class="SBOMPackageName">
-                lodash
+                vscode-oniguruma
             </span>
         </p>
     </div>
@@ -18151,6 +18425,31 @@ function expandItem(ele){
         <p>
             <span class="SBOMPackageName">
                 merge2
+            </span>
+        </p>
+    </div>
+    <div class="SBOMChildList Hidden">
+        
+        
+    </div>
+</div>
+
+        
+            
+
+<div class="SBOMItem">
+    <div class="SBOMParent">
+        <div class="ButtonAndSPDX">
+        
+        <p>
+            <span class="SBOMSPDX">
+                SPDXRef-ec56f95a2655c8f1
+            </span>
+        </p>
+        </div>
+        <p>
+            <span class="SBOMPackageName">
+                vscode-textmate
             </span>
         </p>
     </div>
@@ -19262,17 +19561,400 @@ flex-direction: row;
     padding: 0;
 }
 </style>
- 
 
-<div class="LeftPaneError SearchSECO Hidden">
-    Error: Missing SearchSECO data
+
+<div class="SearchSECO Hidden">
+    <h1>Total matches: 3</h1>
+    <div class="SearchSECO__Nav">
+        <button class="SearchSECO__Nav__Button--Active" id="SearchSECO__MethodsButton" onClick="searchsecoShowMethods()" data-linked-class="SearchSECO__Methods"><i class="fa-solid fa-file-code"></i> Methods</button>
+        <button id="SearchSECO__ProjectsButton" onClick="searchsecoShowProjects()" data-linked-class="SearchSECO__Projects"><i class="fa-solid fa-box-archive"></i> Projects</button>
+        <div style="display: flex; flex-direction: row; align-items: center">
+            <input type="checkbox" id="SearchSECO_ToggleShowVulnerable" onclick="searchsecoToggleShowVulnerabilities()">
+            <label for="SearchSECO_ToggleShowVulnerable">Show vulnerabilities only<br>3 matches / 2 methods / 3 projects</label>
+        </div>
+    </div>
+    <div class="SearchSECO__List SearchSECO__MethodList">
+        <p>2 of your methods found matches</p>
+
+        
+        <div class="SearchSECO__ListObject SearchSECO__ArrowOwner">
+    <div class="SearchSECO__ListObject__Header">
+        <div class="SearchSECO__ListObject__Header__Start">
+            <h1>
+                <i class="fa-solid fa-angle-right" onClick="searchSecoClickArrow(event)"></i>parseInput (searchseco.ts:110)
+            </h1>
+            <p>
+                <span><i class="fa-solid fa-file-circle-exclamation"></i> Vulnerable</span>
+                2 matches
+            </p>
+        </div>
+        Author: Quinn Donkers
+    </div>
+    <div class="SearchSECO__ListObject__MatchList SearchSECO__ArrowTarget" hidden>
+        
+        <div class="SearchSECO__Match">
+    <div class="SearchSECO__Match__Header">
+        <h2>Project: SearchSECOController</h2>
+        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability reported</span>
+    </div>
+    Method: parseInput (parse.cpp:33)
+    <br>
+    Authors: Rowin Schouten, Tjibbe Bolhuis
+    
+        <br>
+        <br>
+        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability 123 reported: <a href="https://www.url-of-vulnerability.com">https://www.url-of-vulnerability.com</a></span> 
+    
 </div>
+        
+        <div class="SearchSECO__Match">
+    <div class="SearchSECO__Match__Header">
+        <h2>Project: TrustSECO</h2>
+        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability reported</span>
+    </div>
+    Method: Parse (parser.cs:39)
+    <br>
+    Authors: Bram Lankhorst, Valia Bykova
+    
+        <br>
+        <br>
+        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability 246 reported: <a href="https://www.url-of-vulnerability.com">https://www.url-of-vulnerability.com</a></span> 
+    
+</div>
+        
+    </div>
+</div>
+        
+        <div class="SearchSECO__ListObject SearchSECO__ArrowOwner">
+    <div class="SearchSECO__ListObject__Header">
+        <div class="SearchSECO__ListObject__Header__Start">
+            <h1>
+                <i class="fa-solid fa-angle-right" onClick="searchSecoClickArrow(event)"></i>getMethodInfo (searchseco.ts:180)
+            </h1>
+            <p>
+                <span><i class="fa-solid fa-file-circle-exclamation"></i> Vulnerable</span>
+                1 match
+            </p>
+        </div>
+        Author: Bart Hageman
+    </div>
+    <div class="SearchSECO__ListObject__MatchList SearchSECO__ArrowTarget" hidden>
+        
+        <div class="SearchSECO__Match">
+    <div class="SearchSECO__Match__Header">
+        <h2>Project: searchseco-output-parser</h2>
+        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability reported</span>
+    </div>
+    Method: getInfo (parseOutput.js:88)
+    <br>
+    Authors: Alina Aydin, Jarno Hendriksen
+    
+        <br>
+        <br>
+        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability 234 reported: <a href="https://www.url-of-vulnerability.com">https://www.url-of-vulnerability.com</a></span> 
+    
+</div>
+        
+    </div>
+</div>
+        
+    </div>
+    <div class="SearchSECO__List SearchSECO__ProjectList" hidden>
+        <p>Your methods found matches with 3 projects</p>
+
+        
+        <div class="SearchSECO__ListObject SearchSECO__ArrowOwner">
+    <div class="SearchSECO__ListObject__Header">
+        <div class="SearchSECO__ListObject__Header__Start">
+            <h1>
+                <i class="fa-solid fa-angle-right" onClick="searchSecoClickArrow(event)"></i>SearchSECOController
+            </h1>
+            <p>
+                <span><i class="fa-solid fa-file-circle-exclamation"></i> Vulnerable   </span>
+                1 match
+            </p>
+        </div>
+    </div>
+    <div class="SearchSECO__ListObject__MatchList SearchSECO__ArrowTarget" hidden>
+        
+        
+<div class="SearchSECO__Match">
+    <div class="SearchSECO__Match__Header">
+        <h2>parseInput (parse.cpp:33)</h2>
+        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability reported</span>
+    </div>
+    Authors: Rowin Schouten, Tjibbe Bolhuis
+    <br>
+    <br>
+    <h3>Matches your parseInput (searchseco.ts:110)</h3>
+    Author: Quinn Donkers
+    
+        <br>
+        <br>
+        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability 123 reported: <a href="https://www.url-of-vulnerability.com">https://www.url-of-vulnerability.com</a></span> 
+    
+</div>
+        
+    </div>
+</div>
+        
+        <div class="SearchSECO__ListObject SearchSECO__ArrowOwner">
+    <div class="SearchSECO__ListObject__Header">
+        <div class="SearchSECO__ListObject__Header__Start">
+            <h1>
+                <i class="fa-solid fa-angle-right" onClick="searchSecoClickArrow(event)"></i>TrustSECO
+            </h1>
+            <p>
+                <span><i class="fa-solid fa-file-circle-exclamation"></i> Vulnerable   </span>
+                1 match
+            </p>
+        </div>
+    </div>
+    <div class="SearchSECO__ListObject__MatchList SearchSECO__ArrowTarget" hidden>
+        
+        
+<div class="SearchSECO__Match">
+    <div class="SearchSECO__Match__Header">
+        <h2>Parse (parser.cs:39)</h2>
+        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability reported</span>
+    </div>
+    Authors: Bram Lankhorst, Valia Bykova
+    <br>
+    <br>
+    <h3>Matches your parseInput (searchseco.ts:110)</h3>
+    Author: Quinn Donkers
+    
+        <br>
+        <br>
+        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability 246 reported: <a href="https://www.url-of-vulnerability.com">https://www.url-of-vulnerability.com</a></span> 
+    
+</div>
+        
+    </div>
+</div>
+        
+        <div class="SearchSECO__ListObject SearchSECO__ArrowOwner">
+    <div class="SearchSECO__ListObject__Header">
+        <div class="SearchSECO__ListObject__Header__Start">
+            <h1>
+                <i class="fa-solid fa-angle-right" onClick="searchSecoClickArrow(event)"></i>searchseco-output-parser
+            </h1>
+            <p>
+                <span><i class="fa-solid fa-file-circle-exclamation"></i> Vulnerable   </span>
+                1 match
+            </p>
+        </div>
+    </div>
+    <div class="SearchSECO__ListObject__MatchList SearchSECO__ArrowTarget" hidden>
+        
+        
+<div class="SearchSECO__Match">
+    <div class="SearchSECO__Match__Header">
+        <h2>getInfo (parseOutput.js:88)</h2>
+        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability reported</span>
+    </div>
+    Authors: Alina Aydin, Jarno Hendriksen
+    <br>
+    <br>
+    <h3>Matches your getMethodInfo (searchseco.ts:180)</h3>
+    Author: Bart Hageman
+    
+        <br>
+        <br>
+        <span><i class="fa-solid fa-circle-exclamation"></i> Vulnerability 234 reported: <a href="https://www.url-of-vulnerability.com">https://www.url-of-vulnerability.com</a></span> 
+    
+</div>
+        
+    </div>
+</div>
+        
+    </div>
+</div>
+
+<style>
+    .SearchSECO {
+        width: 100%;
+        height: 70%;
+        -webkit-mask-image: linear-gradient( to bottom, black 90%, transparent 100% );
+        mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+        overflow: hidden scroll;
+        word-break: break-word;
+        padding: 16px;
+    }
+    .SearchSECO--HideNonVulnerable .SearchSECO--NotVulnerable {
+        display: none;
+    }
+
+    .SearchSECO__Nav {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-left: 1%;
+    }
+    .SearchSECO__Nav > * {
+        margin-right: 0.6vw;
+        font-size: 1vw;
+    }
+    .SearchSECO__Nav button {
+        padding: 0.5vw;
+        border: 1px solid #779C7E;
+        background: transparent;
+        border-radius: 8px;
+        color: #D9F8DF;
+        cursor: pointer;
+        transition: all 300ms ease;
+    }
+    .SearchSECO__Nav button.SearchSECO__Nav__Button--Active {
+        background: #D9F8DF;
+        color: #0C281E;
+        border: 1px solid #D9F8DF;
+
+    }
+    .SearchSECO__Nav input {
+        width: 1.15vw;
+        height: 1.15vw;
+    }
+    .SearchSECO__Nav label {
+        color: #D9F8DF;
+        font-size: 0.8vw;
+        margin-left: 0.4vw;
+    }
+
+    .SearchSECO__List {
+        width: 98%;
+        margin: 1%;
+    }
+    .SearchSECO__List h1 {
+        font-size: 1.7vw;
+    }
+
+    .SearchSECO__ListObject__Header {
+        color: #D9F8DF;
+        font-size: 0.8rem;
+        /* background-color: #47715A; */
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        padding: 8px;
+        padding-left: calc(1.8vw + 5px);
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+    .SearchSECO__ListObject__Header__Start {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .SearchSECO__ListObject__Header h1 {
+        font-size: 1.1rem;
+    }
+    .SearchSECO__ListObject__Header p, .SearchSECO__ListObject__Header h1 {
+        margin: 0;
+    }
+    .SearchSECO__ListObject__Header h1 i {
+        font-size: 1.5vw;
+        width: 1.8vw;
+        margin-left: -1.8vw;
+        text-align: center;
+    }
+    .SearchSECO__ListObject__Header h1 i:hover {
+        color: #b8d7cc;
+        cursor: pointer;
+    }
+    .SearchSECO__ListObject__Header span {
+        margin-right: 1.5vw;
+        color: #fcec69;
+    }
+    .SearchSECO__ListObject__MatchList {
+        width: 95%;
+        margin-left: 5%;
+    }
+
+    .SearchSECO__Match {
+        color: #D9F8DF;
+        font-size: 0.7rem;
+        /* background-color: #47715A; */
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        padding: 12px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+    .SearchSECO__Match span {
+        /* color: yellow; */
+        color: #fcec69;
+    }
+    .SearchSECO__Match__Header {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .SearchSECO__Match__Header h2 {
+        font-size: 1rem;
+        margin: 0;
+    }
+    .SearchSECO__Match h3 {
+        font-size: 0.9rem;
+        margin: 0;
+    }
+    .SearchSECO__Match a {
+        color: #D9F8DF; 
+    }
+</style>
+
+<script>
+    const searchseco = document.querySelector(".SearchSECO");
+    const searchsecoMethodsButton = document.getElementById("SearchSECO__MethodsButton");
+    const searchsecoProjectsButton = document.getElementById("SearchSECO__ProjectsButton");
+    const searchsecoMethodList = document.querySelector(".SearchSECO__MethodList");
+    const searchsecoProjectList = document.querySelector(".SearchSECO__ProjectList");
+
+    function searchsecoToggleShowVulnerabilities() {
+        searchseco.classList.toggle("SearchSECO--HideNonVulnerable");
+    }
+
+    function searchsecoShowMethods() {
+        searchsecoProjectList.hidden = true;
+        searchsecoMethodList.hidden = false;
+        
+        searchsecoProjectsButton.classList.remove("SearchSECO__Nav__Button--Active");
+        searchsecoMethodsButton.classList.add("SearchSECO__Nav__Button--Active");
+    }
+
+    function searchsecoShowProjects() {
+        searchsecoMethodList.hidden = true;
+        searchsecoProjectList.hidden = false;
+        
+        searchsecoMethodsButton.classList.remove("SearchSECO__Nav__Button--Active");
+        searchsecoProjectsButton.classList.add("SearchSECO__Nav__Button--Active");
+    }
+
+    function searchSecoClickArrow(event) {
+        event.target.classList.toggle("fa-angle-right");
+        event.target.classList.toggle("fa-angle-down");
+
+        let elem = event.target;
+        while (elem = elem.parentNode) {
+            if (elem.classList?.contains("SearchSECO__ArrowOwner")) {
+                let target = elem.querySelector(".SearchSECO__ArrowTarget");
+                target.hidden = !target.hidden;
+                break;
+            }
+        }
+    }
+
+</script>
 
     <div class="footer">  
     <button class="citationgraphBtn" onclick="location.href='citationgraph.html';">Citationsgraph View</button>
     <p>Tool developed by students of Utrecht University, <br>
         in collaboration with the Netherlands eScience Center <br>
-        ⓒ 2022
+        ⓒ 2023
      </p>   
 </div>
 
@@ -19287,20 +19969,19 @@ flex-direction: row;
         bottom: 0;
         margin: auto;
         width: 100%;
-        margin-left: 50px;
     }
 
     .footer .citationgraphBtn{
         z-index: 1;
         border-radius: 12px;
         width: 11.5vw;
-        height: 4vh;
         color: #d9f8df;
         background-color: transparent;
         border: 2px solid #d9f8df;
         font-size: 1.1rem;
-        float: right;
-        margin-right: 75px;
+        position: absolute;
+        right: 0px;
+        margin-right: 15px;
         margin-top: 16px;
     }
 
@@ -19472,6 +20153,37 @@ flex-direction: row;
 .RightPaneNav__Tab--4Away::before {
     background-color: #0C281E;
 }
+
+@media screen and (max-width: 1500px) {
+
+    #RightPaneNav li:nth-child(1) {
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    #RightPaneNav li:nth-child(2) {
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    #RightPaneNav li:nth-child(3) {
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    #RightPaneNav li:nth-child(4) {
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    #RightPaneNav li:nth-child(5) {
+        padding-bottom: 0px;
+        font-size: 1rem;
+        text-align: center;
+    }
+    
+
+}
 </style>
 
 <script>
@@ -19491,7 +20203,6 @@ flex-direction: row;
 
     function clickTab(tab) {
         const activeTab = document.querySelector(".RightPaneNav__Tab--Active");
-
         if (tab === activeTab) {
             return;
         }
@@ -19539,7 +20250,7 @@ flex-direction: row;
             </div>
             <div class="Repository__Info">
                 <h3>Date of issue</h3>
-                <h2 class="Repository__Data">25/1/2023</h2>
+                <h2 class="Repository__Data">28/1/2023</h2>
             </div>
         </div>
         <div class="Repository__Info__Left">
@@ -19567,19 +20278,19 @@ flex-direction: row;
     <div class="Meta-data__Row">
         <div class="Meta-data">
             <p>Times cited</p>
-            <div class = Meta-data__Data><p>1157</p></div>
+            <div class = Meta-data__Data><p>1145</p></div>
         </div>
         <div class="Meta-data">
             <p>FAIRness</p>
-            <div class = Meta-data__Data><p>3/5</p></div>
+            <div class = Meta-data__Data><p>0/5</p></div>
         </div>
         <div class="Meta-data">
             <p>Methods matching those in other projects</p>
-            <div class = Meta-data__Data><p>?</p></div>
+            <div class = Meta-data__Data><p>3</p></div>
         </div>
         <div class="Meta-data">
             <p>Quality Score</p>
-            <div class = Meta-data__Data><p>59/100</p></div>
+            <div class = Meta-data__Data><p>42/100</p></div>
         </div>
     </div>
 </div>
@@ -19705,13 +20416,13 @@ flex-direction: row;
     <div class="stars">
         <h2>
         
-            <i class="fa-solid fa-star"></i>
-        
-            <i class="fa-solid fa-star"></i>
-        
-            <i class="fa-solid fa-star"></i>
-        
          
+        
+            <i class="fa-regular fa-star"></i>
+        
+            <i class="fa-regular fa-star"></i>
+        
+            <i class="fa-regular fa-star"></i>
         
             <i class="fa-regular fa-star"></i>
         
@@ -19720,7 +20431,7 @@ flex-direction: row;
 
         </h2>
         <h2>
-        3 / 5
+        0 / 5
         </h2>
     </div>
         <div class="ChecklistContainer">
@@ -19732,7 +20443,7 @@ flex-direction: row;
                 <a href="https://fair-software.eu/recommendations/registry" target="_blank">Read more</a>
             </div>
             <div onClick="togglePanel(this)">
-                <p><i class="fa-solid fa-code-fork"></i>Repository is public?</p><p>Yes</p>
+                <p><i class="fa-solid fa-code-fork"></i>Repository is public?</p><p>No</p>
             </div>
             <div>
                 Whether your repository is public, so that your software is <b>A</b>ccessible.
@@ -19746,16 +20457,16 @@ flex-direction: row;
                 <a href="https://fair-software.eu/recommendations/checklist" target="_blank">Read more</a>
             </div>
             <div onClick="togglePanel(this)">
-                <p><i class="fa-solid fa-quote-right"></i>Citation file present?</p> <p>Yes</p>
+                <p><i class="fa-solid fa-quote-right"></i>Citation file present?</p> <p>No</p>
             </div>
             <div>
                 <p>Whether your repository contains a citation file, so that your software is <b>R</b>eusable.
                 <a href="https://fair-software.eu/recommendations/citation" target="_blank">Read more.</a>
-                
+                 Need help creating a CFF File? <a href = "https://citation-file-format.github.io/cff-initializer-javascript/#/start">This tool can help.</a>
                 </p>
             </div>
             <div onClick="togglePanel(this)">
-                <p><i class="fa-solid fa-copyright"></i>License file present?</p> <p>Yes</p>
+                <p><i class="fa-solid fa-copyright"></i>License file present?</p> <p>No</p>
             </div>
             <div>
                 Whether you have a license file in your repository, so that your software is correctly <b>R</b>eusable.
@@ -19769,8 +20480,8 @@ flex-direction: row;
 
     .FairtallyReport {
         color: #0C281E;
-        max-height: 90%;
-        overflow-y: scroll;
+        height: 100%;
+        overflow-y: auto;
     }
 
     .FairtallyReport h1 {
@@ -19859,8 +20570,8 @@ flex-direction: row;
     <h1>Quality Score</h1>
     <div class="QualityMeter">
         <div class="QualityMeter__Bar">
-            <div class="QualityMeter__Score">59</div>
-            <div class="QualityMeter__Text">good
+            <div class="QualityMeter__Score">42</div>
+            <div class="QualityMeter__Text">bad
             </div>
             <div class="QualityMeter__Numbers">
                 <span class="QualityMeter__Zero">0</span>
@@ -19879,7 +20590,7 @@ flex-direction: row;
                 </div>
                 <p>Percentage of FAIRness criteria met</p>
             </div>
-            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>60%</h2></div>
+            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>0%</h2></div>
         </div>
         <div class="QualityMetrics__ScoreMetric" id="QualityLicenses">
             <i class="fa-solid fa-copyright"></i>
@@ -19912,7 +20623,7 @@ flex-direction: row;
                 </div>
                 <p>Presence of a documentation directory and readme file</p>
             </div>
-            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>50%</h2></div>
+            <div class="QualityMetrics__ScoreMetric__Percentage"><h2>100%</h2></div>
         </div>
         <p>
             <i class="fa-regular fa-clock"></i>
@@ -19928,6 +20639,7 @@ flex-direction: row;
     width: 100%;
     height: 100%;
     border-radius: 16px;
+    overflow-y: auto;
 }
 
 .Quality h1 {
@@ -19980,10 +20692,10 @@ flex-direction: row;
     top: -1vw;
     left: 9vw;
     border-radius: 50%;
-    background-color: #4BB784;
+    background-color: #3A9068;
     transform: translate(
-        2.650415507372677vw,
-        -9.12279001393096vw
+        -2.3625539280661205vw,
+        -9.201540030721995vw
     );
 }
 .QualityMeter__Circle::before {
@@ -20105,9 +20817,9 @@ flex-direction: row;
 }
 
 #QualityFairness .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
-    width: 60%;
+    width: 0%;
     background-color: #60415F;
-    filter: brightness(1.75);
+    filter: brightness(1);
 }
 #QualityLicenses .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
     width: 27%;
@@ -20120,524 +20832,30 @@ flex-direction: row;
     filter: brightness(2.25);
 }
 #QualityDocumentation .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
-    width: 50%;
+    width: 100%;
     background-color: #60415F;
-    filter: brightness(1.625);
+    filter: brightness(2.25);
 }
 </style>
+ 
 
+<div class="RightPaneError ImpactScore" hidden>
+    Error: Assignment to constant variable.
+</div> 
 
-<div class="ImpactScore" hidden>
-    <h1 class="Impact__Title">Impact</h1>
-    <div class="ImpactScore__Content">
-        <div class="Impact__Row">
-            <h2> Papers and Citations</h2>
-            <div class="Impact__Row__Content">
-                <div class="Impact__Row__Block">
-                    <p>Your project was cited</p>
-                    <div class="Row__Number">1157</div>
-                    <p>times</p>
-                </div>
-                <div class="Impact__Row__Block">
-                    <p>in papers across</p>
-                    <div class="Row__Number">12</div>
-                    <p>scientific fields</p>
-                </div>
-                <div class="Impact__Row__Block">
-                    <p>The most notable of which was</p>
-                    <div class="Row__PaperTitle" style="font-size:0.8rem">The physical oceanography of the transport of floating marine debris</div>
-                    
-                        <p>from IOP Publishing</p>
-                    
-                </div>
-            </div>
-        </div>
-
-        <div class="Impact__Row">
-            <canvas id="Citations__RadarChart"></canvas>
-        </div>
-
-        <div class="Impact__Row">
-            <h2>Projects and Reuse</h2>
-            <div class="Impact__Row__Content">
-                <div class="Impact__Row__Block">
-                    <p>Your code matches methods in</p>
-                    <div class="Row__Number">?</div>
-                    <p>other projects</p>
-                </div>
-                <div class="Impact__Row__Block">
-                    <p>The most notable of which was</p>
-                    <div class="Row__PaperTitle" style="font-size:2rem">missing data</div>
-                    
-                </div>
-            </div>
+<div class="RightPaneError ImpactHistory" hidden>
+    Error: Missing History data
+</div>
         </div>
     </div>
 </div>
-
-<script>
-
-function genData(){
-    let data = [];
-    for (let i = 0; i < 18; i++){
-        if (i % 3 == 0) data.push(null);
-        else data.push(i%5 + i%2);
-    }
-
-    return data;
-}
-
-const labels = [
-    "Humanities" ,
-    "Social Sciences",
-    "Natural Sciences",
-    "Formal Sciences",
-    "Applied Sciences"
-]
-
-const data = {
-    labels: labels,
-    datasets: [
-        {
-            data: [0,4,39,11,81],
-            borderColor: "rgb(170, 85, 183)",
-            backgroundColor: "rgba(175, 102, 186, 0.4)",
-            pointBackgroundColor: "rgb(175, 102, 186)"
-        }]
-};
-
-const config = {
-  type: 'radar',
-  data: data,
-  options: {
-    responsive: true,
-    spanGaps: true,
-    plugins: {
-        legend: false
-    },
-    scale: {
-        ticks: {
-            callback: function() {return ""},
-            backdropColor: "rgba(0, 0, 0, 0)"
-        },
-        pointLabels:{
-            fontSize: 16
-        }
-    }
-  }
-};
-
-new Chart("Citations__RadarChart", config);
-
-</script>
 
 <style>
-.Impact__Title {
-    color: #0C281E;
-    text-align: center;
-    margin: 2%;
-    font-size: 2vw;
-}
-
-.ImpactScore__Content {
-    width: 80%;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-}
-
-.Impact__Row h2 {
-    margin-top: 0;
-}
-
-.Impact__Row__Content {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-
-}
-
-.Impact__Row__Block .Row__PaperTitle {
-    font-weight: bold;
-    margin: 0.25vw;
-    max-width: 15vw;
-    text-align: center;
-}
-
-.Impact__Row__Block {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.Impact__Row__Block p {
-    margin: 0;
-}
-
-.Impact__Row__Block .Row__Number {
-    font-size: 1.75vw;
-    font-weight: bold;
-    margin: 0.25vw;
-}
-
-#Citations__RadarChart {
-    margin: 5px;
-}
-
-</style>
-
-<div class="ImpactHistory" hidden>
-    <h1>Impact History</h1>
-    <h2>Overview</h2>
-    <div class="ImpactHistory__Overview">
-        <div>
-            <h3>Quality Score</h3>
-            69%
-            <div>
-                <b>+5%</b><br>since last time
-            </div>
-        </div>
-        <div>
-            <h3>Citations</h3>
-            1034
-            <div>
-                <b>+109</b><br>since last time
-            </div>
-        </div>
-        <div>
-            <h3>FAIRness</h3>
-            
-                <i class="fa-solid fa-star"></i>
-            
-                <i class="fa-solid fa-star"></i>
-            
-                <i class="fa-solid fa-star"></i>
-            
-                <i class="fa-solid fa-star"></i>
-            
-             
-            
-                <i class="fa-regular fa-star"></i>
-            
-            <div>
-                <b>+1 <i class="fa-solid fa-star"></i></b><br>since last time
-            </div>
-        </div>
-        <div>
-            <h3>Method Matches</h3>
-            23
-            <div>
-                <b>+5</b><br>since last time
-            </div>
-        </div>
-    </div>
-    <div class="ImpactHistory__Graphs">
-        <div>
-            <h2>Quality Score</h2>
-            
-
-<div>
-    <div class="ImpactHistory__Graphs__LeftAxis"> 
-            <div style="margin-top: 17.1vh;">60</div>
-        
-            <div style="margin-top: 8.100000000000001vh;">65</div>
-        
-            <div style="margin-top: -0.8999999999999986vh;">70</div>
-        
-    </div>
-    <div class="ImpactHistory__Graphs__Graph"> 
-            <div onMouseEnter="impactHistoryHoverData(0)" onMouseLeave="impactHistoryUnhoverData(0)" style="height:20%;">
-                <span>62</span>
-                <div>25/12/2022</div>
-            </div>
-            
-            <div onMouseEnter="impactHistoryHoverData(1)" onMouseLeave="impactHistoryUnhoverData(1)" style="height:40%;">
-                <span>64</span>
-                <div>01/01/2023</div>
-            </div>
-            
-            <div onMouseEnter="impactHistoryHoverData(2)" onMouseLeave="impactHistoryUnhoverData(2)" style="height:90%;">
-                <span>69</span>
-                <div>08/01/2023</div>
-            </div>
-            
-    </div>
-</div>
-        </div>
-        <div>
-            <h2>FAIRness</h2>
-            <div>
-                
-
-<div>
-    <div class="ImpactHistory__Graphs__LeftAxis"> 
-            <div style="margin-top: 17.1vh;">0</div>
-        
-            <div style="margin-top: 13.500000000000002vh;">1</div>
-        
-            <div style="margin-top: 9.900000000000002vh;">2</div>
-        
-            <div style="margin-top: 6.300000000000001vh;">3</div>
-        
-            <div style="margin-top: 2.700000000000001vh;">4</div>
-        
-            <div style="margin-top: -0.8999999999999986vh;">5</div>
-        
-    </div>
-    <div class="ImpactHistory__Graphs__Graph"> 
-            <div onMouseEnter="impactHistoryHoverData(0)" onMouseLeave="impactHistoryUnhoverData(0)" style="height:60%;">
-                <span>3</span>
-                <div>25/12/2022</div>
-            </div>
-            
-            <div onMouseEnter="impactHistoryHoverData(1)" onMouseLeave="impactHistoryUnhoverData(1)" style="height:60%;">
-                <span>3</span>
-                <div>01/01/2023</div>
-            </div>
-            
-            <div onMouseEnter="impactHistoryHoverData(2)" onMouseLeave="impactHistoryUnhoverData(2)" style="height:80%;">
-                <span>4</span>
-                <div>08/01/2023</div>
-            </div>
-            
-    </div>
-</div>
-            </div>
-        </div>
-        <div>
-            <h2>Citations</h2>
-            <div>
-                
-
-<div>
-    <div class="ImpactHistory__Graphs__LeftAxis"> 
-            <div style="margin-top: 17.1vh;">900</div>
-        
-            <div style="margin-top: 11.100000000000001vh;">950</div>
-        
-            <div style="margin-top: 5.100000000000001vh;">1000</div>
-        
-            <div style="margin-top: -0.8999999999999986vh;">1050</div>
-        
-    </div>
-    <div class="ImpactHistory__Graphs__Graph"> 
-            <div onMouseEnter="impactHistoryHoverData(0)" onMouseLeave="impactHistoryUnhoverData(0)" style="height:1%;">
-                <span>901</span>
-                <div>25/12/2022</div>
-            </div>
-            
-            <div onMouseEnter="impactHistoryHoverData(1)" onMouseLeave="impactHistoryUnhoverData(1)" style="height:16.666666666666668%;">
-                <span>925</span>
-                <div>01/01/2023</div>
-            </div>
-            
-            <div onMouseEnter="impactHistoryHoverData(2)" onMouseLeave="impactHistoryUnhoverData(2)" style="height:89.33333333333333%;">
-                <span>1034</span>
-                <div>08/01/2023</div>
-            </div>
-            
-    </div>
-</div>
-            </div>
-        </div>
-        <div>
-            <h2>Method Matches</h2>
-            <div>
-                
-
-<div>
-    <div class="ImpactHistory__Graphs__LeftAxis"> 
-            <div style="margin-top: 17.1vh;">0</div>
-        
-            <div style="margin-top: 13.500000000000002vh;">5</div>
-        
-            <div style="margin-top: 9.900000000000002vh;">10</div>
-        
-            <div style="margin-top: 6.300000000000001vh;">15</div>
-        
-            <div style="margin-top: 2.700000000000001vh;">20</div>
-        
-            <div style="margin-top: -0.8999999999999986vh;">25</div>
-        
-    </div>
-    <div class="ImpactHistory__Graphs__Graph"> 
-            <div onMouseEnter="impactHistoryHoverData(0)" onMouseLeave="impactHistoryUnhoverData(0)" style="height:60%;">
-                <span>15</span>
-                <div>25/12/2022</div>
-            </div>
-            
-            <div onMouseEnter="impactHistoryHoverData(1)" onMouseLeave="impactHistoryUnhoverData(1)" style="height:72%;">
-                <span>18</span>
-                <div>01/01/2023</div>
-            </div>
-            
-            <div onMouseEnter="impactHistoryHoverData(2)" onMouseLeave="impactHistoryUnhoverData(2)" style="height:92%;">
-                <span>23</span>
-                <div>08/01/2023</div>
-            </div>
-            
-    </div>
-</div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<style>
-.ImpactHistory {
-    width: 85%;
+.Overview {
     height: 100%;
-    margin: auto;
-}
-.ImpactHistory h1 {
-    color: #0C281E;
-    text-align: center;
-    margin: 2.5%;
-    font-size: 2vw;
-}
-.ImpactHistory h2 {
-    color: #0C281E;
-    font-size: 1.1vw;
+    overflow-y: auto;
 }
 
-.ImpactHistory__Overview {
-    width: 100%;
-    margin-top: 0.75vw;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    font-size: 0.9vw;
-}
-.ImpactHistory__Overview > div {
-    width: 8vw;
-    height: 8vw;
-    border: 2px solid #5a9575;
-    border-radius: 16px;
-    text-align: center;
-}
-.ImpactHistory__Overview > div > h3 {
-    color: #0C281E;
-    font-size: 0.85vw;
-    margin-top: 0.35vw;
-    margin-bottom: 0;
-}
-.ImpactHistory__Overview > div > div {
-    width: 100%;
-    color: #5a9575;
-    border-top: 1px solid #5a9575;
-    padding-top: 0.5vw;
-}
-.ImpactHistory__Overview > div > div b {
-    font-size: 1.4vw;
-    color: #0C281E;
-}
-
-.ImpactHistory__Graphs {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    flex-wrap: wrap;
-}
-.ImpactHistory__Graphs > div {
-    width: 50%;
-}
-.ImpactHistory__Graphs > div > h2 {
-    margin-bottom: 1.3vw;
-}
-.ImpactHistory__Graphs__LeftAxis > div {
-    position: absolute;
-    width: 2vw;
-    text-align: right;
-    margin-left: -0.9vw;
-    font-size: 0.6vw;
-}
-.ImpactHistory__Graphs__Graph {
-    width: calc(95% - 2vw);
-    margin-left: 2vw;
-    height: 18vh;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-end;
-}
-.ImpactHistory__Graphs__Graph > div {
-    text-align: center;
-    transition: background-color 0.1s ease-out;
-    width: 26.666666666666668%;
-}
-.ImpactHistory__Graphs > div:nth-child(1) .ImpactHistory__Graphs__Graph > div {
-    background-color: #60415F;
-}
-.ImpactHistory__Graphs > div:nth-child(2) .ImpactHistory__Graphs__Graph > div {
-    background-color: #894586;
-}
-.ImpactHistory__Graphs > div:nth-child(3) .ImpactHistory__Graphs__Graph > div {
-    background-color: #A95F94;
-}
-.ImpactHistory__Graphs > div:nth-child(4) .ImpactHistory__Graphs__Graph > div {
-    background-color: #D991C5;
-}
-.ImpactHistory__Graphs__Graph > div > div {
-    display: none;
-    position: absolute;
-    top: calc(100% + 2px);
-    left: 50%;
-    width: 6vw;
-    margin-left: -3vw;
-    background-color: white;
-    border-radius: 8px;
-    font-size: 0.9vw;
-}
-.ImpactHistory__Graphs__Graph > div > div:after {
-    content: "";
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    margin-left: -6px;
-    border-width: 6px;
-    border-style: solid;
-    border-color: transparent transparent white transparent;
-}
-.ImpactHistory__Graphs__Graph > div:hover > div {
-    display: block;
-}
-.ImpactHistory__Graphs__Graph > div span {
-    display: none;
-    font-size: 1.2vw;
-    width: 10vw;
-    margin-left: calc(50% - 5vw);
-    margin-top: -2vw;
-}
-.ImpactHistory__Graphs__Graph > .ImpactHistory__HoveredData {
-    filter: brightness(1.2);
-}
-.ImpactHistory__Graphs__Graph > .ImpactHistory__HoveredData span {
-    display: block;
-}
-</style>
-
-<script>
-    function impactHistoryHoverData(index) {
-        for (const graph of document.getElementsByClassName("ImpactHistory__Graphs__Graph")) {
-            graph.children.item(index).classList.add("ImpactHistory__HoveredData");
-        }
-    }
-
-    function impactHistoryUnhoverData(index) {
-        for (const graph of document.getElementsByClassName("ImpactHistory__Graphs__Graph")) {
-            graph.children.item(index).classList.remove("ImpactHistory__HoveredData");
-        }
-    }
-</script>
-        </div>
-    </div>
-</div>
-
-<style>
 .RightPane{
     display: flex;
     justify-content: center;
@@ -20703,6 +20921,10 @@ new Chart("Citations__RadarChart", config);
             z-index: -2;
         }
         
+        a:link{
+            color: #779c7e;
+        }
+
         a:visited {
             color: #779c7e;
         }
