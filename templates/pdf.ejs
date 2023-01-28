@@ -93,7 +93,7 @@
     
         let topContributors = "";
         let contributorCount = 0;
-        for (const contributor of githubData.Contributors) {
+        for (const contributor of githubData?.Contributors) {
             if (contributor.type === "User" && contributorCount <= 6) {
                 topContributors += "<p>" + contributor.login + "</p>";
                 contributorCount++;
@@ -153,7 +153,7 @@
     </div>
 
 <script>
-    
+
     var el = document.getElementById("pdf");
     el.querySelector(".FairtallyReport").hidden = false;
     el.querySelector(".Quality").hidden = false;
