@@ -42,6 +42,7 @@ if (ss !== undefined) {
             }
         }
     }
+    
 
     // Get project count
     projectCount = Object.keys(projectMatches).length;
@@ -169,7 +170,7 @@ function genData(){
     return data;
 }
 
-const labels = [
+var  labels = [
     "Humanities" ,
     "Social Sciences",
     "Natural Sciences",
@@ -177,7 +178,7 @@ const labels = [
     "Applied Sciences"
 ]
 
-const data = {
+var  data = {
     labels: labels,
     datasets: [
         {
@@ -188,7 +189,7 @@ const data = {
         }]
 };
 
-const config = {
+var config = {
   type: 'radar',
   data: data,
   options: {
