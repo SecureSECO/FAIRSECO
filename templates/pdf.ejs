@@ -83,6 +83,15 @@
 
     <%   
 
+        const licenses = data.find((ele) => (ele.ModuleName=== "Tortellini"))?.Data; 
+        const fairtally = data.find((ele) => (ele.ModuleName=== "fairtally"))?.Data[0]; 
+        const sbom = data.find((ele) => (ele.ModuleName=== "SBOM"))?.Data; 
+        const searchSECO = data.find((ele) => (ele.ModuleName=== "SearchSECO"))?.Data; 
+        const githubData = data.find((ele) => (ele.ModuleName === "GithubInfo"))?.Data;
+        const quality = data.find((ele) => (ele.ModuleName=== "QualityMetrics"))?.Data;
+        const paperData = data.find((ele) => (ele.ModuleName === "CitingPapers"))?.Data;
+        const history = data.find((ele) => (ele.ModuleName === "History"))?.Data;
+
         if (githubData === undefined) {
                 githubData = {
                     Repo: "missing data",
@@ -97,20 +106,11 @@
                         }
                     ]
                 };
-            }
-            
-        const licenses = data.find((ele) => (ele.ModuleName=== "Tortellini"))?.Data; 
-        const fairtally = data.find((ele) => (ele.ModuleName=== "fairtally"))?.Data[0]; 
-        const sbom = data.find((ele) => (ele.ModuleName=== "SBOM"))?.Data; 
-        const searchSECO = data.find((ele) => (ele.ModuleName=== "SearchSECO"))?.Data; 
-        const githubData = data.find((ele) => (ele.ModuleName === "GithubInfo"))?.Data;
-        const quality = data.find((ele) => (ele.ModuleName=== "QualityMetrics"))?.Data;
-        const paperData = data.find((ele) => (ele.ModuleName === "CitingPapers"))?.Data;
-        const history = data.find((ele) => (ele.ModuleName === "History"))?.Data;
+        }
     
         let topContributors = "";
         let contributorCount = 0;
-        for (const contributor of githubData?.Contributors) {
+        for (const contributor of githubData.Contributors) {
             if (contributor.type === "User" && contributorCount <= 6) {
                 topContributors += "<p>" + contributor.login + "</p>";
                 contributorCount++;
