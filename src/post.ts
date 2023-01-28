@@ -14,6 +14,7 @@ import { getHistoryData } from "./history";
 
 /**
  * Creates reports showing the gathered data in .yml and .html format.
+ * The FAIRSECO history file is also read and updated.
  * 
  * @param result The data gathered by FAIRSECO.
  */

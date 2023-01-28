@@ -83,27 +83,32 @@ export function getHistoryData(filePath: string, result: ReturnObject[]): Histor
 
     // Check if the last entry is of the current date.
     // If it is, update it with the new data.
-    // Otherwise, add a new entry.
+    // Otherwise, add a new entry
+    let includeLater = false;
     if (historyData.length >= 1 && historyData[historyData.length - 1].date === date) {
         // Update the last entry
         const lastEntry = historyData[historyData.length - 1];
         Object.assign(lastEntry, newData);
     } else {
-        // Append new data to the history
-        historyData.push({
-            date,
-            quality,
-            citations,
-            fairness,
-            matches
-        });
+        // Append new data to the history if it has useful data.
+        // Otherwise, append it later to exclude it from the history file.
+        if (newData.quality !== undefined || newData.citations !== undefined || newData.fairness !== undefined || newData.fairness !== undefined) {
+            historyData.push(newData);
+        } else {
+            includeLater = true;
+        }
     }
-
+    
     // Write new history to the history file
     try {
         fs.writeFileSync(filePath, JSON.stringify(historyData));
     } catch (error) {
         LogMessage("Failed to write to FAIRSECO history file:\n" + (error.message as string), ErrorLevel.err);
+    }
+
+    // Include new data after writing file, if needed
+    if (includeLater) {
+        historyData.push(newData);
     }
 
     return historyData;
