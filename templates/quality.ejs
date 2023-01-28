@@ -70,7 +70,7 @@
             </div>
             <div class="QualityMetrics__ScoreMetric__Percentage"><h2><%- quality.documentationScore %>%</h2></div>
         </div>
-        <p>
+        <p class="solved-issues">
             <i class="fa-regular fa-clock"></i>
             Average time to solve issues: 
             <%- quality.avgSolveTime ? quality.avgSolveTime.toString() + (quality.avgSolveTime === 1 ? " day" : " days") : "-" %>
@@ -85,6 +85,10 @@
     height: 100%;
     border-radius: 16px;
     overflow-y: auto;
+}
+
+.solved-issues{
+    text-align: center;
 }
 
 .Quality h1 {
@@ -287,4 +291,5 @@
     background-color: #60415F;
     filter: brightness(<%- 1 + 1.25 * quality.documentationScore / 100 %>);
 }
+
 </style>

@@ -78,7 +78,7 @@
     .Impact__Title{
         margin-bottom: 50px !important;
     }
-    
+
 </style>
 
     <%   
@@ -111,7 +111,7 @@
     }
 
     %>
-    <div id="pdf">
+    <div id="pdf">   
 
         <div class="title_page">
             <div> <%- include('logo-extend')%> </div>
@@ -152,25 +152,25 @@
 
     </div>
 
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/series-label.js"></script>
 <script>
-   
-   
+
+
     var el = document.getElementById("pdf");
     el.querySelector(".FairtallyReport").hidden = false;
     el.querySelector(".Quality").hidden = false;
     el.querySelector(".ImpactScore").hidden = false;
-    el.querySelector(".ImpactHistory").hidden = false;
+    el.querySelector("#pdfbutton").style ="display:none;"; 
     for (const graph of el.getElementsByClassName("ImpactHistory__Graphs__Graph")) {
-        for (const child of graph.children) {
-            child.classList.add("ImpactHistory__HoveredData");
-        }
+            for (const child of graph.children) {
+                child.classList.add("ImpactHistory__HoveredData");
+            }
     }
     var info = el.querySelectorAll(".info");
     info.forEach(div => { div.style = "opacity: 1; padding: 16px; height:65px; "; });
     el.querySelector(".FairtallyReport h4").hidden = true;
-   
-    el.querySelector("#pdfbutton").hidden = true;
-
+    el.querySelector(".ImpactHistory").hidden = false;
 
 </script>
 

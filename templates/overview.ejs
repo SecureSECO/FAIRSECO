@@ -1,10 +1,7 @@
 <script>
 
-    
     function generatePDF() {
-      var opt = {
-        filename:     'FAIRECO-REPORT-<%-githubData.Repo %>.pdf',
-        };
+      var opt = { filename: 'FAIRECO-REPORT-<%-githubData.Repo %>.pdf' };
       const element = document.getElementById("pdf");
       var elementclone = element.cloneNode(true);
       elementclone.style = "display:block";
