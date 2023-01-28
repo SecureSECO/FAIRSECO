@@ -82,6 +82,23 @@
 </style>
 
     <%   
+
+        if (githubData === undefined) {
+                githubData = {
+                    Repo: "missing data",
+                    Owner: "missing data",
+                    Stars: "?",
+                    Watched: "?",
+                    Forks: "?",
+                    Contributors: [
+                        {
+                            type: "User",
+                            login: "missing data"
+                        }
+                    ]
+                };
+            }
+            
         const licenses = data.find((ele) => (ele.ModuleName=== "Tortellini"))?.Data; 
         const fairtally = data.find((ele) => (ele.ModuleName=== "fairtally"))?.Data[0]; 
         const sbom = data.find((ele) => (ele.ModuleName=== "SBOM"))?.Data; 
