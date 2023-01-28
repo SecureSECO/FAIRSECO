@@ -83,12 +83,11 @@
 
     <%   
 
-            
         const licenses = data.find((ele) => (ele.ModuleName=== "Tortellini"))?.Data; 
         const fairtally = data.find((ele) => (ele.ModuleName=== "fairtally"))?.Data[0]; 
         const sbom = data.find((ele) => (ele.ModuleName=== "SBOM"))?.Data; 
         const searchSECO = data.find((ele) => (ele.ModuleName=== "SearchSECO"))?.Data; 
-        const githubData = data.find((ele) => (ele.ModuleName === "GithubInfo"))?.Data;
+        var   githubData = data.find((ele) => (ele.ModuleName === "GithubInfo"))?.Data;
         const quality = data.find((ele) => (ele.ModuleName=== "QualityMetrics"))?.Data;
         const paperData = data.find((ele) => (ele.ModuleName === "CitingPapers"))?.Data;
         const history = data.find((ele) => (ele.ModuleName === "History"))?.Data;
