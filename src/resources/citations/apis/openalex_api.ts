@@ -43,7 +43,9 @@ export async function openAlexCitations(
     // Find papers citing the given papers
     let output: Paper[] = [];
     for (const paperID of paperIDs) {
+        if(paperID !== undefined){
         output = output.concat(await getCitationPapers(paperID));
+        }
     }
 
     return output;

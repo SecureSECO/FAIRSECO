@@ -8,6 +8,7 @@ import { semanticScholarCitations } from "./apis/semanticscholar_api";
 import { openAlexCitations } from "./apis/openalex_api";
 import { Author, Paper, Citations } from "./paper";
 import { CffObject } from "../citation_cff";
+import { ErrorLevel, LogMessage } from "../../errorhandling/log";
 
 /** The name of the module. */
 export const ModuleName = "CitingPapers";
@@ -64,18 +65,34 @@ export async function runModule(
         }
         authors.push(new Author(givenNames + " " + familyName, orchidID));
     }
-
-    const semanticScholarData: Paper[] = await semanticScholarCitations(
+    let semanticScholarData: Paper[] = [];
+    try{
+    semanticScholarData = await semanticScholarCitations(
         authors,
         title,
         refTitles
     );
-    const openAlexData: Paper[] = await openAlexCitations(
+    }
+    catch(error){
+        const errorMessage =
+                "Error while getting semanticScholar data:\n" +
+                (error.message as string);
+            LogMessage(errorMessage, ErrorLevel.err);
+    }
+    let openAlexData: Paper[] = [];
+    try{
+    openAlexData = await openAlexCitations(
         authors,
         title,
         refTitles
     );
-
+    }
+    catch(error){
+        const errorMessage =
+                "Error while getting openAlex data:\n" +
+                (error.message as string);
+            LogMessage(errorMessage, ErrorLevel.err);
+    }
     const outputPapers: Paper[] = mergeDuplicates(semanticScholarData, openAlexData);
     return new Citations(outputPapers);
 }
