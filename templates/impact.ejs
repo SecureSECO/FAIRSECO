@@ -133,13 +133,13 @@ function getChartData() {
             <div id="Impact__Citation__Row" class="Impact__Row__Content">
                 <div class="Impact__Row__Block">
                     <p>Your project was cited</p>
-                    <div class="Row__Number"><%- getNumberOfCitations() %></div>
-                    <p>time<% if (getNumberOfCitations() !== 1) { %>s<% } %></p>
+                    <div class="Row__Number"><%- citations %></div>
+                    <p>time<% if (citations !== 1) { %>s<% } %></p>
                 </div>
                 <div class="Impact__Row__Block">
                     <p>in papers across</p>
                     <div class="Row__Number"><%- fieldCount %></div>
-                    <p>scientific field<% if (getNumberOfFields() !== 1) { %>s<% } %></p>
+                    <p>scientific field<% if (fieldCount !== 1) { %>s<% } %></p>
                 </div>
                 <div class="Impact__Row__Block">
                     <p>The most notable of which was</p>
@@ -163,7 +163,7 @@ function getChartData() {
                 <div class="Impact__Row__Block">
                     <p>Your code made its way into</p>
                     <div class="Row__Number"><%- projectCount ?? "0" %></div>
-                    <p>other project<% if (uniqueProjects.length !== 1) { %>s<% } %></p>
+                    <p>other project<% if (projectCount !== 1) { %>s<% } %></p>
                 </div>
                 <div class="Impact__Row__Block">
                     <p>The most notable of which was</p>
