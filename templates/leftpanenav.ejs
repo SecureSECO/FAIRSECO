@@ -150,8 +150,9 @@ function clickNav(ele) {
 
     const citations = document.getElementsByClassName("Citations");
     const citation = citations[0].children;
+    const classNam = citation.className;
 
-    if (ele.lastElementChild.firstChild.nodeValue == "Citations" && (citation.length > 0)){
+    if (ele.lastElementChild.firstChild.nodeValue == "Citations" && (citation.length > 0) && (classNam == "Citation")){
         elementCSS.style.visibility = 'visible';
         elementCSS.style.display = 'block';
     } else{
