@@ -70,13 +70,14 @@ jobs:
               with:
                 repository: QDUNI/FairSECO
                 path: FAIRSECO_Assets
-            - uses: ./
+            - uses: QDUNI/FairSECO@main # this is the main action
               with:
                   myToken: ${{ secrets.GITHUB_TOKEN }}
             - uses: actions/upload-artifact@v3
               with:
                   name: FAIRSECO Result
                   path: .FAIRSECO/
+            # commit and push the history file to the repo
             - name: Commit files
               run: |
                   git config --local user.email "github-actions[bot]@users.noreply.github.com"
