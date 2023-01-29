@@ -150,7 +150,7 @@ function getChartData() {
                 </div>
                 <div class="Impact__Row__Block">
                     <p>The most notable of which was</p>
-                    <div class="Row__PaperTitle" style="font-size:<%- setFontSize(mostNotableProjectName) %>"><%- mostNotableProjectName %></div>
+                        <h1 class="Row__PaperTitle" style="font-size:<%- setFontSize(mostNotableProjectName) %>"><%- mostNotableProjectName %></h1>
                     <% if (mostNotableProjectAuthors !== undefined ) {%>
                         <p>by <%- mostNotableProjectAuthors %></p>
                     <% } %>
@@ -232,9 +232,10 @@ new Chart("Citations__RadarChart", config);
 .ImpactScore__Content {
     width: 80%;
     margin: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+    display: grid;
+    height: 80%;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: 1fr;
 }
 
 .Impact__Row h2 {
@@ -252,19 +253,23 @@ new Chart("Citations__RadarChart", config);
     grid-template-columns: repeat(2, 1fr)
 }
 #Impact__Chart__Row{
-    margin: 2vw 0;
+    padding: 2vw 0;
 }
+
 .Citations__Chart__Container{
     position: relative;
-    width: 25vw;
+    width: 30vw;
+    max-width: 500px;
     margin: auto;
 }
 
 .Impact__Row__Block .Row__PaperTitle {
     font-weight: bold;
     margin: 0.25vw;
-    max-width: 15vw;
     text-align: center;
+}
+h1.Row__PaperTitle {
+    color: #0C281E;
 }
 
 .Impact__Row__Block {
