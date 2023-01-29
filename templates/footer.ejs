@@ -2,7 +2,7 @@
     <button class="citationgraphBtn" onclick="location.href='citationgraph.html';">Citationsgraph View</button>
     <p>Tool developed by students of Utrecht University, <br>
         in collaboration with the Netherlands eScience Center <br>
-        ⓒ 2022
+        ⓒ 2023
      </p>   
 </div>
 
@@ -13,24 +13,23 @@
         font-size: 12px;
         font-style: italic;
         color: #88BF93;
-        position: fixed;
         bottom: 0;
         margin: auto;
         width: 100%;
-        margin-left: 50px;
+        position: absolute;
     }
 
     .footer .citationgraphBtn{
         z-index: 1;
         border-radius: 12px;
         width: 11.5vw;
-        height: 4vh;
         color: #d9f8df;
         background-color: transparent;
         border: 2px solid #d9f8df;
         font-size: 1.1rem;
-        float: right;
-        margin-right: 75px;
+        position: absolute;
+        right: 0px;
+        margin-right: 15px;
         margin-top: 16px;
     }
 
@@ -38,4 +37,12 @@
     background-color: #d9f8df;
        color: #0c281e;
     }    
+
 </style>
+
+<%# Disable citations graph button when citations page has an error %>
+<script>
+    if (document.querySelector(".CitationsContainer.LeftPaneError") !== null) {
+        document.querySelector(".citationgraphBtn").disabled = true;
+    };
+</script>

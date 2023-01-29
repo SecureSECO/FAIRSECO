@@ -1,3 +1,9 @@
+/**
+ * This module contains functions for reading and validating a CITATION.cff file.
+ * 
+ * @module
+ */
+
 import * as dockerExit from "../errorhandling/docker_exit";
 import YAML from "yaml";
 import * as path_ from "path";
@@ -69,6 +75,7 @@ export async function runModule(path: string = "."): Promise<CffObject> {
     } catch (e) {
         if (e.code === "ENOENT") {
             // File not found, return MissingCffObject to indicate missing CITATION.cff file
+            LogMessage("No CITATION.cff file found.", ErrorLevel.info);
             const Data : MissingCffObject = { status: "missing_file" };
             return Data;
         } else {
@@ -85,6 +92,7 @@ export async function runModule(path: string = "."): Promise<CffObject> {
     } catch {
         // Parsing failed, incorrect YAML.
         // Return IncorrectYamlCffObject to indicate incorrect yaml
+        LogMessage("CITATION.cff file contains incorrect yaml", ErrorLevel.warn);
         const Data: IncorrectYamlCffObject = { status: "incorrect_yaml" };
         return Data;
     }
@@ -109,11 +117,11 @@ export async function runModule(path: string = "."): Promise<CffObject> {
             fs.mkdirSync("./cffOutputFiles/");
         else
             LogMessage(
-                "Folder cffOutputFiles already exists!",
+                "Directory cffOutputFiles already exists!",
                 ErrorLevel.info
             );
     } catch {
-        LogMessage("Could not create cffOutputFiles folder", ErrorLevel.err);
+        LogMessage("Could not create cffOutputFiles directory", ErrorLevel.err);
     }
 
     const stdOutStream = fs.createWriteStream("./cffOutputFiles/cffOutput.txt");
@@ -145,6 +153,7 @@ export async function runModule(path: string = "."): Promise<CffObject> {
     // Check cffconvert exit code for success
     if (!dockerExit.isError(exitCode)) {
         // CITATION.cff file is valid, return ValidCffObject with data and validation message
+        LogMessage("Read valid CITATION.cff file", ErrorLevel.info);
         const Data: ValidCffObject = {
             status: "valid",
             citation: result,
@@ -153,10 +162,12 @@ export async function runModule(path: string = "."): Promise<CffObject> {
         return Data;
     } else {
         // CITATION.cff file is invalid, return ValidationErrorCffObject with data and error message
+        const error = getError(stderr);
+        LogMessage("Read CITATION.cff file has is invalid: " + error, ErrorLevel.warn);
         const Data: ValidationErrorCffObject = {
             status: "validation_error",
             citation: result,
-            validation_message: getError(stderr),
+            validation_message: error,
         };
         return Data;
     }

@@ -1,14 +1,20 @@
+<%
+    if (quality === undefined) {
+        throw new Error("Missing QualityMetrics data");
+    }
+%> 
+
 <div class="Quality" hidden>
     <h1>Quality Score</h1>
     <div class="QualityMeter">
         <div class="QualityMeter__Bar">
-            <div class="QualityMeter__Score"><%- quality?.score %></div>
+            <div class="QualityMeter__Score"><%- quality.score %></div>
             <div class="QualityMeter__Text"><%-
                 (() => {
-                    if (quality?.score < 25) return "awful";
-                    else if (quality?.score < 50) return "bad";
-                    else if (quality?.score < 75) return "good";
-                    else if (quality?.score < 100) return "splendid!";
+                    if (quality.score < 25) return "awful";
+                    else if (quality.score < 50) return "bad";
+                    else if (quality.score < 75) return "good";
+                    else if (quality.score < 100) return "splendid!";
                     else return "perfect!";
                 })() %>
             </div>
@@ -29,7 +35,7 @@
                 </div>
                 <p>Percentage of FAIRness criteria met</p>
             </div>
-            <div class="QualityMetrics__ScoreMetric__Percentage"><h2><%- quality?.fairnessScore %>%</h2></div>
+            <div class="QualityMetrics__ScoreMetric__Percentage"><h2><%- quality.fairnessScore %>%</h2></div>
         </div>
         <div class="QualityMetrics__ScoreMetric" id="QualityLicenses">
             <i class="fa-solid fa-copyright"></i>
@@ -40,7 +46,7 @@
                 </div>
                 <p>Correct usage of licenses (no violations)</p>
             </div>
-            <div class="QualityMetrics__ScoreMetric__Percentage"><h2><%- quality?.licenseScore %>%</h2></div>
+            <div class="QualityMetrics__ScoreMetric__Percentage"><h2><%- quality.licenseScore %>%</h2></div>
         </div>
         <div class="QualityMetrics__ScoreMetric" id="QualityMaintainability">
             <i class="fa-solid fa-wrench"></i>
@@ -51,7 +57,7 @@
                 </div>
                 <p>Percentage of closed issues on your GitHub repository</p>
             </div>
-            <div class="QualityMetrics__ScoreMetric__Percentage"><h2><%- quality?.maintainabilityScore %>%</h2></div>
+            <div class="QualityMetrics__ScoreMetric__Percentage"><h2><%- quality.maintainabilityScore %>%</h2></div>
         </div>
         <div class="QualityMetrics__ScoreMetric" id="QualityDocumentation">
             <i class="fa-solid fa-file-lines"></i>
@@ -62,12 +68,12 @@
                 </div>
                 <p>Presence of a documentation directory and readme file</p>
             </div>
-            <div class="QualityMetrics__ScoreMetric__Percentage"><h2><%- quality?.documentationScore %>%</h2></div>
+            <div class="QualityMetrics__ScoreMetric__Percentage"><h2><%- quality.documentationScore %>%</h2></div>
         </div>
-        <p>
+        <p class="solved-issues">
             <i class="fa-regular fa-clock"></i>
             Average time to solve issues: 
-            <%- quality?.avgSolveTime ? quality?.avgSolveTime.toString() + (quality?.avgSolveTime === 1 ? " day" : " days") : "-" %>
+            <%- quality.avgSolveTime ? quality.avgSolveTime.toString() + (quality.avgSolveTime === 1 ? " day" : " days") : "-" %>
         </p>
     </div>
 </div>
@@ -78,6 +84,11 @@
     width: 100%;
     height: 100%;
     border-radius: 16px;
+    overflow-y: auto;
+}
+
+.solved-issues{
+    text-align: center;
 }
 
 .Quality h1 {
@@ -132,14 +143,14 @@
     border-radius: 50%;
     background-color: <%-
     (() => {
-        if (quality?.score < 25) return "#2D4B3D";
-        else if (quality?.score < 50) return "#3A9068";
-        else if (quality?.score < 75) return "#4BB784";
+        if (quality.score < 25) return "#2D4B3D";
+        else if (quality.score < 50) return "#3A9068";
+        else if (quality.score < 75) return "#4BB784";
         else return "#36DDA1";
     })() %>;
     transform: translate(
-        <%- Math.sin((quality?.score / 100 - 0.5) * Math.PI) * 9.5 %>vw,
-        <%- Math.cos((quality?.score / 100 - 0.5) * Math.PI) * -9.5 %>vw
+        <%- Math.sin((quality.score / 100 - 0.5) * Math.PI) * 9.5 %>vw,
+        <%- Math.cos((quality.score / 100 - 0.5) * Math.PI) * -9.5 %>vw
     );
 }
 .QualityMeter__Circle::before {
@@ -261,7 +272,7 @@
 }
 
 #QualityFairness .QualityMetrics__ScoreMetric__BarContainer__Bar__Foreground {
-    width: <%- quality?.fairnessScore %>%;
+    width: <%- quality.fairnessScore %>%;
     background-color: #60415F;
     filter: brightness(<%- 1 + 1.25 * quality.fairnessScore / 100 %>);
 }
@@ -280,4 +291,5 @@
     background-color: #60415F;
     filter: brightness(<%- 1 + 1.25 * quality.documentationScore / 100 %>);
 }
+
 </style>

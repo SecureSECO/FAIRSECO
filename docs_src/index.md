@@ -27,16 +27,17 @@
         - Open/closed GitHub issues
     - Documentation
         - Presence of documentation directory
+        - Presence of readme file
 - **SBOM** (from  [sbom-action](https://github.com/anchore/sbom-action))
     - Dependency tree
 
 <br>
 
-# How to run
+# How to Run
 
 ---
 
-In your Github repository, put the following workflow code in a `.yml` file in the `.github/workflows` folder:
+In your GitHub repository, put the following workflow code in a `.yml` file in the `.github/workflows` directory:
 
 ```yaml
 name: RunFAIRSECO
@@ -46,7 +47,7 @@ on:
     workflow_dispatch:
 
 jobs:
-    RunFAIRSECO:
+  RunTortellini:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
@@ -55,23 +56,56 @@ jobs:
               with:
                   name: tortellini-result
                   path: .tortellini/out
+  
+  RunSBOM:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
             - uses: anchore/sbom-action@v0
               with:
-                  artifact-name: SBOM.spdx # Output is in JSON format
-            - uses: QDUNI/FAIRSECO@main
+                  artifact-name: SBOM.spdx
+  
+  RunFAIRSECO:
+        needs: [RunTortellini, RunSBOM]
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/checkout@v3
+              with:
+                repository: QDUNI/FairSECO
+                path: FAIRSECO_Assets
+            - uses: QDUNI/FairSECO@main # this is the main action
+              with:
+                  myToken: ${{ secrets.GITHUB_TOKEN }}
             - uses: actions/upload-artifact@v3
               with:
                   name: FAIRSECO Result
                   path: .FAIRSECO/
+            - name: Commit files
+              run: |
+                  git config --local user.email "github-actions[bot]@users.noreply.github.com"
+                  git config --local user.name "github-actions[bot]"
+                  git pull
+                  git add -f ./.fairseco_history.json
+                  git commit --allow-empty -m "Update FAIRSECO history file"
+            - name: Push changes
+              uses: ad-m/github-push-action@master
+              with:
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  branch: ${{ github.ref }}
 ```
 
-The workflow creates an artifact in the folder `.FAIRSECO` containing the following files:
-- index.html
-    - Dashboard where you can see the results in a nice overview
-- Report.yml
+The workflow creates an artifact in the `.FAIRSECO` directory that contains the following files:
+- dashboard.html
+    - Dashboard where you can see the results in a clear overview
+- citationgraph.html
+    - Graph view for citations in the dashboard
+- report.yml
     - Contains the data collected and processed by the action
 - program.log
     - The log of the program
+
+The workflow also writes the `.fairseco_history.json` file to the repository. This file contains historical data used for the Impact History page in the dashboard.
 
 <br>
 

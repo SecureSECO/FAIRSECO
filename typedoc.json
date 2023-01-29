@@ -1,0 +1,26 @@
+{
+    "name": "FAIRSECO",
+    "hideGenerator": true,
+    "out": "./docs",
+    "readme": "./docs_src/index.md",
+    "validation": {
+        "notExported": true,
+        "invalidLink": true,
+        "notDocumented": false
+    },
+    "pluginPages": {
+        "source": "./docs_src",
+        "pages": [
+            {
+                "title": "FAIRSECO",
+                "moduleRoot": true,
+                "children": [
+                    {
+                        "title": "Program Structure",
+                        "source": "program_structure.md"
+                    }
+                ]
+            }
+        ]
+    }
+}

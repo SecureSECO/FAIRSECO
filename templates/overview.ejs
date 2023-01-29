@@ -1,47 +1,62 @@
+<script>
+
+    function generatePDF() {
+      var opt = { filename: 'FAIRECO-REPORT-<%-githubData.Repo %>.pdf' };
+      const element = document.getElementById("pdf");
+      var elementclone = element.cloneNode(true);
+      elementclone.style = "display:block";
+      html2pdf().set(opt).from(elementclone).save();
+      elementclone.remove();
+    }
+
+</script>
 <%
-function getRepositoryTitle() {
-    return "FAIRSECO";
-}
+    // Handle missing GitHub data
+    if (githubData === undefined) {
+        githubData = {
+            Repo: "missing data",
+            Owner: "missing data",
+            Stars: "?",
+            Watched: "?",
+            Forks: "?",
+            Contributors: [
+                {
+                    type: "User",
+                    login: "missing data"
+                }
+            ]
+        };
+    }
 
-function getRepositoryOwner() {
-    return "QDUNI";
-}
+    // Get top contributors
+    topContributors = "";
+    let contributorCount = 0;
+    for (const contributor of githubData.Contributors) {
+        if (contributor.type === "User" && contributorCount <= 6) {
+            topContributors += "<p>" + contributor.login + "</p>";
+            contributorCount++;
+        }
+    }
 
-function getDate() {
-    return "22 dec 2022";
-}
+    // Get date
+    const date = new Date();
+    const dateString = String(date.getDate()) + "/" + String(date.getMonth() + 1) + "/" + String(date.getFullYear());
 
-function getTopContributors() {
-    return "<p>RageRaptor</p><p>Tjibbe75</p>";
-}
+    // Get citations, fairness, quality score
+    const citations = paperData !== undefined ? paperData.firstHandCitations + paperData.secondHandCitations : "-";
+    const fairness = fairtally !== undefined ? fairtally.count : "-";
+    const qualityScore = quality !== undefined ? quality.score : "-";
 
-function getRepositoryStars() {
-    return 3100;
-}
-
-function getrepositoryWatchers() {
-    return 1600;
-}
-
-function getRepositoryforks() {
-    return 25;
-}
-
-function getTimesCited() {
-    return 123;
-}
-
-function getFairness() {
-    return "5/5";
-}
-
-function getMethodsReuse() {
-    return 20;
-}
-
-function getQualityScore() {
-    return "83/100";
-}
+    // Get method matches
+    let methodMatches = 0;
+    if (searchSECO !== undefined) {
+        for (const method of searchSECO.methods) {
+            methodMatches += method.matches.length;
+        }
+    } else {
+        methodMatches = "-";
+    }
+    
 %>
 
 <div class="Overview">
@@ -50,35 +65,35 @@ function getQualityScore() {
         <div class="Repository__Info__Top">
             <div class="Repository__Info">
                 <h3>Repository title</h3>
-                <h2 class="Repository__Data"><%- getRepositoryTitle() %></h2>
+                <h2 class="Repository__Data"><%- githubData.Repo %></h2>
             </div>
             <div class="Repository__Info">
                 <h3>Repository owner</h3>
-                <h2 class="Repository__Data"><%- getRepositoryOwner() %></h2>
+                <h2 class="Repository__Data"><%- githubData.Owner %></h2>
             </div>
             <div class="Repository__Info">
                 <h3>Date of issue</h3>
-                <h2 class="Repository__Data"><%- getDate() %></h2>
+                <h2 class="Repository__Data"><%- dateString %></h2>
             </div>
         </div>
         <div class="Repository__Info__Left">
             <div class="Repository__Info">
                 <h3>Top contributors</h3>
-                <h2 class="Repository__Data Repository__Contributors"><%- getTopContributors() %></h2>
+                <h2 class="Repository__Data Repository__Contributors"><%- topContributors %></h2>
             </div>
         </div>
         <div class="Repository__Info__Right">
             <div class="Repository__Info">
                 <h3>Repository stars</h3>
-                <h2 class="Repository__Data"><%- getRepositoryStars() %><i class="fa-solid fa-star"></i></h2>
+                <h2 class="Repository__Data"><%- githubData.Stars %><i class="fa-solid fa-star"></i></h2>
             </div>
             <div class="Repository__Info">
                 <h3>Repository watchers</h3>
-                <h2 class="Repository__Data"><%- getrepositoryWatchers() %><i class="fa-solid fa-eye"></i></h2>
+                <h2 class="Repository__Data"><%- githubData.Watched %><i class="fa-solid fa-eye"></i></h2>
             </div>
             <div class="Repository__Info">
-                <h3>Repository Forks</h3>
-                <h2 class="Repository__Data"><%- getRepositoryforks() %><i class="fa-solid fa-code-fork"></i></h2>
+                <h3>Repository forks</h3>
+                <h2 class="Repository__Data"><%- githubData.Forks %><i class="fa-solid fa-code-fork"></i></h2>
             </div>
         </div>
     </div>
@@ -86,21 +101,22 @@ function getQualityScore() {
     <div class="Meta-data__Row">
         <div class="Meta-data">
             <p>Times cited</p>
-            <div class = Meta-data__Data><p><%- getTimesCited() %></p></div>
+            <div class = Meta-data__Data><p><%- citations %></p></div>
         </div>
         <div class="Meta-data">
-            <p>Fairness</p>
-            <div class = Meta-data__Data><p><%- getFairness() %></p></div>
+            <p>FAIRness</p>
+            <div class = Meta-data__Data><p><%- fairness %>/5</p></div>
         </div>
         <div class="Meta-data">
-            <p>Methods reused in other projects</p>
-            <div class = Meta-data__Data><p><%- getMethodsReuse() %></p></div>
+            <p>Methods matching those in other projects</p>
+            <div class = Meta-data__Data><p><%- methodMatches %></p></div>
         </div>
         <div class="Meta-data">
             <p>Quality Score</p>
-            <div class = Meta-data__Data><p><%- getQualityScore() %></p></div>
+            <div class = Meta-data__Data><p><%- qualityScore %>/100</p></div>
         </div>
     </div>
+    <button id="pdfbutton" onclick="generatePDF()"><i class="fa-solid fa-download"></i>  Download as PDF</button>
 </div>
 
 <style>
@@ -115,9 +131,30 @@ function getQualityScore() {
     color: #0C281E;
     text-align: Left;
     margin: 0;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     margin-left: 4.8vw;
     font-size: 1.5rem;
+}
+
+#pdfbutton{
+
+    display: block;
+    border-radius: 8px;
+    margin: auto;
+    margin-top: 20px;
+    border: 1px solid black;
+    padding: 10px;
+    background: none;
+}
+
+#pdfbutton:hover{
+    color: white;
+    background-color: #0c281e;
+}
+
+#pdfbutton i{
+    margin-right: 5px;
+    font-size: 15px;
 }
 
 .Overview__Content {
@@ -217,3 +254,5 @@ function getQualityScore() {
     margin: 0.25vw;
 }
 </style>
+
+

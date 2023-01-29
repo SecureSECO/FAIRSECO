@@ -80,11 +80,36 @@
     }
 </style>
 <script>
-window.addEventListener('load', 
-  function() { 
-  window.ActiveTab = document.querySelector(".ActiveTab")
-  window.ActiveIndex = 0
-  }, false);
+window.addEventListener('load', () => {
+    window.ActiveTab = document.querySelector(".ActiveTab");
+    window.ActiveIndex = 0;
+
+    <%# Handle missing pages %>
+    for (const tab of document.querySelectorAll(".LeftPaneNav .NavItem")) {
+        if (document.querySelector("." + tab.dataset.linkedClass).classList.contains("LeftPaneError")) {
+            const icon = tab.querySelector("i");
+            icon.classList.forEach((token) => {
+                icon.classList.remove(token);
+            });
+            icon.classList.add("fa-solid", "fa-triangle-exclamation");
+        }
+    }
+
+    
+    const elementCSS = document.querySelector('.citationgraphBtn');
+
+    const citations = document.getElementsByClassName("Citations");
+    const citation = citations[0].children;
+
+    if ((citation.length > 0)){
+        elementCSS.style.visibility = 'visible';
+        elementCSS.style.display = 'block';
+    } else {
+        elementCSS.style.visibility = 'hidden';
+        elementCSS.style.display = 'none';
+    }
+
+});
 
 function moveHighlightBlockTo(ele) {
     const padding = 20;
@@ -119,6 +144,20 @@ function clickNav(ele) {
     let active = document.querySelector(".Active");
     if (active === ele) {
         return;
+    }
+
+    const elementCSS = document.querySelector('.citationgraphBtn');
+
+    const citations = document.getElementsByClassName("Citations");
+    const citation = citations[0].children;
+    const classNam = citation.className;
+
+    if (ele.lastElementChild.firstChild.nodeValue == "Citations" && (citation.length > 0) && (classNam == "Citation")){
+        elementCSS.style.visibility = 'visible';
+        elementCSS.style.display = 'block';
+    } else{
+        elementCSS.style.visibility = 'hidden';
+        elementCSS.style.display = 'none';
     }
 
     active.classList.remove("Active");

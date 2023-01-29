@@ -13,6 +13,6 @@ describe('WriteHTML still generates files with', () => {
         const modifiedData: ReturnObject[] = testData.data.filter(
             (obj) => obj.ModuleName !== toBeOmitted
         );
-        return expect(WriteHTML(modifiedData, "./.FairSECO/index.html")).resolves.not.toThrow()
+        return expect(WriteHTML(modifiedData, "./.FAIRSECO/", "./templates/")).resolves.not.toThrow()
     });
 });

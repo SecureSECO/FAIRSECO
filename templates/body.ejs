@@ -1,10 +1,18 @@
 <body>
     
     <!-- <div id="BackgroundSphere1"></div> -->
+   
     <%- include('leftpane', {"data": data}) %>
-    <%- include('rightpane', {"data": data})%>
+    <%- include('rightpane', {"data": data})%> 
+    <%- include('pdf', {"data": data})%>
+
     
     <style>
+
+        #pdf h1, #pdf h2, #pdf p{
+            color: black !important;
+        }
+
         h1,p {
             color: #d9f8df;
         }
@@ -27,6 +35,10 @@
             z-index: -2;
         }
         
+        a:link{
+            color: #779c7e;
+        }
+
         a:visited {
             color: #779c7e;
         }

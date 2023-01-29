@@ -1,6 +1,6 @@
 /**
  * This module contains functions for finding papers that cite a piece of research software, making use of Semantic Scholar.
- * <br>The main function to be used by other modules is {@link semanticScholarCitations}.
+ * <br>The main function to be used by other modules is {@link semanticScholarCitations | semanticScholarCitations()}.
  * 
  * @module
  */

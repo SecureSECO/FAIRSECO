@@ -1,11 +1,15 @@
+<%
+if (fairtally === undefined) {
+    throw new Error("Missing fairtally data");
+}
 
-<% function checkOrCross(x) {
-return x ? '<p>Yes</p>' : '<p>No</p>'
+function checkOrCross(x) {
+    return x ? '<p>Yes</p>' : '<p>No</p>'
 }
 %>
 
 <div class="FairtallyReport" hidden>
-    <h1 class="FairtallyReportTitle">FAIRness Report</h1>
+    <h1>FAIRness Report</h1>
     <div class="stars">
         <h2>
         <% for (let i = 0; i < Math.floor(fairtally.count); i++) { %>
@@ -25,30 +29,30 @@ return x ? '<p>Yes</p>' : '<p>No</p>'
     </div>
         <div class="ChecklistContainer">
             <div onClick="togglePanel(this)">
-                <p><i class="fa-solid fa-arrow-up-from-bracket"></i>Registered in public repository?</p> <%- checkOrCross(fairtally.registry)%>
+                <p><i class="fa-solid fa-arrow-up-from-bracket"></i>Registered in public registry?</p> <%- checkOrCross(fairtally.registry)%>
             </div>
-            <div>
+            <div class="info">
                 Whether your software is registered in a public registry, so that it is easily <b>F</b>indable.
                 <a href="https://fair-software.eu/recommendations/registry" target="_blank">Read more</a>
             </div>
             <div onClick="togglePanel(this)">
                 <p><i class="fa-solid fa-code-fork"></i>Repository is public?</p><%- checkOrCross(fairtally.repository)%>
             </div>
-            <div>
+            <div class="info">
                 Whether your repository is public, so that your software is <b>A</b>ccessible.
                 <a href="https://fair-software.eu/recommendations/repository" target="_blank">Read more</a>
             </div>
             <div onClick="togglePanel(this)">
                 <p><i class="fa-solid fa-list-check"></i>Using a quality checklist?</p> <%- checkOrCross(fairtally.checklist)%>
             </div>
-            <div>
+            <div class="info">
                 Whether your project uses a software quality checklist, so that your software is <b>I</b>nteroperable.
                 <a href="https://fair-software.eu/recommendations/checklist" target="_blank">Read more</a>
             </div>
             <div onClick="togglePanel(this)">
                 <p><i class="fa-solid fa-quote-right"></i>Citation file present?</p> <%- checkOrCross(fairtally.citation)%>
             </div>
-            <div>
+            <div class="info">
                 <p>Whether your repository contains a citation file, so that your software is <b>R</b>eusable.
                 <a href="https://fair-software.eu/recommendations/citation" target="_blank">Read more.</a>
                 <%- fairtally.citation ? '' : ' Need help creating a CFF File? <a href = "https://citation-file-format.github.io/cff-initializer-javascript/#/start">This tool can help.</a>' %>
@@ -57,7 +61,7 @@ return x ? '<p>Yes</p>' : '<p>No</p>'
             <div onClick="togglePanel(this)">
                 <p><i class="fa-solid fa-copyright"></i>License file present?</p> <%- checkOrCross(fairtally.license)%>
             </div>
-            <div>
+            <div class="info">
                 Whether you have a license file in your repository, so that your software is correctly <b>R</b>eusable.
                 <a href="https://fair-software.eu/recommendations/license" target="_blank">Read more</a>
             </div>
@@ -69,11 +73,13 @@ return x ? '<p>Yes</p>' : '<p>No</p>'
 
     .FairtallyReport {
         color: #0C281E;
-        max-height: 90%;
-        overflow-y: scroll;
+        height: 100%;
+        overflow-y: auto;
     }
 
     .FairtallyReport h1 {
+        margin: 2%;
+        font-size: 2vw;
         color: #0C281E;
         text-align: center;
     }
@@ -82,11 +88,6 @@ return x ? '<p>Yes</p>' : '<p>No</p>'
         text-align: center;
     }
     .FairtallyReport h4 {
-        font-weight: 400;
-        font-style: italic;
-        text-align: center;
-    }
-    .HowFairIsReport h4 {
         font-weight: 400;
         font-style: italic;
         text-align: center;

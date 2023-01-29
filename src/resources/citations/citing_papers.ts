@@ -8,6 +8,7 @@ import { semanticScholarCitations } from "./apis/semanticscholar_api";
 import { openAlexCitations } from "./apis/openalex_api";
 import { Author, Paper, Citations } from "./paper";
 import { CffObject } from "../citation_cff";
+import { ErrorLevel, LogMessage } from "../../errorhandling/log";
 
 /** The name of the module. */
 export const ModuleName = "CitingPapers";
@@ -17,22 +18,26 @@ export const ModuleName = "CitingPapers";
  * 
  * @param cffFile The information from the CITATION.cff file.
  * 
- * @returns An array of unique papers citing the software.
+ * @returns An object containing information about the citations.
  */
 export async function runModule(
     cffFile: CffObject | undefined 
-): Promise<any> {
+): Promise<Citations> {
     // Check cff output
-    if (cffFile === undefined || cffFile.status !== "valid") {
-        throw new Error("Invalid CITATION.cff file");
+    if (cffFile === undefined) {
+        throw new Error("Missing CitationCff module data");
     }
-
-    const title: string = cffFile.citation.title;
+    if (cffFile.status !== "valid") {
+        throw new Error("Missing CITATION.cff file data (status: \"" + cffFile.status + "\")");
+    }
     
+    // Get title
+    const title = cffFile.citation.title;
+
     // Get reference paper titles from CITATION.cff file
     const refTitles: string[] = [];
     if (cffFile.citation.references !== undefined) {
-        for (const ref of cffFile.citation.references){
+        for (const ref of cffFile.citation.references) {
             if (ref.type === "article" || ref.type === "journal-article") {
                 refTitles.push(ref.title);
             }
@@ -41,7 +46,7 @@ export async function runModule(
 
     // Get authors from CITATION.cff file
     const authors: Author[] = [];
-    for (const author of cffFile.citation.authors){
+    for (const author of cffFile.citation.authors) {
         let familyName = "";
         let givenNames = "";
         let orchidID = "";
@@ -60,18 +65,34 @@ export async function runModule(
         }
         authors.push(new Author(givenNames + " " + familyName, orchidID));
     }
-
-    const semanticScholarData: Paper[] = await semanticScholarCitations(
+    let semanticScholarData: Paper[] = [];
+    try{
+    semanticScholarData = await semanticScholarCitations(
         authors,
         title,
         refTitles
     );
-    const openAlexData: Paper[] = await openAlexCitations(
+    }
+    catch(error){
+        const errorMessage =
+                "Error while getting semanticScholar data:\n" +
+                (error.message as string);
+            LogMessage(errorMessage, ErrorLevel.err);
+    }
+    let openAlexData: Paper[] = [];
+    try{
+    openAlexData = await openAlexCitations(
         authors,
         title,
         refTitles
     );
-
+    }
+    catch(error){
+        const errorMessage =
+                "Error while getting openAlex data:\n" +
+                (error.message as string);
+            LogMessage(errorMessage, ErrorLevel.err);
+    }
     const outputPapers: Paper[] = mergeDuplicates(semanticScholarData, openAlexData);
     return new Citations(outputPapers);
 }

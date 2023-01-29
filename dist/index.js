@@ -18719,15 +18719,22 @@ const pre_1 = __nccwpck_require__(4153);
 const getdata_1 = __nccwpck_require__(5622);
 const post_1 = __nccwpck_require__(7051);
 const core = __importStar(__nccwpck_require__(2186));
-/** The entrypoint of the program. */
+/**
+ * The entrypoint of the program.
+ * The program performs the following steps:
+ * - Handle preconditions required for the program to run
+ * - Call the modules that generate the data
+ * - Generates the output files
+*/
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            // Handle preconditions
             const check = yield (0, pre_1.pre)();
             if (check) {
-                // Call data check.
+                // Generate the data
                 const result = yield (0, getdata_1.data)();
-                // Call post check.
+                // Create output files
                 yield (0, post_1.post)(result);
             }
         }
@@ -18747,7 +18754,7 @@ exports.main = main;
 "use strict";
 
 /**
- * This module contains functions to handle Docker exit codes based on error status.
+ * This module contains functions for handling Docker exit codes based on error status.
  *
  * @module
  */
@@ -18829,7 +18836,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.formatMessage = exports.createLogFile = exports.LogMessage = exports.ErrorLevel = void 0;
 const fs_1 = __importDefault(__nccwpck_require__(7147));
 /**
- * Enum describing the severity of an error when logged by {@link LogMessage}.
+ * Enum describing the severity of an error when logged by {@link LogMessage | LogMessage()}.
  */
 var ErrorLevel;
 (function (ErrorLevel) {
@@ -18912,7 +18919,7 @@ exports.formatMessage = formatMessage;
 
 /**
  * This module handles the main part of the action. It runs each resource module and compiles
- * them into an array of {@link ReturnObject}s.
+ * the results into an array of {@link ReturnObject | ReturnObjects}.
  *
  * @remarks
  * Because every function is wrapped in a try-catch block separately,
@@ -18964,6 +18971,11 @@ const sbom = __importStar(__nccwpck_require__(147));
 const qualityMetrics = __importStar(__nccwpck_require__(2829));
 const log_1 = __nccwpck_require__(8375);
 const git_1 = __nccwpck_require__(6350);
+/**
+ * Runs each FAIRSECO data collection module and compiles the results.
+ *
+ * @returns An array containing data generation outputs from all modules that did not encounter fatal errors.
+ */
 function data() {
     return __awaiter(this, void 0, void 0, function* () {
         // Get GitHub repository info
@@ -19007,8 +19019,7 @@ function runModule(module, ...parameters) {
         }
         catch (error) {
             (0, log_1.LogMessage)(module.ModuleName + " encountered an error:\n" + error.message, log_1.ErrorLevel.err);
-            const noData = { ModuleName: module.ModuleName, Data: {} };
-            return noData;
+            return undefined;
         }
     });
 }
@@ -19109,9 +19120,9 @@ function getRepoStats(owner, repo, token) {
 }
 exports.getRepoStats = getRepoStats;
 /**
- * Creates a `GitHubInfo` object with all data collected from the Octokit API.
+ * Creates a GitHubInfo object with all data collected from the Octokit API.
  *
- * @returns A `GitHubInfo` object containing all data recieved from Octokit.
+ * @returns A GitHubInfo object containing all data recieved from Octokit.
  */
 function getGitHubInfo() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -19230,6 +19241,160 @@ exports.filterBadgeURLS = filterBadgeURLS;
 
 /***/ }),
 
+/***/ 8655:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+/**
+ * This module contains a function that handles getting and updating FAIRSECO history data.
+ *
+ * @module
+ */
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getHistoryData = void 0;
+const fs = __importStar(__nccwpck_require__(7147));
+const log_1 = __nccwpck_require__(8375);
+/**
+ * Gets history data and updates the history file with new data.
+ * - If the history file can not be read, the history is reset.
+ * - If the last entry in the history has the current date, it will be updated with the new data.
+ *
+ * @param filePath The path to read history from and write history to.
+ * @param result The data gathered by FAIRSECO.
+ * @returns The history data with the new data added.
+ */
+function getHistoryData(filePath, result) {
+    var _a, _b, _c, _d, _e;
+    // Get current date
+    const currentDate = new Date();
+    const day = currentDate.getDate();
+    const month = currentDate.getMonth() + 1;
+    const year = currentDate.getFullYear();
+    const date = (day <= 9 ? "0" + String(day) : String(day)) +
+        "/" +
+        (month <= 9 ? "0" + String(month) : String(month)) +
+        "/" +
+        year;
+    // Get quality score
+    const quality = (_b = (_a = result.find((ele) => (ele.ModuleName === "QualityMetrics"))) === null || _a === void 0 ? void 0 : _a.Data) === null || _b === void 0 ? void 0 : _b.score;
+    // Get citations
+    const citationsData = (_c = result.find((ele) => (ele.ModuleName === "CitingPapers"))) === null || _c === void 0 ? void 0 : _c.Data;
+    const firstHandCitations = citationsData === null || citationsData === void 0 ? void 0 : citationsData.firstHandCitations;
+    const secondHandCitations = citationsData === null || citationsData === void 0 ? void 0 : citationsData.secondHandCitations;
+    const citations = firstHandCitations === undefined || secondHandCitations === undefined ? undefined : firstHandCitations + secondHandCitations;
+    // Get fairness
+    const fairnessOutput = (_d = result.find((ele) => (ele.ModuleName === "fairtally"))) === null || _d === void 0 ? void 0 : _d.Data;
+    const fairness = fairnessOutput !== undefined ? fairnessOutput[0].count : undefined;
+    // Get method matches
+    const searchsecoOutput = (_e = result.find((ele) => (ele.ModuleName === "SearchSECO"))) === null || _e === void 0 ? void 0 : _e.Data;
+    let matches;
+    if ((searchsecoOutput === null || searchsecoOutput === void 0 ? void 0 : searchsecoOutput.methods) !== undefined) {
+        matches = 0;
+        for (const method of searchsecoOutput.methods) {
+            matches += method.matches.length;
+        }
+    }
+    // New data object
+    const newData = {
+        date,
+        quality,
+        citations,
+        fairness,
+        matches
+    };
+    // Read the history file
+    const historyData = readHistoryFile(filePath);
+    // Check if the last entry is of the current date.
+    // If it is, update it with the new data.
+    // Otherwise, add a new entry
+    let includeLater = false;
+    if (historyData.length >= 1 && historyData[historyData.length - 1].date === date) {
+        // Update the last entry
+        const lastEntry = historyData[historyData.length - 1];
+        Object.assign(lastEntry, newData);
+    }
+    else {
+        // Append new data to the history if it has useful data.
+        // Otherwise, append it later to exclude it from the history file.
+        if (newData.quality !== undefined || newData.citations !== undefined || newData.fairness !== undefined || newData.fairness !== undefined) {
+            historyData.push(newData);
+        }
+        else {
+            includeLater = true;
+        }
+    }
+    // Write new history to the history file
+    try {
+        fs.writeFileSync(filePath, JSON.stringify(historyData));
+    }
+    catch (error) {
+        (0, log_1.LogMessage)("Failed to write to FAIRSECO history file:\n" + error.message, log_1.ErrorLevel.err);
+    }
+    // Include new data after writing file, if needed
+    if (includeLater) {
+        historyData.push(newData);
+    }
+    return historyData;
+}
+exports.getHistoryData = getHistoryData;
+function readHistoryFile(filePath) {
+    // Get the history data
+    let historyData = [];
+    try {
+        // Read the history file
+        const readData = JSON.parse(fs.readFileSync(filePath).toString());
+        // Verify that the history data is an array
+        if (readData.constructor !== Array) {
+            throw new Error("Incorrect format (history is not an array)");
+        }
+        // Verify that the children are objects
+        for (const data of readData) {
+            if (typeof (data) !== "object") {
+                throw new Error("Incorrect format (element of history is not an object)");
+            }
+        }
+        historyData = readData;
+    }
+    catch (error) {
+        if (error.code === "ENOENT") {
+            // File not found
+            (0, log_1.LogMessage)("No FAIRSECO history file found:\n" + error.message, log_1.ErrorLevel.info);
+        }
+        else {
+            // Error reading history file
+            (0, log_1.LogMessage)("Failed to read FAIRSECO history file (history will be reset!):\n" + error.message, log_1.ErrorLevel.warn);
+        }
+    }
+    return historyData;
+}
+
+
+/***/ }),
+
 /***/ 7051:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -19259,8 +19424,10 @@ const yaml_1 = __importDefault(__nccwpck_require__(4083));
 const fs_1 = __importDefault(__nccwpck_require__(7147));
 const webapp_1 = __nccwpck_require__(6137);
 const log_1 = __nccwpck_require__(8375);
+const history_1 = __nccwpck_require__(8655);
 /**
  * Creates reports showing the gathered data in .yml and .html format.
+ * The FAIRSECO history file is also read and updated.
  *
  * @param result The data gathered by FAIRSECO.
  */
@@ -19268,6 +19435,14 @@ function post(result) {
     return __awaiter(this, void 0, void 0, function* () {
         // Create report.yml file
         createReport(result);
+        // Get (and update) history data.
+        // Add this after generating the raw data report to not include it there.
+        // It will be used by the dashboard.
+        const historyData = (0, history_1.getHistoryData)("./.fairseco_history.json", result);
+        result.push({
+            ModuleName: "History",
+            Data: historyData
+        });
         // Create dashboard.html file
         yield generateHTML(result);
     });
@@ -19275,7 +19450,6 @@ function post(result) {
 exports.post = post;
 // Generate the report of FAIRSECO
 function createReport(result) {
-    (0, log_1.LogMessage)("FAIRSECO report:\n" + JSON.stringify(result), log_1.ErrorLevel.info);
     try {
         fs_1.default.writeFileSync("./.FAIRSECO/report.yml", yaml_1.default.stringify(result));
         fs_1.default.writeFileSync("./.FAIRSECO/report.json", JSON.stringify(result));
@@ -19289,7 +19463,7 @@ function createReport(result) {
 function generateHTML(result) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            yield (0, webapp_1.WriteHTML)(result, "./.FAIRSECO/dashboard.html");
+            yield (0, webapp_1.WriteHTML)(result, "./.FAIRSECO/");
             (0, log_1.LogMessage)("Successfully wrote HTML file to dir.", log_1.ErrorLevel.info);
         }
         catch (err) {
@@ -19308,7 +19482,7 @@ function generateHTML(result) {
 
 /**
  * This module contains functions that are called before the main action is run,
- * to set up the directory and files used by the program.
+ * to set up the directory and files used by the program and make sure the program has the necessary input to run.
  *
  * @module
  */
@@ -19353,9 +19527,14 @@ const core = __importStar(__nccwpck_require__(2186));
 const log_1 = __nccwpck_require__(8375);
 const fs_1 = __importDefault(__nccwpck_require__(7147));
 /**
- * Handles preconditions for getting the data.
+ * Handles preconditions for running the program.
  *
- * @returns Whether the preconditions for getting the data are satisfied.
+ * The function performs the following:
+ * - Creating the FAIRSECO directory
+ * - Creating the log file
+ * - Checking the necessary inputs that are required for the program to run
+ *
+ * @returns Whether the preconditions for running the program are satisfied.
  */
 function pre() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -19396,6 +19575,11 @@ exports.createFAIRSECODir = createFAIRSECODir;
 
 "use strict";
 
+/**
+ * This module contains functions for reading and validating a CITATION.cff file.
+ *
+ * @module
+ */
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -19457,6 +19641,7 @@ function runModule(path = ".") {
         catch (e) {
             if (e.code === "ENOENT") {
                 // File not found, return MissingCffObject to indicate missing CITATION.cff file
+                (0, log_1.LogMessage)("No CITATION.cff file found.", log_1.ErrorLevel.info);
                 const Data = { status: "missing_file" };
                 return Data;
             }
@@ -19473,6 +19658,7 @@ function runModule(path = ".") {
         catch (_a) {
             // Parsing failed, incorrect YAML.
             // Return IncorrectYamlCffObject to indicate incorrect yaml
+            (0, log_1.LogMessage)("CITATION.cff file contains incorrect yaml", log_1.ErrorLevel.warn);
             const Data = { status: "incorrect_yaml" };
             return Data;
         }
@@ -19493,10 +19679,10 @@ function runModule(path = ".") {
             if (!fs.existsSync("./cffOutputFiles"))
                 fs.mkdirSync("./cffOutputFiles/");
             else
-                (0, log_1.LogMessage)("Folder cffOutputFiles already exists!", log_1.ErrorLevel.info);
+                (0, log_1.LogMessage)("Directory cffOutputFiles already exists!", log_1.ErrorLevel.info);
         }
         catch (_b) {
-            (0, log_1.LogMessage)("Could not create cffOutputFiles folder", log_1.ErrorLevel.err);
+            (0, log_1.LogMessage)("Could not create cffOutputFiles directory", log_1.ErrorLevel.err);
         }
         const stdOutStream = fs.createWriteStream("./cffOutputFiles/cffOutput.txt");
         const stdErrStream = fs.createWriteStream("./cffOutputFiles/cffError.txt");
@@ -19522,6 +19708,7 @@ function runModule(path = ".") {
         // Check cffconvert exit code for success
         if (!dockerExit.isError(exitCode)) {
             // CITATION.cff file is valid, return ValidCffObject with data and validation message
+            (0, log_1.LogMessage)("Read valid CITATION.cff file", log_1.ErrorLevel.info);
             const Data = {
                 status: "valid",
                 citation: result,
@@ -19531,10 +19718,12 @@ function runModule(path = ".") {
         }
         else {
             // CITATION.cff file is invalid, return ValidationErrorCffObject with data and error message
+            const error = getError(stderr);
+            (0, log_1.LogMessage)("Read CITATION.cff file has is invalid: " + error, log_1.ErrorLevel.warn);
             const Data = {
                 status: "validation_error",
                 citation: result,
-                validation_message: getError(stderr),
+                validation_message: error,
             };
             return Data;
         }
@@ -19577,7 +19766,7 @@ function getLastLine(input) {
 /**
  * This module contains functions for finding papers that cite a piece of research software, making use of OpenAlex.
  *
- * The main function to be used by other modules is {@link openAlexCitations}.
+ * The main function to be used by other modules is {@link openAlexCitations | openAlexCitations()}.
  *
  * @module
  */
@@ -19628,7 +19817,9 @@ function openAlexCitations(authors, title, firstRefTitles) {
         // Find papers citing the given papers
         let output = [];
         for (const paperID of paperIDs) {
-            output = output.concat(yield getCitationPapers(paperID));
+            if (paperID !== undefined) {
+                output = output.concat(yield getCitationPapers(paperID));
+            }
         }
         return output;
     });
@@ -19717,7 +19908,7 @@ function getCitationPapers(paperID) {
                 }
                 ;
                 // Add the paper data to the results
-                const paper = new paper_1.Paper(title, doi, pmid, pmcid, year, "OpenAlex", [], fields, journal, url, numberOfCitations);
+                const paper = new paper_1.Paper(title, doi, pmid, pmcid, year, "OpenAlex", authors, fields, journal, url, numberOfCitations);
                 output.push(paper);
             }
             ;
@@ -19861,7 +20052,7 @@ exports.getOpenAlexPaperID = getOpenAlexPaperID;
 
 /**
  * This module contains functions for finding papers that cite a piece of research software, making use of Semantic Scholar.
- * <br>The main function to be used by other modules is {@link semanticScholarCitations}.
+ * <br>The main function to be used by other modules is {@link semanticScholarCitations | semanticScholarCitations()}.
  *
  * @module
  */
@@ -20150,6 +20341,7 @@ exports.mergeDuplicates = exports.runModule = exports.ModuleName = void 0;
 const semanticscholar_api_1 = __nccwpck_require__(8642);
 const openalex_api_1 = __nccwpck_require__(6099);
 const paper_1 = __nccwpck_require__(920);
+const log_1 = __nccwpck_require__(8375);
 /** The name of the module. */
 exports.ModuleName = "CitingPapers";
 /**
@@ -20157,14 +20349,18 @@ exports.ModuleName = "CitingPapers";
  *
  * @param cffFile The information from the CITATION.cff file.
  *
- * @returns An array of unique papers citing the software.
+ * @returns An object containing information about the citations.
  */
 function runModule(cffFile) {
     return __awaiter(this, void 0, void 0, function* () {
         // Check cff output
-        if (cffFile === undefined || cffFile.status !== "valid") {
-            throw new Error("Invalid CITATION.cff file");
+        if (cffFile === undefined) {
+            throw new Error("Missing CitationCff module data");
         }
+        if (cffFile.status !== "valid") {
+            throw new Error("Missing CITATION.cff file data (status: \"" + cffFile.status + "\")");
+        }
+        // Get title
         const title = cffFile.citation.title;
         // Get reference paper titles from CITATION.cff file
         const refTitles = [];
@@ -20196,8 +20392,24 @@ function runModule(cffFile) {
             }
             authors.push(new paper_1.Author(givenNames + " " + familyName, orchidID));
         }
-        const semanticScholarData = yield (0, semanticscholar_api_1.semanticScholarCitations)(authors, title, refTitles);
-        const openAlexData = yield (0, openalex_api_1.openAlexCitations)(authors, title, refTitles);
+        let semanticScholarData = [];
+        try {
+            semanticScholarData = yield (0, semanticscholar_api_1.semanticScholarCitations)(authors, title, refTitles);
+        }
+        catch (error) {
+            const errorMessage = "Error while getting semanticScholar data:\n" +
+                error.message;
+            (0, log_1.LogMessage)(errorMessage, log_1.ErrorLevel.err);
+        }
+        let openAlexData = [];
+        try {
+            openAlexData = yield (0, openalex_api_1.openAlexCitations)(authors, title, refTitles);
+        }
+        catch (error) {
+            const errorMessage = "Error while getting openAlex data:\n" +
+                error.message;
+            (0, log_1.LogMessage)(errorMessage, log_1.ErrorLevel.err);
+        }
         const outputPapers = mergeDuplicates(semanticScholarData, openAlexData);
         return new paper_1.Citations(outputPapers);
     });
@@ -20465,6 +20677,7 @@ class Citations {
     constructor(papers) {
         var _a;
         let firstYear = Number.MAX_SAFE_INTEGER;
+        let highestCitations = 1;
         let secondHandCitations = 0;
         const uniqueFields = new Set();
         let disciplines = {};
@@ -20473,6 +20686,9 @@ class Citations {
             firstYear = Math.min(firstYear, paper.year);
             // Find secondhand citations
             secondHandCitations += paper.numberOfCitations;
+            // find highest citation
+            if (paper.numberOfCitations > highestCitations)
+                highestCitations = paper.numberOfCitations;
             // Find all fields occuring in papers
             for (const field of paper.fields) {
                 uniqueFields.add(field);
@@ -20489,6 +20705,7 @@ class Citations {
         this.firstYear = firstYear;
         this.secondHandCitations = secondHandCitations;
         this.disciplines = disciplines;
+        this.highestCitations = highestCitations;
     }
 }
 exports.Citations = Citations;
@@ -20645,7 +20862,7 @@ exports.ModuleName = "fairtally";
  * and gives the checklist of FAIRness criteria.
  *
  * @param ghInfo Information about the GitHub repository.
- * @returns The result object from fairtally.
+ * @returns The result objects from fairtally.
  */
 function runModule(ghInfo) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -20711,7 +20928,7 @@ exports.runModule = runModule;
 /**
  * This module contains functions to retrieve GitHub workflow artifacts.
  *
- * The custom interfaces allow @actions/artifact to be mocked in the unit tests.
+ * The custom interfaces allow `@actions/artifact` to be mocked in the unit tests.
  *
  * @module
  */
@@ -20756,7 +20973,7 @@ const path = __importStar(__nccwpck_require__(1017));
  *
  * @param artifactName The name of the artifact given by the action that created it.
  * @param destination The directory in which the artifact files should be downloaded.
- * @param artifactObject The artifact module that is used. During normal operation of the program, this should simply be \@actions/artifact, but for the unit tests a mock is passed instead.
+ * @param artifactObject The artifact module that is used. During normal operation of the program, this should simply be `@actions/artifact`, but for the unit tests a mock is passed instead.
  * @returns The download reponse.
  */
 function getArtifactData(artifactName, destination, artifactObject) {
@@ -20770,7 +20987,7 @@ exports.getArtifactData = getArtifactData;
 /**
  * Gets a file from the artifact as a string.
  *
- * @param dlResponse The object that was returned by {@link getArtifactData}.
+ * @param dlResponse The object that was returned by {@link getArtifactData | getArtifactData()}.
  * @param fileName The name of the file that should be read.
  * @returns The contents of the file.
  */
@@ -20782,8 +20999,8 @@ function getFileFromArtifact(dlResponse, fileName) {
 exports.getFileFromArtifact = getFileFromArtifact;
 /**
  * An Artifact object that can be used for unit testing.
- * the {@link ArtifactClient} provided by create() does not download anything
- * when downloadArtifact is called, but it returns a download response
+ * the {@link ArtifactClient artifact client} provided by {@link Artifact.create | create()} does not download anything
+ * when {@link ArtifactClient.downloadArtifact | downloadArtifact()} is called, but it returns a download response
  * as if a file was correctly downloaded.
  */
 exports.testArtifactObject = {
@@ -21625,19 +21842,19 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.WriteHTML = void 0;
 const fs = __importStar(__nccwpck_require__(7147));
 const ejs_1 = __importDefault(__nccwpck_require__(8431));
+const path_1 = __importDefault(__nccwpck_require__(1017));
 /**
  * Creates a webapp that reports the data gathered by FAIRSECO.
  *
  * @param data The gathered data.
  * @param filePath The path to which the HTML file will be written.
  */
-function WriteHTML(data, filePath) {
+function WriteHTML(data, filePath = "./.FAIRSECO/", templatePath = "./FAIRSECO_Assets/templates/") {
     return __awaiter(this, void 0, void 0, function* () {
-        const template = yield ejs_1.default.renderFile("./templates/index.ejs", { data });
-        const template2 = yield ejs_1.default.renderFile("./templates/citationgraph.ejs", { data });
-        const app = template.replace("{{node inserts the data here}}", JSON.stringify(data));
-        yield fs.promises.writeFile(filePath, app, "utf8");
-        yield fs.promises.writeFile("./.FAIRSECO/citationgraph.html", template2, "utf8");
+        const template = yield ejs_1.default.renderFile(path_1.default.join(templatePath, "index.ejs"), { data });
+        const template2 = yield ejs_1.default.renderFile(path_1.default.join(templatePath, "citationgraph.ejs"), { data });
+        yield fs.promises.writeFile(path_1.default.join(filePath, "dashboard.html"), template, "utf8");
+        yield fs.promises.writeFile(path_1.default.join(filePath, "citationgraph.html"), template2, "utf8");
     });
 }
 exports.WriteHTML = WriteHTML;
@@ -30165,6 +30382,7 @@ var exports = __webpack_exports__;
 
 /**
  * This module is the entrypoint of the program.
+ * It calls {@link action.main | main()} in {@link action | action.ts}.
  *
  * @module
  */

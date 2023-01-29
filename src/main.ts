@@ -1,5 +1,6 @@
 /**
  * This module is the entrypoint of the program.
+ * It calls {@link action.main | main()} in {@link action | action.ts}.
  * 
  * @module
  */

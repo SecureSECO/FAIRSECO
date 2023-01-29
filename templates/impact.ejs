@@ -1,15 +1,24 @@
 <%
-function getNumberOfCitations() {
-    return (pp.firstHandCitations + pp.secondHandCitations).toString();
+if (ss === undefined && pp === undefined) {
+    throw new Error("Missing both SearchSECO and CitingPapers data");
 }
 
-function getNumberOfFields() {
-    return (pp.uniqueFields.filter(x => x !== "Unknown")).length.toString();
-}
+// Get citations
+const citations = pp !== undefined ? pp.firstHandCitations + pp.secondHandCitations : "?";
 
-const mostNotablePaper = pp.papers.sort((a, b) => a.numberOfCitations > b.numberOfCitations)[0];
-const mostNotableTitle = mostNotablePaper.title;
-const mostNotableJournal = mostNotablePaper.journal;
+// Get number of fields
+const fieldCount = pp !== undefined ? pp.uniqueFields.filter(x => x !== "Unknown").length : "?";
+
+// Get most notable paper
+let mostNotablePaper = {title: "missing data", journal: undefined};
+if (pp !== undefined) {
+    if (pp.papers.length >= 1) {
+        mostNotablePaper = pp.papers.sort((a, b) => b.numberOfCitations - a.numberOfCitations)[0]
+    }
+    else {
+        mostNotablePaper.title = "none";
+    }
+};
 
 const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 
@@ -17,28 +26,55 @@ function setFontSize(text) {
     return clamp(35/text.length, 0.8, 2).toString() + "rem";
 }
 
-const uniqueProjects = getProjects();
-
-function getProjects() {
-    let uniqueProjects = new Set();
+// Process searchseco projects
+let projectCount = "?";
+let mostNotableProjectName = "missing data";
+let mostNotableProjectAuthors;
+if (ss !== undefined) {
+    // Fill map for project -> the matches involving that project
+    let projectMatches = {};
     for(const method of ss.methods) {
         for(const match of method.matches) {
-            uniqueProjects.add({project: match.data.project, authors: match.data.authors});
+            if (projectMatches[match.data.project] === undefined) {
+                projectMatches[match.data.project] = [match];
+            } else {
+                projectMatches[match.data.project].push(match);
+            }
         }
     }
+    
 
-    return Array.from(uniqueProjects.values());
-}
+    // Get project count
+    projectCount = Object.keys(projectMatches).length;
 
-function getAuthors(proj) {
-    let authors = "";
+    // Get most notable project name
+    if (projectCount >= 1) {
+        let bestProjectMatches = 0;
+        for (const proj in projectMatches) {
+            let matchCount = projectMatches[proj].length;
+            if (matchCount > bestProjectMatches) {
+                mostNotableProjectName = proj;
+                bestProjectMatches = matchCount;
+            }
+        }
 
-    for (let i = 0; i < proj.authors.length; i++) {
-        if (i === proj.authors.length - 1) authors += proj.authors[i];
-        else authors += proj.authors[i] + ", ";
+        // Get most notable project authors
+        let authors = projectMatches[mostNotableProjectName][0].data.authors;
+        mostNotableProjectAuthors = "";
+        if (authors.length >= 1) {
+            for (let i = 0; i < authors.length; i++) {
+                if (i === authors.length - 1) {
+                    mostNotableProjectAuthors += authors[i];
+                } else {
+                    mostNotableProjectAuthors += authors[i] + ", ";
+                }
+            }
+        } else {
+            mostNotableProjectAuthors = "unknown authors";
+        }
+    } else {
+        mostNotableProjectName = "none";
     }
-
-    return authors;
 }
 
 const labels = [
@@ -49,20 +85,23 @@ const labels = [
     "Applied Sciences"
 ]
 
+// Generates data for the radar chart
 function getChartData() {
+    if (pp === undefined) {
+        return [];
+    }
+    
     const data = [];
 
     const disc = pp.disciplines;
-
-    console.log(JSON.stringify(pp));
-
+    
     data.push(disc["Humanities"] ?? 0);
     data.push(disc["Social Sciences"] ?? 0);
     data.push(disc["Natural Sciences"] ?? 0);
     data.push(disc["Formal Sciences"] ?? 0);
     data.push(disc["Applied Sciences"] ?? 0);
 
-    console.log(JSON.stringify(data));
+    data.map((value) => value > 0 ? value : null);
 
     return data;
 }
@@ -74,7 +113,7 @@ function getChartData() {
     <div class="ImpactScore__Content">
         <div class="Impact__Row">
             <h2> Papers and Citations</h2>
-            <div class="Impact__Row__Content">
+            <div id="Impact__Citation__Row" class="Impact__Row__Content">
                 <div class="Impact__Row__Block">
                     <p>Your project was cited</p>
                     <div class="Row__Number"><%- getNumberOfCitations() %></div>
@@ -82,33 +121,39 @@ function getChartData() {
                 </div>
                 <div class="Impact__Row__Block">
                     <p>in papers across</p>
-                    <div class="Row__Number"><%- getNumberOfFields() %></div>
+                    <div class="Row__Number"><%- fieldCount %></div>
                     <p>scientific field<% if (getNumberOfFields() !== 1) { %>s<% } %></p>
                 </div>
                 <div class="Impact__Row__Block">
                     <p>The most notable of which was</p>
-                    <div class="Row__PaperTitle" style="font-size:<%- setFontSize(mostNotableTitle) %>"><%- mostNotableTitle %></div>
-                    <p>from <%- mostNotableJournal %></p>
+                    <div class="Row__PaperTitle" style="font-size:<%- setFontSize(mostNotablePaper.title) %>"><%- mostNotablePaper.title %></div>
+                    <% if (mostNotablePaper.journal !== undefined) { %>
+                        <p>from <%- mostNotablePaper.journal %></p>
+                    <% } %>
                 </div>
             </div>
         </div>
 
-        <div class="Impact__Row">
-            <canvas id="Citations__RadarChart"></canvas>
+        <div id="Impact__Chart__Row" class="Impact__Row">
+            <div class="Citations__Chart__Container">
+                <canvas id="Citations__RadarChart"></canvas>
+            </div>
         </div>
 
         <div class="Impact__Row">
             <h2>Projects and Reuse</h2>
-            <div class="Impact__Row__Content">
+            <div id="Impact__Project__Row" class="Impact__Row__Content">
                 <div class="Impact__Row__Block">
                     <p>Your code made its way into</p>
-                    <div class="Row__Number"><%- uniqueProjects.length %></div>
+                    <div class="Row__Number"><%- projectCount ?? "0" %></div>
                     <p>other project<% if (uniqueProjects.length !== 1) { %>s<% } %></p>
                 </div>
                 <div class="Impact__Row__Block">
                     <p>The most notable of which was</p>
-                    <div class="Row__PaperTitle" style="font-size:<%- setFontSize(uniqueProjects[0].project) %>"><%- uniqueProjects[0].project %></div>
-                    <p>by <%- getAuthors(uniqueProjects[0]) %></p>
+                        <h1 class="Row__PaperTitle" style="font-size:<%- setFontSize(mostNotableProjectName) %>"><%- mostNotableProjectName %></h1>
+                    <% if (mostNotableProjectAuthors !== undefined ) {%>
+                        <p>by <%- mostNotableProjectAuthors %></p>
+                    <% } %>
                 </div>
             </div>
         </div>
@@ -127,7 +172,7 @@ function genData(){
     return data;
 }
 
-const labels = [
+var  labels = [
     "Humanities" ,
     "Social Sciences",
     "Natural Sciences",
@@ -135,7 +180,7 @@ const labels = [
     "Applied Sciences"
 ]
 
-const data = {
+var  data = {
     labels: labels,
     datasets: [
         {
@@ -146,7 +191,7 @@ const data = {
         }]
 };
 
-const config = {
+var config = {
   type: 'radar',
   data: data,
   options: {
@@ -172,6 +217,11 @@ new Chart("Citations__RadarChart", config);
 </script>
 
 <style>
+.ImpactScore {
+    height: 100%;
+    overflow-y: auto;
+}
+
 .Impact__Title {
     color: #0C281E;
     text-align: center;
@@ -182,9 +232,10 @@ new Chart("Citations__RadarChart", config);
 .ImpactScore__Content {
     width: 80%;
     margin: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+    display: grid;
+    height: 80%;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: 1fr;
 }
 
 .Impact__Row h2 {
@@ -192,17 +243,33 @@ new Chart("Citations__RadarChart", config);
 }
 
 .Impact__Row__Content {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    width: 100%;
+    display: grid;
+}
+#Impact__Citation__Row {
+    grid-template-columns: repeat(3, 1fr)
+}
+#Impact__Project__Row{
+    grid-template-columns: repeat(2, 1fr)
+}
+#Impact__Chart__Row{
+    padding: 2vw 0;
+}
 
+.Citations__Chart__Container{
+    position: relative;
+    width: 30vw;
+    max-width: 500px;
+    margin: auto;
 }
 
 .Impact__Row__Block .Row__PaperTitle {
     font-weight: bold;
     margin: 0.25vw;
-    max-width: 15vw;
     text-align: center;
+}
+h1.Row__PaperTitle {
+    color: #0C281E;
 }
 
 .Impact__Row__Block {
@@ -214,6 +281,7 @@ new Chart("Citations__RadarChart", config);
 
 .Impact__Row__Block p {
     margin: 0;
+    text-align: center;
 }
 
 .Impact__Row__Block .Row__Number {
@@ -221,9 +289,4 @@ new Chart("Citations__RadarChart", config);
     font-weight: bold;
     margin: 0.25vw;
 }
-
-#Citations__RadarChart {
-    margin: 5px;
-}
-
 </style>

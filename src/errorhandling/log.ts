@@ -7,7 +7,7 @@
 import fs from "fs";
 
 /**
- * Enum describing the severity of an error when logged by {@link LogMessage}.
+ * Enum describing the severity of an error when logged by {@link LogMessage | LogMessage()}.
  */
 export enum ErrorLevel {
     info,
