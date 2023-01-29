@@ -1,0 +1,229 @@
+<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>Program Structure | FAIRSECO</title><meta name="description" content="Documentation for FAIRSECO"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><script async src="../assets/search.js" id="search-script"></script><link rel="stylesheet" href="../assets/pages.css"/></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
+<div class="tsd-toolbar-contents container">
+<div class="table-cell" id="tsd-search" data-base="..">
+<div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M15.7824 13.833L12.6666 10.7177C12.5259 10.5771 12.3353 10.499 12.1353 10.499H11.6259C12.4884 9.39596 13.001 8.00859 13.001 6.49937C13.001 2.90909 10.0914 0 6.50048 0C2.90959 0 0 2.90909 0 6.49937C0 10.0896 2.90959 12.9987 6.50048 12.9987C8.00996 12.9987 9.39756 12.4863 10.5008 11.6239V12.1332C10.5008 12.3332 10.5789 12.5238 10.7195 12.6644L13.8354 15.7797C14.1292 16.0734 14.6042 16.0734 14.8948 15.7797L15.7793 14.8954C16.0731 14.6017 16.0731 14.1267 15.7824 13.833ZM6.50048 10.499C4.29094 10.499 2.50018 8.71165 2.50018 6.49937C2.50018 4.29021 4.28781 2.49976 6.50048 2.49976C8.71001 2.49976 10.5008 4.28708 10.5008 6.49937C10.5008 8.70852 8.71314 10.499 6.50048 10.499Z" fill="var(--color-text)"></path></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div>
+<div class="field">
+<div id="tsd-toolbar-links"></div></div>
+<ul class="results">
+<li class="state loading">Preparing search index...</li>
+<li class="state failure">The search index is not available</li></ul><a href="../index.html" class="title">FAIRSECO</a></div>
+<div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="2" fill="var(--color-text)"></rect><rect x="1" y="7" width="14" height="2" fill="var(--color-text)"></rect><rect x="1" y="11" width="14" height="2" fill="var(--color-text)"></rect></svg></a></div></div></header>
+<div class="container container-main">
+<div class="col-8 col-content">
+<div class="tsd-page-title">
+<ul class="tsd-breadcrumb">
+<li><a href="../modules.html">FAIRSECO</a></li>
+<li><a href="program_structure.html">Program Structure</a></li></ul>
+<h1> Program Structure</h1></div>
+<div class="tsd-panel tsd-typography"><hr>
+<p>The program starts in <a href="../modules/main.html">main.ts</a>, which calls the entrypoint of the program, <a href="../functions/action.main.html">main()</a> which is defined in <a href="../modules/action.html">action.ts</a>.</p>
+<p> The program performs the following steps:</p>
+<ul>
+<li>Handle preconditions required for the program to run</li>
+<li>Call the modules that generate the data</li>
+<li>Generate the output files</li>
+</ul>
+<br>
+
+
+<a href="#preconditions" id="preconditions" style="color: inherit; text-decoration: none;">
+  <h2>Preconditions</h2>
+</a>
+<hr>
+<p>The preconditions are handled by the <a href="../functions/pre.pre.html">pre()</a> function in <a href="../modules/pre.html">pre.ts</a>, which performs the following:</p>
+<ul>
+<li>Creating the FAIRSECO directory</li>
+<li>Creating the log file</li>
+<li>Checking the necessary inputs that are required for the program to run</li>
+</ul>
+ <br>
+
+
+<a href="#generating-data" id="generating-data" style="color: inherit; text-decoration: none;">
+  <h2>Generating Data</h2>
+</a>
+<hr>
+<p> To generate the data, the <a href="../functions/getdata.data.html">data()</a> function in <a href="../modules/getdata.html">getdata.ts</a> is called.
+ This function calls the <a href="../functions/git.getGitHubInfo.html">getGitHubInfo()</a> function in <a href="../modules/git.html">git.ts</a> and the other data collection modules in the resources directory and compiles their results to an array of <a href="../interfaces/getdata.ReturnObject.html">ReturnObjects</a>.</p>
+<p> The following data collection modules are used:</p>
+<ul>
+<li><strong>Tortellini</strong> (<a href="../modules/resources_tortellini.html">resources/tortellini.ts</a>)<ul>
+<li>Gets license information</li>
+</ul>
+</li>
+<li><strong>fairtally</strong> (<a href="../modules/resources_fairtally.html">resources/fairtally.ts</a>)  <ul>
+<li>Gets checklist of FAIRness criteria</li>
+</ul>
+</li>
+<li><strong>SearchSECO</strong> (<a href="../modules/resources_searchseco.html">resources/searchseco.ts</a>)<ul>
+<li>Gets method reuse</li>
+</ul>
+</li>
+<li><strong>CitationCff</strong> (<a href="../modules/resources_citation_cff.html">resources/citation_cff.ts</a>)<ul>
+<li>Reads and validates CITATION.cff file from repository</li>
+</ul>
+</li>
+<li><strong>SBOM</strong> (<a href="../modules/resources_sbom.html">resources/sbom.ts</a>)<ul>
+<li>Gets a dependency tree for the project</li>
+</ul>
+</li>
+<li><strong>CitingPapers</strong> (<a href="../modules/resources_citations_citing_papers.html">resources/citations/citing_papers.ts</a>)<ul>
+<li>Gets data about academic references to the software</li>
+</ul>
+</li>
+<li><strong>QualityMetrics</strong> (<a href="../modules/resources_qualitymetrics.html">resources/qualitymetrics.ts</a>)<ul>
+<li>Calculates quality metrics</li>
+</ul>
+</li>
+</ul>
+<p>Each module run is wrapped in a try-catch block, so modules that encounter a fatal error don&#39;t crash the program. Any module that fails won&#39;t have its data included in the output.</p>
+<p>The GitHub token from the output of the <a href="../functions/git.getGitHubInfo.html">getGitHubInfo()</a> function in <a href="../modules/git.html">git.ts</a> is used by data collection modules, but is excluded from the output.</p>
+<br>
+
+
+<a href="#program-output" id="program-output" style="color: inherit; text-decoration: none;">
+  <h2>Program Output</h2>
+</a>
+<hr>
+<p>After generating and compiling the data, the <a href="../functions/post.post.html">post()</a> function in <a href="../modules/post.html">post.ts</a> is called, which generates the output report files. The FAIRSECO history file is also read and updated.</p>
+<p>The following output files are generated:</p>
+<ul>
+<li>report.yml<ul>
+<li>The raw output in YAML format</li>
+</ul>
+</li>
+<li>dashboard.html (generated by the <a href="../functions/webapp.WriteHTML.html">WriteHTML()</a> function in <a href="../modules/webapp.html">webapp.ts</a>) <ul>
+<li>A webpage that shows a clear overview of the data</li>
+</ul>
+</li>
+<li>citationgraph.html (generated by the <a href="../functions/webapp.WriteHTML.html">WriteHTML()</a> function in <a href="../modules/webapp.html">webapp.ts</a>)<ul>
+<li>Graph view for citations in the dashboard</li>
+</ul>
+</li>
+<li>.fairseco_history.json (generated by the <a href="../functions/history.getHistoryData.html">getHistoryData()</a> function in <a href="../modules/history.html">history.ts</a>)<ul>
+<li>Contains historical data displayed on the Impact History page</li>
+<li>Is written to the GitHub repository directly</li>
+</ul>
+</li>
+</ul>
+<br>
+
+
+<a href="#generation-of-dashboardhtml" id="generation-of-dashboardhtml" style="color: inherit; text-decoration: none;">
+  <h2>Generation of dashboard.html</h2>
+</a>
+<hr>
+<p>The <a href="../functions/webapp.WriteHTML.html">WriteHTML()</a> function in <a href="../modules/webapp.html">webapp.ts</a> generates the dashboard.html file using the <a href="https://ejs.co">EJS</a> templating language.
+The EJS template files are located in the <code>templates</code> directory.</p>
+<p>The HTML page is built with the following structure:</p>
+<ul>
+<li><code>index.ejs</code> (main page)<ul>
+<li>Includes <code>head.ejs</code> (page head)</li>
+<li>Includes <code>body.ejs</code> (page body)<ul>
+<li>Includes <code>logo.ejs</code> (FAIRSECO logo)</li>
+<li>Includes <code>leftpane.ejs</code> (left pane)<ul>
+<li>Includes <code>leftpanenav.ejs</code> (left pane tabs)</li>
+<li>Includes <code>citations.ejs</code> (Citations page)<ul>
+<li>Includes <code>citation.ejs</code> for each <a href="../classes/resources_citations_paper.Paper.html">citing paper</a></li>
+</ul>
+</li>
+<li>Includes <code>licenses.ejs</code> (Licenses page)<ul>
+<li>Includes <code>violation.ejs</code> for each license violation</li>
+</ul>
+</li>
+<li>Includes <code>searchseco.ejs</code> (SearchSECO page)<ul>
+<li>Includes <code>searchseco-method.ejs</code> for each <a href="../interfaces/resources_searchseco.Method.html">method</a><ul>
+<li>Includes <code>searchseco-match.ejs</code> for each <a href="../interfaces/resources_searchseco.Match.html">match</a></li>
+</ul>
+</li>
+<li>Includes <code>searchseco-project.ejs</code> for each unique <a href="../interfaces/resources_searchseco.MethodData.html#project">project</a> of the <a href="../interfaces/resources_searchseco.Match.html">matches</a><ul>
+<li>Includes <code>searchseco-project-match.ejs</code> for each <a href="../interfaces/resources_searchseco.Match.html">match</a> the <a href="../interfaces/resources_searchseco.MethodData.html#project">project</a> is involved in</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Includes <code>footer.ejs</code> (footer in left pane)</li>
+</ul>
+</li>
+<li>Includes <code>rightpane.ejs</code> (right pane)<ul>
+<li>Includes <code>rightpanenav.ejs</code> (right pane tabs)</li>
+<li>Includes <code>overview.ejs</code> (Overview page)</li>
+<li>Includes <code>fairtally.ejs</code> (FAIRness page)</li>
+<li>Includes <code>quality.ejs</code> (Quality page)</li>
+<li>Includes <code>impact.ejs</code> (Impact page)</li>
+<li>Includes <code>impact-history.ejs</code> (Impact History page)<ul>
+<li>Includes <code>impact-history-graph.ejs</code> for the following fields:<ul>
+<li>Quality Score</li>
+<li>FAIRness</li>
+<li>Citations</li>
+<li>Method matches</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>citationgraph.ejs</code> (citation graph page)<ul>
+<li>Includes <code>leftpane-citationgraph.ejs</code> (left pane)<ul>
+<li>Includes <code>citations-citationgraph.ejs</code> (container showing info about selected things)</li>
+</ul>
+</li>
+<li>Includes <code>starfieldgraph.ejs</code> (chart)</li>
+</ul>
+</li>
+</ul>
+<p>The inclusions of pages by <code>leftpane.ejs</code> and <code>rightpane.ejs</code> are all wrapped in separate try-catch blocks.
+When a page cannot be included, for example due to missing data, it will be replaced by the <code>leftpane-error.ejs</code> page or <code>rightpane-error.ejs</code> page respectively, which display the encountered error.</p>
+</div></div>
+<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+<div class="tsd-navigation settings">
+<details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
+<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)"></path></svg> Settings</h3></summary>
+<div class="tsd-accordion-details">
+<div class="tsd-filter-visibility">
+<h4 class="uppercase">Member Visibility</h4><form>
+<ul id="tsd-filter-options">
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-private" name="private"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Private</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></form></div>
+<div class="tsd-theme-toggle">
+<h4 class="uppercase">Theme</h4><select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div>
+<nav class="tsd-navigation primary">
+<details class="tsd-index-accordion" open><summary class="tsd-accordion-summary">
+<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)"></path></svg> Modules</h3></summary>
+<div class="tsd-accordion-details">
+<ul>
+<li class="current"><a href="../modules.html">FAIRSECO</a>
+<ul>
+<li class="current selected pages-entry pages-entry-page pages-entry-depth-1"><a href="program_structure.html">Program <wbr/>Structure</a></li>
+<li class="tsd-kind-module"><a href="../modules/action.html">action</a></li>
+<li class="tsd-kind-module"><a href="../modules/errorhandling_docker_exit.html">errorhandling/docker_<wbr/>exit</a></li>
+<li class="tsd-kind-module"><a href="../modules/errorhandling_log.html">errorhandling/log</a></li>
+<li class="tsd-kind-module"><a href="../modules/getdata.html">getdata</a></li>
+<li class="tsd-kind-module"><a href="../modules/git.html">git</a></li>
+<li class="tsd-kind-module"><a href="../modules/global_setup.html">global_<wbr/>setup</a></li>
+<li class="tsd-kind-module"><a href="../modules/history.html">history</a></li>
+<li class="tsd-kind-module"><a href="../modules/main.html">main</a></li>
+<li class="tsd-kind-module"><a href="../modules/post.html">post</a></li>
+<li class="tsd-kind-module"><a href="../modules/pre.html">pre</a></li>
+<li class="tsd-kind-module"><a href="../modules/resources_citation_cff.html">resources/citation_<wbr/>cff</a></li>
+<li class="tsd-kind-module"><a href="../modules/resources_citations_apis_openalex_api.html">resources/citations/apis/openalex_<wbr/>api</a></li>
+<li class="tsd-kind-module"><a href="../modules/resources_citations_apis_semanticscholar_api.html">resources/citations/apis/semanticscholar_<wbr/>api</a></li>
+<li class="tsd-kind-module"><a href="../modules/resources_citations_citing_papers.html">resources/citations/citing_<wbr/>papers</a></li>
+<li class="tsd-kind-module"><a href="../modules/resources_citations_paper.html">resources/citations/paper</a></li>
+<li class="tsd-kind-module"><a href="../modules/resources_citations_referencepaper.html">resources/citations/referencepaper</a></li>
+<li class="tsd-kind-module"><a href="../modules/resources_fairtally.html">resources/fairtally</a></li>
+<li class="tsd-kind-module"><a href="../modules/resources_helperfunctions_artifact.html">resources/helperfunctions/artifact</a></li>
+<li class="tsd-kind-module"><a href="../modules/resources_qualitymetrics.html">resources/qualitymetrics</a></li>
+<li class="tsd-kind-module"><a href="../modules/resources_sbom.html">resources/sbom</a></li>
+<li class="tsd-kind-module"><a href="../modules/resources_searchseco.html">resources/searchseco</a></li>
+<li class="tsd-kind-module"><a href="../modules/resources_tortellini.html">resources/tortellini</a></li>
+<li class="tsd-kind-module"><a href="../modules/resources_tortellini_input.html">resources/tortellini_<wbr/>input</a></li>
+<li class="tsd-kind-module"><a href="../modules/webapp.html">webapp</a></li></ul></li></ul></div></details></nav>
+<nav class="tsd-navigation secondary menu-sticky"></nav></div></div>
+<div class="overlay"></div><script src="../assets/main.js"></script></body></html>
