@@ -21,6 +21,7 @@ let children = graph.get(parent).children;
         </p>
     </div>
     <div class="SBOMChildList Hidden">
+        <%# Here we create SBOMItems for this node's children %>
         <% 
         //console.log(children);%>
         <% children.forEach((child, i, arr) => { 

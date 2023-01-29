@@ -3,19 +3,25 @@
         throw new Error("Missing SearchSECO data");
     }
 
+    // Sort the methods by amount of matches
     searchseco.methods = searchseco.methods.sort((a, b) => { return b.matches.length - a.matches.length; });
+
+    // Count the matches and vulnerable methods and matches
     searchseco.matchCount = 0;
     searchseco.vulnerableMethodCount = 0;
     searchseco.vulnerableMatchCount = 0;
     for (let i = 0; i < searchseco.methods.length; i++) {
         let method = searchseco.methods[i];
 
+        // Count matches
         searchseco.matchCount += method.matches.length;
 
+        // Check every match of this method for vulnerabilities
         for (const match of method.matches) {
             if (match.vuln.code !== -1) {
                 searchseco.vulnerableMatchCount++;
 
+                // Mark method as vulnerable if it has a match with a vulnerability
                 if (method.vulnerable !== true) {
                     method.vulnerable = true;
                     searchseco.vulnerableMethodCount++;
@@ -24,12 +30,14 @@
         }
     }
 
+    // Get per-project data
     searchseco.projects = {};
     searchseco.vulnerableProjectCount = 0;
     for (const method of searchseco.methods) {
         for (const match of method.matches) {
             let project = match.data.project;
 
+            // Add each unique project found in matches and keep track of its matches
             let matchInfo = { yourMethod: method, match: match };
             if (searchseco.projects[project] === undefined) {
                 searchseco.projects[project] = { name: project, matches: [matchInfo] };
@@ -37,6 +45,7 @@
                 searchseco.projects[project].matches.push(matchInfo);
             }
 
+            // Mark and count projects with a match with a vulnerability
             if (match.vuln.code !== -1) {
                 searchseco.projects[project].vulnerable = true;
                 searchseco.vulnerableProjectCount++;
@@ -45,8 +54,10 @@
     }
     searchseco.projects = Object.values(searchseco.projects);
     for (const project of searchseco.projects) {
+        // Sort matches in each project by your methods they match with, by match count of that method
         project.matches.sort((a, b) => { return b.yourMethod.matches.length - a.yourMethod.matches.length; });
     }
+    // Sort projects by amount of matches %>
     searchseco.projects = searchseco.projects.sort((a, b) => { return b.matches.length - a.matches.length; });
 %>
 
@@ -86,6 +97,7 @@
         word-break: break-word;
         padding: 16px;
     }
+    <%# Hide non-vulnerable things (methods, projects, the matches) when showing vulnerabilities only is enabled %>
     .SearchSECO--HideNonVulnerable .SearchSECO--NotVulnerable {
         display: none;
     }
@@ -136,7 +148,6 @@
     .SearchSECO__ListObject__Header {
         color: #D9F8DF;
         font-size: 0.8rem;
-        /* background-color: #47715A; */
         border: 1px solid #779C7E;
         border-radius: 7px;
         padding: 8px;
@@ -168,6 +179,7 @@
         color: #b8d7cc;
         cursor: pointer;
     }
+    <%# Vulnerability warnings %>
     .SearchSECO__ListObject__Header span {
         margin-right: 1.5vw;
         color: #fcec69;
@@ -180,7 +192,6 @@
     .SearchSECO__Match {
         color: #D9F8DF;
         font-size: 0.7rem;
-        /* background-color: #47715A; */
         border: 1px solid #779C7E;
         border-radius: 7px;
         padding: 12px;
@@ -188,7 +199,6 @@
         margin-bottom: 5px;
     }
     .SearchSECO__Match span {
-        /* color: yellow; */
         color: #fcec69;
     }
     .SearchSECO__Match__Header {
@@ -240,11 +250,13 @@
     }
 
     function searchSecoClickArrow(event) {
+        <%# Switch arrow right/down %>
         event.target.classList.toggle("fa-angle-right");
         event.target.classList.toggle("fa-angle-down");
 
         let elem = event.target;
         while (elem = elem.parentNode) {
+            <%# Find the arrow owner object, then the arrow target in its children and toggle its visibility %>
             if (elem.classList?.contains("SearchSECO__ArrowOwner")) {
                 let target = elem.querySelector(".SearchSECO__ArrowTarget");
                 target.hidden = !target.hidden;

@@ -138,9 +138,11 @@
             return;
         }
 
+        <%# Hide active tab and show clicked tab %>
         document.querySelector("." + activeTab.dataset.linkedClass).hidden = true;
         document.querySelector("." + tab.dataset.linkedClass).hidden = false;
 
+        <%# Find the index of the clicked tab %>
         const tabList = tab.parentElement.getElementsByTagName("li");
         let tabIndex = 0;
         for (const navtab of tabList) {
@@ -151,8 +153,10 @@
             tabIndex++;
         }
 
+        <%# Classes corrosponding to distance from clicked tab index %>
         const classes = ["RightPaneNav__Tab--Active", "RightPaneNav__Tab--1Away", "RightPaneNav__Tab--2Away", "RightPaneNav__Tab--3Away", "RightPaneNav__Tab--4Away"];
 
+        <%# Assign tabs the correct classes for the right style %>
         for (let i = 0; i < tabList.length; i++) {
             const navtab = tabList.item(i);
 

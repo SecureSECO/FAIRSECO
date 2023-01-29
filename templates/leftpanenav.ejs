@@ -111,6 +111,9 @@ window.addEventListener('load', () => {
 
 });
 
+// Code for moving the block that moves around the nav when hovering items. We
+// have to adjust the width for each item's text length. As well as translating it
+// to the right position.
 function moveHighlightBlockTo(ele) {
     const padding = 20;
     const {top, left, width, height} = ele.getBoundingClientRect();

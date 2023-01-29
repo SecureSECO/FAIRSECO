@@ -22,6 +22,8 @@ if (pp !== undefined) {
 
 const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 
+// Sets the font size based on the length of the string, to make sure the text
+// always fits on the page. This is necessary because paper titles can be very long.
 function setFontSize(text) {
     return clamp(35/text.length, 0.8, 2).toString() + "rem";
 }
@@ -77,6 +79,7 @@ if (ss !== undefined) {
     }
 }
 
+
 const labels = [
     "Humanities" ,
     "Social Sciences",
@@ -85,7 +88,23 @@ const labels = [
     "Applied Sciences"
 ]
 
-// Generates data for the radar chart
+// Constructs a comma-separated list of labels,
+// to be inserted in the chart data (see the <script> block below)
+// Simply inserting the labels array directly doesn't work, because the strings
+// are inserted as plain text, not as strings.
+function getChartLabels() {
+    let result = "";
+
+    for (let i = 0; i < labels.length; i++) {
+        if (i === labels.length - 1) result += '"' + labels[i] + '"';
+        else result += '"' + labels[i] + '", ';
+    }
+
+    return result;
+}
+
+// Retrieves the number of papers associated with each discipline. The data
+// needs to be pushed in the same order as the labels above, because they need to line up.
 function getChartData() {
     if (pp === undefined) {
         return [];
@@ -94,14 +113,12 @@ function getChartData() {
     const data = [];
 
     const disc = pp.disciplines;
-    
-    data.push(disc["Humanities"] ?? 0);
-    data.push(disc["Social Sciences"] ?? 0);
-    data.push(disc["Natural Sciences"] ?? 0);
-    data.push(disc["Formal Sciences"] ?? 0);
-    data.push(disc["Applied Sciences"] ?? 0);
 
-    data.map((value) => value > 0 ? value : null);
+    data.push(disc[labels[0]] ?? 0);
+    data.push(disc[labels[1]] ?? 0);
+    data.push(disc[labels[2]] ?? 0);
+    data.push(disc[labels[3]] ?? 0);
+    data.push(disc[labels[4]] ?? 0);
 
     return data;
 }
@@ -161,27 +178,9 @@ function getChartData() {
 </div>
 
 <script>
-
-function genData(){
-    let data = [];
-    for (let i = 0; i < 18; i++){
-        if (i % 3 == 0) data.push(null);
-        else data.push(i%5 + i%2);
-    }
-
-    return data;
-}
-
-var  labels = [
-    "Humanities" ,
-    "Social Sciences",
-    "Natural Sciences",
-    "Formal Sciences",
-    "Applied Sciences"
-]
-
-var  data = {
-    labels: labels,
+<%# The data for the radar chart %>
+const data = {
+    labels: [<%- getChartLabels() %>],
     datasets: [
         {
             data: [<%- getChartData() %>],
@@ -191,7 +190,12 @@ var  data = {
         }]
 };
 
-var config = {
+<%#
+    Settings for the radar chart
+    The settings for ticks are necessary to hide the labels on the grid.
+    Simply setting display to false doesn't work.
+%>
+const config = {
   type: 'radar',
   data: data,
   options: {
@@ -212,6 +216,7 @@ var config = {
   }
 };
 
+<%# Initializes and renders the chart in the canvas with id "Citations__RadarChart" %>
 new Chart("Citations__RadarChart", config);
 
 </script>
