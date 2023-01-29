@@ -1,9 +1,3 @@
-<%
-    if (citations === undefined) {
-        throw new Error("Missing CitingPapers data");
-    }
-%> 
-
 <div class="CitationsContainer ActiveTab">
     <div id="CitationsHeader">
         <h1 class="hTitle">Title, Authors, Description</h1>
@@ -13,9 +7,13 @@
     </div>
     <div class="CitationsContainerScroll">
     <div class="Citations">
-    <% citations?.forEach((citation) => { %>
-        <%- include('citation', {"citation": citation})%>
-    <% }) %>
+    <% if (citations !== undefined) {  %>
+        <% citations?.forEach((citation) => { %>
+            <%- include('citation', {"citation": citation})%>
+        <% }) %>
+    <% } else { %>
+        <h1 id="CitationMissingError">No citations were found at this time.</h1>
+    <% } %>
     </div>
     </div>
 </div>
@@ -50,6 +48,15 @@
         height: 75px;
         padding-top: 14px;
         padding-left: 11px;
+    }
+    #CitationMissingError{
+        margin:auto;
+        width: 100%;
+        height: 50vh;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        font-size: 1.4rem;
     }
 
     .Citations {
