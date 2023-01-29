@@ -18724,7 +18724,7 @@ const core = __importStar(__nccwpck_require__(2186));
  * The program performs the following steps:
  * - Handle preconditions required for the program to run
  * - Call the modules that generate the data
- * - Generates the output reports
+ * - Generates the output files
 */
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -18734,7 +18734,7 @@ function main() {
             if (check) {
                 // Generate the data
                 const result = yield (0, getdata_1.data)();
-                // Create output reports
+                // Create output files
                 yield (0, post_1.post)(result);
             }
         }
@@ -19281,7 +19281,7 @@ const log_1 = __nccwpck_require__(8375);
 /**
  * Gets history data and updates the history file with new data.
  * - If the history file can not be read, the history is reset.
- * - If the last entry in the history has the current date, it will be overwritten with the new data.
+ * - If the last entry in the history has the current date, it will be updated with the new data.
  *
  * @param filePath The path to read history from and write history to.
  * @param result The data gathered by FAIRSECO.
@@ -19318,16 +19318,35 @@ function getHistoryData(filePath, result) {
             matches += method.matches.length;
         }
     }
-    // Read the history file
-    const historyData = readHistoryFile(filePath, date);
-    // Append new data to the history
-    historyData.push({
+    // New data object
+    const newData = {
         date,
         quality,
         citations,
         fairness,
         matches
-    });
+    };
+    // Read the history file
+    const historyData = readHistoryFile(filePath);
+    // Check if the last entry is of the current date.
+    // If it is, update it with the new data.
+    // Otherwise, add a new entry
+    let includeLater = false;
+    if (historyData.length >= 1 && historyData[historyData.length - 1].date === date) {
+        // Update the last entry
+        const lastEntry = historyData[historyData.length - 1];
+        Object.assign(lastEntry, newData);
+    }
+    else {
+        // Append new data to the history if it has useful data.
+        // Otherwise, append it later to exclude it from the history file.
+        if (newData.quality !== undefined || newData.citations !== undefined || newData.fairness !== undefined || newData.fairness !== undefined) {
+            historyData.push(newData);
+        }
+        else {
+            includeLater = true;
+        }
+    }
     // Write new history to the history file
     try {
         fs.writeFileSync(filePath, JSON.stringify(historyData));
@@ -19335,10 +19354,14 @@ function getHistoryData(filePath, result) {
     catch (error) {
         (0, log_1.LogMessage)("Failed to write to FAIRSECO history file:\n" + error.message, log_1.ErrorLevel.err);
     }
+    // Include new data after writing file, if needed
+    if (includeLater) {
+        historyData.push(newData);
+    }
     return historyData;
 }
 exports.getHistoryData = getHistoryData;
-function readHistoryFile(filePath, date) {
+function readHistoryFile(filePath) {
     // Get the history data
     let historyData = [];
     try {
@@ -19364,12 +19387,6 @@ function readHistoryFile(filePath, date) {
         else {
             // Error reading history file
             (0, log_1.LogMessage)("Failed to read FAIRSECO history file (history will be reset!):\n" + error.message, log_1.ErrorLevel.warn);
-        }
-    }
-    // Clear the last entry from the history if its date matches the current date.
-    if (historyData.length >= 1) {
-        if (historyData[historyData.length - 1].date === date) {
-            historyData.pop();
         }
     }
     return historyData;
@@ -19410,6 +19427,7 @@ const log_1 = __nccwpck_require__(8375);
 const history_1 = __nccwpck_require__(8655);
 /**
  * Creates reports showing the gathered data in .yml and .html format.
+ * The FAIRSECO history file is also read and updated.
  *
  * @param result The data gathered by FAIRSECO.
  */
@@ -19799,7 +19817,9 @@ function openAlexCitations(authors, title, firstRefTitles) {
         // Find papers citing the given papers
         let output = [];
         for (const paperID of paperIDs) {
-            output = output.concat(yield getCitationPapers(paperID));
+            if (paperID !== undefined) {
+                output = output.concat(yield getCitationPapers(paperID));
+            }
         }
         return output;
     });
@@ -20321,6 +20341,7 @@ exports.mergeDuplicates = exports.runModule = exports.ModuleName = void 0;
 const semanticscholar_api_1 = __nccwpck_require__(8642);
 const openalex_api_1 = __nccwpck_require__(6099);
 const paper_1 = __nccwpck_require__(920);
+const log_1 = __nccwpck_require__(8375);
 /** The name of the module. */
 exports.ModuleName = "CitingPapers";
 /**
@@ -20371,8 +20392,24 @@ function runModule(cffFile) {
             }
             authors.push(new paper_1.Author(givenNames + " " + familyName, orchidID));
         }
-        const semanticScholarData = yield (0, semanticscholar_api_1.semanticScholarCitations)(authors, title, refTitles);
-        const openAlexData = yield (0, openalex_api_1.openAlexCitations)(authors, title, refTitles);
+        let semanticScholarData = [];
+        try {
+            semanticScholarData = yield (0, semanticscholar_api_1.semanticScholarCitations)(authors, title, refTitles);
+        }
+        catch (error) {
+            const errorMessage = "Error while getting semanticScholar data:\n" +
+                error.message;
+            (0, log_1.LogMessage)(errorMessage, log_1.ErrorLevel.err);
+        }
+        let openAlexData = [];
+        try {
+            openAlexData = yield (0, openalex_api_1.openAlexCitations)(authors, title, refTitles);
+        }
+        catch (error) {
+            const errorMessage = "Error while getting openAlex data:\n" +
+                error.message;
+            (0, log_1.LogMessage)(errorMessage, log_1.ErrorLevel.err);
+        }
         const outputPapers = mergeDuplicates(semanticScholarData, openAlexData);
         return new paper_1.Citations(outputPapers);
     });
@@ -20640,6 +20677,7 @@ class Citations {
     constructor(papers) {
         var _a;
         let firstYear = Number.MAX_SAFE_INTEGER;
+        let highestCitations = 1;
         let secondHandCitations = 0;
         const uniqueFields = new Set();
         let disciplines = {};
@@ -20648,6 +20686,9 @@ class Citations {
             firstYear = Math.min(firstYear, paper.year);
             // Find secondhand citations
             secondHandCitations += paper.numberOfCitations;
+            // find highest citation
+            if (paper.numberOfCitations > highestCitations)
+                highestCitations = paper.numberOfCitations;
             // Find all fields occuring in papers
             for (const field of paper.fields) {
                 uniqueFields.add(field);
@@ -20664,6 +20705,7 @@ class Citations {
         this.firstYear = firstYear;
         this.secondHandCitations = secondHandCitations;
         this.disciplines = disciplines;
+        this.highestCitations = highestCitations;
     }
 }
 exports.Citations = Citations;
