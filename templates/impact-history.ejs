@@ -5,6 +5,9 @@
 
     const count = history.length;
 
+    // Latest stats date
+    const date = history[count - 1].date;
+
     // Latest stats data
     const quality = history[count - 1].quality;
     const citations = history[count - 1].citations;
@@ -42,7 +45,7 @@
 
 <div class="ImpactHistory" hidden>
     <h1>Impact History</h1>
-    <h2>Overview</h2>
+    <h2>Overview (<%- date ?? "missing date"%>)</h2>
     <div class="ImpactHistory__Overview">
         <div>
             <h3>Quality Score</h3>
@@ -192,6 +195,7 @@
     align-items: flex-end;
 }
 .ImpactHistory__Graphs__Graph > div {
+    position: relative;
     text-align: center;
     transition: background-color 0.1s ease-out;
     width: <%- 80 / count %>%;

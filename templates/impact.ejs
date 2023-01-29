@@ -42,6 +42,7 @@ if (ss !== undefined) {
             }
         }
     }
+    
 
     // Get project count
     projectCount = Object.keys(projectMatches).length;
@@ -144,7 +145,7 @@ function getChartData() {
             <div id="Impact__Project__Row" class="Impact__Row__Content">
                 <div class="Impact__Row__Block">
                     <p>Your code matches methods in</p>
-                    <div class="Row__Number"><%- projectCount ?? "?" %></div>
+                    <div class="Row__Number"><%- projectCount ?? "0" %></div>
                     <p>other projects</p>
                 </div>
                 <div class="Impact__Row__Block">
@@ -171,7 +172,7 @@ function genData(){
     return data;
 }
 
-const labels = [
+var  labels = [
     "Humanities" ,
     "Social Sciences",
     "Natural Sciences",
@@ -179,7 +180,7 @@ const labels = [
     "Applied Sciences"
 ]
 
-const data = {
+var  data = {
     labels: labels,
     datasets: [
         {
@@ -190,7 +191,7 @@ const data = {
         }]
 };
 
-const config = {
+var config = {
   type: 'radar',
   data: data,
   options: {
@@ -289,9 +290,4 @@ new Chart("Citations__RadarChart", config);
     font-weight: bold;
     margin: 0.25vw;
 }
-
-/*#Citations__RadarChart {
-    margin: 5px;
-}*/
-
 </style>

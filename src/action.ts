@@ -14,7 +14,7 @@ import * as core from "@actions/core";
  * The program performs the following steps:
  * - Handle preconditions required for the program to run
  * - Call the modules that generate the data
- * - Generates the output reports
+ * - Generates the output files
 */
 export async function main(): Promise<void> {
     try {
@@ -25,7 +25,7 @@ export async function main(): Promise<void> {
             // Generate the data
             const result = await data();
             
-            // Create output reports
+            // Create output files
             await post(result);
         }
     } catch (error) {

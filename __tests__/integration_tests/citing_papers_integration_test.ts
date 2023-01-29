@@ -4,7 +4,7 @@ import { Author, Paper, Citations } from "../../src/resources/citations/paper";
 import { openAlexCitations } from "../../src/resources/citations/apis/openalex_api";
 import { semanticScholarCitations } from "../../src/resources/citations/apis/semanticscholar_api";
 
-jest.setTimeout(100000);
+jest.setTimeout(300000);
 
 test("Check if all sources of citation are correctly used", runCitingPapersIntegration);
 

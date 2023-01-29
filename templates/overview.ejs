@@ -1,3 +1,15 @@
+<script>
+
+    function generatePDF() {
+      var opt = { filename: 'FAIRECO-REPORT-<%-githubData.Repo %>.pdf' };
+      const element = document.getElementById("pdf");
+      var elementclone = element.cloneNode(true);
+      elementclone.style = "display:block";
+      html2pdf().set(opt).from(elementclone).save();
+      elementclone.remove();
+    }
+
+</script>
 <%
     // Handle missing GitHub data
     if (githubData === undefined) {
@@ -31,9 +43,9 @@
     const dateString = String(date.getDate()) + "/" + String(date.getMonth() + 1) + "/" + String(date.getFullYear());
 
     // Get citations, fairness, quality score
-    const citations = paperData !== undefined ? paperData.firstHandCitations + paperData.secondHandCitations : "?";
-    const fairness = fairtally !== undefined ? fairtally.count : "?";
-    const qualityScore = quality !== undefined ? quality.score : "?";
+    const citations = paperData !== undefined ? paperData.firstHandCitations + paperData.secondHandCitations : "-";
+    const fairness = fairtally !== undefined ? fairtally.count : "-";
+    const qualityScore = quality !== undefined ? quality.score : "-";
 
     // Get method matches
     let methodMatches = 0;
@@ -42,7 +54,7 @@
             methodMatches += method.matches.length;
         }
     } else {
-        methodMatches = "?";
+        methodMatches = "-";
     }
     
 %>
@@ -104,6 +116,7 @@
             <div class = Meta-data__Data><p><%- qualityScore %>/100</p></div>
         </div>
     </div>
+    <button id="pdfbutton" onclick="generatePDF()"><i class="fa-solid fa-download"></i>  Download as PDF</button>
 </div>
 
 <style>
@@ -118,9 +131,30 @@
     color: #0C281E;
     text-align: Left;
     margin: 0;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     margin-left: 4.8vw;
     font-size: 1.5rem;
+}
+
+#pdfbutton{
+
+    display: block;
+    border-radius: 8px;
+    margin: auto;
+    margin-top: 20px;
+    border: 1px solid black;
+    padding: 10px;
+    background: none;
+}
+
+#pdfbutton:hover{
+    color: white;
+    background-color: #0c281e;
+}
+
+#pdfbutton i{
+    margin-right: 5px;
+    font-size: 15px;
 }
 
 .Overview__Content {
@@ -220,3 +254,5 @@
     margin: 0.25vw;
 }
 </style>
+
+

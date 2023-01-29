@@ -1,0 +1,192 @@
+<style>
+    .page{
+        
+        position: relative;
+        height: 295mm;
+        width: 210mm;
+        /* border: 1px solid black; */
+    }
+    .company_branding{
+        display: block;
+        margin: auto;
+        height: 40px;
+        margin-top: 80px;
+    }
+    .title_page{
+        position: relative;
+        height: 295mm;
+        width: 210mm;
+        /* border: 1px solid black; */
+    }
+    .title-page-title{
+        display: block;
+        margin: auto;
+        margin-top: 150px;
+        text-align: center;
+        line-height: 20px;
+    }
+
+    .title_page_subheader{
+        display: block;
+        margin: auto;
+        text-align: center;
+        line-height: 50px;
+    }
+    .title_page_header{ 
+        font-size: 3em;
+        border-bottom: 1px solid black;
+    }
+    .title_page_authors{
+        display: block;
+        margin: auto;
+        text-align: center;
+        margin-top: 30px;
+    }
+    .title_page_authors_header{
+        font-weight: bold;
+    }
+    .title_page_footer{
+        width: 100%;
+        text-align: center;
+        font-size: 10px;
+        display: block;
+        margin: auto;
+        color: gray;
+        position: absolute;
+        bottom: 80px;
+    }
+    .title_page_footer span {
+        width: 300px;
+    }
+
+    .page_header{
+        font-weight: bold;
+        font-size: 25px;
+        width: 100%;
+        border-bottom: 1px solid black;
+    }
+    .page_subtitle{
+        font-size: 10px;
+        color: darkslategray;
+        width: 100%;
+    }
+
+    .ImpactHistory h1{
+        margin-bottom: 50px !important;
+    }
+
+    .Impact__Title{
+        margin-bottom: 50px !important;
+    }
+
+</style>
+
+    <%   
+
+        const licenses = data.find((ele) => (ele.ModuleName=== "Tortellini"))?.Data; 
+        const fairtally = data.find((ele) => (ele.ModuleName=== "fairtally"))?.Data[0]; 
+        const sbom = data.find((ele) => (ele.ModuleName=== "SBOM"))?.Data; 
+        const searchSECO = data.find((ele) => (ele.ModuleName=== "SearchSECO"))?.Data; 
+        var   githubData = data.find((ele) => (ele.ModuleName === "GithubInfo"))?.Data;
+        const quality = data.find((ele) => (ele.ModuleName=== "QualityMetrics"))?.Data;
+        const paperData = data.find((ele) => (ele.ModuleName === "CitingPapers"))?.Data;
+        const history = data.find((ele) => (ele.ModuleName === "History"))?.Data;
+
+        // Handle missing GitHub data
+        if (githubData === undefined) {
+            githubData = {
+                Repo: "missing data",
+                Owner: "missing data",
+                Stars: "?",
+                Watched: "?",
+                Forks: "?",
+                Contributors: [
+                    {
+                        type: "User",
+                        login: "missing data"
+                    }
+                ]
+            };
+        }
+
+        // Get top contributors
+        topContributors = "";
+        let contributorCount = 0;
+        for (const contributor of githubData.Contributors) {
+            if (contributor.type === "User" && contributorCount <= 6) {
+                topContributors += "<p>" + contributor.login + "</p>";
+                contributorCount++;
+            }
+        }
+
+
+
+    function includePage(page, data, classes, hidden) {
+        try {
+            %><%- include(page, data) %><%
+        } catch(error) {
+            %><%- include('rightpane-error', {error, classes, hidden}) %><%
+        }
+    }
+
+    %>
+    <div id="pdf">   
+
+        <div class="title_page">
+            <div> <%- include('logo-extend')%> </div>
+            <div class="title-page-title">
+                <span class="title_page_header"> <%- githubData.Repo %></span><br>
+                <span class ="title_page_subheader"> FAIRSECO REPORT </span>
+            </div>
+
+            <div class="title_page_authors">
+                <span class="title_page_authors_header"> Project Authors </span><br><br>
+                    <span> <%- topContributors %></span><br>
+            </div>
+
+            <div class="title_page_footer">
+                <span>This document provides an overview report of '<%- githubData.Repo %>' provided by FAIRSECO</span>
+            </div>
+        </div>
+
+        <div class="page">
+            <%includePage('overview', {githubData, fairtally, quality, searchSECO, paperData});%>
+        </div>
+
+        <div class="page">
+        <%- includePage('fairtally', {fairtally})%>
+        </div>    
+
+        <div class="page">
+            <%- includePage('quality', {quality}) %>
+        </div>
+
+        <div class="page">
+            <%- includePage('impact', {ss: searchSECO, pp: paperData}) %>
+        </div>
+
+        <div class="page">
+            <%- includePage('impact-history', {history}); %>
+        </div>
+
+    </div>
+
+<script>
+
+    var el = document.getElementById("pdf");
+    el.querySelector(".FairtallyReport").hidden = false;
+    el.querySelector(".Quality").hidden = false;
+    el.querySelector(".ImpactScore").hidden = false;
+    el.querySelector("#pdfbutton").style ="display:none;"; 
+    for (const graph of el.getElementsByClassName("ImpactHistory__Graphs__Graph")) {
+            for (const child of graph.children) {
+                child.classList.add("ImpactHistory__HoveredData");
+            }
+    }
+    var info = el.querySelectorAll(".info");
+    info.forEach(div => { div.style = "opacity: 1; padding: 16px; height:65px; "; });
+    el.querySelector(".FairtallyReport h4").hidden = true;
+    el.querySelector(".ImpactHistory").hidden = false;
+
+</script>
+
