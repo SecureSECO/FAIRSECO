@@ -104,6 +104,11 @@ window.addEventListener('load', () => {
     if ((citation.length > 0)){
         elementCSS.style.visibility = 'visible';
         elementCSS.style.display = 'block';
+        const classNam = citation[0].className;
+        if (classNam != 'Citation'){
+            elementCSS.style.visibility = 'hidden';
+            elementCSS.style.display = 'none';
+        }
     } else {
         elementCSS.style.visibility = 'hidden';
         elementCSS.style.display = 'none';
@@ -158,6 +163,11 @@ function clickNav(ele) {
     if (ele.lastElementChild.firstChild.nodeValue == "Citations" && (citation.length > 0) && (classNam == "Citation")){
         elementCSS.style.visibility = 'visible';
         elementCSS.style.display = 'block';
+        const classNam = citation[0].className;
+        if (classNam != 'Citation'){
+            elementCSS.style.visibility = 'hidden';
+            elementCSS.style.display = 'none';
+        }
     } else{
         elementCSS.style.visibility = 'hidden';
         elementCSS.style.display = 'none';
