@@ -8,11 +8,15 @@
     <div class="CitationsContainerScroll">
     <div class="Citations">
     <% if (citations !== undefined) {  %>
-        <% citations?.forEach((citation) => { %>
-            <%- include('citation', {"citation": citation})%>
-        <% }) %>
+        <% if (citations.length > 0) {  %>
+            <% citations?.forEach((citation) => { %>
+                <%- include('citation', {"citation": citation})%>
+            <% }) %>
+        <% } else { %>
+            <h1 id="CitationMissingError">No citations were found.</h1>
+        <% } %>
     <% } else { %>
-        <h1 id="CitationMissingError">No citations were found at this time.</h1>
+        <h1 id="CitationMissingError">Something went wrong while retrieving citations.</h1>
     <% } %>
     </div>
     </div>
