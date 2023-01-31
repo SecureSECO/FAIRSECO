@@ -33,7 +33,7 @@ if (rel.relationshipType === "CONTAINS") {
         let newParent = graph.get(rel.spdxElementId)
         newParent.children.push(rel.relatedSpdxElement)
         let newChild = graph.get(rel.relatedSpdxElement)
-        newChild.parents.push(rel.spdxElementId)
+        newChild?.parents.push(rel.spdxElementId)
         graph.set(
             rel.spdxElementId, newParent
         )
@@ -45,8 +45,8 @@ if (rel.relationshipType === "CONTAINS") {
 
 // To begin our tree, we need to find the root. We pick the first node and ascend the parents until we find the root element.
 let rootelem = graph.keys().next().value;
-while (graph.get(rootelem).parents.length){
-    if (graph.get(rootelem).parents[0] === undefined) break;
+while (graph.get(rootelem)?.parents?.length){
+    if (graph.get(rootelem)?.parents[0] === undefined) break;
     rootelem = graph.get(rootelem).parents[0];
 }
 %>
