@@ -1,0 +1,303 @@
+<div class="CitationsContainer ActiveTab">
+    <h3 class="citationsDisclaimer">Citation data is collected from OpenAlex and Semantic Scholar. The amount of citations on the impact page might not be the same as the amount of listed papers on this page, since some papers might not be found. </h3>
+    <div id="CitationsHeader">
+        <h1 class="hTitle">Title, Authors, Description</h1>
+        <h1 class="hDate">Date</h1>
+        <h1 class="hDOI">D.O.I.</h1>
+        <h1 class="hLink">Link</h1>
+    </div>
+    <div class="CitationsContainerScroll">
+    <div class="Citations">
+    <% if (citations !== undefined) {  %>
+        <% if (citations.length > 0) {  %>
+            <% citations?.forEach((citation) => { %>
+                <%- include('citation', {"citation": citation})%>
+            <% }) %>
+        <% } else { %>
+            <h1 id="CitationMissingError">No citations were found.</h1>
+        <% } %>
+    <% } else { %>
+        <h1 id="CitationMissingError">Something went wrong while retrieving citations.</h1>
+    <% } %>
+    </div>
+    </div>
+</div>
+<style>
+    .Citations p {
+        text-align: left;
+    }
+
+    h1 {
+        margin: 0;
+        padding: 0;
+    }
+        .CitationsContainer {
+        height: 76%;
+        width: 100%;
+        
+    }
+    .CitationsContainerScroll {
+        overflow-y: scroll;
+        height: 84%;
+        padding: 0;
+        margin: 0;
+        -webkit-mask-image: linear-gradient(
+        to bottom,
+        black 90%,
+        transparent 100%
+        );
+        mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+    }
+
+    .citationsDisclaimer{
+        color:#779C7E;
+        font-size: 0.9rem;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        margin-left: 20px;
+        font-style: italic;
+    }
+
+
+    #CitationsHeader {
+        height: 75px;
+        padding-top: 14px;
+        padding-left: 11px;
+    }
+    #CitationMissingError{
+        margin:auto;
+        width: 100%;
+        height: 50vh;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        font-size: 1.4rem;
+    }
+
+    .Citations {
+        padding: 11px;
+        width: 100%;
+    }
+
+    .hTitle {
+        width: 33%;
+        float: left;
+    }
+
+    .hDate {
+        width: 12%;
+        float: left;
+    }
+
+    .hDOI {
+        width: 35%;
+        float: left;
+    }
+
+    .hLink {
+        width: 16%;
+        float: left;
+        text-align: center;
+    }
+
+    .Citations h1 {
+        color: #779c7e;
+        font-style: italic;
+        font-size: 1.2rem;
+        position: sticky;
+        top: 0;
+        background-color: #2f4c3e;
+        padding: 13px 0 24px 0;
+        width: 24%;
+        display: inline-block;
+        text-align: center;
+    }
+
+    .Citation tr {
+        margin: 4px 0px;
+    }
+
+    .Citation td {
+        max-width: 600px;
+    }
+
+    .Citation .info1 {
+        display: inline-block;
+        flex-direction: column;
+    }
+
+    .Citation .info1 .info2 {
+        /*display: flex;
+        flex-direction: column;
+        align-items: baseline; */
+    }
+
+    .info1 {
+        width: 34%;
+    }
+
+    .year {
+        width: 12%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .doi {
+        width: 35%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .link {
+        width: 16%;
+        padding: 0;
+        margin: 0;
+    }
+
+
+    .info2 h1,
+    .info2 h2 {
+        color: #d9f8df;
+        margin: 0;
+    }
+
+    .info2 h1 {
+        font-size: 1.2rem;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        font-weight: 400;
+    }
+    .info2 h2 {
+        font-size: 0.7rem;
+        font-style: italic;
+        font-weight: 400;
+    }
+    .info2 .middot {
+        margin: 0 8px;
+    }
+
+    .info1 h3 {
+        margin: 0;
+        color: #a3c6aa;
+        font-size: 0.9rem;
+        font-weight: 400;
+    }
+
+    .Citation .year,
+    .Citation .link {
+        text-align: center;
+        color: #779c7e;
+        display: inline-block;
+    }
+
+    .Citation .link {
+        cursor: pointer;
+        font-size: 1.2rem;
+        transition: all 150ms ease;
+        height: inherit;
+    }
+
+
+    .Citation .link:hover a {
+        color: #d9f8df;
+    }
+
+    
+    .Citation .link a {
+        color: #779c7e;
+    }
+
+    .info2 h1 {
+        margin: 0;
+        padding: 0;
+        font-size: 0.8rem;
+        width: 90%;
+    }
+
+    .title {
+        font-size: 1rem;
+        padding: 0;
+        margin: 0;
+    }
+
+    @media screen and (max-width: 1500px) {
+        .doi {
+            visibility: hidden;
+            display: none;
+        }
+
+        #doiSmall {
+            visibility: visible;
+            display: contents;
+        }
+
+        .hDOI {
+            visibility: hidden;
+            display: none;
+        }
+
+        .hTitle {
+        width: 68%;
+    }
+
+    .hDate {
+        width: 12%;
+    }
+
+    .hLink {
+        width: 16%;
+    }
+
+    .info1 {
+        width: 71%;
+    }
+
+    .year {
+        width: 12%;
+    }
+
+    .link {
+        width: 16%;
+    }
+
+    .Citation .doi {
+        text-align: center;
+        color: #779c7e;
+        display: hidden;
+    }
+
+    #CitationsHeader h1 {
+        color: #779c7e;
+        font-style: italic;
+        font-size: 1.2rem;
+        position: sticky;
+        top: 0;
+        background-color: #2f4c3e;
+        display: hidden;
+    }
+    }
+
+    @media screen and (min-width: 1500px) {
+        .Citation .doi {
+        text-align: center;
+        color: #779c7e;
+        display: inline-block;
+    }
+
+    #doiSmall {
+            visibility: hidden;
+            display: none;
+        }
+
+    #CitationsHeader h1 {
+        color: #779c7e;
+        font-style: italic;
+        font-size: 1.2rem;
+        position: sticky;
+        top: 0;
+        background-color: #2f4c3e;
+        display: inline-block;
+    }
+    }
+</style>

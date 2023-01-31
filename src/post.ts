@@ -1,51 +1,57 @@
+/**
+ * This module contains functions that are called after the main program is done, like
+ * creating the output files.
+ * 
+ * @module
+ */
+
 import { ReturnObject } from "./getdata";
 import YAML from "yaml";
-import fs, { PathLike } from "fs";
-import { WriteHTML, WriteCSS } from "./webapp";
+import fs from "fs";
+import { WriteHTML } from "./webapp";
+import { ErrorLevel, LogMessage } from "./errorhandling/log";
+import { getHistoryData } from "./history";
 
 /**
  * Creates reports showing the gathered data in .yml and .html format.
- * @param result The data gathered by FairSECO.
+ * The FAIRSECO history file is also read and updated.
+ * 
+ * @param result The data gathered by FAIRSECO.
  */
-export async function post(result: ReturnObject[]): Promise<boolean> {
-    createFairSECODir("./.FairSECO/"); // Make sure the output dir exists before we place files in it.
-    createReport(result); // Create report.yml file
+export async function post(result: ReturnObject[]): Promise<void> {
+    // Create report.yml file
+    createReport(result);
+
+    // Get (and update) history data.
+    // Add this after generating the raw data report to not include it there.
+    // It will be used by the dashboard.
+    const historyData = getHistoryData("./.fairseco_history.json", result);
+    result.push({
+        ModuleName: "History",
+        Data: historyData
+    });
+
+    // Create dashboard.html file
     await generateHTML(result);
-    return true;
 }
 
-function createFairSECODir(path: PathLike): void {
-    // Create dir if not exists
-    console.log("Creating FairSECO directory.");
-    try {
-        fs.mkdirSync(path);
-    } catch {
-        console.log("Folder already exists, skipping");
-    }
-}
-
-// Generate the report of FairSeco
+// Generate the report of FAIRSECO
 function createReport(result: ReturnObject[]): void {
-    const fd: number = fs.openSync("./.FairSECO/Report.yml", "w+");
     try {
-        console.log(result);
-        fs.writeSync(fd, YAML.stringify(result));
-        console.log("Successfully wrote YML file to dir");
-        fs.closeSync(fd);
+        fs.writeFileSync("./.FAIRSECO/report.yml", YAML.stringify(result));
+        fs.writeFileSync("./.FAIRSECO/report.json", JSON.stringify(result));
+        LogMessage("Successfully wrote YML file to dir.", ErrorLevel.info);
     } catch {
-        console.error("Error writing yaml file");
+        LogMessage("Error writing YML file.", ErrorLevel.err);
     }
 }
 
 // Make a webapp from the report
 async function generateHTML(result: ReturnObject[]): Promise<void> {
     try {
-        await WriteHTML(result, "./.FairSECO/index.html");
-        console.log("Successfully wrote HTML to dir");
-
-        // await WriteCSS("./.FairSECO/style.css");
-        // console.log("Successfully wrote CSS to dir");
-    } catch {
-        console.error("Error writing HTML file");
+        await WriteHTML(result, "./.FAIRSECO/");
+        LogMessage("Successfully wrote HTML file to dir.", ErrorLevel.info);
+    } catch (err: any) {
+        LogMessage("Error writing HTML file: " + (err.message as string), ErrorLevel.err);
     }
 }

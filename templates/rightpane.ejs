@@ -1,0 +1,80 @@
+<%
+const githubData = data.find((ele) => (ele.ModuleName === "GithubInfo"))?.Data;
+const fairtally = data.find((ele) => (ele.ModuleName === "fairtally"))?.Data[0];
+const quality = data.find((ele) => (ele.ModuleName === "QualityMetrics"))?.Data;
+const searchSECO = data.find((ele) => (ele.ModuleName === "SearchSECO"))?.Data;
+const paperData = data.find((ele) => (ele.ModuleName === "CitingPapers"))?.Data;
+const history = data.find((ele) => (ele.ModuleName === "History"))?.Data;
+
+%>
+
+<div class="RightPane">
+    <div class="RightPaneContainer">
+        <%- include('rightpanenav') %>
+        <div class="RightPaneWindow">
+            <%
+            includePage('overview', {githubData, fairtally, quality, searchSECO, paperData}, "Overview", false);
+            includePage('fairtally', {fairtally}, "FairtallyReport", true);
+            includePage('quality', {quality}, "Quality", true);
+            includePage('impact', {ss: searchSECO, pp: paperData}, "ImpactScore", true);
+            includePage('impact-history', {history}, "ImpactHistory", true);
+            %>
+        </div>
+    </div>
+</div>
+
+<style>
+.Overview {
+    height: 100%;
+    overflow-y: auto;
+}
+
+.RightPane{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50vw;
+    height: 100vh;
+    margin: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.RightPaneContainer {
+    height: 87vh;
+    width: 48vw;
+    margin: 0;
+}
+
+.RightPaneWindow {
+    background: rgba(234,254,237, 0.55);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(50px);
+    border-radius: 0px 16px 16px 16px;
+    height: 100%;
+    padding: 8px;
+}
+
+.RightPaneWindow p {
+    color: #0C281E;
+}
+
+.RightPaneError {
+    width: 92%;
+    margin: 4%;
+    word-wrap: break-word;
+    font-size: 1.5rem;
+    color: #0C281E;
+}
+</style>
+
+<%
+    function includePage(page, data, classes, hidden) {
+        try {
+            %><%- include(page, data) %><%
+        } catch(error) {
+            %><%- include('rightpane-error', {error, classes, hidden}) %><%
+        }
+    }
+%>

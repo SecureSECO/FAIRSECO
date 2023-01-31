@@ -46,7 +46,7 @@ html,body {overflow-x: hidden; background-color:#ffffff;}
   align-items: center;
   position: relative;
   padding: 0px 32px 0px 18px; 
-  background-color:darkgray;
+  background-color: darkgray;
 }
 
 .header_logo{

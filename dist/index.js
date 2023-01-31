@@ -3913,6 +3913,222 @@ class ExecState extends events.EventEmitter {
 
 /***/ }),
 
+/***/ 4087:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Context = void 0;
+const fs_1 = __nccwpck_require__(7147);
+const os_1 = __nccwpck_require__(2037);
+class Context {
+    /**
+     * Hydrate the context from the environment
+     */
+    constructor() {
+        var _a, _b, _c;
+        this.payload = {};
+        if (process.env.GITHUB_EVENT_PATH) {
+            if (fs_1.existsSync(process.env.GITHUB_EVENT_PATH)) {
+                this.payload = JSON.parse(fs_1.readFileSync(process.env.GITHUB_EVENT_PATH, { encoding: 'utf8' }));
+            }
+            else {
+                const path = process.env.GITHUB_EVENT_PATH;
+                process.stdout.write(`GITHUB_EVENT_PATH ${path} does not exist${os_1.EOL}`);
+            }
+        }
+        this.eventName = process.env.GITHUB_EVENT_NAME;
+        this.sha = process.env.GITHUB_SHA;
+        this.ref = process.env.GITHUB_REF;
+        this.workflow = process.env.GITHUB_WORKFLOW;
+        this.action = process.env.GITHUB_ACTION;
+        this.actor = process.env.GITHUB_ACTOR;
+        this.job = process.env.GITHUB_JOB;
+        this.runNumber = parseInt(process.env.GITHUB_RUN_NUMBER, 10);
+        this.runId = parseInt(process.env.GITHUB_RUN_ID, 10);
+        this.apiUrl = (_a = process.env.GITHUB_API_URL) !== null && _a !== void 0 ? _a : `https://api.github.com`;
+        this.serverUrl = (_b = process.env.GITHUB_SERVER_URL) !== null && _b !== void 0 ? _b : `https://github.com`;
+        this.graphqlUrl = (_c = process.env.GITHUB_GRAPHQL_URL) !== null && _c !== void 0 ? _c : `https://api.github.com/graphql`;
+    }
+    get issue() {
+        const payload = this.payload;
+        return Object.assign(Object.assign({}, this.repo), { number: (payload.issue || payload.pull_request || payload).number });
+    }
+    get repo() {
+        if (process.env.GITHUB_REPOSITORY) {
+            const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
+            return { owner, repo };
+        }
+        if (this.payload.repository) {
+            return {
+                owner: this.payload.repository.owner.login,
+                repo: this.payload.repository.name
+            };
+        }
+        throw new Error("context.repo requires a GITHUB_REPOSITORY environment variable like 'owner/repo'");
+    }
+}
+exports.Context = Context;
+//# sourceMappingURL=context.js.map
+
+/***/ }),
+
+/***/ 5438:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getOctokit = exports.context = void 0;
+const Context = __importStar(__nccwpck_require__(4087));
+const utils_1 = __nccwpck_require__(3030);
+exports.context = new Context.Context();
+/**
+ * Returns a hydrated octokit ready to use for GitHub Actions
+ *
+ * @param     token    the repo PAT or GITHUB_TOKEN
+ * @param     options  other options to set
+ */
+function getOctokit(token, options, ...additionalPlugins) {
+    const GitHubWithPlugins = utils_1.GitHub.plugin(...additionalPlugins);
+    return new GitHubWithPlugins(utils_1.getOctokitOptions(token, options));
+}
+exports.getOctokit = getOctokit;
+//# sourceMappingURL=github.js.map
+
+/***/ }),
+
+/***/ 7914:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getApiBaseUrl = exports.getProxyAgent = exports.getAuthString = void 0;
+const httpClient = __importStar(__nccwpck_require__(6255));
+function getAuthString(token, options) {
+    if (!token && !options.auth) {
+        throw new Error('Parameter token or opts.auth is required');
+    }
+    else if (token && options.auth) {
+        throw new Error('Parameters token and opts.auth may not both be specified');
+    }
+    return typeof options.auth === 'string' ? options.auth : `token ${token}`;
+}
+exports.getAuthString = getAuthString;
+function getProxyAgent(destinationUrl) {
+    const hc = new httpClient.HttpClient();
+    return hc.getAgent(destinationUrl);
+}
+exports.getProxyAgent = getProxyAgent;
+function getApiBaseUrl() {
+    return process.env['GITHUB_API_URL'] || 'https://api.github.com';
+}
+exports.getApiBaseUrl = getApiBaseUrl;
+//# sourceMappingURL=utils.js.map
+
+/***/ }),
+
+/***/ 3030:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getOctokitOptions = exports.GitHub = exports.defaults = exports.context = void 0;
+const Context = __importStar(__nccwpck_require__(4087));
+const Utils = __importStar(__nccwpck_require__(7914));
+// octokit + plugins
+const core_1 = __nccwpck_require__(6762);
+const plugin_rest_endpoint_methods_1 = __nccwpck_require__(3044);
+const plugin_paginate_rest_1 = __nccwpck_require__(4193);
+exports.context = new Context.Context();
+const baseUrl = Utils.getApiBaseUrl();
+exports.defaults = {
+    baseUrl,
+    request: {
+        agent: Utils.getProxyAgent(baseUrl)
+    }
+};
+exports.GitHub = core_1.Octokit.plugin(plugin_rest_endpoint_methods_1.restEndpointMethods, plugin_paginate_rest_1.paginateRest).defaults(exports.defaults);
+/**
+ * Convience function to correctly format Octokit Options to pass into the constructor.
+ *
+ * @param     token    the repo PAT or GITHUB_TOKEN
+ * @param     options  other options to set
+ */
+function getOctokitOptions(token, options) {
+    const opts = Object.assign({}, options || {}); // Shallow clone - don't mutate the object provided by the caller
+    // Auth
+    const auth = Utils.getAuthString(token, opts);
+    if (auth) {
+        opts.auth = auth;
+    }
+    return opts;
+}
+exports.getOctokitOptions = getOctokitOptions;
+//# sourceMappingURL=utils.js.map
+
+/***/ }),
+
 /***/ 5526:
 /***/ (function(__unused_webpack_module, exports) {
 
@@ -5213,6 +5429,2372 @@ function copyFile(srcFile, destFile, force) {
 
 /***/ }),
 
+/***/ 334:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+
+const REGEX_IS_INSTALLATION_LEGACY = /^v1\./;
+const REGEX_IS_INSTALLATION = /^ghs_/;
+const REGEX_IS_USER_TO_SERVER = /^ghu_/;
+async function auth(token) {
+  const isApp = token.split(/\./).length === 3;
+  const isInstallation = REGEX_IS_INSTALLATION_LEGACY.test(token) || REGEX_IS_INSTALLATION.test(token);
+  const isUserToServer = REGEX_IS_USER_TO_SERVER.test(token);
+  const tokenType = isApp ? "app" : isInstallation ? "installation" : isUserToServer ? "user-to-server" : "oauth";
+  return {
+    type: "token",
+    token: token,
+    tokenType
+  };
+}
+
+/**
+ * Prefix token for usage in the Authorization header
+ *
+ * @param token OAuth token or JSON Web Token
+ */
+function withAuthorizationPrefix(token) {
+  if (token.split(/\./).length === 3) {
+    return `bearer ${token}`;
+  }
+
+  return `token ${token}`;
+}
+
+async function hook(token, request, route, parameters) {
+  const endpoint = request.endpoint.merge(route, parameters);
+  endpoint.headers.authorization = withAuthorizationPrefix(token);
+  return request(endpoint);
+}
+
+const createTokenAuth = function createTokenAuth(token) {
+  if (!token) {
+    throw new Error("[@octokit/auth-token] No token passed to createTokenAuth");
+  }
+
+  if (typeof token !== "string") {
+    throw new Error("[@octokit/auth-token] Token passed to createTokenAuth is not a string");
+  }
+
+  token = token.replace(/^(token|bearer) +/i, "");
+  return Object.assign(auth.bind(null, token), {
+    hook: hook.bind(null, token)
+  });
+};
+
+exports.createTokenAuth = createTokenAuth;
+//# sourceMappingURL=index.js.map
+
+
+/***/ }),
+
+/***/ 6762:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+
+var universalUserAgent = __nccwpck_require__(5030);
+var beforeAfterHook = __nccwpck_require__(3682);
+var request = __nccwpck_require__(6234);
+var graphql = __nccwpck_require__(8467);
+var authToken = __nccwpck_require__(334);
+
+function _objectWithoutPropertiesLoose(source, excluded) {
+  if (source == null) return {};
+  var target = {};
+  var sourceKeys = Object.keys(source);
+  var key, i;
+
+  for (i = 0; i < sourceKeys.length; i++) {
+    key = sourceKeys[i];
+    if (excluded.indexOf(key) >= 0) continue;
+    target[key] = source[key];
+  }
+
+  return target;
+}
+
+function _objectWithoutProperties(source, excluded) {
+  if (source == null) return {};
+
+  var target = _objectWithoutPropertiesLoose(source, excluded);
+
+  var key, i;
+
+  if (Object.getOwnPropertySymbols) {
+    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+
+    for (i = 0; i < sourceSymbolKeys.length; i++) {
+      key = sourceSymbolKeys[i];
+      if (excluded.indexOf(key) >= 0) continue;
+      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+      target[key] = source[key];
+    }
+  }
+
+  return target;
+}
+
+const VERSION = "3.6.0";
+
+const _excluded = ["authStrategy"];
+class Octokit {
+  constructor(options = {}) {
+    const hook = new beforeAfterHook.Collection();
+    const requestDefaults = {
+      baseUrl: request.request.endpoint.DEFAULTS.baseUrl,
+      headers: {},
+      request: Object.assign({}, options.request, {
+        // @ts-ignore internal usage only, no need to type
+        hook: hook.bind(null, "request")
+      }),
+      mediaType: {
+        previews: [],
+        format: ""
+      }
+    }; // prepend default user agent with `options.userAgent` if set
+
+    requestDefaults.headers["user-agent"] = [options.userAgent, `octokit-core.js/${VERSION} ${universalUserAgent.getUserAgent()}`].filter(Boolean).join(" ");
+
+    if (options.baseUrl) {
+      requestDefaults.baseUrl = options.baseUrl;
+    }
+
+    if (options.previews) {
+      requestDefaults.mediaType.previews = options.previews;
+    }
+
+    if (options.timeZone) {
+      requestDefaults.headers["time-zone"] = options.timeZone;
+    }
+
+    this.request = request.request.defaults(requestDefaults);
+    this.graphql = graphql.withCustomRequest(this.request).defaults(requestDefaults);
+    this.log = Object.assign({
+      debug: () => {},
+      info: () => {},
+      warn: console.warn.bind(console),
+      error: console.error.bind(console)
+    }, options.log);
+    this.hook = hook; // (1) If neither `options.authStrategy` nor `options.auth` are set, the `octokit` instance
+    //     is unauthenticated. The `this.auth()` method is a no-op and no request hook is registered.
+    // (2) If only `options.auth` is set, use the default token authentication strategy.
+    // (3) If `options.authStrategy` is set then use it and pass in `options.auth`. Always pass own request as many strategies accept a custom request instance.
+    // TODO: type `options.auth` based on `options.authStrategy`.
+
+    if (!options.authStrategy) {
+      if (!options.auth) {
+        // (1)
+        this.auth = async () => ({
+          type: "unauthenticated"
+        });
+      } else {
+        // (2)
+        const auth = authToken.createTokenAuth(options.auth); // @ts-ignore  ¯\_(ツ)_/¯
+
+        hook.wrap("request", auth.hook);
+        this.auth = auth;
+      }
+    } else {
+      const {
+        authStrategy
+      } = options,
+            otherOptions = _objectWithoutProperties(options, _excluded);
+
+      const auth = authStrategy(Object.assign({
+        request: this.request,
+        log: this.log,
+        // we pass the current octokit instance as well as its constructor options
+        // to allow for authentication strategies that return a new octokit instance
+        // that shares the same internal state as the current one. The original
+        // requirement for this was the "event-octokit" authentication strategy
+        // of https://github.com/probot/octokit-auth-probot.
+        octokit: this,
+        octokitOptions: otherOptions
+      }, options.auth)); // @ts-ignore  ¯\_(ツ)_/¯
+
+      hook.wrap("request", auth.hook);
+      this.auth = auth;
+    } // apply plugins
+    // https://stackoverflow.com/a/16345172
+
+
+    const classConstructor = this.constructor;
+    classConstructor.plugins.forEach(plugin => {
+      Object.assign(this, plugin(this, options));
+    });
+  }
+
+  static defaults(defaults) {
+    const OctokitWithDefaults = class extends this {
+      constructor(...args) {
+        const options = args[0] || {};
+
+        if (typeof defaults === "function") {
+          super(defaults(options));
+          return;
+        }
+
+        super(Object.assign({}, defaults, options, options.userAgent && defaults.userAgent ? {
+          userAgent: `${options.userAgent} ${defaults.userAgent}`
+        } : null));
+      }
+
+    };
+    return OctokitWithDefaults;
+  }
+  /**
+   * Attach a plugin (or many) to your Octokit instance.
+   *
+   * @example
+   * const API = Octokit.plugin(plugin1, plugin2, plugin3, ...)
+   */
+
+
+  static plugin(...newPlugins) {
+    var _a;
+
+    const currentPlugins = this.plugins;
+    const NewOctokit = (_a = class extends this {}, _a.plugins = currentPlugins.concat(newPlugins.filter(plugin => !currentPlugins.includes(plugin))), _a);
+    return NewOctokit;
+  }
+
+}
+Octokit.VERSION = VERSION;
+Octokit.plugins = [];
+
+exports.Octokit = Octokit;
+//# sourceMappingURL=index.js.map
+
+
+/***/ }),
+
+/***/ 9440:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+
+var isPlainObject = __nccwpck_require__(3287);
+var universalUserAgent = __nccwpck_require__(5030);
+
+function lowercaseKeys(object) {
+  if (!object) {
+    return {};
+  }
+
+  return Object.keys(object).reduce((newObj, key) => {
+    newObj[key.toLowerCase()] = object[key];
+    return newObj;
+  }, {});
+}
+
+function mergeDeep(defaults, options) {
+  const result = Object.assign({}, defaults);
+  Object.keys(options).forEach(key => {
+    if (isPlainObject.isPlainObject(options[key])) {
+      if (!(key in defaults)) Object.assign(result, {
+        [key]: options[key]
+      });else result[key] = mergeDeep(defaults[key], options[key]);
+    } else {
+      Object.assign(result, {
+        [key]: options[key]
+      });
+    }
+  });
+  return result;
+}
+
+function removeUndefinedProperties(obj) {
+  for (const key in obj) {
+    if (obj[key] === undefined) {
+      delete obj[key];
+    }
+  }
+
+  return obj;
+}
+
+function merge(defaults, route, options) {
+  if (typeof route === "string") {
+    let [method, url] = route.split(" ");
+    options = Object.assign(url ? {
+      method,
+      url
+    } : {
+      url: method
+    }, options);
+  } else {
+    options = Object.assign({}, route);
+  } // lowercase header names before merging with defaults to avoid duplicates
+
+
+  options.headers = lowercaseKeys(options.headers); // remove properties with undefined values before merging
+
+  removeUndefinedProperties(options);
+  removeUndefinedProperties(options.headers);
+  const mergedOptions = mergeDeep(defaults || {}, options); // mediaType.previews arrays are merged, instead of overwritten
+
+  if (defaults && defaults.mediaType.previews.length) {
+    mergedOptions.mediaType.previews = defaults.mediaType.previews.filter(preview => !mergedOptions.mediaType.previews.includes(preview)).concat(mergedOptions.mediaType.previews);
+  }
+
+  mergedOptions.mediaType.previews = mergedOptions.mediaType.previews.map(preview => preview.replace(/-preview/, ""));
+  return mergedOptions;
+}
+
+function addQueryParameters(url, parameters) {
+  const separator = /\?/.test(url) ? "&" : "?";
+  const names = Object.keys(parameters);
+
+  if (names.length === 0) {
+    return url;
+  }
+
+  return url + separator + names.map(name => {
+    if (name === "q") {
+      return "q=" + parameters.q.split("+").map(encodeURIComponent).join("+");
+    }
+
+    return `${name}=${encodeURIComponent(parameters[name])}`;
+  }).join("&");
+}
+
+const urlVariableRegex = /\{[^}]+\}/g;
+
+function removeNonChars(variableName) {
+  return variableName.replace(/^\W+|\W+$/g, "").split(/,/);
+}
+
+function extractUrlVariableNames(url) {
+  const matches = url.match(urlVariableRegex);
+
+  if (!matches) {
+    return [];
+  }
+
+  return matches.map(removeNonChars).reduce((a, b) => a.concat(b), []);
+}
+
+function omit(object, keysToOmit) {
+  return Object.keys(object).filter(option => !keysToOmit.includes(option)).reduce((obj, key) => {
+    obj[key] = object[key];
+    return obj;
+  }, {});
+}
+
+// Based on https://github.com/bramstein/url-template, licensed under BSD
+// TODO: create separate package.
+//
+// Copyright (c) 2012-2014, Bram Stein
+// All rights reserved.
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions
+// are met:
+//  1. Redistributions of source code must retain the above copyright
+//     notice, this list of conditions and the following disclaimer.
+//  2. Redistributions in binary form must reproduce the above copyright
+//     notice, this list of conditions and the following disclaimer in the
+//     documentation and/or other materials provided with the distribution.
+//  3. The name of the author may not be used to endorse or promote products
+//     derived from this software without specific prior written permission.
+// THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+// EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+// INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+// BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
+// OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+// NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+// EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+/* istanbul ignore file */
+function encodeReserved(str) {
+  return str.split(/(%[0-9A-Fa-f]{2})/g).map(function (part) {
+    if (!/%[0-9A-Fa-f]/.test(part)) {
+      part = encodeURI(part).replace(/%5B/g, "[").replace(/%5D/g, "]");
+    }
+
+    return part;
+  }).join("");
+}
+
+function encodeUnreserved(str) {
+  return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
+    return "%" + c.charCodeAt(0).toString(16).toUpperCase();
+  });
+}
+
+function encodeValue(operator, value, key) {
+  value = operator === "+" || operator === "#" ? encodeReserved(value) : encodeUnreserved(value);
+
+  if (key) {
+    return encodeUnreserved(key) + "=" + value;
+  } else {
+    return value;
+  }
+}
+
+function isDefined(value) {
+  return value !== undefined && value !== null;
+}
+
+function isKeyOperator(operator) {
+  return operator === ";" || operator === "&" || operator === "?";
+}
+
+function getValues(context, operator, key, modifier) {
+  var value = context[key],
+      result = [];
+
+  if (isDefined(value) && value !== "") {
+    if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
+      value = value.toString();
+
+      if (modifier && modifier !== "*") {
+        value = value.substring(0, parseInt(modifier, 10));
+      }
+
+      result.push(encodeValue(operator, value, isKeyOperator(operator) ? key : ""));
+    } else {
+      if (modifier === "*") {
+        if (Array.isArray(value)) {
+          value.filter(isDefined).forEach(function (value) {
+            result.push(encodeValue(operator, value, isKeyOperator(operator) ? key : ""));
+          });
+        } else {
+          Object.keys(value).forEach(function (k) {
+            if (isDefined(value[k])) {
+              result.push(encodeValue(operator, value[k], k));
+            }
+          });
+        }
+      } else {
+        const tmp = [];
+
+        if (Array.isArray(value)) {
+          value.filter(isDefined).forEach(function (value) {
+            tmp.push(encodeValue(operator, value));
+          });
+        } else {
+          Object.keys(value).forEach(function (k) {
+            if (isDefined(value[k])) {
+              tmp.push(encodeUnreserved(k));
+              tmp.push(encodeValue(operator, value[k].toString()));
+            }
+          });
+        }
+
+        if (isKeyOperator(operator)) {
+          result.push(encodeUnreserved(key) + "=" + tmp.join(","));
+        } else if (tmp.length !== 0) {
+          result.push(tmp.join(","));
+        }
+      }
+    }
+  } else {
+    if (operator === ";") {
+      if (isDefined(value)) {
+        result.push(encodeUnreserved(key));
+      }
+    } else if (value === "" && (operator === "&" || operator === "?")) {
+      result.push(encodeUnreserved(key) + "=");
+    } else if (value === "") {
+      result.push("");
+    }
+  }
+
+  return result;
+}
+
+function parseUrl(template) {
+  return {
+    expand: expand.bind(null, template)
+  };
+}
+
+function expand(template, context) {
+  var operators = ["+", "#", ".", "/", ";", "?", "&"];
+  return template.replace(/\{([^\{\}]+)\}|([^\{\}]+)/g, function (_, expression, literal) {
+    if (expression) {
+      let operator = "";
+      const values = [];
+
+      if (operators.indexOf(expression.charAt(0)) !== -1) {
+        operator = expression.charAt(0);
+        expression = expression.substr(1);
+      }
+
+      expression.split(/,/g).forEach(function (variable) {
+        var tmp = /([^:\*]*)(?::(\d+)|(\*))?/.exec(variable);
+        values.push(getValues(context, operator, tmp[1], tmp[2] || tmp[3]));
+      });
+
+      if (operator && operator !== "+") {
+        var separator = ",";
+
+        if (operator === "?") {
+          separator = "&";
+        } else if (operator !== "#") {
+          separator = operator;
+        }
+
+        return (values.length !== 0 ? operator : "") + values.join(separator);
+      } else {
+        return values.join(",");
+      }
+    } else {
+      return encodeReserved(literal);
+    }
+  });
+}
+
+function parse(options) {
+  // https://fetch.spec.whatwg.org/#methods
+  let method = options.method.toUpperCase(); // replace :varname with {varname} to make it RFC 6570 compatible
+
+  let url = (options.url || "/").replace(/:([a-z]\w+)/g, "{$1}");
+  let headers = Object.assign({}, options.headers);
+  let body;
+  let parameters = omit(options, ["method", "baseUrl", "url", "headers", "request", "mediaType"]); // extract variable names from URL to calculate remaining variables later
+
+  const urlVariableNames = extractUrlVariableNames(url);
+  url = parseUrl(url).expand(parameters);
+
+  if (!/^http/.test(url)) {
+    url = options.baseUrl + url;
+  }
+
+  const omittedParameters = Object.keys(options).filter(option => urlVariableNames.includes(option)).concat("baseUrl");
+  const remainingParameters = omit(parameters, omittedParameters);
+  const isBinaryRequest = /application\/octet-stream/i.test(headers.accept);
+
+  if (!isBinaryRequest) {
+    if (options.mediaType.format) {
+      // e.g. application/vnd.github.v3+json => application/vnd.github.v3.raw
+      headers.accept = headers.accept.split(/,/).map(preview => preview.replace(/application\/vnd(\.\w+)(\.v3)?(\.\w+)?(\+json)?$/, `application/vnd$1$2.${options.mediaType.format}`)).join(",");
+    }
+
+    if (options.mediaType.previews.length) {
+      const previewsFromAcceptHeader = headers.accept.match(/[\w-]+(?=-preview)/g) || [];
+      headers.accept = previewsFromAcceptHeader.concat(options.mediaType.previews).map(preview => {
+        const format = options.mediaType.format ? `.${options.mediaType.format}` : "+json";
+        return `application/vnd.github.${preview}-preview${format}`;
+      }).join(",");
+    }
+  } // for GET/HEAD requests, set URL query parameters from remaining parameters
+  // for PATCH/POST/PUT/DELETE requests, set request body from remaining parameters
+
+
+  if (["GET", "HEAD"].includes(method)) {
+    url = addQueryParameters(url, remainingParameters);
+  } else {
+    if ("data" in remainingParameters) {
+      body = remainingParameters.data;
+    } else {
+      if (Object.keys(remainingParameters).length) {
+        body = remainingParameters;
+      } else {
+        headers["content-length"] = 0;
+      }
+    }
+  } // default content-type for JSON if body is set
+
+
+  if (!headers["content-type"] && typeof body !== "undefined") {
+    headers["content-type"] = "application/json; charset=utf-8";
+  } // GitHub expects 'content-length: 0' header for PUT/PATCH requests without body.
+  // fetch does not allow to set `content-length` header, but we can set body to an empty string
+
+
+  if (["PATCH", "PUT"].includes(method) && typeof body === "undefined") {
+    body = "";
+  } // Only return body/request keys if present
+
+
+  return Object.assign({
+    method,
+    url,
+    headers
+  }, typeof body !== "undefined" ? {
+    body
+  } : null, options.request ? {
+    request: options.request
+  } : null);
+}
+
+function endpointWithDefaults(defaults, route, options) {
+  return parse(merge(defaults, route, options));
+}
+
+function withDefaults(oldDefaults, newDefaults) {
+  const DEFAULTS = merge(oldDefaults, newDefaults);
+  const endpoint = endpointWithDefaults.bind(null, DEFAULTS);
+  return Object.assign(endpoint, {
+    DEFAULTS,
+    defaults: withDefaults.bind(null, DEFAULTS),
+    merge: merge.bind(null, DEFAULTS),
+    parse
+  });
+}
+
+const VERSION = "6.0.12";
+
+const userAgent = `octokit-endpoint.js/${VERSION} ${universalUserAgent.getUserAgent()}`; // DEFAULTS has all properties set that EndpointOptions has, except url.
+// So we use RequestParameters and add method as additional required property.
+
+const DEFAULTS = {
+  method: "GET",
+  baseUrl: "https://api.github.com",
+  headers: {
+    accept: "application/vnd.github.v3+json",
+    "user-agent": userAgent
+  },
+  mediaType: {
+    format: "",
+    previews: []
+  }
+};
+
+const endpoint = withDefaults(null, DEFAULTS);
+
+exports.endpoint = endpoint;
+//# sourceMappingURL=index.js.map
+
+
+/***/ }),
+
+/***/ 8467:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+
+var request = __nccwpck_require__(6234);
+var universalUserAgent = __nccwpck_require__(5030);
+
+const VERSION = "4.8.0";
+
+function _buildMessageForResponseErrors(data) {
+  return `Request failed due to following response errors:\n` + data.errors.map(e => ` - ${e.message}`).join("\n");
+}
+
+class GraphqlResponseError extends Error {
+  constructor(request, headers, response) {
+    super(_buildMessageForResponseErrors(response));
+    this.request = request;
+    this.headers = headers;
+    this.response = response;
+    this.name = "GraphqlResponseError"; // Expose the errors and response data in their shorthand properties.
+
+    this.errors = response.errors;
+    this.data = response.data; // Maintains proper stack trace (only available on V8)
+
+    /* istanbul ignore next */
+
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, this.constructor);
+    }
+  }
+
+}
+
+const NON_VARIABLE_OPTIONS = ["method", "baseUrl", "url", "headers", "request", "query", "mediaType"];
+const FORBIDDEN_VARIABLE_OPTIONS = ["query", "method", "url"];
+const GHES_V3_SUFFIX_REGEX = /\/api\/v3\/?$/;
+function graphql(request, query, options) {
+  if (options) {
+    if (typeof query === "string" && "query" in options) {
+      return Promise.reject(new Error(`[@octokit/graphql] "query" cannot be used as variable name`));
+    }
+
+    for (const key in options) {
+      if (!FORBIDDEN_VARIABLE_OPTIONS.includes(key)) continue;
+      return Promise.reject(new Error(`[@octokit/graphql] "${key}" cannot be used as variable name`));
+    }
+  }
+
+  const parsedOptions = typeof query === "string" ? Object.assign({
+    query
+  }, options) : query;
+  const requestOptions = Object.keys(parsedOptions).reduce((result, key) => {
+    if (NON_VARIABLE_OPTIONS.includes(key)) {
+      result[key] = parsedOptions[key];
+      return result;
+    }
+
+    if (!result.variables) {
+      result.variables = {};
+    }
+
+    result.variables[key] = parsedOptions[key];
+    return result;
+  }, {}); // workaround for GitHub Enterprise baseUrl set with /api/v3 suffix
+  // https://github.com/octokit/auth-app.js/issues/111#issuecomment-657610451
+
+  const baseUrl = parsedOptions.baseUrl || request.endpoint.DEFAULTS.baseUrl;
+
+  if (GHES_V3_SUFFIX_REGEX.test(baseUrl)) {
+    requestOptions.url = baseUrl.replace(GHES_V3_SUFFIX_REGEX, "/api/graphql");
+  }
+
+  return request(requestOptions).then(response => {
+    if (response.data.errors) {
+      const headers = {};
+
+      for (const key of Object.keys(response.headers)) {
+        headers[key] = response.headers[key];
+      }
+
+      throw new GraphqlResponseError(requestOptions, headers, response.data);
+    }
+
+    return response.data.data;
+  });
+}
+
+function withDefaults(request$1, newDefaults) {
+  const newRequest = request$1.defaults(newDefaults);
+
+  const newApi = (query, options) => {
+    return graphql(newRequest, query, options);
+  };
+
+  return Object.assign(newApi, {
+    defaults: withDefaults.bind(null, newRequest),
+    endpoint: request.request.endpoint
+  });
+}
+
+const graphql$1 = withDefaults(request.request, {
+  headers: {
+    "user-agent": `octokit-graphql.js/${VERSION} ${universalUserAgent.getUserAgent()}`
+  },
+  method: "POST",
+  url: "/graphql"
+});
+function withCustomRequest(customRequest) {
+  return withDefaults(customRequest, {
+    method: "POST",
+    url: "/graphql"
+  });
+}
+
+exports.GraphqlResponseError = GraphqlResponseError;
+exports.graphql = graphql$1;
+exports.withCustomRequest = withCustomRequest;
+//# sourceMappingURL=index.js.map
+
+
+/***/ }),
+
+/***/ 4193:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+
+const VERSION = "2.21.3";
+
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    enumerableOnly && (symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    })), keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function _objectSpread2(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = null != arguments[i] ? arguments[i] : {};
+    i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
+      _defineProperty(target, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
+      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+    });
+  }
+
+  return target;
+}
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+/**
+ * Some “list” response that can be paginated have a different response structure
+ *
+ * They have a `total_count` key in the response (search also has `incomplete_results`,
+ * /installation/repositories also has `repository_selection`), as well as a key with
+ * the list of the items which name varies from endpoint to endpoint.
+ *
+ * Octokit normalizes these responses so that paginated results are always returned following
+ * the same structure. One challenge is that if the list response has only one page, no Link
+ * header is provided, so this header alone is not sufficient to check wether a response is
+ * paginated or not.
+ *
+ * We check if a "total_count" key is present in the response data, but also make sure that
+ * a "url" property is not, as the "Get the combined status for a specific ref" endpoint would
+ * otherwise match: https://developer.github.com/v3/repos/statuses/#get-the-combined-status-for-a-specific-ref
+ */
+function normalizePaginatedListResponse(response) {
+  // endpoints can respond with 204 if repository is empty
+  if (!response.data) {
+    return _objectSpread2(_objectSpread2({}, response), {}, {
+      data: []
+    });
+  }
+
+  const responseNeedsNormalization = "total_count" in response.data && !("url" in response.data);
+  if (!responseNeedsNormalization) return response; // keep the additional properties intact as there is currently no other way
+  // to retrieve the same information.
+
+  const incompleteResults = response.data.incomplete_results;
+  const repositorySelection = response.data.repository_selection;
+  const totalCount = response.data.total_count;
+  delete response.data.incomplete_results;
+  delete response.data.repository_selection;
+  delete response.data.total_count;
+  const namespaceKey = Object.keys(response.data)[0];
+  const data = response.data[namespaceKey];
+  response.data = data;
+
+  if (typeof incompleteResults !== "undefined") {
+    response.data.incomplete_results = incompleteResults;
+  }
+
+  if (typeof repositorySelection !== "undefined") {
+    response.data.repository_selection = repositorySelection;
+  }
+
+  response.data.total_count = totalCount;
+  return response;
+}
+
+function iterator(octokit, route, parameters) {
+  const options = typeof route === "function" ? route.endpoint(parameters) : octokit.request.endpoint(route, parameters);
+  const requestMethod = typeof route === "function" ? route : octokit.request;
+  const method = options.method;
+  const headers = options.headers;
+  let url = options.url;
+  return {
+    [Symbol.asyncIterator]: () => ({
+      async next() {
+        if (!url) return {
+          done: true
+        };
+
+        try {
+          const response = await requestMethod({
+            method,
+            url,
+            headers
+          });
+          const normalizedResponse = normalizePaginatedListResponse(response); // `response.headers.link` format:
+          // '<https://api.github.com/users/aseemk/followers?page=2>; rel="next", <https://api.github.com/users/aseemk/followers?page=2>; rel="last"'
+          // sets `url` to undefined if "next" URL is not present or `link` header is not set
+
+          url = ((normalizedResponse.headers.link || "").match(/<([^>]+)>;\s*rel="next"/) || [])[1];
+          return {
+            value: normalizedResponse
+          };
+        } catch (error) {
+          if (error.status !== 409) throw error;
+          url = "";
+          return {
+            value: {
+              status: 200,
+              headers: {},
+              data: []
+            }
+          };
+        }
+      }
+
+    })
+  };
+}
+
+function paginate(octokit, route, parameters, mapFn) {
+  if (typeof parameters === "function") {
+    mapFn = parameters;
+    parameters = undefined;
+  }
+
+  return gather(octokit, [], iterator(octokit, route, parameters)[Symbol.asyncIterator](), mapFn);
+}
+
+function gather(octokit, results, iterator, mapFn) {
+  return iterator.next().then(result => {
+    if (result.done) {
+      return results;
+    }
+
+    let earlyExit = false;
+
+    function done() {
+      earlyExit = true;
+    }
+
+    results = results.concat(mapFn ? mapFn(result.value, done) : result.value.data);
+
+    if (earlyExit) {
+      return results;
+    }
+
+    return gather(octokit, results, iterator, mapFn);
+  });
+}
+
+const composePaginateRest = Object.assign(paginate, {
+  iterator
+});
+
+const paginatingEndpoints = ["GET /app/hook/deliveries", "GET /app/installations", "GET /applications/grants", "GET /authorizations", "GET /enterprises/{enterprise}/actions/permissions/organizations", "GET /enterprises/{enterprise}/actions/runner-groups", "GET /enterprises/{enterprise}/actions/runner-groups/{runner_group_id}/organizations", "GET /enterprises/{enterprise}/actions/runner-groups/{runner_group_id}/runners", "GET /enterprises/{enterprise}/actions/runners", "GET /enterprises/{enterprise}/audit-log", "GET /enterprises/{enterprise}/secret-scanning/alerts", "GET /enterprises/{enterprise}/settings/billing/advanced-security", "GET /events", "GET /gists", "GET /gists/public", "GET /gists/starred", "GET /gists/{gist_id}/comments", "GET /gists/{gist_id}/commits", "GET /gists/{gist_id}/forks", "GET /installation/repositories", "GET /issues", "GET /licenses", "GET /marketplace_listing/plans", "GET /marketplace_listing/plans/{plan_id}/accounts", "GET /marketplace_listing/stubbed/plans", "GET /marketplace_listing/stubbed/plans/{plan_id}/accounts", "GET /networks/{owner}/{repo}/events", "GET /notifications", "GET /organizations", "GET /orgs/{org}/actions/cache/usage-by-repository", "GET /orgs/{org}/actions/permissions/repositories", "GET /orgs/{org}/actions/runner-groups", "GET /orgs/{org}/actions/runner-groups/{runner_group_id}/repositories", "GET /orgs/{org}/actions/runner-groups/{runner_group_id}/runners", "GET /orgs/{org}/actions/runners", "GET /orgs/{org}/actions/secrets", "GET /orgs/{org}/actions/secrets/{secret_name}/repositories", "GET /orgs/{org}/audit-log", "GET /orgs/{org}/blocks", "GET /orgs/{org}/code-scanning/alerts", "GET /orgs/{org}/codespaces", "GET /orgs/{org}/credential-authorizations", "GET /orgs/{org}/dependabot/secrets", "GET /orgs/{org}/dependabot/secrets/{secret_name}/repositories", "GET /orgs/{org}/events", "GET /orgs/{org}/external-groups", "GET /orgs/{org}/failed_invitations", "GET /orgs/{org}/hooks", "GET /orgs/{org}/hooks/{hook_id}/deliveries", "GET /orgs/{org}/installations", "GET /orgs/{org}/invitations", "GET /orgs/{org}/invitations/{invitation_id}/teams", "GET /orgs/{org}/issues", "GET /orgs/{org}/members", "GET /orgs/{org}/migrations", "GET /orgs/{org}/migrations/{migration_id}/repositories", "GET /orgs/{org}/outside_collaborators", "GET /orgs/{org}/packages", "GET /orgs/{org}/packages/{package_type}/{package_name}/versions", "GET /orgs/{org}/projects", "GET /orgs/{org}/public_members", "GET /orgs/{org}/repos", "GET /orgs/{org}/secret-scanning/alerts", "GET /orgs/{org}/settings/billing/advanced-security", "GET /orgs/{org}/team-sync/groups", "GET /orgs/{org}/teams", "GET /orgs/{org}/teams/{team_slug}/discussions", "GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments", "GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions", "GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions", "GET /orgs/{org}/teams/{team_slug}/invitations", "GET /orgs/{org}/teams/{team_slug}/members", "GET /orgs/{org}/teams/{team_slug}/projects", "GET /orgs/{org}/teams/{team_slug}/repos", "GET /orgs/{org}/teams/{team_slug}/teams", "GET /projects/columns/{column_id}/cards", "GET /projects/{project_id}/collaborators", "GET /projects/{project_id}/columns", "GET /repos/{owner}/{repo}/actions/artifacts", "GET /repos/{owner}/{repo}/actions/caches", "GET /repos/{owner}/{repo}/actions/runners", "GET /repos/{owner}/{repo}/actions/runs", "GET /repos/{owner}/{repo}/actions/runs/{run_id}/artifacts", "GET /repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}/jobs", "GET /repos/{owner}/{repo}/actions/runs/{run_id}/jobs", "GET /repos/{owner}/{repo}/actions/secrets", "GET /repos/{owner}/{repo}/actions/workflows", "GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs", "GET /repos/{owner}/{repo}/assignees", "GET /repos/{owner}/{repo}/branches", "GET /repos/{owner}/{repo}/check-runs/{check_run_id}/annotations", "GET /repos/{owner}/{repo}/check-suites/{check_suite_id}/check-runs", "GET /repos/{owner}/{repo}/code-scanning/alerts", "GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/instances", "GET /repos/{owner}/{repo}/code-scanning/analyses", "GET /repos/{owner}/{repo}/codespaces", "GET /repos/{owner}/{repo}/codespaces/devcontainers", "GET /repos/{owner}/{repo}/codespaces/secrets", "GET /repos/{owner}/{repo}/collaborators", "GET /repos/{owner}/{repo}/comments", "GET /repos/{owner}/{repo}/comments/{comment_id}/reactions", "GET /repos/{owner}/{repo}/commits", "GET /repos/{owner}/{repo}/commits/{commit_sha}/comments", "GET /repos/{owner}/{repo}/commits/{commit_sha}/pulls", "GET /repos/{owner}/{repo}/commits/{ref}/check-runs", "GET /repos/{owner}/{repo}/commits/{ref}/check-suites", "GET /repos/{owner}/{repo}/commits/{ref}/status", "GET /repos/{owner}/{repo}/commits/{ref}/statuses", "GET /repos/{owner}/{repo}/contributors", "GET /repos/{owner}/{repo}/dependabot/secrets", "GET /repos/{owner}/{repo}/deployments", "GET /repos/{owner}/{repo}/deployments/{deployment_id}/statuses", "GET /repos/{owner}/{repo}/environments", "GET /repos/{owner}/{repo}/events", "GET /repos/{owner}/{repo}/forks", "GET /repos/{owner}/{repo}/git/matching-refs/{ref}", "GET /repos/{owner}/{repo}/hooks", "GET /repos/{owner}/{repo}/hooks/{hook_id}/deliveries", "GET /repos/{owner}/{repo}/invitations", "GET /repos/{owner}/{repo}/issues", "GET /repos/{owner}/{repo}/issues/comments", "GET /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions", "GET /repos/{owner}/{repo}/issues/events", "GET /repos/{owner}/{repo}/issues/{issue_number}/comments", "GET /repos/{owner}/{repo}/issues/{issue_number}/events", "GET /repos/{owner}/{repo}/issues/{issue_number}/labels", "GET /repos/{owner}/{repo}/issues/{issue_number}/reactions", "GET /repos/{owner}/{repo}/issues/{issue_number}/timeline", "GET /repos/{owner}/{repo}/keys", "GET /repos/{owner}/{repo}/labels", "GET /repos/{owner}/{repo}/milestones", "GET /repos/{owner}/{repo}/milestones/{milestone_number}/labels", "GET /repos/{owner}/{repo}/notifications", "GET /repos/{owner}/{repo}/pages/builds", "GET /repos/{owner}/{repo}/projects", "GET /repos/{owner}/{repo}/pulls", "GET /repos/{owner}/{repo}/pulls/comments", "GET /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions", "GET /repos/{owner}/{repo}/pulls/{pull_number}/comments", "GET /repos/{owner}/{repo}/pulls/{pull_number}/commits", "GET /repos/{owner}/{repo}/pulls/{pull_number}/files", "GET /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers", "GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews", "GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/comments", "GET /repos/{owner}/{repo}/releases", "GET /repos/{owner}/{repo}/releases/{release_id}/assets", "GET /repos/{owner}/{repo}/releases/{release_id}/reactions", "GET /repos/{owner}/{repo}/secret-scanning/alerts", "GET /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}/locations", "GET /repos/{owner}/{repo}/stargazers", "GET /repos/{owner}/{repo}/subscribers", "GET /repos/{owner}/{repo}/tags", "GET /repos/{owner}/{repo}/teams", "GET /repos/{owner}/{repo}/topics", "GET /repositories", "GET /repositories/{repository_id}/environments/{environment_name}/secrets", "GET /search/code", "GET /search/commits", "GET /search/issues", "GET /search/labels", "GET /search/repositories", "GET /search/topics", "GET /search/users", "GET /teams/{team_id}/discussions", "GET /teams/{team_id}/discussions/{discussion_number}/comments", "GET /teams/{team_id}/discussions/{discussion_number}/comments/{comment_number}/reactions", "GET /teams/{team_id}/discussions/{discussion_number}/reactions", "GET /teams/{team_id}/invitations", "GET /teams/{team_id}/members", "GET /teams/{team_id}/projects", "GET /teams/{team_id}/repos", "GET /teams/{team_id}/teams", "GET /user/blocks", "GET /user/codespaces", "GET /user/codespaces/secrets", "GET /user/emails", "GET /user/followers", "GET /user/following", "GET /user/gpg_keys", "GET /user/installations", "GET /user/installations/{installation_id}/repositories", "GET /user/issues", "GET /user/keys", "GET /user/marketplace_purchases", "GET /user/marketplace_purchases/stubbed", "GET /user/memberships/orgs", "GET /user/migrations", "GET /user/migrations/{migration_id}/repositories", "GET /user/orgs", "GET /user/packages", "GET /user/packages/{package_type}/{package_name}/versions", "GET /user/public_emails", "GET /user/repos", "GET /user/repository_invitations", "GET /user/starred", "GET /user/subscriptions", "GET /user/teams", "GET /users", "GET /users/{username}/events", "GET /users/{username}/events/orgs/{org}", "GET /users/{username}/events/public", "GET /users/{username}/followers", "GET /users/{username}/following", "GET /users/{username}/gists", "GET /users/{username}/gpg_keys", "GET /users/{username}/keys", "GET /users/{username}/orgs", "GET /users/{username}/packages", "GET /users/{username}/projects", "GET /users/{username}/received_events", "GET /users/{username}/received_events/public", "GET /users/{username}/repos", "GET /users/{username}/starred", "GET /users/{username}/subscriptions"];
+
+function isPaginatingEndpoint(arg) {
+  if (typeof arg === "string") {
+    return paginatingEndpoints.includes(arg);
+  } else {
+    return false;
+  }
+}
+
+/**
+ * @param octokit Octokit instance
+ * @param options Options passed to Octokit constructor
+ */
+
+function paginateRest(octokit) {
+  return {
+    paginate: Object.assign(paginate.bind(null, octokit), {
+      iterator: iterator.bind(null, octokit)
+    })
+  };
+}
+paginateRest.VERSION = VERSION;
+
+exports.composePaginateRest = composePaginateRest;
+exports.isPaginatingEndpoint = isPaginatingEndpoint;
+exports.paginateRest = paginateRest;
+exports.paginatingEndpoints = paginatingEndpoints;
+//# sourceMappingURL=index.js.map
+
+
+/***/ }),
+
+/***/ 3044:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+
+    if (enumerableOnly) {
+      symbols = symbols.filter(function (sym) {
+        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+      });
+    }
+
+    keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function _objectSpread2(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      ownKeys(Object(source), true).forEach(function (key) {
+        _defineProperty(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+const Endpoints = {
+  actions: {
+    addCustomLabelsToSelfHostedRunnerForOrg: ["POST /orgs/{org}/actions/runners/{runner_id}/labels"],
+    addCustomLabelsToSelfHostedRunnerForRepo: ["POST /repos/{owner}/{repo}/actions/runners/{runner_id}/labels"],
+    addSelectedRepoToOrgSecret: ["PUT /orgs/{org}/actions/secrets/{secret_name}/repositories/{repository_id}"],
+    approveWorkflowRun: ["POST /repos/{owner}/{repo}/actions/runs/{run_id}/approve"],
+    cancelWorkflowRun: ["POST /repos/{owner}/{repo}/actions/runs/{run_id}/cancel"],
+    createOrUpdateEnvironmentSecret: ["PUT /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}"],
+    createOrUpdateOrgSecret: ["PUT /orgs/{org}/actions/secrets/{secret_name}"],
+    createOrUpdateRepoSecret: ["PUT /repos/{owner}/{repo}/actions/secrets/{secret_name}"],
+    createRegistrationTokenForOrg: ["POST /orgs/{org}/actions/runners/registration-token"],
+    createRegistrationTokenForRepo: ["POST /repos/{owner}/{repo}/actions/runners/registration-token"],
+    createRemoveTokenForOrg: ["POST /orgs/{org}/actions/runners/remove-token"],
+    createRemoveTokenForRepo: ["POST /repos/{owner}/{repo}/actions/runners/remove-token"],
+    createWorkflowDispatch: ["POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches"],
+    deleteActionsCacheById: ["DELETE /repos/{owner}/{repo}/actions/caches/{cache_id}"],
+    deleteActionsCacheByKey: ["DELETE /repos/{owner}/{repo}/actions/caches{?key,ref}"],
+    deleteArtifact: ["DELETE /repos/{owner}/{repo}/actions/artifacts/{artifact_id}"],
+    deleteEnvironmentSecret: ["DELETE /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}"],
+    deleteOrgSecret: ["DELETE /orgs/{org}/actions/secrets/{secret_name}"],
+    deleteRepoSecret: ["DELETE /repos/{owner}/{repo}/actions/secrets/{secret_name}"],
+    deleteSelfHostedRunnerFromOrg: ["DELETE /orgs/{org}/actions/runners/{runner_id}"],
+    deleteSelfHostedRunnerFromRepo: ["DELETE /repos/{owner}/{repo}/actions/runners/{runner_id}"],
+    deleteWorkflowRun: ["DELETE /repos/{owner}/{repo}/actions/runs/{run_id}"],
+    deleteWorkflowRunLogs: ["DELETE /repos/{owner}/{repo}/actions/runs/{run_id}/logs"],
+    disableSelectedRepositoryGithubActionsOrganization: ["DELETE /orgs/{org}/actions/permissions/repositories/{repository_id}"],
+    disableWorkflow: ["PUT /repos/{owner}/{repo}/actions/workflows/{workflow_id}/disable"],
+    downloadArtifact: ["GET /repos/{owner}/{repo}/actions/artifacts/{artifact_id}/{archive_format}"],
+    downloadJobLogsForWorkflowRun: ["GET /repos/{owner}/{repo}/actions/jobs/{job_id}/logs"],
+    downloadWorkflowRunAttemptLogs: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}/logs"],
+    downloadWorkflowRunLogs: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}/logs"],
+    enableSelectedRepositoryGithubActionsOrganization: ["PUT /orgs/{org}/actions/permissions/repositories/{repository_id}"],
+    enableWorkflow: ["PUT /repos/{owner}/{repo}/actions/workflows/{workflow_id}/enable"],
+    getActionsCacheList: ["GET /repos/{owner}/{repo}/actions/caches"],
+    getActionsCacheUsage: ["GET /repos/{owner}/{repo}/actions/cache/usage"],
+    getActionsCacheUsageByRepoForOrg: ["GET /orgs/{org}/actions/cache/usage-by-repository"],
+    getActionsCacheUsageForEnterprise: ["GET /enterprises/{enterprise}/actions/cache/usage"],
+    getActionsCacheUsageForOrg: ["GET /orgs/{org}/actions/cache/usage"],
+    getAllowedActionsOrganization: ["GET /orgs/{org}/actions/permissions/selected-actions"],
+    getAllowedActionsRepository: ["GET /repos/{owner}/{repo}/actions/permissions/selected-actions"],
+    getArtifact: ["GET /repos/{owner}/{repo}/actions/artifacts/{artifact_id}"],
+    getEnvironmentPublicKey: ["GET /repositories/{repository_id}/environments/{environment_name}/secrets/public-key"],
+    getEnvironmentSecret: ["GET /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}"],
+    getGithubActionsDefaultWorkflowPermissionsEnterprise: ["GET /enterprises/{enterprise}/actions/permissions/workflow"],
+    getGithubActionsDefaultWorkflowPermissionsOrganization: ["GET /orgs/{org}/actions/permissions/workflow"],
+    getGithubActionsDefaultWorkflowPermissionsRepository: ["GET /repos/{owner}/{repo}/actions/permissions/workflow"],
+    getGithubActionsPermissionsOrganization: ["GET /orgs/{org}/actions/permissions"],
+    getGithubActionsPermissionsRepository: ["GET /repos/{owner}/{repo}/actions/permissions"],
+    getJobForWorkflowRun: ["GET /repos/{owner}/{repo}/actions/jobs/{job_id}"],
+    getOrgPublicKey: ["GET /orgs/{org}/actions/secrets/public-key"],
+    getOrgSecret: ["GET /orgs/{org}/actions/secrets/{secret_name}"],
+    getPendingDeploymentsForRun: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}/pending_deployments"],
+    getRepoPermissions: ["GET /repos/{owner}/{repo}/actions/permissions", {}, {
+      renamed: ["actions", "getGithubActionsPermissionsRepository"]
+    }],
+    getRepoPublicKey: ["GET /repos/{owner}/{repo}/actions/secrets/public-key"],
+    getRepoSecret: ["GET /repos/{owner}/{repo}/actions/secrets/{secret_name}"],
+    getReviewsForRun: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}/approvals"],
+    getSelfHostedRunnerForOrg: ["GET /orgs/{org}/actions/runners/{runner_id}"],
+    getSelfHostedRunnerForRepo: ["GET /repos/{owner}/{repo}/actions/runners/{runner_id}"],
+    getWorkflow: ["GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}"],
+    getWorkflowAccessToRepository: ["GET /repos/{owner}/{repo}/actions/permissions/access"],
+    getWorkflowRun: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}"],
+    getWorkflowRunAttempt: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}"],
+    getWorkflowRunUsage: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}/timing"],
+    getWorkflowUsage: ["GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/timing"],
+    listArtifactsForRepo: ["GET /repos/{owner}/{repo}/actions/artifacts"],
+    listEnvironmentSecrets: ["GET /repositories/{repository_id}/environments/{environment_name}/secrets"],
+    listJobsForWorkflowRun: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}/jobs"],
+    listJobsForWorkflowRunAttempt: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}/jobs"],
+    listLabelsForSelfHostedRunnerForOrg: ["GET /orgs/{org}/actions/runners/{runner_id}/labels"],
+    listLabelsForSelfHostedRunnerForRepo: ["GET /repos/{owner}/{repo}/actions/runners/{runner_id}/labels"],
+    listOrgSecrets: ["GET /orgs/{org}/actions/secrets"],
+    listRepoSecrets: ["GET /repos/{owner}/{repo}/actions/secrets"],
+    listRepoWorkflows: ["GET /repos/{owner}/{repo}/actions/workflows"],
+    listRunnerApplicationsForOrg: ["GET /orgs/{org}/actions/runners/downloads"],
+    listRunnerApplicationsForRepo: ["GET /repos/{owner}/{repo}/actions/runners/downloads"],
+    listSelectedReposForOrgSecret: ["GET /orgs/{org}/actions/secrets/{secret_name}/repositories"],
+    listSelectedRepositoriesEnabledGithubActionsOrganization: ["GET /orgs/{org}/actions/permissions/repositories"],
+    listSelfHostedRunnersForOrg: ["GET /orgs/{org}/actions/runners"],
+    listSelfHostedRunnersForRepo: ["GET /repos/{owner}/{repo}/actions/runners"],
+    listWorkflowRunArtifacts: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}/artifacts"],
+    listWorkflowRuns: ["GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs"],
+    listWorkflowRunsForRepo: ["GET /repos/{owner}/{repo}/actions/runs"],
+    reRunJobForWorkflowRun: ["POST /repos/{owner}/{repo}/actions/jobs/{job_id}/rerun"],
+    reRunWorkflow: ["POST /repos/{owner}/{repo}/actions/runs/{run_id}/rerun"],
+    reRunWorkflowFailedJobs: ["POST /repos/{owner}/{repo}/actions/runs/{run_id}/rerun-failed-jobs"],
+    removeAllCustomLabelsFromSelfHostedRunnerForOrg: ["DELETE /orgs/{org}/actions/runners/{runner_id}/labels"],
+    removeAllCustomLabelsFromSelfHostedRunnerForRepo: ["DELETE /repos/{owner}/{repo}/actions/runners/{runner_id}/labels"],
+    removeCustomLabelFromSelfHostedRunnerForOrg: ["DELETE /orgs/{org}/actions/runners/{runner_id}/labels/{name}"],
+    removeCustomLabelFromSelfHostedRunnerForRepo: ["DELETE /repos/{owner}/{repo}/actions/runners/{runner_id}/labels/{name}"],
+    removeSelectedRepoFromOrgSecret: ["DELETE /orgs/{org}/actions/secrets/{secret_name}/repositories/{repository_id}"],
+    reviewPendingDeploymentsForRun: ["POST /repos/{owner}/{repo}/actions/runs/{run_id}/pending_deployments"],
+    setAllowedActionsOrganization: ["PUT /orgs/{org}/actions/permissions/selected-actions"],
+    setAllowedActionsRepository: ["PUT /repos/{owner}/{repo}/actions/permissions/selected-actions"],
+    setCustomLabelsForSelfHostedRunnerForOrg: ["PUT /orgs/{org}/actions/runners/{runner_id}/labels"],
+    setCustomLabelsForSelfHostedRunnerForRepo: ["PUT /repos/{owner}/{repo}/actions/runners/{runner_id}/labels"],
+    setGithubActionsDefaultWorkflowPermissionsEnterprise: ["PUT /enterprises/{enterprise}/actions/permissions/workflow"],
+    setGithubActionsDefaultWorkflowPermissionsOrganization: ["PUT /orgs/{org}/actions/permissions/workflow"],
+    setGithubActionsDefaultWorkflowPermissionsRepository: ["PUT /repos/{owner}/{repo}/actions/permissions/workflow"],
+    setGithubActionsPermissionsOrganization: ["PUT /orgs/{org}/actions/permissions"],
+    setGithubActionsPermissionsRepository: ["PUT /repos/{owner}/{repo}/actions/permissions"],
+    setSelectedReposForOrgSecret: ["PUT /orgs/{org}/actions/secrets/{secret_name}/repositories"],
+    setSelectedRepositoriesEnabledGithubActionsOrganization: ["PUT /orgs/{org}/actions/permissions/repositories"],
+    setWorkflowAccessToRepository: ["PUT /repos/{owner}/{repo}/actions/permissions/access"]
+  },
+  activity: {
+    checkRepoIsStarredByAuthenticatedUser: ["GET /user/starred/{owner}/{repo}"],
+    deleteRepoSubscription: ["DELETE /repos/{owner}/{repo}/subscription"],
+    deleteThreadSubscription: ["DELETE /notifications/threads/{thread_id}/subscription"],
+    getFeeds: ["GET /feeds"],
+    getRepoSubscription: ["GET /repos/{owner}/{repo}/subscription"],
+    getThread: ["GET /notifications/threads/{thread_id}"],
+    getThreadSubscriptionForAuthenticatedUser: ["GET /notifications/threads/{thread_id}/subscription"],
+    listEventsForAuthenticatedUser: ["GET /users/{username}/events"],
+    listNotificationsForAuthenticatedUser: ["GET /notifications"],
+    listOrgEventsForAuthenticatedUser: ["GET /users/{username}/events/orgs/{org}"],
+    listPublicEvents: ["GET /events"],
+    listPublicEventsForRepoNetwork: ["GET /networks/{owner}/{repo}/events"],
+    listPublicEventsForUser: ["GET /users/{username}/events/public"],
+    listPublicOrgEvents: ["GET /orgs/{org}/events"],
+    listReceivedEventsForUser: ["GET /users/{username}/received_events"],
+    listReceivedPublicEventsForUser: ["GET /users/{username}/received_events/public"],
+    listRepoEvents: ["GET /repos/{owner}/{repo}/events"],
+    listRepoNotificationsForAuthenticatedUser: ["GET /repos/{owner}/{repo}/notifications"],
+    listReposStarredByAuthenticatedUser: ["GET /user/starred"],
+    listReposStarredByUser: ["GET /users/{username}/starred"],
+    listReposWatchedByUser: ["GET /users/{username}/subscriptions"],
+    listStargazersForRepo: ["GET /repos/{owner}/{repo}/stargazers"],
+    listWatchedReposForAuthenticatedUser: ["GET /user/subscriptions"],
+    listWatchersForRepo: ["GET /repos/{owner}/{repo}/subscribers"],
+    markNotificationsAsRead: ["PUT /notifications"],
+    markRepoNotificationsAsRead: ["PUT /repos/{owner}/{repo}/notifications"],
+    markThreadAsRead: ["PATCH /notifications/threads/{thread_id}"],
+    setRepoSubscription: ["PUT /repos/{owner}/{repo}/subscription"],
+    setThreadSubscription: ["PUT /notifications/threads/{thread_id}/subscription"],
+    starRepoForAuthenticatedUser: ["PUT /user/starred/{owner}/{repo}"],
+    unstarRepoForAuthenticatedUser: ["DELETE /user/starred/{owner}/{repo}"]
+  },
+  apps: {
+    addRepoToInstallation: ["PUT /user/installations/{installation_id}/repositories/{repository_id}", {}, {
+      renamed: ["apps", "addRepoToInstallationForAuthenticatedUser"]
+    }],
+    addRepoToInstallationForAuthenticatedUser: ["PUT /user/installations/{installation_id}/repositories/{repository_id}"],
+    checkToken: ["POST /applications/{client_id}/token"],
+    createFromManifest: ["POST /app-manifests/{code}/conversions"],
+    createInstallationAccessToken: ["POST /app/installations/{installation_id}/access_tokens"],
+    deleteAuthorization: ["DELETE /applications/{client_id}/grant"],
+    deleteInstallation: ["DELETE /app/installations/{installation_id}"],
+    deleteToken: ["DELETE /applications/{client_id}/token"],
+    getAuthenticated: ["GET /app"],
+    getBySlug: ["GET /apps/{app_slug}"],
+    getInstallation: ["GET /app/installations/{installation_id}"],
+    getOrgInstallation: ["GET /orgs/{org}/installation"],
+    getRepoInstallation: ["GET /repos/{owner}/{repo}/installation"],
+    getSubscriptionPlanForAccount: ["GET /marketplace_listing/accounts/{account_id}"],
+    getSubscriptionPlanForAccountStubbed: ["GET /marketplace_listing/stubbed/accounts/{account_id}"],
+    getUserInstallation: ["GET /users/{username}/installation"],
+    getWebhookConfigForApp: ["GET /app/hook/config"],
+    getWebhookDelivery: ["GET /app/hook/deliveries/{delivery_id}"],
+    listAccountsForPlan: ["GET /marketplace_listing/plans/{plan_id}/accounts"],
+    listAccountsForPlanStubbed: ["GET /marketplace_listing/stubbed/plans/{plan_id}/accounts"],
+    listInstallationReposForAuthenticatedUser: ["GET /user/installations/{installation_id}/repositories"],
+    listInstallations: ["GET /app/installations"],
+    listInstallationsForAuthenticatedUser: ["GET /user/installations"],
+    listPlans: ["GET /marketplace_listing/plans"],
+    listPlansStubbed: ["GET /marketplace_listing/stubbed/plans"],
+    listReposAccessibleToInstallation: ["GET /installation/repositories"],
+    listSubscriptionsForAuthenticatedUser: ["GET /user/marketplace_purchases"],
+    listSubscriptionsForAuthenticatedUserStubbed: ["GET /user/marketplace_purchases/stubbed"],
+    listWebhookDeliveries: ["GET /app/hook/deliveries"],
+    redeliverWebhookDelivery: ["POST /app/hook/deliveries/{delivery_id}/attempts"],
+    removeRepoFromInstallation: ["DELETE /user/installations/{installation_id}/repositories/{repository_id}", {}, {
+      renamed: ["apps", "removeRepoFromInstallationForAuthenticatedUser"]
+    }],
+    removeRepoFromInstallationForAuthenticatedUser: ["DELETE /user/installations/{installation_id}/repositories/{repository_id}"],
+    resetToken: ["PATCH /applications/{client_id}/token"],
+    revokeInstallationAccessToken: ["DELETE /installation/token"],
+    scopeToken: ["POST /applications/{client_id}/token/scoped"],
+    suspendInstallation: ["PUT /app/installations/{installation_id}/suspended"],
+    unsuspendInstallation: ["DELETE /app/installations/{installation_id}/suspended"],
+    updateWebhookConfigForApp: ["PATCH /app/hook/config"]
+  },
+  billing: {
+    getGithubActionsBillingOrg: ["GET /orgs/{org}/settings/billing/actions"],
+    getGithubActionsBillingUser: ["GET /users/{username}/settings/billing/actions"],
+    getGithubAdvancedSecurityBillingGhe: ["GET /enterprises/{enterprise}/settings/billing/advanced-security"],
+    getGithubAdvancedSecurityBillingOrg: ["GET /orgs/{org}/settings/billing/advanced-security"],
+    getGithubPackagesBillingOrg: ["GET /orgs/{org}/settings/billing/packages"],
+    getGithubPackagesBillingUser: ["GET /users/{username}/settings/billing/packages"],
+    getSharedStorageBillingOrg: ["GET /orgs/{org}/settings/billing/shared-storage"],
+    getSharedStorageBillingUser: ["GET /users/{username}/settings/billing/shared-storage"]
+  },
+  checks: {
+    create: ["POST /repos/{owner}/{repo}/check-runs"],
+    createSuite: ["POST /repos/{owner}/{repo}/check-suites"],
+    get: ["GET /repos/{owner}/{repo}/check-runs/{check_run_id}"],
+    getSuite: ["GET /repos/{owner}/{repo}/check-suites/{check_suite_id}"],
+    listAnnotations: ["GET /repos/{owner}/{repo}/check-runs/{check_run_id}/annotations"],
+    listForRef: ["GET /repos/{owner}/{repo}/commits/{ref}/check-runs"],
+    listForSuite: ["GET /repos/{owner}/{repo}/check-suites/{check_suite_id}/check-runs"],
+    listSuitesForRef: ["GET /repos/{owner}/{repo}/commits/{ref}/check-suites"],
+    rerequestRun: ["POST /repos/{owner}/{repo}/check-runs/{check_run_id}/rerequest"],
+    rerequestSuite: ["POST /repos/{owner}/{repo}/check-suites/{check_suite_id}/rerequest"],
+    setSuitesPreferences: ["PATCH /repos/{owner}/{repo}/check-suites/preferences"],
+    update: ["PATCH /repos/{owner}/{repo}/check-runs/{check_run_id}"]
+  },
+  codeScanning: {
+    deleteAnalysis: ["DELETE /repos/{owner}/{repo}/code-scanning/analyses/{analysis_id}{?confirm_delete}"],
+    getAlert: ["GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}", {}, {
+      renamedParameters: {
+        alert_id: "alert_number"
+      }
+    }],
+    getAnalysis: ["GET /repos/{owner}/{repo}/code-scanning/analyses/{analysis_id}"],
+    getSarif: ["GET /repos/{owner}/{repo}/code-scanning/sarifs/{sarif_id}"],
+    listAlertInstances: ["GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/instances"],
+    listAlertsForOrg: ["GET /orgs/{org}/code-scanning/alerts"],
+    listAlertsForRepo: ["GET /repos/{owner}/{repo}/code-scanning/alerts"],
+    listAlertsInstances: ["GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/instances", {}, {
+      renamed: ["codeScanning", "listAlertInstances"]
+    }],
+    listRecentAnalyses: ["GET /repos/{owner}/{repo}/code-scanning/analyses"],
+    updateAlert: ["PATCH /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}"],
+    uploadSarif: ["POST /repos/{owner}/{repo}/code-scanning/sarifs"]
+  },
+  codesOfConduct: {
+    getAllCodesOfConduct: ["GET /codes_of_conduct"],
+    getConductCode: ["GET /codes_of_conduct/{key}"]
+  },
+  codespaces: {
+    addRepositoryForSecretForAuthenticatedUser: ["PUT /user/codespaces/secrets/{secret_name}/repositories/{repository_id}"],
+    codespaceMachinesForAuthenticatedUser: ["GET /user/codespaces/{codespace_name}/machines"],
+    createForAuthenticatedUser: ["POST /user/codespaces"],
+    createOrUpdateRepoSecret: ["PUT /repos/{owner}/{repo}/codespaces/secrets/{secret_name}"],
+    createOrUpdateSecretForAuthenticatedUser: ["PUT /user/codespaces/secrets/{secret_name}"],
+    createWithPrForAuthenticatedUser: ["POST /repos/{owner}/{repo}/pulls/{pull_number}/codespaces"],
+    createWithRepoForAuthenticatedUser: ["POST /repos/{owner}/{repo}/codespaces"],
+    deleteForAuthenticatedUser: ["DELETE /user/codespaces/{codespace_name}"],
+    deleteFromOrganization: ["DELETE /orgs/{org}/members/{username}/codespaces/{codespace_name}"],
+    deleteRepoSecret: ["DELETE /repos/{owner}/{repo}/codespaces/secrets/{secret_name}"],
+    deleteSecretForAuthenticatedUser: ["DELETE /user/codespaces/secrets/{secret_name}"],
+    exportForAuthenticatedUser: ["POST /user/codespaces/{codespace_name}/exports"],
+    getExportDetailsForAuthenticatedUser: ["GET /user/codespaces/{codespace_name}/exports/{export_id}"],
+    getForAuthenticatedUser: ["GET /user/codespaces/{codespace_name}"],
+    getPublicKeyForAuthenticatedUser: ["GET /user/codespaces/secrets/public-key"],
+    getRepoPublicKey: ["GET /repos/{owner}/{repo}/codespaces/secrets/public-key"],
+    getRepoSecret: ["GET /repos/{owner}/{repo}/codespaces/secrets/{secret_name}"],
+    getSecretForAuthenticatedUser: ["GET /user/codespaces/secrets/{secret_name}"],
+    listDevcontainersInRepositoryForAuthenticatedUser: ["GET /repos/{owner}/{repo}/codespaces/devcontainers"],
+    listForAuthenticatedUser: ["GET /user/codespaces"],
+    listInOrganization: ["GET /orgs/{org}/codespaces", {}, {
+      renamedParameters: {
+        org_id: "org"
+      }
+    }],
+    listInRepositoryForAuthenticatedUser: ["GET /repos/{owner}/{repo}/codespaces"],
+    listRepoSecrets: ["GET /repos/{owner}/{repo}/codespaces/secrets"],
+    listRepositoriesForSecretForAuthenticatedUser: ["GET /user/codespaces/secrets/{secret_name}/repositories"],
+    listSecretsForAuthenticatedUser: ["GET /user/codespaces/secrets"],
+    removeRepositoryForSecretForAuthenticatedUser: ["DELETE /user/codespaces/secrets/{secret_name}/repositories/{repository_id}"],
+    repoMachinesForAuthenticatedUser: ["GET /repos/{owner}/{repo}/codespaces/machines"],
+    setRepositoriesForSecretForAuthenticatedUser: ["PUT /user/codespaces/secrets/{secret_name}/repositories"],
+    startForAuthenticatedUser: ["POST /user/codespaces/{codespace_name}/start"],
+    stopForAuthenticatedUser: ["POST /user/codespaces/{codespace_name}/stop"],
+    stopInOrganization: ["POST /orgs/{org}/members/{username}/codespaces/{codespace_name}/stop"],
+    updateForAuthenticatedUser: ["PATCH /user/codespaces/{codespace_name}"]
+  },
+  dependabot: {
+    addSelectedRepoToOrgSecret: ["PUT /orgs/{org}/dependabot/secrets/{secret_name}/repositories/{repository_id}"],
+    createOrUpdateOrgSecret: ["PUT /orgs/{org}/dependabot/secrets/{secret_name}"],
+    createOrUpdateRepoSecret: ["PUT /repos/{owner}/{repo}/dependabot/secrets/{secret_name}"],
+    deleteOrgSecret: ["DELETE /orgs/{org}/dependabot/secrets/{secret_name}"],
+    deleteRepoSecret: ["DELETE /repos/{owner}/{repo}/dependabot/secrets/{secret_name}"],
+    getOrgPublicKey: ["GET /orgs/{org}/dependabot/secrets/public-key"],
+    getOrgSecret: ["GET /orgs/{org}/dependabot/secrets/{secret_name}"],
+    getRepoPublicKey: ["GET /repos/{owner}/{repo}/dependabot/secrets/public-key"],
+    getRepoSecret: ["GET /repos/{owner}/{repo}/dependabot/secrets/{secret_name}"],
+    listOrgSecrets: ["GET /orgs/{org}/dependabot/secrets"],
+    listRepoSecrets: ["GET /repos/{owner}/{repo}/dependabot/secrets"],
+    listSelectedReposForOrgSecret: ["GET /orgs/{org}/dependabot/secrets/{secret_name}/repositories"],
+    removeSelectedRepoFromOrgSecret: ["DELETE /orgs/{org}/dependabot/secrets/{secret_name}/repositories/{repository_id}"],
+    setSelectedReposForOrgSecret: ["PUT /orgs/{org}/dependabot/secrets/{secret_name}/repositories"]
+  },
+  dependencyGraph: {
+    createRepositorySnapshot: ["POST /repos/{owner}/{repo}/dependency-graph/snapshots"],
+    diffRange: ["GET /repos/{owner}/{repo}/dependency-graph/compare/{basehead}"]
+  },
+  emojis: {
+    get: ["GET /emojis"]
+  },
+  enterpriseAdmin: {
+    addCustomLabelsToSelfHostedRunnerForEnterprise: ["POST /enterprises/{enterprise}/actions/runners/{runner_id}/labels"],
+    disableSelectedOrganizationGithubActionsEnterprise: ["DELETE /enterprises/{enterprise}/actions/permissions/organizations/{org_id}"],
+    enableSelectedOrganizationGithubActionsEnterprise: ["PUT /enterprises/{enterprise}/actions/permissions/organizations/{org_id}"],
+    getAllowedActionsEnterprise: ["GET /enterprises/{enterprise}/actions/permissions/selected-actions"],
+    getGithubActionsPermissionsEnterprise: ["GET /enterprises/{enterprise}/actions/permissions"],
+    getServerStatistics: ["GET /enterprise-installation/{enterprise_or_org}/server-statistics"],
+    listLabelsForSelfHostedRunnerForEnterprise: ["GET /enterprises/{enterprise}/actions/runners/{runner_id}/labels"],
+    listSelectedOrganizationsEnabledGithubActionsEnterprise: ["GET /enterprises/{enterprise}/actions/permissions/organizations"],
+    removeAllCustomLabelsFromSelfHostedRunnerForEnterprise: ["DELETE /enterprises/{enterprise}/actions/runners/{runner_id}/labels"],
+    removeCustomLabelFromSelfHostedRunnerForEnterprise: ["DELETE /enterprises/{enterprise}/actions/runners/{runner_id}/labels/{name}"],
+    setAllowedActionsEnterprise: ["PUT /enterprises/{enterprise}/actions/permissions/selected-actions"],
+    setCustomLabelsForSelfHostedRunnerForEnterprise: ["PUT /enterprises/{enterprise}/actions/runners/{runner_id}/labels"],
+    setGithubActionsPermissionsEnterprise: ["PUT /enterprises/{enterprise}/actions/permissions"],
+    setSelectedOrganizationsEnabledGithubActionsEnterprise: ["PUT /enterprises/{enterprise}/actions/permissions/organizations"]
+  },
+  gists: {
+    checkIsStarred: ["GET /gists/{gist_id}/star"],
+    create: ["POST /gists"],
+    createComment: ["POST /gists/{gist_id}/comments"],
+    delete: ["DELETE /gists/{gist_id}"],
+    deleteComment: ["DELETE /gists/{gist_id}/comments/{comment_id}"],
+    fork: ["POST /gists/{gist_id}/forks"],
+    get: ["GET /gists/{gist_id}"],
+    getComment: ["GET /gists/{gist_id}/comments/{comment_id}"],
+    getRevision: ["GET /gists/{gist_id}/{sha}"],
+    list: ["GET /gists"],
+    listComments: ["GET /gists/{gist_id}/comments"],
+    listCommits: ["GET /gists/{gist_id}/commits"],
+    listForUser: ["GET /users/{username}/gists"],
+    listForks: ["GET /gists/{gist_id}/forks"],
+    listPublic: ["GET /gists/public"],
+    listStarred: ["GET /gists/starred"],
+    star: ["PUT /gists/{gist_id}/star"],
+    unstar: ["DELETE /gists/{gist_id}/star"],
+    update: ["PATCH /gists/{gist_id}"],
+    updateComment: ["PATCH /gists/{gist_id}/comments/{comment_id}"]
+  },
+  git: {
+    createBlob: ["POST /repos/{owner}/{repo}/git/blobs"],
+    createCommit: ["POST /repos/{owner}/{repo}/git/commits"],
+    createRef: ["POST /repos/{owner}/{repo}/git/refs"],
+    createTag: ["POST /repos/{owner}/{repo}/git/tags"],
+    createTree: ["POST /repos/{owner}/{repo}/git/trees"],
+    deleteRef: ["DELETE /repos/{owner}/{repo}/git/refs/{ref}"],
+    getBlob: ["GET /repos/{owner}/{repo}/git/blobs/{file_sha}"],
+    getCommit: ["GET /repos/{owner}/{repo}/git/commits/{commit_sha}"],
+    getRef: ["GET /repos/{owner}/{repo}/git/ref/{ref}"],
+    getTag: ["GET /repos/{owner}/{repo}/git/tags/{tag_sha}"],
+    getTree: ["GET /repos/{owner}/{repo}/git/trees/{tree_sha}"],
+    listMatchingRefs: ["GET /repos/{owner}/{repo}/git/matching-refs/{ref}"],
+    updateRef: ["PATCH /repos/{owner}/{repo}/git/refs/{ref}"]
+  },
+  gitignore: {
+    getAllTemplates: ["GET /gitignore/templates"],
+    getTemplate: ["GET /gitignore/templates/{name}"]
+  },
+  interactions: {
+    getRestrictionsForAuthenticatedUser: ["GET /user/interaction-limits"],
+    getRestrictionsForOrg: ["GET /orgs/{org}/interaction-limits"],
+    getRestrictionsForRepo: ["GET /repos/{owner}/{repo}/interaction-limits"],
+    getRestrictionsForYourPublicRepos: ["GET /user/interaction-limits", {}, {
+      renamed: ["interactions", "getRestrictionsForAuthenticatedUser"]
+    }],
+    removeRestrictionsForAuthenticatedUser: ["DELETE /user/interaction-limits"],
+    removeRestrictionsForOrg: ["DELETE /orgs/{org}/interaction-limits"],
+    removeRestrictionsForRepo: ["DELETE /repos/{owner}/{repo}/interaction-limits"],
+    removeRestrictionsForYourPublicRepos: ["DELETE /user/interaction-limits", {}, {
+      renamed: ["interactions", "removeRestrictionsForAuthenticatedUser"]
+    }],
+    setRestrictionsForAuthenticatedUser: ["PUT /user/interaction-limits"],
+    setRestrictionsForOrg: ["PUT /orgs/{org}/interaction-limits"],
+    setRestrictionsForRepo: ["PUT /repos/{owner}/{repo}/interaction-limits"],
+    setRestrictionsForYourPublicRepos: ["PUT /user/interaction-limits", {}, {
+      renamed: ["interactions", "setRestrictionsForAuthenticatedUser"]
+    }]
+  },
+  issues: {
+    addAssignees: ["POST /repos/{owner}/{repo}/issues/{issue_number}/assignees"],
+    addLabels: ["POST /repos/{owner}/{repo}/issues/{issue_number}/labels"],
+    checkUserCanBeAssigned: ["GET /repos/{owner}/{repo}/assignees/{assignee}"],
+    create: ["POST /repos/{owner}/{repo}/issues"],
+    createComment: ["POST /repos/{owner}/{repo}/issues/{issue_number}/comments"],
+    createLabel: ["POST /repos/{owner}/{repo}/labels"],
+    createMilestone: ["POST /repos/{owner}/{repo}/milestones"],
+    deleteComment: ["DELETE /repos/{owner}/{repo}/issues/comments/{comment_id}"],
+    deleteLabel: ["DELETE /repos/{owner}/{repo}/labels/{name}"],
+    deleteMilestone: ["DELETE /repos/{owner}/{repo}/milestones/{milestone_number}"],
+    get: ["GET /repos/{owner}/{repo}/issues/{issue_number}"],
+    getComment: ["GET /repos/{owner}/{repo}/issues/comments/{comment_id}"],
+    getEvent: ["GET /repos/{owner}/{repo}/issues/events/{event_id}"],
+    getLabel: ["GET /repos/{owner}/{repo}/labels/{name}"],
+    getMilestone: ["GET /repos/{owner}/{repo}/milestones/{milestone_number}"],
+    list: ["GET /issues"],
+    listAssignees: ["GET /repos/{owner}/{repo}/assignees"],
+    listComments: ["GET /repos/{owner}/{repo}/issues/{issue_number}/comments"],
+    listCommentsForRepo: ["GET /repos/{owner}/{repo}/issues/comments"],
+    listEvents: ["GET /repos/{owner}/{repo}/issues/{issue_number}/events"],
+    listEventsForRepo: ["GET /repos/{owner}/{repo}/issues/events"],
+    listEventsForTimeline: ["GET /repos/{owner}/{repo}/issues/{issue_number}/timeline"],
+    listForAuthenticatedUser: ["GET /user/issues"],
+    listForOrg: ["GET /orgs/{org}/issues"],
+    listForRepo: ["GET /repos/{owner}/{repo}/issues"],
+    listLabelsForMilestone: ["GET /repos/{owner}/{repo}/milestones/{milestone_number}/labels"],
+    listLabelsForRepo: ["GET /repos/{owner}/{repo}/labels"],
+    listLabelsOnIssue: ["GET /repos/{owner}/{repo}/issues/{issue_number}/labels"],
+    listMilestones: ["GET /repos/{owner}/{repo}/milestones"],
+    lock: ["PUT /repos/{owner}/{repo}/issues/{issue_number}/lock"],
+    removeAllLabels: ["DELETE /repos/{owner}/{repo}/issues/{issue_number}/labels"],
+    removeAssignees: ["DELETE /repos/{owner}/{repo}/issues/{issue_number}/assignees"],
+    removeLabel: ["DELETE /repos/{owner}/{repo}/issues/{issue_number}/labels/{name}"],
+    setLabels: ["PUT /repos/{owner}/{repo}/issues/{issue_number}/labels"],
+    unlock: ["DELETE /repos/{owner}/{repo}/issues/{issue_number}/lock"],
+    update: ["PATCH /repos/{owner}/{repo}/issues/{issue_number}"],
+    updateComment: ["PATCH /repos/{owner}/{repo}/issues/comments/{comment_id}"],
+    updateLabel: ["PATCH /repos/{owner}/{repo}/labels/{name}"],
+    updateMilestone: ["PATCH /repos/{owner}/{repo}/milestones/{milestone_number}"]
+  },
+  licenses: {
+    get: ["GET /licenses/{license}"],
+    getAllCommonlyUsed: ["GET /licenses"],
+    getForRepo: ["GET /repos/{owner}/{repo}/license"]
+  },
+  markdown: {
+    render: ["POST /markdown"],
+    renderRaw: ["POST /markdown/raw", {
+      headers: {
+        "content-type": "text/plain; charset=utf-8"
+      }
+    }]
+  },
+  meta: {
+    get: ["GET /meta"],
+    getOctocat: ["GET /octocat"],
+    getZen: ["GET /zen"],
+    root: ["GET /"]
+  },
+  migrations: {
+    cancelImport: ["DELETE /repos/{owner}/{repo}/import"],
+    deleteArchiveForAuthenticatedUser: ["DELETE /user/migrations/{migration_id}/archive"],
+    deleteArchiveForOrg: ["DELETE /orgs/{org}/migrations/{migration_id}/archive"],
+    downloadArchiveForOrg: ["GET /orgs/{org}/migrations/{migration_id}/archive"],
+    getArchiveForAuthenticatedUser: ["GET /user/migrations/{migration_id}/archive"],
+    getCommitAuthors: ["GET /repos/{owner}/{repo}/import/authors"],
+    getImportStatus: ["GET /repos/{owner}/{repo}/import"],
+    getLargeFiles: ["GET /repos/{owner}/{repo}/import/large_files"],
+    getStatusForAuthenticatedUser: ["GET /user/migrations/{migration_id}"],
+    getStatusForOrg: ["GET /orgs/{org}/migrations/{migration_id}"],
+    listForAuthenticatedUser: ["GET /user/migrations"],
+    listForOrg: ["GET /orgs/{org}/migrations"],
+    listReposForAuthenticatedUser: ["GET /user/migrations/{migration_id}/repositories"],
+    listReposForOrg: ["GET /orgs/{org}/migrations/{migration_id}/repositories"],
+    listReposForUser: ["GET /user/migrations/{migration_id}/repositories", {}, {
+      renamed: ["migrations", "listReposForAuthenticatedUser"]
+    }],
+    mapCommitAuthor: ["PATCH /repos/{owner}/{repo}/import/authors/{author_id}"],
+    setLfsPreference: ["PATCH /repos/{owner}/{repo}/import/lfs"],
+    startForAuthenticatedUser: ["POST /user/migrations"],
+    startForOrg: ["POST /orgs/{org}/migrations"],
+    startImport: ["PUT /repos/{owner}/{repo}/import"],
+    unlockRepoForAuthenticatedUser: ["DELETE /user/migrations/{migration_id}/repos/{repo_name}/lock"],
+    unlockRepoForOrg: ["DELETE /orgs/{org}/migrations/{migration_id}/repos/{repo_name}/lock"],
+    updateImport: ["PATCH /repos/{owner}/{repo}/import"]
+  },
+  orgs: {
+    blockUser: ["PUT /orgs/{org}/blocks/{username}"],
+    cancelInvitation: ["DELETE /orgs/{org}/invitations/{invitation_id}"],
+    checkBlockedUser: ["GET /orgs/{org}/blocks/{username}"],
+    checkMembershipForUser: ["GET /orgs/{org}/members/{username}"],
+    checkPublicMembershipForUser: ["GET /orgs/{org}/public_members/{username}"],
+    convertMemberToOutsideCollaborator: ["PUT /orgs/{org}/outside_collaborators/{username}"],
+    createInvitation: ["POST /orgs/{org}/invitations"],
+    createWebhook: ["POST /orgs/{org}/hooks"],
+    deleteWebhook: ["DELETE /orgs/{org}/hooks/{hook_id}"],
+    get: ["GET /orgs/{org}"],
+    getMembershipForAuthenticatedUser: ["GET /user/memberships/orgs/{org}"],
+    getMembershipForUser: ["GET /orgs/{org}/memberships/{username}"],
+    getWebhook: ["GET /orgs/{org}/hooks/{hook_id}"],
+    getWebhookConfigForOrg: ["GET /orgs/{org}/hooks/{hook_id}/config"],
+    getWebhookDelivery: ["GET /orgs/{org}/hooks/{hook_id}/deliveries/{delivery_id}"],
+    list: ["GET /organizations"],
+    listAppInstallations: ["GET /orgs/{org}/installations"],
+    listBlockedUsers: ["GET /orgs/{org}/blocks"],
+    listCustomRoles: ["GET /organizations/{organization_id}/custom_roles"],
+    listFailedInvitations: ["GET /orgs/{org}/failed_invitations"],
+    listForAuthenticatedUser: ["GET /user/orgs"],
+    listForUser: ["GET /users/{username}/orgs"],
+    listInvitationTeams: ["GET /orgs/{org}/invitations/{invitation_id}/teams"],
+    listMembers: ["GET /orgs/{org}/members"],
+    listMembershipsForAuthenticatedUser: ["GET /user/memberships/orgs"],
+    listOutsideCollaborators: ["GET /orgs/{org}/outside_collaborators"],
+    listPendingInvitations: ["GET /orgs/{org}/invitations"],
+    listPublicMembers: ["GET /orgs/{org}/public_members"],
+    listWebhookDeliveries: ["GET /orgs/{org}/hooks/{hook_id}/deliveries"],
+    listWebhooks: ["GET /orgs/{org}/hooks"],
+    pingWebhook: ["POST /orgs/{org}/hooks/{hook_id}/pings"],
+    redeliverWebhookDelivery: ["POST /orgs/{org}/hooks/{hook_id}/deliveries/{delivery_id}/attempts"],
+    removeMember: ["DELETE /orgs/{org}/members/{username}"],
+    removeMembershipForUser: ["DELETE /orgs/{org}/memberships/{username}"],
+    removeOutsideCollaborator: ["DELETE /orgs/{org}/outside_collaborators/{username}"],
+    removePublicMembershipForAuthenticatedUser: ["DELETE /orgs/{org}/public_members/{username}"],
+    setMembershipForUser: ["PUT /orgs/{org}/memberships/{username}"],
+    setPublicMembershipForAuthenticatedUser: ["PUT /orgs/{org}/public_members/{username}"],
+    unblockUser: ["DELETE /orgs/{org}/blocks/{username}"],
+    update: ["PATCH /orgs/{org}"],
+    updateMembershipForAuthenticatedUser: ["PATCH /user/memberships/orgs/{org}"],
+    updateWebhook: ["PATCH /orgs/{org}/hooks/{hook_id}"],
+    updateWebhookConfigForOrg: ["PATCH /orgs/{org}/hooks/{hook_id}/config"]
+  },
+  packages: {
+    deletePackageForAuthenticatedUser: ["DELETE /user/packages/{package_type}/{package_name}"],
+    deletePackageForOrg: ["DELETE /orgs/{org}/packages/{package_type}/{package_name}"],
+    deletePackageForUser: ["DELETE /users/{username}/packages/{package_type}/{package_name}"],
+    deletePackageVersionForAuthenticatedUser: ["DELETE /user/packages/{package_type}/{package_name}/versions/{package_version_id}"],
+    deletePackageVersionForOrg: ["DELETE /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}"],
+    deletePackageVersionForUser: ["DELETE /users/{username}/packages/{package_type}/{package_name}/versions/{package_version_id}"],
+    getAllPackageVersionsForAPackageOwnedByAnOrg: ["GET /orgs/{org}/packages/{package_type}/{package_name}/versions", {}, {
+      renamed: ["packages", "getAllPackageVersionsForPackageOwnedByOrg"]
+    }],
+    getAllPackageVersionsForAPackageOwnedByTheAuthenticatedUser: ["GET /user/packages/{package_type}/{package_name}/versions", {}, {
+      renamed: ["packages", "getAllPackageVersionsForPackageOwnedByAuthenticatedUser"]
+    }],
+    getAllPackageVersionsForPackageOwnedByAuthenticatedUser: ["GET /user/packages/{package_type}/{package_name}/versions"],
+    getAllPackageVersionsForPackageOwnedByOrg: ["GET /orgs/{org}/packages/{package_type}/{package_name}/versions"],
+    getAllPackageVersionsForPackageOwnedByUser: ["GET /users/{username}/packages/{package_type}/{package_name}/versions"],
+    getPackageForAuthenticatedUser: ["GET /user/packages/{package_type}/{package_name}"],
+    getPackageForOrganization: ["GET /orgs/{org}/packages/{package_type}/{package_name}"],
+    getPackageForUser: ["GET /users/{username}/packages/{package_type}/{package_name}"],
+    getPackageVersionForAuthenticatedUser: ["GET /user/packages/{package_type}/{package_name}/versions/{package_version_id}"],
+    getPackageVersionForOrganization: ["GET /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}"],
+    getPackageVersionForUser: ["GET /users/{username}/packages/{package_type}/{package_name}/versions/{package_version_id}"],
+    listPackagesForAuthenticatedUser: ["GET /user/packages"],
+    listPackagesForOrganization: ["GET /orgs/{org}/packages"],
+    listPackagesForUser: ["GET /users/{username}/packages"],
+    restorePackageForAuthenticatedUser: ["POST /user/packages/{package_type}/{package_name}/restore{?token}"],
+    restorePackageForOrg: ["POST /orgs/{org}/packages/{package_type}/{package_name}/restore{?token}"],
+    restorePackageForUser: ["POST /users/{username}/packages/{package_type}/{package_name}/restore{?token}"],
+    restorePackageVersionForAuthenticatedUser: ["POST /user/packages/{package_type}/{package_name}/versions/{package_version_id}/restore"],
+    restorePackageVersionForOrg: ["POST /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}/restore"],
+    restorePackageVersionForUser: ["POST /users/{username}/packages/{package_type}/{package_name}/versions/{package_version_id}/restore"]
+  },
+  projects: {
+    addCollaborator: ["PUT /projects/{project_id}/collaborators/{username}"],
+    createCard: ["POST /projects/columns/{column_id}/cards"],
+    createColumn: ["POST /projects/{project_id}/columns"],
+    createForAuthenticatedUser: ["POST /user/projects"],
+    createForOrg: ["POST /orgs/{org}/projects"],
+    createForRepo: ["POST /repos/{owner}/{repo}/projects"],
+    delete: ["DELETE /projects/{project_id}"],
+    deleteCard: ["DELETE /projects/columns/cards/{card_id}"],
+    deleteColumn: ["DELETE /projects/columns/{column_id}"],
+    get: ["GET /projects/{project_id}"],
+    getCard: ["GET /projects/columns/cards/{card_id}"],
+    getColumn: ["GET /projects/columns/{column_id}"],
+    getPermissionForUser: ["GET /projects/{project_id}/collaborators/{username}/permission"],
+    listCards: ["GET /projects/columns/{column_id}/cards"],
+    listCollaborators: ["GET /projects/{project_id}/collaborators"],
+    listColumns: ["GET /projects/{project_id}/columns"],
+    listForOrg: ["GET /orgs/{org}/projects"],
+    listForRepo: ["GET /repos/{owner}/{repo}/projects"],
+    listForUser: ["GET /users/{username}/projects"],
+    moveCard: ["POST /projects/columns/cards/{card_id}/moves"],
+    moveColumn: ["POST /projects/columns/{column_id}/moves"],
+    removeCollaborator: ["DELETE /projects/{project_id}/collaborators/{username}"],
+    update: ["PATCH /projects/{project_id}"],
+    updateCard: ["PATCH /projects/columns/cards/{card_id}"],
+    updateColumn: ["PATCH /projects/columns/{column_id}"]
+  },
+  pulls: {
+    checkIfMerged: ["GET /repos/{owner}/{repo}/pulls/{pull_number}/merge"],
+    create: ["POST /repos/{owner}/{repo}/pulls"],
+    createReplyForReviewComment: ["POST /repos/{owner}/{repo}/pulls/{pull_number}/comments/{comment_id}/replies"],
+    createReview: ["POST /repos/{owner}/{repo}/pulls/{pull_number}/reviews"],
+    createReviewComment: ["POST /repos/{owner}/{repo}/pulls/{pull_number}/comments"],
+    deletePendingReview: ["DELETE /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}"],
+    deleteReviewComment: ["DELETE /repos/{owner}/{repo}/pulls/comments/{comment_id}"],
+    dismissReview: ["PUT /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/dismissals"],
+    get: ["GET /repos/{owner}/{repo}/pulls/{pull_number}"],
+    getReview: ["GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}"],
+    getReviewComment: ["GET /repos/{owner}/{repo}/pulls/comments/{comment_id}"],
+    list: ["GET /repos/{owner}/{repo}/pulls"],
+    listCommentsForReview: ["GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/comments"],
+    listCommits: ["GET /repos/{owner}/{repo}/pulls/{pull_number}/commits"],
+    listFiles: ["GET /repos/{owner}/{repo}/pulls/{pull_number}/files"],
+    listRequestedReviewers: ["GET /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers"],
+    listReviewComments: ["GET /repos/{owner}/{repo}/pulls/{pull_number}/comments"],
+    listReviewCommentsForRepo: ["GET /repos/{owner}/{repo}/pulls/comments"],
+    listReviews: ["GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews"],
+    merge: ["PUT /repos/{owner}/{repo}/pulls/{pull_number}/merge"],
+    removeRequestedReviewers: ["DELETE /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers"],
+    requestReviewers: ["POST /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers"],
+    submitReview: ["POST /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/events"],
+    update: ["PATCH /repos/{owner}/{repo}/pulls/{pull_number}"],
+    updateBranch: ["PUT /repos/{owner}/{repo}/pulls/{pull_number}/update-branch"],
+    updateReview: ["PUT /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}"],
+    updateReviewComment: ["PATCH /repos/{owner}/{repo}/pulls/comments/{comment_id}"]
+  },
+  rateLimit: {
+    get: ["GET /rate_limit"]
+  },
+  reactions: {
+    createForCommitComment: ["POST /repos/{owner}/{repo}/comments/{comment_id}/reactions"],
+    createForIssue: ["POST /repos/{owner}/{repo}/issues/{issue_number}/reactions"],
+    createForIssueComment: ["POST /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions"],
+    createForPullRequestReviewComment: ["POST /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions"],
+    createForRelease: ["POST /repos/{owner}/{repo}/releases/{release_id}/reactions"],
+    createForTeamDiscussionCommentInOrg: ["POST /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions"],
+    createForTeamDiscussionInOrg: ["POST /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions"],
+    deleteForCommitComment: ["DELETE /repos/{owner}/{repo}/comments/{comment_id}/reactions/{reaction_id}"],
+    deleteForIssue: ["DELETE /repos/{owner}/{repo}/issues/{issue_number}/reactions/{reaction_id}"],
+    deleteForIssueComment: ["DELETE /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions/{reaction_id}"],
+    deleteForPullRequestComment: ["DELETE /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions/{reaction_id}"],
+    deleteForRelease: ["DELETE /repos/{owner}/{repo}/releases/{release_id}/reactions/{reaction_id}"],
+    deleteForTeamDiscussion: ["DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions/{reaction_id}"],
+    deleteForTeamDiscussionComment: ["DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions/{reaction_id}"],
+    listForCommitComment: ["GET /repos/{owner}/{repo}/comments/{comment_id}/reactions"],
+    listForIssue: ["GET /repos/{owner}/{repo}/issues/{issue_number}/reactions"],
+    listForIssueComment: ["GET /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions"],
+    listForPullRequestReviewComment: ["GET /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions"],
+    listForRelease: ["GET /repos/{owner}/{repo}/releases/{release_id}/reactions"],
+    listForTeamDiscussionCommentInOrg: ["GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions"],
+    listForTeamDiscussionInOrg: ["GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions"]
+  },
+  repos: {
+    acceptInvitation: ["PATCH /user/repository_invitations/{invitation_id}", {}, {
+      renamed: ["repos", "acceptInvitationForAuthenticatedUser"]
+    }],
+    acceptInvitationForAuthenticatedUser: ["PATCH /user/repository_invitations/{invitation_id}"],
+    addAppAccessRestrictions: ["POST /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps", {}, {
+      mapToData: "apps"
+    }],
+    addCollaborator: ["PUT /repos/{owner}/{repo}/collaborators/{username}"],
+    addStatusCheckContexts: ["POST /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts", {}, {
+      mapToData: "contexts"
+    }],
+    addTeamAccessRestrictions: ["POST /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams", {}, {
+      mapToData: "teams"
+    }],
+    addUserAccessRestrictions: ["POST /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users", {}, {
+      mapToData: "users"
+    }],
+    checkCollaborator: ["GET /repos/{owner}/{repo}/collaborators/{username}"],
+    checkVulnerabilityAlerts: ["GET /repos/{owner}/{repo}/vulnerability-alerts"],
+    codeownersErrors: ["GET /repos/{owner}/{repo}/codeowners/errors"],
+    compareCommits: ["GET /repos/{owner}/{repo}/compare/{base}...{head}"],
+    compareCommitsWithBasehead: ["GET /repos/{owner}/{repo}/compare/{basehead}"],
+    createAutolink: ["POST /repos/{owner}/{repo}/autolinks"],
+    createCommitComment: ["POST /repos/{owner}/{repo}/commits/{commit_sha}/comments"],
+    createCommitSignatureProtection: ["POST /repos/{owner}/{repo}/branches/{branch}/protection/required_signatures"],
+    createCommitStatus: ["POST /repos/{owner}/{repo}/statuses/{sha}"],
+    createDeployKey: ["POST /repos/{owner}/{repo}/keys"],
+    createDeployment: ["POST /repos/{owner}/{repo}/deployments"],
+    createDeploymentStatus: ["POST /repos/{owner}/{repo}/deployments/{deployment_id}/statuses"],
+    createDispatchEvent: ["POST /repos/{owner}/{repo}/dispatches"],
+    createForAuthenticatedUser: ["POST /user/repos"],
+    createFork: ["POST /repos/{owner}/{repo}/forks"],
+    createInOrg: ["POST /orgs/{org}/repos"],
+    createOrUpdateEnvironment: ["PUT /repos/{owner}/{repo}/environments/{environment_name}"],
+    createOrUpdateFileContents: ["PUT /repos/{owner}/{repo}/contents/{path}"],
+    createPagesSite: ["POST /repos/{owner}/{repo}/pages"],
+    createRelease: ["POST /repos/{owner}/{repo}/releases"],
+    createTagProtection: ["POST /repos/{owner}/{repo}/tags/protection"],
+    createUsingTemplate: ["POST /repos/{template_owner}/{template_repo}/generate"],
+    createWebhook: ["POST /repos/{owner}/{repo}/hooks"],
+    declineInvitation: ["DELETE /user/repository_invitations/{invitation_id}", {}, {
+      renamed: ["repos", "declineInvitationForAuthenticatedUser"]
+    }],
+    declineInvitationForAuthenticatedUser: ["DELETE /user/repository_invitations/{invitation_id}"],
+    delete: ["DELETE /repos/{owner}/{repo}"],
+    deleteAccessRestrictions: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions"],
+    deleteAdminBranchProtection: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins"],
+    deleteAnEnvironment: ["DELETE /repos/{owner}/{repo}/environments/{environment_name}"],
+    deleteAutolink: ["DELETE /repos/{owner}/{repo}/autolinks/{autolink_id}"],
+    deleteBranchProtection: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection"],
+    deleteCommitComment: ["DELETE /repos/{owner}/{repo}/comments/{comment_id}"],
+    deleteCommitSignatureProtection: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_signatures"],
+    deleteDeployKey: ["DELETE /repos/{owner}/{repo}/keys/{key_id}"],
+    deleteDeployment: ["DELETE /repos/{owner}/{repo}/deployments/{deployment_id}"],
+    deleteFile: ["DELETE /repos/{owner}/{repo}/contents/{path}"],
+    deleteInvitation: ["DELETE /repos/{owner}/{repo}/invitations/{invitation_id}"],
+    deletePagesSite: ["DELETE /repos/{owner}/{repo}/pages"],
+    deletePullRequestReviewProtection: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews"],
+    deleteRelease: ["DELETE /repos/{owner}/{repo}/releases/{release_id}"],
+    deleteReleaseAsset: ["DELETE /repos/{owner}/{repo}/releases/assets/{asset_id}"],
+    deleteTagProtection: ["DELETE /repos/{owner}/{repo}/tags/protection/{tag_protection_id}"],
+    deleteWebhook: ["DELETE /repos/{owner}/{repo}/hooks/{hook_id}"],
+    disableAutomatedSecurityFixes: ["DELETE /repos/{owner}/{repo}/automated-security-fixes"],
+    disableLfsForRepo: ["DELETE /repos/{owner}/{repo}/lfs"],
+    disableVulnerabilityAlerts: ["DELETE /repos/{owner}/{repo}/vulnerability-alerts"],
+    downloadArchive: ["GET /repos/{owner}/{repo}/zipball/{ref}", {}, {
+      renamed: ["repos", "downloadZipballArchive"]
+    }],
+    downloadTarballArchive: ["GET /repos/{owner}/{repo}/tarball/{ref}"],
+    downloadZipballArchive: ["GET /repos/{owner}/{repo}/zipball/{ref}"],
+    enableAutomatedSecurityFixes: ["PUT /repos/{owner}/{repo}/automated-security-fixes"],
+    enableLfsForRepo: ["PUT /repos/{owner}/{repo}/lfs"],
+    enableVulnerabilityAlerts: ["PUT /repos/{owner}/{repo}/vulnerability-alerts"],
+    generateReleaseNotes: ["POST /repos/{owner}/{repo}/releases/generate-notes"],
+    get: ["GET /repos/{owner}/{repo}"],
+    getAccessRestrictions: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions"],
+    getAdminBranchProtection: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins"],
+    getAllEnvironments: ["GET /repos/{owner}/{repo}/environments"],
+    getAllStatusCheckContexts: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts"],
+    getAllTopics: ["GET /repos/{owner}/{repo}/topics"],
+    getAppsWithAccessToProtectedBranch: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps"],
+    getAutolink: ["GET /repos/{owner}/{repo}/autolinks/{autolink_id}"],
+    getBranch: ["GET /repos/{owner}/{repo}/branches/{branch}"],
+    getBranchProtection: ["GET /repos/{owner}/{repo}/branches/{branch}/protection"],
+    getClones: ["GET /repos/{owner}/{repo}/traffic/clones"],
+    getCodeFrequencyStats: ["GET /repos/{owner}/{repo}/stats/code_frequency"],
+    getCollaboratorPermissionLevel: ["GET /repos/{owner}/{repo}/collaborators/{username}/permission"],
+    getCombinedStatusForRef: ["GET /repos/{owner}/{repo}/commits/{ref}/status"],
+    getCommit: ["GET /repos/{owner}/{repo}/commits/{ref}"],
+    getCommitActivityStats: ["GET /repos/{owner}/{repo}/stats/commit_activity"],
+    getCommitComment: ["GET /repos/{owner}/{repo}/comments/{comment_id}"],
+    getCommitSignatureProtection: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/required_signatures"],
+    getCommunityProfileMetrics: ["GET /repos/{owner}/{repo}/community/profile"],
+    getContent: ["GET /repos/{owner}/{repo}/contents/{path}"],
+    getContributorsStats: ["GET /repos/{owner}/{repo}/stats/contributors"],
+    getDeployKey: ["GET /repos/{owner}/{repo}/keys/{key_id}"],
+    getDeployment: ["GET /repos/{owner}/{repo}/deployments/{deployment_id}"],
+    getDeploymentStatus: ["GET /repos/{owner}/{repo}/deployments/{deployment_id}/statuses/{status_id}"],
+    getEnvironment: ["GET /repos/{owner}/{repo}/environments/{environment_name}"],
+    getLatestPagesBuild: ["GET /repos/{owner}/{repo}/pages/builds/latest"],
+    getLatestRelease: ["GET /repos/{owner}/{repo}/releases/latest"],
+    getPages: ["GET /repos/{owner}/{repo}/pages"],
+    getPagesBuild: ["GET /repos/{owner}/{repo}/pages/builds/{build_id}"],
+    getPagesHealthCheck: ["GET /repos/{owner}/{repo}/pages/health"],
+    getParticipationStats: ["GET /repos/{owner}/{repo}/stats/participation"],
+    getPullRequestReviewProtection: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews"],
+    getPunchCardStats: ["GET /repos/{owner}/{repo}/stats/punch_card"],
+    getReadme: ["GET /repos/{owner}/{repo}/readme"],
+    getReadmeInDirectory: ["GET /repos/{owner}/{repo}/readme/{dir}"],
+    getRelease: ["GET /repos/{owner}/{repo}/releases/{release_id}"],
+    getReleaseAsset: ["GET /repos/{owner}/{repo}/releases/assets/{asset_id}"],
+    getReleaseByTag: ["GET /repos/{owner}/{repo}/releases/tags/{tag}"],
+    getStatusChecksProtection: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks"],
+    getTeamsWithAccessToProtectedBranch: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams"],
+    getTopPaths: ["GET /repos/{owner}/{repo}/traffic/popular/paths"],
+    getTopReferrers: ["GET /repos/{owner}/{repo}/traffic/popular/referrers"],
+    getUsersWithAccessToProtectedBranch: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users"],
+    getViews: ["GET /repos/{owner}/{repo}/traffic/views"],
+    getWebhook: ["GET /repos/{owner}/{repo}/hooks/{hook_id}"],
+    getWebhookConfigForRepo: ["GET /repos/{owner}/{repo}/hooks/{hook_id}/config"],
+    getWebhookDelivery: ["GET /repos/{owner}/{repo}/hooks/{hook_id}/deliveries/{delivery_id}"],
+    listAutolinks: ["GET /repos/{owner}/{repo}/autolinks"],
+    listBranches: ["GET /repos/{owner}/{repo}/branches"],
+    listBranchesForHeadCommit: ["GET /repos/{owner}/{repo}/commits/{commit_sha}/branches-where-head"],
+    listCollaborators: ["GET /repos/{owner}/{repo}/collaborators"],
+    listCommentsForCommit: ["GET /repos/{owner}/{repo}/commits/{commit_sha}/comments"],
+    listCommitCommentsForRepo: ["GET /repos/{owner}/{repo}/comments"],
+    listCommitStatusesForRef: ["GET /repos/{owner}/{repo}/commits/{ref}/statuses"],
+    listCommits: ["GET /repos/{owner}/{repo}/commits"],
+    listContributors: ["GET /repos/{owner}/{repo}/contributors"],
+    listDeployKeys: ["GET /repos/{owner}/{repo}/keys"],
+    listDeploymentStatuses: ["GET /repos/{owner}/{repo}/deployments/{deployment_id}/statuses"],
+    listDeployments: ["GET /repos/{owner}/{repo}/deployments"],
+    listForAuthenticatedUser: ["GET /user/repos"],
+    listForOrg: ["GET /orgs/{org}/repos"],
+    listForUser: ["GET /users/{username}/repos"],
+    listForks: ["GET /repos/{owner}/{repo}/forks"],
+    listInvitations: ["GET /repos/{owner}/{repo}/invitations"],
+    listInvitationsForAuthenticatedUser: ["GET /user/repository_invitations"],
+    listLanguages: ["GET /repos/{owner}/{repo}/languages"],
+    listPagesBuilds: ["GET /repos/{owner}/{repo}/pages/builds"],
+    listPublic: ["GET /repositories"],
+    listPullRequestsAssociatedWithCommit: ["GET /repos/{owner}/{repo}/commits/{commit_sha}/pulls"],
+    listReleaseAssets: ["GET /repos/{owner}/{repo}/releases/{release_id}/assets"],
+    listReleases: ["GET /repos/{owner}/{repo}/releases"],
+    listTagProtection: ["GET /repos/{owner}/{repo}/tags/protection"],
+    listTags: ["GET /repos/{owner}/{repo}/tags"],
+    listTeams: ["GET /repos/{owner}/{repo}/teams"],
+    listWebhookDeliveries: ["GET /repos/{owner}/{repo}/hooks/{hook_id}/deliveries"],
+    listWebhooks: ["GET /repos/{owner}/{repo}/hooks"],
+    merge: ["POST /repos/{owner}/{repo}/merges"],
+    mergeUpstream: ["POST /repos/{owner}/{repo}/merge-upstream"],
+    pingWebhook: ["POST /repos/{owner}/{repo}/hooks/{hook_id}/pings"],
+    redeliverWebhookDelivery: ["POST /repos/{owner}/{repo}/hooks/{hook_id}/deliveries/{delivery_id}/attempts"],
+    removeAppAccessRestrictions: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps", {}, {
+      mapToData: "apps"
+    }],
+    removeCollaborator: ["DELETE /repos/{owner}/{repo}/collaborators/{username}"],
+    removeStatusCheckContexts: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts", {}, {
+      mapToData: "contexts"
+    }],
+    removeStatusCheckProtection: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks"],
+    removeTeamAccessRestrictions: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams", {}, {
+      mapToData: "teams"
+    }],
+    removeUserAccessRestrictions: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users", {}, {
+      mapToData: "users"
+    }],
+    renameBranch: ["POST /repos/{owner}/{repo}/branches/{branch}/rename"],
+    replaceAllTopics: ["PUT /repos/{owner}/{repo}/topics"],
+    requestPagesBuild: ["POST /repos/{owner}/{repo}/pages/builds"],
+    setAdminBranchProtection: ["POST /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins"],
+    setAppAccessRestrictions: ["PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps", {}, {
+      mapToData: "apps"
+    }],
+    setStatusCheckContexts: ["PUT /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts", {}, {
+      mapToData: "contexts"
+    }],
+    setTeamAccessRestrictions: ["PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams", {}, {
+      mapToData: "teams"
+    }],
+    setUserAccessRestrictions: ["PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users", {}, {
+      mapToData: "users"
+    }],
+    testPushWebhook: ["POST /repos/{owner}/{repo}/hooks/{hook_id}/tests"],
+    transfer: ["POST /repos/{owner}/{repo}/transfer"],
+    update: ["PATCH /repos/{owner}/{repo}"],
+    updateBranchProtection: ["PUT /repos/{owner}/{repo}/branches/{branch}/protection"],
+    updateCommitComment: ["PATCH /repos/{owner}/{repo}/comments/{comment_id}"],
+    updateInformationAboutPagesSite: ["PUT /repos/{owner}/{repo}/pages"],
+    updateInvitation: ["PATCH /repos/{owner}/{repo}/invitations/{invitation_id}"],
+    updatePullRequestReviewProtection: ["PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews"],
+    updateRelease: ["PATCH /repos/{owner}/{repo}/releases/{release_id}"],
+    updateReleaseAsset: ["PATCH /repos/{owner}/{repo}/releases/assets/{asset_id}"],
+    updateStatusCheckPotection: ["PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks", {}, {
+      renamed: ["repos", "updateStatusCheckProtection"]
+    }],
+    updateStatusCheckProtection: ["PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks"],
+    updateWebhook: ["PATCH /repos/{owner}/{repo}/hooks/{hook_id}"],
+    updateWebhookConfigForRepo: ["PATCH /repos/{owner}/{repo}/hooks/{hook_id}/config"],
+    uploadReleaseAsset: ["POST /repos/{owner}/{repo}/releases/{release_id}/assets{?name,label}", {
+      baseUrl: "https://uploads.github.com"
+    }]
+  },
+  search: {
+    code: ["GET /search/code"],
+    commits: ["GET /search/commits"],
+    issuesAndPullRequests: ["GET /search/issues"],
+    labels: ["GET /search/labels"],
+    repos: ["GET /search/repositories"],
+    topics: ["GET /search/topics"],
+    users: ["GET /search/users"]
+  },
+  secretScanning: {
+    getAlert: ["GET /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}"],
+    listAlertsForEnterprise: ["GET /enterprises/{enterprise}/secret-scanning/alerts"],
+    listAlertsForOrg: ["GET /orgs/{org}/secret-scanning/alerts"],
+    listAlertsForRepo: ["GET /repos/{owner}/{repo}/secret-scanning/alerts"],
+    listLocationsForAlert: ["GET /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}/locations"],
+    updateAlert: ["PATCH /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}"]
+  },
+  teams: {
+    addOrUpdateMembershipForUserInOrg: ["PUT /orgs/{org}/teams/{team_slug}/memberships/{username}"],
+    addOrUpdateProjectPermissionsInOrg: ["PUT /orgs/{org}/teams/{team_slug}/projects/{project_id}"],
+    addOrUpdateRepoPermissionsInOrg: ["PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}"],
+    checkPermissionsForProjectInOrg: ["GET /orgs/{org}/teams/{team_slug}/projects/{project_id}"],
+    checkPermissionsForRepoInOrg: ["GET /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}"],
+    create: ["POST /orgs/{org}/teams"],
+    createDiscussionCommentInOrg: ["POST /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments"],
+    createDiscussionInOrg: ["POST /orgs/{org}/teams/{team_slug}/discussions"],
+    deleteDiscussionCommentInOrg: ["DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}"],
+    deleteDiscussionInOrg: ["DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}"],
+    deleteInOrg: ["DELETE /orgs/{org}/teams/{team_slug}"],
+    getByName: ["GET /orgs/{org}/teams/{team_slug}"],
+    getDiscussionCommentInOrg: ["GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}"],
+    getDiscussionInOrg: ["GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}"],
+    getMembershipForUserInOrg: ["GET /orgs/{org}/teams/{team_slug}/memberships/{username}"],
+    list: ["GET /orgs/{org}/teams"],
+    listChildInOrg: ["GET /orgs/{org}/teams/{team_slug}/teams"],
+    listDiscussionCommentsInOrg: ["GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments"],
+    listDiscussionsInOrg: ["GET /orgs/{org}/teams/{team_slug}/discussions"],
+    listForAuthenticatedUser: ["GET /user/teams"],
+    listMembersInOrg: ["GET /orgs/{org}/teams/{team_slug}/members"],
+    listPendingInvitationsInOrg: ["GET /orgs/{org}/teams/{team_slug}/invitations"],
+    listProjectsInOrg: ["GET /orgs/{org}/teams/{team_slug}/projects"],
+    listReposInOrg: ["GET /orgs/{org}/teams/{team_slug}/repos"],
+    removeMembershipForUserInOrg: ["DELETE /orgs/{org}/teams/{team_slug}/memberships/{username}"],
+    removeProjectInOrg: ["DELETE /orgs/{org}/teams/{team_slug}/projects/{project_id}"],
+    removeRepoInOrg: ["DELETE /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}"],
+    updateDiscussionCommentInOrg: ["PATCH /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}"],
+    updateDiscussionInOrg: ["PATCH /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}"],
+    updateInOrg: ["PATCH /orgs/{org}/teams/{team_slug}"]
+  },
+  users: {
+    addEmailForAuthenticated: ["POST /user/emails", {}, {
+      renamed: ["users", "addEmailForAuthenticatedUser"]
+    }],
+    addEmailForAuthenticatedUser: ["POST /user/emails"],
+    block: ["PUT /user/blocks/{username}"],
+    checkBlocked: ["GET /user/blocks/{username}"],
+    checkFollowingForUser: ["GET /users/{username}/following/{target_user}"],
+    checkPersonIsFollowedByAuthenticated: ["GET /user/following/{username}"],
+    createGpgKeyForAuthenticated: ["POST /user/gpg_keys", {}, {
+      renamed: ["users", "createGpgKeyForAuthenticatedUser"]
+    }],
+    createGpgKeyForAuthenticatedUser: ["POST /user/gpg_keys"],
+    createPublicSshKeyForAuthenticated: ["POST /user/keys", {}, {
+      renamed: ["users", "createPublicSshKeyForAuthenticatedUser"]
+    }],
+    createPublicSshKeyForAuthenticatedUser: ["POST /user/keys"],
+    deleteEmailForAuthenticated: ["DELETE /user/emails", {}, {
+      renamed: ["users", "deleteEmailForAuthenticatedUser"]
+    }],
+    deleteEmailForAuthenticatedUser: ["DELETE /user/emails"],
+    deleteGpgKeyForAuthenticated: ["DELETE /user/gpg_keys/{gpg_key_id}", {}, {
+      renamed: ["users", "deleteGpgKeyForAuthenticatedUser"]
+    }],
+    deleteGpgKeyForAuthenticatedUser: ["DELETE /user/gpg_keys/{gpg_key_id}"],
+    deletePublicSshKeyForAuthenticated: ["DELETE /user/keys/{key_id}", {}, {
+      renamed: ["users", "deletePublicSshKeyForAuthenticatedUser"]
+    }],
+    deletePublicSshKeyForAuthenticatedUser: ["DELETE /user/keys/{key_id}"],
+    follow: ["PUT /user/following/{username}"],
+    getAuthenticated: ["GET /user"],
+    getByUsername: ["GET /users/{username}"],
+    getContextForUser: ["GET /users/{username}/hovercard"],
+    getGpgKeyForAuthenticated: ["GET /user/gpg_keys/{gpg_key_id}", {}, {
+      renamed: ["users", "getGpgKeyForAuthenticatedUser"]
+    }],
+    getGpgKeyForAuthenticatedUser: ["GET /user/gpg_keys/{gpg_key_id}"],
+    getPublicSshKeyForAuthenticated: ["GET /user/keys/{key_id}", {}, {
+      renamed: ["users", "getPublicSshKeyForAuthenticatedUser"]
+    }],
+    getPublicSshKeyForAuthenticatedUser: ["GET /user/keys/{key_id}"],
+    list: ["GET /users"],
+    listBlockedByAuthenticated: ["GET /user/blocks", {}, {
+      renamed: ["users", "listBlockedByAuthenticatedUser"]
+    }],
+    listBlockedByAuthenticatedUser: ["GET /user/blocks"],
+    listEmailsForAuthenticated: ["GET /user/emails", {}, {
+      renamed: ["users", "listEmailsForAuthenticatedUser"]
+    }],
+    listEmailsForAuthenticatedUser: ["GET /user/emails"],
+    listFollowedByAuthenticated: ["GET /user/following", {}, {
+      renamed: ["users", "listFollowedByAuthenticatedUser"]
+    }],
+    listFollowedByAuthenticatedUser: ["GET /user/following"],
+    listFollowersForAuthenticatedUser: ["GET /user/followers"],
+    listFollowersForUser: ["GET /users/{username}/followers"],
+    listFollowingForUser: ["GET /users/{username}/following"],
+    listGpgKeysForAuthenticated: ["GET /user/gpg_keys", {}, {
+      renamed: ["users", "listGpgKeysForAuthenticatedUser"]
+    }],
+    listGpgKeysForAuthenticatedUser: ["GET /user/gpg_keys"],
+    listGpgKeysForUser: ["GET /users/{username}/gpg_keys"],
+    listPublicEmailsForAuthenticated: ["GET /user/public_emails", {}, {
+      renamed: ["users", "listPublicEmailsForAuthenticatedUser"]
+    }],
+    listPublicEmailsForAuthenticatedUser: ["GET /user/public_emails"],
+    listPublicKeysForUser: ["GET /users/{username}/keys"],
+    listPublicSshKeysForAuthenticated: ["GET /user/keys", {}, {
+      renamed: ["users", "listPublicSshKeysForAuthenticatedUser"]
+    }],
+    listPublicSshKeysForAuthenticatedUser: ["GET /user/keys"],
+    setPrimaryEmailVisibilityForAuthenticated: ["PATCH /user/email/visibility", {}, {
+      renamed: ["users", "setPrimaryEmailVisibilityForAuthenticatedUser"]
+    }],
+    setPrimaryEmailVisibilityForAuthenticatedUser: ["PATCH /user/email/visibility"],
+    unblock: ["DELETE /user/blocks/{username}"],
+    unfollow: ["DELETE /user/following/{username}"],
+    updateAuthenticated: ["PATCH /user"]
+  }
+};
+
+const VERSION = "5.16.2";
+
+function endpointsToMethods(octokit, endpointsMap) {
+  const newMethods = {};
+
+  for (const [scope, endpoints] of Object.entries(endpointsMap)) {
+    for (const [methodName, endpoint] of Object.entries(endpoints)) {
+      const [route, defaults, decorations] = endpoint;
+      const [method, url] = route.split(/ /);
+      const endpointDefaults = Object.assign({
+        method,
+        url
+      }, defaults);
+
+      if (!newMethods[scope]) {
+        newMethods[scope] = {};
+      }
+
+      const scopeMethods = newMethods[scope];
+
+      if (decorations) {
+        scopeMethods[methodName] = decorate(octokit, scope, methodName, endpointDefaults, decorations);
+        continue;
+      }
+
+      scopeMethods[methodName] = octokit.request.defaults(endpointDefaults);
+    }
+  }
+
+  return newMethods;
+}
+
+function decorate(octokit, scope, methodName, defaults, decorations) {
+  const requestWithDefaults = octokit.request.defaults(defaults);
+  /* istanbul ignore next */
+
+  function withDecorations(...args) {
+    // @ts-ignore https://github.com/microsoft/TypeScript/issues/25488
+    let options = requestWithDefaults.endpoint.merge(...args); // There are currently no other decorations than `.mapToData`
+
+    if (decorations.mapToData) {
+      options = Object.assign({}, options, {
+        data: options[decorations.mapToData],
+        [decorations.mapToData]: undefined
+      });
+      return requestWithDefaults(options);
+    }
+
+    if (decorations.renamed) {
+      const [newScope, newMethodName] = decorations.renamed;
+      octokit.log.warn(`octokit.${scope}.${methodName}() has been renamed to octokit.${newScope}.${newMethodName}()`);
+    }
+
+    if (decorations.deprecated) {
+      octokit.log.warn(decorations.deprecated);
+    }
+
+    if (decorations.renamedParameters) {
+      // @ts-ignore https://github.com/microsoft/TypeScript/issues/25488
+      const options = requestWithDefaults.endpoint.merge(...args);
+
+      for (const [name, alias] of Object.entries(decorations.renamedParameters)) {
+        if (name in options) {
+          octokit.log.warn(`"${name}" parameter is deprecated for "octokit.${scope}.${methodName}()". Use "${alias}" instead`);
+
+          if (!(alias in options)) {
+            options[alias] = options[name];
+          }
+
+          delete options[name];
+        }
+      }
+
+      return requestWithDefaults(options);
+    } // @ts-ignore https://github.com/microsoft/TypeScript/issues/25488
+
+
+    return requestWithDefaults(...args);
+  }
+
+  return Object.assign(withDecorations, requestWithDefaults);
+}
+
+function restEndpointMethods(octokit) {
+  const api = endpointsToMethods(octokit, Endpoints);
+  return {
+    rest: api
+  };
+}
+restEndpointMethods.VERSION = VERSION;
+function legacyRestEndpointMethods(octokit) {
+  const api = endpointsToMethods(octokit, Endpoints);
+  return _objectSpread2(_objectSpread2({}, api), {}, {
+    rest: api
+  });
+}
+legacyRestEndpointMethods.VERSION = VERSION;
+
+exports.legacyRestEndpointMethods = legacyRestEndpointMethods;
+exports.restEndpointMethods = restEndpointMethods;
+//# sourceMappingURL=index.js.map
+
+
+/***/ }),
+
+/***/ 537:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+var deprecation = __nccwpck_require__(8932);
+var once = _interopDefault(__nccwpck_require__(1223));
+
+const logOnceCode = once(deprecation => console.warn(deprecation));
+const logOnceHeaders = once(deprecation => console.warn(deprecation));
+/**
+ * Error with extra properties to help with debugging
+ */
+
+class RequestError extends Error {
+  constructor(message, statusCode, options) {
+    super(message); // Maintains proper stack trace (only available on V8)
+
+    /* istanbul ignore next */
+
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, this.constructor);
+    }
+
+    this.name = "HttpError";
+    this.status = statusCode;
+    let headers;
+
+    if ("headers" in options && typeof options.headers !== "undefined") {
+      headers = options.headers;
+    }
+
+    if ("response" in options) {
+      this.response = options.response;
+      headers = options.response.headers;
+    } // redact request credentials without mutating original request options
+
+
+    const requestCopy = Object.assign({}, options.request);
+
+    if (options.request.headers.authorization) {
+      requestCopy.headers = Object.assign({}, options.request.headers, {
+        authorization: options.request.headers.authorization.replace(/ .*$/, " [REDACTED]")
+      });
+    }
+
+    requestCopy.url = requestCopy.url // client_id & client_secret can be passed as URL query parameters to increase rate limit
+    // see https://developer.github.com/v3/#increasing-the-unauthenticated-rate-limit-for-oauth-applications
+    .replace(/\bclient_secret=\w+/g, "client_secret=[REDACTED]") // OAuth tokens can be passed as URL query parameters, although it is not recommended
+    // see https://developer.github.com/v3/#oauth2-token-sent-in-a-header
+    .replace(/\baccess_token=\w+/g, "access_token=[REDACTED]");
+    this.request = requestCopy; // deprecations
+
+    Object.defineProperty(this, "code", {
+      get() {
+        logOnceCode(new deprecation.Deprecation("[@octokit/request-error] `error.code` is deprecated, use `error.status`."));
+        return statusCode;
+      }
+
+    });
+    Object.defineProperty(this, "headers", {
+      get() {
+        logOnceHeaders(new deprecation.Deprecation("[@octokit/request-error] `error.headers` is deprecated, use `error.response.headers`."));
+        return headers || {};
+      }
+
+    });
+  }
+
+}
+
+exports.RequestError = RequestError;
+//# sourceMappingURL=index.js.map
+
+
+/***/ }),
+
+/***/ 6234:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+var endpoint = __nccwpck_require__(9440);
+var universalUserAgent = __nccwpck_require__(5030);
+var isPlainObject = __nccwpck_require__(3287);
+var nodeFetch = _interopDefault(__nccwpck_require__(467));
+var requestError = __nccwpck_require__(537);
+
+const VERSION = "5.6.3";
+
+function getBufferResponse(response) {
+  return response.arrayBuffer();
+}
+
+function fetchWrapper(requestOptions) {
+  const log = requestOptions.request && requestOptions.request.log ? requestOptions.request.log : console;
+
+  if (isPlainObject.isPlainObject(requestOptions.body) || Array.isArray(requestOptions.body)) {
+    requestOptions.body = JSON.stringify(requestOptions.body);
+  }
+
+  let headers = {};
+  let status;
+  let url;
+  const fetch = requestOptions.request && requestOptions.request.fetch || nodeFetch;
+  return fetch(requestOptions.url, Object.assign({
+    method: requestOptions.method,
+    body: requestOptions.body,
+    headers: requestOptions.headers,
+    redirect: requestOptions.redirect
+  }, // `requestOptions.request.agent` type is incompatible
+  // see https://github.com/octokit/types.ts/pull/264
+  requestOptions.request)).then(async response => {
+    url = response.url;
+    status = response.status;
+
+    for (const keyAndValue of response.headers) {
+      headers[keyAndValue[0]] = keyAndValue[1];
+    }
+
+    if ("deprecation" in headers) {
+      const matches = headers.link && headers.link.match(/<([^>]+)>; rel="deprecation"/);
+      const deprecationLink = matches && matches.pop();
+      log.warn(`[@octokit/request] "${requestOptions.method} ${requestOptions.url}" is deprecated. It is scheduled to be removed on ${headers.sunset}${deprecationLink ? `. See ${deprecationLink}` : ""}`);
+    }
+
+    if (status === 204 || status === 205) {
+      return;
+    } // GitHub API returns 200 for HEAD requests
+
+
+    if (requestOptions.method === "HEAD") {
+      if (status < 400) {
+        return;
+      }
+
+      throw new requestError.RequestError(response.statusText, status, {
+        response: {
+          url,
+          status,
+          headers,
+          data: undefined
+        },
+        request: requestOptions
+      });
+    }
+
+    if (status === 304) {
+      throw new requestError.RequestError("Not modified", status, {
+        response: {
+          url,
+          status,
+          headers,
+          data: await getResponseData(response)
+        },
+        request: requestOptions
+      });
+    }
+
+    if (status >= 400) {
+      const data = await getResponseData(response);
+      const error = new requestError.RequestError(toErrorMessage(data), status, {
+        response: {
+          url,
+          status,
+          headers,
+          data
+        },
+        request: requestOptions
+      });
+      throw error;
+    }
+
+    return getResponseData(response);
+  }).then(data => {
+    return {
+      status,
+      url,
+      headers,
+      data
+    };
+  }).catch(error => {
+    if (error instanceof requestError.RequestError) throw error;
+    throw new requestError.RequestError(error.message, 500, {
+      request: requestOptions
+    });
+  });
+}
+
+async function getResponseData(response) {
+  const contentType = response.headers.get("content-type");
+
+  if (/application\/json/.test(contentType)) {
+    return response.json();
+  }
+
+  if (!contentType || /^text\/|charset=utf-8$/.test(contentType)) {
+    return response.text();
+  }
+
+  return getBufferResponse(response);
+}
+
+function toErrorMessage(data) {
+  if (typeof data === "string") return data; // istanbul ignore else - just in case
+
+  if ("message" in data) {
+    if (Array.isArray(data.errors)) {
+      return `${data.message}: ${data.errors.map(JSON.stringify).join(", ")}`;
+    }
+
+    return data.message;
+  } // istanbul ignore next - just in case
+
+
+  return `Unknown error: ${JSON.stringify(data)}`;
+}
+
+function withDefaults(oldEndpoint, newDefaults) {
+  const endpoint = oldEndpoint.defaults(newDefaults);
+
+  const newApi = function (route, parameters) {
+    const endpointOptions = endpoint.merge(route, parameters);
+
+    if (!endpointOptions.request || !endpointOptions.request.hook) {
+      return fetchWrapper(endpoint.parse(endpointOptions));
+    }
+
+    const request = (route, parameters) => {
+      return fetchWrapper(endpoint.parse(endpoint.merge(route, parameters)));
+    };
+
+    Object.assign(request, {
+      endpoint,
+      defaults: withDefaults.bind(null, endpoint)
+    });
+    return endpointOptions.request.hook(request, endpointOptions);
+  };
+
+  return Object.assign(newApi, {
+    endpoint,
+    defaults: withDefaults.bind(null, endpoint)
+  });
+}
+
+const request = withDefaults(endpoint.endpoint, {
+  headers: {
+    "user-agent": `octokit-request.js/${VERSION} ${universalUserAgent.getUserAgent()}`
+  }
+});
+
+exports.request = request;
+//# sourceMappingURL=index.js.map
+
+
+/***/ }),
+
 /***/ 9417:
 /***/ ((module) => {
 
@@ -5278,6 +7860,187 @@ function range(a, b, str) {
   }
 
   return result;
+}
+
+
+/***/ }),
+
+/***/ 3682:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+var register = __nccwpck_require__(4670);
+var addHook = __nccwpck_require__(5549);
+var removeHook = __nccwpck_require__(6819);
+
+// bind with array of arguments: https://stackoverflow.com/a/21792913
+var bind = Function.bind;
+var bindable = bind.bind(bind);
+
+function bindApi(hook, state, name) {
+  var removeHookRef = bindable(removeHook, null).apply(
+    null,
+    name ? [state, name] : [state]
+  );
+  hook.api = { remove: removeHookRef };
+  hook.remove = removeHookRef;
+  ["before", "error", "after", "wrap"].forEach(function (kind) {
+    var args = name ? [state, kind, name] : [state, kind];
+    hook[kind] = hook.api[kind] = bindable(addHook, null).apply(null, args);
+  });
+}
+
+function HookSingular() {
+  var singularHookName = "h";
+  var singularHookState = {
+    registry: {},
+  };
+  var singularHook = register.bind(null, singularHookState, singularHookName);
+  bindApi(singularHook, singularHookState, singularHookName);
+  return singularHook;
+}
+
+function HookCollection() {
+  var state = {
+    registry: {},
+  };
+
+  var hook = register.bind(null, state);
+  bindApi(hook, state);
+
+  return hook;
+}
+
+var collectionHookDeprecationMessageDisplayed = false;
+function Hook() {
+  if (!collectionHookDeprecationMessageDisplayed) {
+    console.warn(
+      '[before-after-hook]: "Hook()" repurposing warning, use "Hook.Collection()". Read more: https://git.io/upgrade-before-after-hook-to-1.4'
+    );
+    collectionHookDeprecationMessageDisplayed = true;
+  }
+  return HookCollection();
+}
+
+Hook.Singular = HookSingular.bind();
+Hook.Collection = HookCollection.bind();
+
+module.exports = Hook;
+// expose constructors as a named property for TypeScript
+module.exports.Hook = Hook;
+module.exports.Singular = Hook.Singular;
+module.exports.Collection = Hook.Collection;
+
+
+/***/ }),
+
+/***/ 5549:
+/***/ ((module) => {
+
+module.exports = addHook;
+
+function addHook(state, kind, name, hook) {
+  var orig = hook;
+  if (!state.registry[name]) {
+    state.registry[name] = [];
+  }
+
+  if (kind === "before") {
+    hook = function (method, options) {
+      return Promise.resolve()
+        .then(orig.bind(null, options))
+        .then(method.bind(null, options));
+    };
+  }
+
+  if (kind === "after") {
+    hook = function (method, options) {
+      var result;
+      return Promise.resolve()
+        .then(method.bind(null, options))
+        .then(function (result_) {
+          result = result_;
+          return orig(result, options);
+        })
+        .then(function () {
+          return result;
+        });
+    };
+  }
+
+  if (kind === "error") {
+    hook = function (method, options) {
+      return Promise.resolve()
+        .then(method.bind(null, options))
+        .catch(function (error) {
+          return orig(error, options);
+        });
+    };
+  }
+
+  state.registry[name].push({
+    hook: hook,
+    orig: orig,
+  });
+}
+
+
+/***/ }),
+
+/***/ 4670:
+/***/ ((module) => {
+
+module.exports = register;
+
+function register(state, name, method, options) {
+  if (typeof method !== "function") {
+    throw new Error("method for before hook must be a function");
+  }
+
+  if (!options) {
+    options = {};
+  }
+
+  if (Array.isArray(name)) {
+    return name.reverse().reduce(function (callback, name) {
+      return register.bind(null, state, name, callback, options);
+    }, method)();
+  }
+
+  return Promise.resolve().then(function () {
+    if (!state.registry[name]) {
+      return method(options);
+    }
+
+    return state.registry[name].reduce(function (method, registered) {
+      return registered.hook.bind(null, method, options);
+    }, method)();
+  });
+}
+
+
+/***/ }),
+
+/***/ 6819:
+/***/ ((module) => {
+
+module.exports = removeHook;
+
+function removeHook(state, name, method) {
+  if (!state.registry[name]) {
+    return;
+  }
+
+  var index = state.registry[name]
+    .map(function (registered) {
+      return registered.orig;
+    })
+    .indexOf(method);
+
+  if (index === -1) {
+    return;
+  }
+
+  state.registry[name].splice(index, 1);
 }
 
 
@@ -5507,6 +8270,1226 @@ module.exports = function (xs, fn) {
 var isArray = Array.isArray || function (xs) {
     return Object.prototype.toString.call(xs) === '[object Array]';
 };
+
+
+/***/ }),
+
+/***/ 8932:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+
+class Deprecation extends Error {
+  constructor(message) {
+    super(message); // Maintains proper stack trace (only available on V8)
+
+    /* istanbul ignore next */
+
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, this.constructor);
+    }
+
+    this.name = 'Deprecation';
+  }
+
+}
+
+exports.Deprecation = Deprecation;
+
+
+/***/ }),
+
+/***/ 8431:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+/*
+ * EJS Embedded JavaScript templates
+ * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+*/
+
+
+
+/**
+ * @file Embedded JavaScript templating engine. {@link http://ejs.co}
+ * @author Matthew Eernisse <mde@fleegix.org>
+ * @author Tiancheng "Timothy" Gu <timothygu99@gmail.com>
+ * @project EJS
+ * @license {@link http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0}
+ */
+
+/**
+ * EJS internal functions.
+ *
+ * Technically this "module" lies in the same file as {@link module:ejs}, for
+ * the sake of organization all the private functions re grouped into this
+ * module.
+ *
+ * @module ejs-internal
+ * @private
+ */
+
+/**
+ * Embedded JavaScript templating engine.
+ *
+ * @module ejs
+ * @public
+ */
+
+
+var fs = __nccwpck_require__(7147);
+var path = __nccwpck_require__(1017);
+var utils = __nccwpck_require__(356);
+
+var scopeOptionWarned = false;
+/** @type {string} */
+var _VERSION_STRING = (__nccwpck_require__(3558)/* .version */ .i8);
+var _DEFAULT_OPEN_DELIMITER = '<';
+var _DEFAULT_CLOSE_DELIMITER = '>';
+var _DEFAULT_DELIMITER = '%';
+var _DEFAULT_LOCALS_NAME = 'locals';
+var _NAME = 'ejs';
+var _REGEX_STRING = '(<%%|%%>|<%=|<%-|<%_|<%#|<%|%>|-%>|_%>)';
+var _OPTS_PASSABLE_WITH_DATA = ['delimiter', 'scope', 'context', 'debug', 'compileDebug',
+  'client', '_with', 'rmWhitespace', 'strict', 'filename', 'async'];
+// We don't allow 'cache' option to be passed in the data obj for
+// the normal `render` call, but this is where Express 2 & 3 put it
+// so we make an exception for `renderFile`
+var _OPTS_PASSABLE_WITH_DATA_EXPRESS = _OPTS_PASSABLE_WITH_DATA.concat('cache');
+var _BOM = /^\uFEFF/;
+var _JS_IDENTIFIER = /^[a-zA-Z_$][0-9a-zA-Z_$]*$/;
+
+/**
+ * EJS template function cache. This can be a LRU object from lru-cache NPM
+ * module. By default, it is {@link module:utils.cache}, a simple in-process
+ * cache that grows continuously.
+ *
+ * @type {Cache}
+ */
+
+exports.cache = utils.cache;
+
+/**
+ * Custom file loader. Useful for template preprocessing or restricting access
+ * to a certain part of the filesystem.
+ *
+ * @type {fileLoader}
+ */
+
+exports.fileLoader = fs.readFileSync;
+
+/**
+ * Name of the object containing the locals.
+ *
+ * This variable is overridden by {@link Options}`.localsName` if it is not
+ * `undefined`.
+ *
+ * @type {String}
+ * @public
+ */
+
+exports.localsName = _DEFAULT_LOCALS_NAME;
+
+/**
+ * Promise implementation -- defaults to the native implementation if available
+ * This is mostly just for testability
+ *
+ * @type {PromiseConstructorLike}
+ * @public
+ */
+
+exports.promiseImpl = (new Function('return this;'))().Promise;
+
+/**
+ * Get the path to the included file from the parent file path and the
+ * specified path.
+ *
+ * @param {String}  name     specified path
+ * @param {String}  filename parent file path
+ * @param {Boolean} [isDir=false] whether the parent file path is a directory
+ * @return {String}
+ */
+exports.resolveInclude = function(name, filename, isDir) {
+  var dirname = path.dirname;
+  var extname = path.extname;
+  var resolve = path.resolve;
+  var includePath = resolve(isDir ? filename : dirname(filename), name);
+  var ext = extname(name);
+  if (!ext) {
+    includePath += '.ejs';
+  }
+  return includePath;
+};
+
+/**
+ * Try to resolve file path on multiple directories
+ *
+ * @param  {String}        name  specified path
+ * @param  {Array<String>} paths list of possible parent directory paths
+ * @return {String}
+ */
+function resolvePaths(name, paths) {
+  var filePath;
+  if (paths.some(function (v) {
+    filePath = exports.resolveInclude(name, v, true);
+    return fs.existsSync(filePath);
+  })) {
+    return filePath;
+  }
+}
+
+/**
+ * Get the path to the included file by Options
+ *
+ * @param  {String}  path    specified path
+ * @param  {Options} options compilation options
+ * @return {String}
+ */
+function getIncludePath(path, options) {
+  var includePath;
+  var filePath;
+  var views = options.views;
+  var match = /^[A-Za-z]+:\\|^\//.exec(path);
+
+  // Abs path
+  if (match && match.length) {
+    path = path.replace(/^\/*/, '');
+    if (Array.isArray(options.root)) {
+      includePath = resolvePaths(path, options.root);
+    } else {
+      includePath = exports.resolveInclude(path, options.root || '/', true);
+    }
+  }
+  // Relative paths
+  else {
+    // Look relative to a passed filename first
+    if (options.filename) {
+      filePath = exports.resolveInclude(path, options.filename);
+      if (fs.existsSync(filePath)) {
+        includePath = filePath;
+      }
+    }
+    // Then look in any views directories
+    if (!includePath && Array.isArray(views)) {
+      includePath = resolvePaths(path, views);
+    }
+    if (!includePath && typeof options.includer !== 'function') {
+      throw new Error('Could not find the include file "' +
+          options.escapeFunction(path) + '"');
+    }
+  }
+  return includePath;
+}
+
+/**
+ * Get the template from a string or a file, either compiled on-the-fly or
+ * read from cache (if enabled), and cache the template if needed.
+ *
+ * If `template` is not set, the file specified in `options.filename` will be
+ * read.
+ *
+ * If `options.cache` is true, this function reads the file from
+ * `options.filename` so it must be set prior to calling this function.
+ *
+ * @memberof module:ejs-internal
+ * @param {Options} options   compilation options
+ * @param {String} [template] template source
+ * @return {(TemplateFunction|ClientFunction)}
+ * Depending on the value of `options.client`, either type might be returned.
+ * @static
+ */
+
+function handleCache(options, template) {
+  var func;
+  var filename = options.filename;
+  var hasTemplate = arguments.length > 1;
+
+  if (options.cache) {
+    if (!filename) {
+      throw new Error('cache option requires a filename');
+    }
+    func = exports.cache.get(filename);
+    if (func) {
+      return func;
+    }
+    if (!hasTemplate) {
+      template = fileLoader(filename).toString().replace(_BOM, '');
+    }
+  }
+  else if (!hasTemplate) {
+    // istanbul ignore if: should not happen at all
+    if (!filename) {
+      throw new Error('Internal EJS error: no file name or template '
+                    + 'provided');
+    }
+    template = fileLoader(filename).toString().replace(_BOM, '');
+  }
+  func = exports.compile(template, options);
+  if (options.cache) {
+    exports.cache.set(filename, func);
+  }
+  return func;
+}
+
+/**
+ * Try calling handleCache with the given options and data and call the
+ * callback with the result. If an error occurs, call the callback with
+ * the error. Used by renderFile().
+ *
+ * @memberof module:ejs-internal
+ * @param {Options} options    compilation options
+ * @param {Object} data        template data
+ * @param {RenderFileCallback} cb callback
+ * @static
+ */
+
+function tryHandleCache(options, data, cb) {
+  var result;
+  if (!cb) {
+    if (typeof exports.promiseImpl == 'function') {
+      return new exports.promiseImpl(function (resolve, reject) {
+        try {
+          result = handleCache(options)(data);
+          resolve(result);
+        }
+        catch (err) {
+          reject(err);
+        }
+      });
+    }
+    else {
+      throw new Error('Please provide a callback function');
+    }
+  }
+  else {
+    try {
+      result = handleCache(options)(data);
+    }
+    catch (err) {
+      return cb(err);
+    }
+
+    cb(null, result);
+  }
+}
+
+/**
+ * fileLoader is independent
+ *
+ * @param {String} filePath ejs file path.
+ * @return {String} The contents of the specified file.
+ * @static
+ */
+
+function fileLoader(filePath){
+  return exports.fileLoader(filePath);
+}
+
+/**
+ * Get the template function.
+ *
+ * If `options.cache` is `true`, then the template is cached.
+ *
+ * @memberof module:ejs-internal
+ * @param {String}  path    path for the specified file
+ * @param {Options} options compilation options
+ * @return {(TemplateFunction|ClientFunction)}
+ * Depending on the value of `options.client`, either type might be returned
+ * @static
+ */
+
+function includeFile(path, options) {
+  var opts = utils.shallowCopy(utils.createNullProtoObjWherePossible(), options);
+  opts.filename = getIncludePath(path, opts);
+  if (typeof options.includer === 'function') {
+    var includerResult = options.includer(path, opts.filename);
+    if (includerResult) {
+      if (includerResult.filename) {
+        opts.filename = includerResult.filename;
+      }
+      if (includerResult.template) {
+        return handleCache(opts, includerResult.template);
+      }
+    }
+  }
+  return handleCache(opts);
+}
+
+/**
+ * Re-throw the given `err` in context to the `str` of ejs, `filename`, and
+ * `lineno`.
+ *
+ * @implements {RethrowCallback}
+ * @memberof module:ejs-internal
+ * @param {Error}  err      Error object
+ * @param {String} str      EJS source
+ * @param {String} flnm     file name of the EJS file
+ * @param {Number} lineno   line number of the error
+ * @param {EscapeCallback} esc
+ * @static
+ */
+
+function rethrow(err, str, flnm, lineno, esc) {
+  var lines = str.split('\n');
+  var start = Math.max(lineno - 3, 0);
+  var end = Math.min(lines.length, lineno + 3);
+  var filename = esc(flnm);
+  // Error context
+  var context = lines.slice(start, end).map(function (line, i){
+    var curr = i + start + 1;
+    return (curr == lineno ? ' >> ' : '    ')
+      + curr
+      + '| '
+      + line;
+  }).join('\n');
+
+  // Alter exception message
+  err.path = filename;
+  err.message = (filename || 'ejs') + ':'
+    + lineno + '\n'
+    + context + '\n\n'
+    + err.message;
+
+  throw err;
+}
+
+function stripSemi(str){
+  return str.replace(/;(\s*$)/, '$1');
+}
+
+/**
+ * Compile the given `str` of ejs into a template function.
+ *
+ * @param {String}  template EJS template
+ *
+ * @param {Options} [opts] compilation options
+ *
+ * @return {(TemplateFunction|ClientFunction)}
+ * Depending on the value of `opts.client`, either type might be returned.
+ * Note that the return type of the function also depends on the value of `opts.async`.
+ * @public
+ */
+
+exports.compile = function compile(template, opts) {
+  var templ;
+
+  // v1 compat
+  // 'scope' is 'context'
+  // FIXME: Remove this in a future version
+  if (opts && opts.scope) {
+    if (!scopeOptionWarned){
+      console.warn('`scope` option is deprecated and will be removed in EJS 3');
+      scopeOptionWarned = true;
+    }
+    if (!opts.context) {
+      opts.context = opts.scope;
+    }
+    delete opts.scope;
+  }
+  templ = new Template(template, opts);
+  return templ.compile();
+};
+
+/**
+ * Render the given `template` of ejs.
+ *
+ * If you would like to include options but not data, you need to explicitly
+ * call this function with `data` being an empty object or `null`.
+ *
+ * @param {String}   template EJS template
+ * @param {Object}  [data={}] template data
+ * @param {Options} [opts={}] compilation and rendering options
+ * @return {(String|Promise<String>)}
+ * Return value type depends on `opts.async`.
+ * @public
+ */
+
+exports.render = function (template, d, o) {
+  var data = d || utils.createNullProtoObjWherePossible();
+  var opts = o || utils.createNullProtoObjWherePossible();
+
+  // No options object -- if there are optiony names
+  // in the data, copy them to options
+  if (arguments.length == 2) {
+    utils.shallowCopyFromList(opts, data, _OPTS_PASSABLE_WITH_DATA);
+  }
+
+  return handleCache(opts, template)(data);
+};
+
+/**
+ * Render an EJS file at the given `path` and callback `cb(err, str)`.
+ *
+ * If you would like to include options but not data, you need to explicitly
+ * call this function with `data` being an empty object or `null`.
+ *
+ * @param {String}             path     path to the EJS file
+ * @param {Object}            [data={}] template data
+ * @param {Options}           [opts={}] compilation and rendering options
+ * @param {RenderFileCallback} cb callback
+ * @public
+ */
+
+exports.renderFile = function () {
+  var args = Array.prototype.slice.call(arguments);
+  var filename = args.shift();
+  var cb;
+  var opts = {filename: filename};
+  var data;
+  var viewOpts;
+
+  // Do we have a callback?
+  if (typeof arguments[arguments.length - 1] == 'function') {
+    cb = args.pop();
+  }
+  // Do we have data/opts?
+  if (args.length) {
+    // Should always have data obj
+    data = args.shift();
+    // Normal passed opts (data obj + opts obj)
+    if (args.length) {
+      // Use shallowCopy so we don't pollute passed in opts obj with new vals
+      utils.shallowCopy(opts, args.pop());
+    }
+    // Special casing for Express (settings + opts-in-data)
+    else {
+      // Express 3 and 4
+      if (data.settings) {
+        // Pull a few things from known locations
+        if (data.settings.views) {
+          opts.views = data.settings.views;
+        }
+        if (data.settings['view cache']) {
+          opts.cache = true;
+        }
+        // Undocumented after Express 2, but still usable, esp. for
+        // items that are unsafe to be passed along with data, like `root`
+        viewOpts = data.settings['view options'];
+        if (viewOpts) {
+          utils.shallowCopy(opts, viewOpts);
+        }
+      }
+      // Express 2 and lower, values set in app.locals, or people who just
+      // want to pass options in their data. NOTE: These values will override
+      // anything previously set in settings  or settings['view options']
+      utils.shallowCopyFromList(opts, data, _OPTS_PASSABLE_WITH_DATA_EXPRESS);
+    }
+    opts.filename = filename;
+  }
+  else {
+    data = utils.createNullProtoObjWherePossible();
+  }
+
+  return tryHandleCache(opts, data, cb);
+};
+
+/**
+ * Clear intermediate JavaScript cache. Calls {@link Cache#reset}.
+ * @public
+ */
+
+/**
+ * EJS template class
+ * @public
+ */
+exports.Template = Template;
+
+exports.clearCache = function () {
+  exports.cache.reset();
+};
+
+function Template(text, opts) {
+  opts = opts || utils.createNullProtoObjWherePossible();
+  var options = utils.createNullProtoObjWherePossible();
+  this.templateText = text;
+  /** @type {string | null} */
+  this.mode = null;
+  this.truncate = false;
+  this.currentLine = 1;
+  this.source = '';
+  options.client = opts.client || false;
+  options.escapeFunction = opts.escape || opts.escapeFunction || utils.escapeXML;
+  options.compileDebug = opts.compileDebug !== false;
+  options.debug = !!opts.debug;
+  options.filename = opts.filename;
+  options.openDelimiter = opts.openDelimiter || exports.openDelimiter || _DEFAULT_OPEN_DELIMITER;
+  options.closeDelimiter = opts.closeDelimiter || exports.closeDelimiter || _DEFAULT_CLOSE_DELIMITER;
+  options.delimiter = opts.delimiter || exports.delimiter || _DEFAULT_DELIMITER;
+  options.strict = opts.strict || false;
+  options.context = opts.context;
+  options.cache = opts.cache || false;
+  options.rmWhitespace = opts.rmWhitespace;
+  options.root = opts.root;
+  options.includer = opts.includer;
+  options.outputFunctionName = opts.outputFunctionName;
+  options.localsName = opts.localsName || exports.localsName || _DEFAULT_LOCALS_NAME;
+  options.views = opts.views;
+  options.async = opts.async;
+  options.destructuredLocals = opts.destructuredLocals;
+  options.legacyInclude = typeof opts.legacyInclude != 'undefined' ? !!opts.legacyInclude : true;
+
+  if (options.strict) {
+    options._with = false;
+  }
+  else {
+    options._with = typeof opts._with != 'undefined' ? opts._with : true;
+  }
+
+  this.opts = options;
+
+  this.regex = this.createRegex();
+}
+
+Template.modes = {
+  EVAL: 'eval',
+  ESCAPED: 'escaped',
+  RAW: 'raw',
+  COMMENT: 'comment',
+  LITERAL: 'literal'
+};
+
+Template.prototype = {
+  createRegex: function () {
+    var str = _REGEX_STRING;
+    var delim = utils.escapeRegExpChars(this.opts.delimiter);
+    var open = utils.escapeRegExpChars(this.opts.openDelimiter);
+    var close = utils.escapeRegExpChars(this.opts.closeDelimiter);
+    str = str.replace(/%/g, delim)
+      .replace(/</g, open)
+      .replace(/>/g, close);
+    return new RegExp(str);
+  },
+
+  compile: function () {
+    /** @type {string} */
+    var src;
+    /** @type {ClientFunction} */
+    var fn;
+    var opts = this.opts;
+    var prepended = '';
+    var appended = '';
+    /** @type {EscapeCallback} */
+    var escapeFn = opts.escapeFunction;
+    /** @type {FunctionConstructor} */
+    var ctor;
+    /** @type {string} */
+    var sanitizedFilename = opts.filename ? JSON.stringify(opts.filename) : 'undefined';
+
+    if (!this.source) {
+      this.generateSource();
+      prepended +=
+        '  var __output = "";\n' +
+        '  function __append(s) { if (s !== undefined && s !== null) __output += s }\n';
+      if (opts.outputFunctionName) {
+        if (!_JS_IDENTIFIER.test(opts.outputFunctionName)) {
+          throw new Error('outputFunctionName is not a valid JS identifier.');
+        }
+        prepended += '  var ' + opts.outputFunctionName + ' = __append;' + '\n';
+      }
+      if (opts.localsName && !_JS_IDENTIFIER.test(opts.localsName)) {
+        throw new Error('localsName is not a valid JS identifier.');
+      }
+      if (opts.destructuredLocals && opts.destructuredLocals.length) {
+        var destructuring = '  var __locals = (' + opts.localsName + ' || {}),\n';
+        for (var i = 0; i < opts.destructuredLocals.length; i++) {
+          var name = opts.destructuredLocals[i];
+          if (!_JS_IDENTIFIER.test(name)) {
+            throw new Error('destructuredLocals[' + i + '] is not a valid JS identifier.');
+          }
+          if (i > 0) {
+            destructuring += ',\n  ';
+          }
+          destructuring += name + ' = __locals.' + name;
+        }
+        prepended += destructuring + ';\n';
+      }
+      if (opts._with !== false) {
+        prepended +=  '  with (' + opts.localsName + ' || {}) {' + '\n';
+        appended += '  }' + '\n';
+      }
+      appended += '  return __output;' + '\n';
+      this.source = prepended + this.source + appended;
+    }
+
+    if (opts.compileDebug) {
+      src = 'var __line = 1' + '\n'
+        + '  , __lines = ' + JSON.stringify(this.templateText) + '\n'
+        + '  , __filename = ' + sanitizedFilename + ';' + '\n'
+        + 'try {' + '\n'
+        + this.source
+        + '} catch (e) {' + '\n'
+        + '  rethrow(e, __lines, __filename, __line, escapeFn);' + '\n'
+        + '}' + '\n';
+    }
+    else {
+      src = this.source;
+    }
+
+    if (opts.client) {
+      src = 'escapeFn = escapeFn || ' + escapeFn.toString() + ';' + '\n' + src;
+      if (opts.compileDebug) {
+        src = 'rethrow = rethrow || ' + rethrow.toString() + ';' + '\n' + src;
+      }
+    }
+
+    if (opts.strict) {
+      src = '"use strict";\n' + src;
+    }
+    if (opts.debug) {
+      console.log(src);
+    }
+    if (opts.compileDebug && opts.filename) {
+      src = src + '\n'
+        + '//# sourceURL=' + sanitizedFilename + '\n';
+    }
+
+    try {
+      if (opts.async) {
+        // Have to use generated function for this, since in envs without support,
+        // it breaks in parsing
+        try {
+          ctor = (new Function('return (async function(){}).constructor;'))();
+        }
+        catch(e) {
+          if (e instanceof SyntaxError) {
+            throw new Error('This environment does not support async/await');
+          }
+          else {
+            throw e;
+          }
+        }
+      }
+      else {
+        ctor = Function;
+      }
+      fn = new ctor(opts.localsName + ', escapeFn, include, rethrow', src);
+    }
+    catch(e) {
+      // istanbul ignore else
+      if (e instanceof SyntaxError) {
+        if (opts.filename) {
+          e.message += ' in ' + opts.filename;
+        }
+        e.message += ' while compiling ejs\n\n';
+        e.message += 'If the above error is not helpful, you may want to try EJS-Lint:\n';
+        e.message += 'https://github.com/RyanZim/EJS-Lint';
+        if (!opts.async) {
+          e.message += '\n';
+          e.message += 'Or, if you meant to create an async function, pass `async: true` as an option.';
+        }
+      }
+      throw e;
+    }
+
+    // Return a callable function which will execute the function
+    // created by the source-code, with the passed data as locals
+    // Adds a local `include` function which allows full recursive include
+    var returnedFn = opts.client ? fn : function anonymous(data) {
+      var include = function (path, includeData) {
+        var d = utils.shallowCopy(utils.createNullProtoObjWherePossible(), data);
+        if (includeData) {
+          d = utils.shallowCopy(d, includeData);
+        }
+        return includeFile(path, opts)(d);
+      };
+      return fn.apply(opts.context,
+        [data || utils.createNullProtoObjWherePossible(), escapeFn, include, rethrow]);
+    };
+    if (opts.filename && typeof Object.defineProperty === 'function') {
+      var filename = opts.filename;
+      var basename = path.basename(filename, path.extname(filename));
+      try {
+        Object.defineProperty(returnedFn, 'name', {
+          value: basename,
+          writable: false,
+          enumerable: false,
+          configurable: true
+        });
+      } catch (e) {/* ignore */}
+    }
+    return returnedFn;
+  },
+
+  generateSource: function () {
+    var opts = this.opts;
+
+    if (opts.rmWhitespace) {
+      // Have to use two separate replace here as `^` and `$` operators don't
+      // work well with `\r` and empty lines don't work well with the `m` flag.
+      this.templateText =
+        this.templateText.replace(/[\r\n]+/g, '\n').replace(/^\s+|\s+$/gm, '');
+    }
+
+    // Slurp spaces and tabs before <%_ and after _%>
+    this.templateText =
+      this.templateText.replace(/[ \t]*<%_/gm, '<%_').replace(/_%>[ \t]*/gm, '_%>');
+
+    var self = this;
+    var matches = this.parseTemplateText();
+    var d = this.opts.delimiter;
+    var o = this.opts.openDelimiter;
+    var c = this.opts.closeDelimiter;
+
+    if (matches && matches.length) {
+      matches.forEach(function (line, index) {
+        var closing;
+        // If this is an opening tag, check for closing tags
+        // FIXME: May end up with some false positives here
+        // Better to store modes as k/v with openDelimiter + delimiter as key
+        // Then this can simply check against the map
+        if ( line.indexOf(o + d) === 0        // If it is a tag
+          && line.indexOf(o + d + d) !== 0) { // and is not escaped
+          closing = matches[index + 2];
+          if (!(closing == d + c || closing == '-' + d + c || closing == '_' + d + c)) {
+            throw new Error('Could not find matching close tag for "' + line + '".');
+          }
+        }
+        self.scanLine(line);
+      });
+    }
+
+  },
+
+  parseTemplateText: function () {
+    var str = this.templateText;
+    var pat = this.regex;
+    var result = pat.exec(str);
+    var arr = [];
+    var firstPos;
+
+    while (result) {
+      firstPos = result.index;
+
+      if (firstPos !== 0) {
+        arr.push(str.substring(0, firstPos));
+        str = str.slice(firstPos);
+      }
+
+      arr.push(result[0]);
+      str = str.slice(result[0].length);
+      result = pat.exec(str);
+    }
+
+    if (str) {
+      arr.push(str);
+    }
+
+    return arr;
+  },
+
+  _addOutput: function (line) {
+    if (this.truncate) {
+      // Only replace single leading linebreak in the line after
+      // -%> tag -- this is the single, trailing linebreak
+      // after the tag that the truncation mode replaces
+      // Handle Win / Unix / old Mac linebreaks -- do the \r\n
+      // combo first in the regex-or
+      line = line.replace(/^(?:\r\n|\r|\n)/, '');
+      this.truncate = false;
+    }
+    if (!line) {
+      return line;
+    }
+
+    // Preserve literal slashes
+    line = line.replace(/\\/g, '\\\\');
+
+    // Convert linebreaks
+    line = line.replace(/\n/g, '\\n');
+    line = line.replace(/\r/g, '\\r');
+
+    // Escape double-quotes
+    // - this will be the delimiter during execution
+    line = line.replace(/"/g, '\\"');
+    this.source += '    ; __append("' + line + '")' + '\n';
+  },
+
+  scanLine: function (line) {
+    var self = this;
+    var d = this.opts.delimiter;
+    var o = this.opts.openDelimiter;
+    var c = this.opts.closeDelimiter;
+    var newLineCount = 0;
+
+    newLineCount = (line.split('\n').length - 1);
+
+    switch (line) {
+    case o + d:
+    case o + d + '_':
+      this.mode = Template.modes.EVAL;
+      break;
+    case o + d + '=':
+      this.mode = Template.modes.ESCAPED;
+      break;
+    case o + d + '-':
+      this.mode = Template.modes.RAW;
+      break;
+    case o + d + '#':
+      this.mode = Template.modes.COMMENT;
+      break;
+    case o + d + d:
+      this.mode = Template.modes.LITERAL;
+      this.source += '    ; __append("' + line.replace(o + d + d, o + d) + '")' + '\n';
+      break;
+    case d + d + c:
+      this.mode = Template.modes.LITERAL;
+      this.source += '    ; __append("' + line.replace(d + d + c, d + c) + '")' + '\n';
+      break;
+    case d + c:
+    case '-' + d + c:
+    case '_' + d + c:
+      if (this.mode == Template.modes.LITERAL) {
+        this._addOutput(line);
+      }
+
+      this.mode = null;
+      this.truncate = line.indexOf('-') === 0 || line.indexOf('_') === 0;
+      break;
+    default:
+      // In script mode, depends on type of tag
+      if (this.mode) {
+        // If '//' is found without a line break, add a line break.
+        switch (this.mode) {
+        case Template.modes.EVAL:
+        case Template.modes.ESCAPED:
+        case Template.modes.RAW:
+          if (line.lastIndexOf('//') > line.lastIndexOf('\n')) {
+            line += '\n';
+          }
+        }
+        switch (this.mode) {
+        // Just executing code
+        case Template.modes.EVAL:
+          this.source += '    ; ' + line + '\n';
+          break;
+          // Exec, esc, and output
+        case Template.modes.ESCAPED:
+          this.source += '    ; __append(escapeFn(' + stripSemi(line) + '))' + '\n';
+          break;
+          // Exec and output
+        case Template.modes.RAW:
+          this.source += '    ; __append(' + stripSemi(line) + ')' + '\n';
+          break;
+        case Template.modes.COMMENT:
+          // Do nothing
+          break;
+          // Literal <%% mode, append as raw output
+        case Template.modes.LITERAL:
+          this._addOutput(line);
+          break;
+        }
+      }
+      // In string mode, just add the output
+      else {
+        this._addOutput(line);
+      }
+    }
+
+    if (self.opts.compileDebug && newLineCount) {
+      this.currentLine += newLineCount;
+      this.source += '    ; __line = ' + this.currentLine + '\n';
+    }
+  }
+};
+
+/**
+ * Escape characters reserved in XML.
+ *
+ * This is simply an export of {@link module:utils.escapeXML}.
+ *
+ * If `markup` is `undefined` or `null`, the empty string is returned.
+ *
+ * @param {String} markup Input string
+ * @return {String} Escaped string
+ * @public
+ * @func
+ * */
+exports.escapeXML = utils.escapeXML;
+
+/**
+ * Express.js support.
+ *
+ * This is an alias for {@link module:ejs.renderFile}, in order to support
+ * Express.js out-of-the-box.
+ *
+ * @func
+ */
+
+exports.__express = exports.renderFile;
+
+/**
+ * Version of EJS.
+ *
+ * @readonly
+ * @type {String}
+ * @public
+ */
+
+exports.VERSION = _VERSION_STRING;
+
+/**
+ * Name for detection of EJS.
+ *
+ * @readonly
+ * @type {String}
+ * @public
+ */
+
+exports.name = _NAME;
+
+/* istanbul ignore if */
+if (typeof window != 'undefined') {
+  window.ejs = exports;
+}
+
+
+/***/ }),
+
+/***/ 356:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+/*
+ * EJS Embedded JavaScript templates
+ * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+*/
+
+/**
+ * Private utility functions
+ * @module utils
+ * @private
+ */
+
+
+
+var regExpChars = /[|\\{}()[\]^$+*?.]/g;
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+var hasOwn = function (obj, key) { return hasOwnProperty.apply(obj, [key]); };
+
+/**
+ * Escape characters reserved in regular expressions.
+ *
+ * If `string` is `undefined` or `null`, the empty string is returned.
+ *
+ * @param {String} string Input string
+ * @return {String} Escaped string
+ * @static
+ * @private
+ */
+exports.escapeRegExpChars = function (string) {
+  // istanbul ignore if
+  if (!string) {
+    return '';
+  }
+  return String(string).replace(regExpChars, '\\$&');
+};
+
+var _ENCODE_HTML_RULES = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&#34;',
+  "'": '&#39;'
+};
+var _MATCH_HTML = /[&<>'"]/g;
+
+function encode_char(c) {
+  return _ENCODE_HTML_RULES[c] || c;
+}
+
+/**
+ * Stringified version of constants used by {@link module:utils.escapeXML}.
+ *
+ * It is used in the process of generating {@link ClientFunction}s.
+ *
+ * @readonly
+ * @type {String}
+ */
+
+var escapeFuncStr =
+  'var _ENCODE_HTML_RULES = {\n'
++ '      "&": "&amp;"\n'
++ '    , "<": "&lt;"\n'
++ '    , ">": "&gt;"\n'
++ '    , \'"\': "&#34;"\n'
++ '    , "\'": "&#39;"\n'
++ '    }\n'
++ '  , _MATCH_HTML = /[&<>\'"]/g;\n'
++ 'function encode_char(c) {\n'
++ '  return _ENCODE_HTML_RULES[c] || c;\n'
++ '};\n';
+
+/**
+ * Escape characters reserved in XML.
+ *
+ * If `markup` is `undefined` or `null`, the empty string is returned.
+ *
+ * @implements {EscapeCallback}
+ * @param {String} markup Input string
+ * @return {String} Escaped string
+ * @static
+ * @private
+ */
+
+exports.escapeXML = function (markup) {
+  return markup == undefined
+    ? ''
+    : String(markup)
+      .replace(_MATCH_HTML, encode_char);
+};
+exports.escapeXML.toString = function () {
+  return Function.prototype.toString.call(this) + ';\n' + escapeFuncStr;
+};
+
+/**
+ * Naive copy of properties from one object to another.
+ * Does not recurse into non-scalar properties
+ * Does not check to see if the property has a value before copying
+ *
+ * @param  {Object} to   Destination object
+ * @param  {Object} from Source object
+ * @return {Object}      Destination object
+ * @static
+ * @private
+ */
+exports.shallowCopy = function (to, from) {
+  from = from || {};
+  if ((to !== null) && (to !== undefined)) {
+    for (var p in from) {
+      if (!hasOwn(from, p)) {
+        continue;
+      }
+      if (p === '__proto__' || p === 'constructor') {
+        continue;
+      }
+      to[p] = from[p];
+    }
+  }
+  return to;
+};
+
+/**
+ * Naive copy of a list of key names, from one object to another.
+ * Only copies property if it is actually defined
+ * Does not recurse into non-scalar properties
+ *
+ * @param  {Object} to   Destination object
+ * @param  {Object} from Source object
+ * @param  {Array} list List of properties to copy
+ * @return {Object}      Destination object
+ * @static
+ * @private
+ */
+exports.shallowCopyFromList = function (to, from, list) {
+  list = list || [];
+  from = from || {};
+  if ((to !== null) && (to !== undefined)) {
+    for (var i = 0; i < list.length; i++) {
+      var p = list[i];
+      if (typeof from[p] != 'undefined') {
+        if (!hasOwn(from, p)) {
+          continue;
+        }
+        if (p === '__proto__' || p === 'constructor') {
+          continue;
+        }
+        to[p] = from[p];
+      }
+    }
+  }
+  return to;
+};
+
+/**
+ * Simple in-process cache implementation. Does not implement limits of any
+ * sort.
+ *
+ * @implements {Cache}
+ * @static
+ * @private
+ */
+exports.cache = {
+  _data: {},
+  set: function (key, val) {
+    this._data[key] = val;
+  },
+  get: function (key) {
+    return this._data[key];
+  },
+  remove: function (key) {
+    delete this._data[key];
+  },
+  reset: function () {
+    this._data = {};
+  }
+};
+
+/**
+ * Transforms hyphen case variable into camel case.
+ *
+ * @param {String} string Hyphen case string
+ * @return {String} Camel case string
+ * @static
+ * @private
+ */
+exports.hyphenToCamel = function (str) {
+  return str.replace(/-[a-z]/g, function (match) { return match[1].toUpperCase(); });
+};
+
+/**
+ * Returns a null-prototype object in runtimes that support it
+ *
+ * @return {Object} Object, prototype will be set to null where possible
+ * @static
+ * @private
+ */
+exports.createNullProtoObjWherePossible = (function () {
+  if (typeof Object.create == 'function') {
+    return function () {
+      return Object.create(null);
+    };
+  }
+  if (!({__proto__: null} instanceof Object)) {
+    return function () {
+      return {__proto__: null};
+    };
+  }
+  // Not possible, just pass through
+  return function () {
+    return {};
+  };
+})();
+
+
 
 
 /***/ }),
@@ -7536,6 +11519,52 @@ if (typeof Object.create === 'function') {
     }
   }
 }
+
+
+/***/ }),
+
+/***/ 3287:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+
+/*!
+ * is-plain-object <https://github.com/jonschlinkert/is-plain-object>
+ *
+ * Copyright (c) 2014-2017, Jon Schlinkert.
+ * Released under the MIT License.
+ */
+
+function isObject(o) {
+  return Object.prototype.toString.call(o) === '[object Object]';
+}
+
+function isPlainObject(o) {
+  var ctor,prot;
+
+  if (isObject(o) === false) return false;
+
+  // If has modified constructor
+  ctor = o.constructor;
+  if (ctor === undefined) return true;
+
+  // If has modified prototype
+  prot = ctor.prototype;
+  if (isObject(prot) === false) return false;
+
+  // If constructor does not have an Object-specific method
+  if (prot.hasOwnProperty('isPrototypeOf') === false) {
+    return false;
+  }
+
+  // Most likely a plain Object
+  return true;
+}
+
+exports.isPlainObject = isPlainObject;
 
 
 /***/ }),
@@ -11969,6 +15998,32 @@ exports.debug = debug; // for test
 
 /***/ }),
 
+/***/ 5030:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+
+function getUserAgent() {
+  if (typeof navigator === "object" && "userAgent" in navigator) {
+    return navigator.userAgent;
+  }
+
+  if (typeof process === "object" && "version" in process) {
+    return `Node.js/${process.version.substr(1)} (${process.platform}; ${process.arch})`;
+  }
+
+  return "<environment undetectable>";
+}
+
+exports.getUserAgent = getUserAgent;
+//# sourceMappingURL=index.js.map
+
+
+/***/ }),
+
 /***/ 5840:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
@@ -14621,6 +18676,11 @@ function wrappy (fn, cb) {
 
 "use strict";
 
+/**
+ * This module contains the action.
+ *
+ * @module
+ */
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -14659,14 +18719,23 @@ const pre_1 = __nccwpck_require__(4153);
 const getdata_1 = __nccwpck_require__(5622);
 const post_1 = __nccwpck_require__(7051);
 const core = __importStar(__nccwpck_require__(2186));
-/** The entrypoint of the program. */
+/**
+ * The entrypoint of the program.
+ * The program performs the following steps:
+ * - Handle preconditions required for the program to run
+ * - Call the modules that generate the data
+ * - Generates the output files
+*/
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            // Handle preconditions
             const check = yield (0, pre_1.pre)();
             if (check) {
-                const result = yield (0, getdata_1.data)(); // call data check.
-                yield (0, post_1.post)(result); // call post check.
+                // Generate the data
+                const result = yield (0, getdata_1.data)();
+                // Create output files
+                yield (0, post_1.post)(result);
             }
         }
         catch (error) {
@@ -14679,97 +18748,186 @@ exports.main = main;
 
 /***/ }),
 
+/***/ 7681:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+/**
+ * This module contains functions for handling Docker exit codes based on error status.
+ *
+ * @module
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.throwError = exports.throwDockerError = exports.isDockerError = exports.isError = void 0;
+// Known Docker errors: https://komodor.com/learn/exit-codes-in-containers-and-kubernetes-the-complete-guide/
+// Other exit codes indicate the contained command's exit code
+const dockerErrors = new Map();
+dockerErrors.set(125, "Container failed to run error");
+dockerErrors.set(126, "A command specified in the image specification could not be invoked");
+dockerErrors.set(127, "File or directory specified in the image specification was not found");
+dockerErrors.set(128, "Exit was triggered with an invalid exit code (valid codes are integers between 0-255)");
+dockerErrors.set(134, "The container aborted itself using the abort() function.");
+dockerErrors.set(137, "Container was immediately terminated by the operating system via SIGKILL signal");
+dockerErrors.set(139, "Container attempted to access memory that was not assigned to it and was terminated");
+dockerErrors.set(143, "Container received warning that it was about to be terminated, then terminated");
+dockerErrors.set(255, "Container exited, returning an exit code outside the acceptable range, meaning the cause of the error is not known");
+/**
+ * Checks if a Docker exit code indicates an error with Docker or the application.
+ * @param exitCode The Docker exit code.
+ * @returns `true` if the exit code indicates an error from Docker or the application.
+ */
+function isError(exitCode) {
+    return exitCode !== 0;
+}
+exports.isError = isError;
+/**
+ * Checks if a Docker exit code indicates a Docker error.
+ * @param exitCode The Docker exit code.
+ * @returns `true` if the exit code indicates a Docker error, `false` if it indicates an application's return value.
+ */
+function isDockerError(exitCode) {
+    return dockerErrors.has(exitCode);
+}
+exports.isDockerError = isDockerError;
+/**
+ * Checks if a Docker exit code indicates a Docker error and throws the error if it does.
+ * No error is thrown if the exit code indicates an application error.
+ * @param exitCode The Docker exit code.
+ */
+function throwDockerError(exitCode) {
+    if (isDockerError(exitCode)) {
+        throw new Error(dockerErrors.get(exitCode));
+    }
+}
+exports.throwDockerError = throwDockerError;
+/**
+ * Checks if a Docker exit code indicates an error with Docker or the application, and throw it if it does.
+ * @param application The name of the used application.
+ * @param exitCode The Docker exit code.
+ */
+function throwError(application, exitCode) {
+    if (isError(exitCode)) {
+        // If the exit code is a Docker error, throw it
+        throwDockerError(exitCode);
+        // Throw application error
+        throw new Error(application + " application error: " + exitCode.toString());
+    }
+}
+exports.throwError = throwError;
+
+
+/***/ }),
+
+/***/ 8375:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+/**
+ * This module contains functions for logging program output.
+ *
+ * @module
+ */
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.formatMessage = exports.createLogFile = exports.LogMessage = exports.ErrorLevel = void 0;
+const fs_1 = __importDefault(__nccwpck_require__(7147));
+/**
+ * Enum describing the severity of an error when logged by {@link LogMessage | LogMessage()}.
+ */
+var ErrorLevel;
+(function (ErrorLevel) {
+    ErrorLevel[ErrorLevel["info"] = 0] = "info";
+    ErrorLevel[ErrorLevel["warn"] = 1] = "warn";
+    ErrorLevel[ErrorLevel["err"] = 2] = "err";
+})(ErrorLevel = exports.ErrorLevel || (exports.ErrorLevel = {}));
+/**
+ * Logs an error or information message to console and appends the message to the log file.
+ *
+ * @param content The message to be logged.
+ * @param level The severity of the error.
+ */
+function LogMessage(content, level) {
+    // Format the message
+    const message = formatMessage(content, level);
+    // Write the message to stdout or stderr based on the error level
+    if (level >= ErrorLevel.err) {
+        console.error(message);
+    }
+    else {
+        console.log(message);
+    }
+    // Write the message to the log file
+    try {
+        fs_1.default.appendFileSync("./.FAIRSECO/program.log", message);
+    }
+    catch (e) {
+        console.error(formatMessage(e, ErrorLevel.err));
+    }
+}
+exports.LogMessage = LogMessage;
+/**
+ * Creates the log file.
+ *
+ * Path: `.FAIRSECO/program.log`
+ */
+function createLogFile() {
+    // Open the log file
+    const fd = fs_1.default.openSync("./.FAIRSECO/program.log", "w+");
+    // Write to the log file
+    try {
+        fs_1.default.writeSync(fd, formatMessage("FAIRSECO Log initialized", ErrorLevel.info));
+        fs_1.default.writeSync(fd, "\n------------------------------\n");
+        fs_1.default.closeSync(fd);
+    }
+    catch (_a) {
+        console.error(formatMessage("Failed to create log file", ErrorLevel.err));
+    }
+}
+exports.createLogFile = createLogFile;
+/**
+ * Formats a message for logging.
+ *
+ * @param content The message.
+ * @param level The error level of the message.
+ * @returns The formatted message.
+ */
+function formatMessage(content, level) {
+    // Error level names
+    const levelNames = {
+        [ErrorLevel.info]: "INFO",
+        [ErrorLevel.warn]: "WARN",
+        [ErrorLevel.err]: "ERR"
+    };
+    // Message formatted as date, error level tag, content and new line
+    const date = new Date().toLocaleString("en-US");
+    const levelTag = "[" + levelNames[level] + "]";
+    return date + "- " + levelTag + ": " + content + "\n";
+}
+exports.formatMessage = formatMessage;
+
+
+/***/ }),
+
 /***/ 5622:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.data = void 0;
-const tortellini_1 = __nccwpck_require__(3167);
-const howfairis_1 = __nccwpck_require__(7935);
-const searchseco_1 = __nccwpck_require__(629);
-const citingPapers_1 = __nccwpck_require__(8274);
-const citation_cff_1 = __nccwpck_require__(4208);
-const sbom_1 = __nccwpck_require__(147);
-function data() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const output = [];
-        try {
-            const tortelliniResult = yield (0, tortellini_1.runTortellini)();
-            output.push(tortelliniResult);
-        }
-        catch (error) {
-            console.error("Tortellini threw an error:");
-            console.error(error);
-        }
-        try {
-            const howfairisResult = yield (0, howfairis_1.runHowfairis)();
-            output.push(howfairisResult);
-        }
-        catch (error) {
-            console.error("Howfairis threw an error:");
-            console.error(error);
-        }
-        try {
-            const searchsecoResult = yield (0, searchseco_1.runSearchseco)();
-            output.push(searchsecoResult);
-        }
-        catch (error) {
-            console.error("Searchseco threw an error:");
-            console.error(error);
-        }
-        try {
-            const cffResult = yield (0, citation_cff_1.getCitationFile)("./src/resources");
-            output.push(cffResult);
-        }
-        catch (error) {
-            console.error("Getting CITATION.cff caused an error:");
-        }
-        try {
-            const cffFile = output[3].ReturnData;
-            if (cffFile.status === "valid") {
-                const citingPapersResult = yield (0, citingPapers_1.runCitingPapers)(cffFile);
-                output.push(citingPapersResult);
-            }
-            else {
-                throw new Error("Invalid cff File");
-            }
-        }
-        catch (error) {
-            console.error("Scholarly threw an error:");
-            console.error(error);
-        }
-        try {
-            const SBOMResult = yield (0, sbom_1.runSBOM)();
-            output.push(SBOMResult);
-        }
-        catch (error) {
-            console.error("SBOM threw an error:");
-            console.error(error);
-        }
-        return output;
-    });
-}
-exports.data = data;
-
-
-/***/ }),
-
-/***/ 6350:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
+/**
+ * This module handles the main part of the action. It runs each resource module and compiles
+ * the results into an array of {@link ReturnObject | ReturnObjects}.
+ *
+ * @remarks
+ * Because every function is wrapped in a try-catch block separately,
+ * the program doesn't crash if one of them fails. The result will simply omit the data
+ * from that resource.
+ *
+ * @module
+ */
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -14803,20 +18961,436 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getRepoUrl = void 0;
-const core = __importStar(__nccwpck_require__(2186));
+exports.data = void 0;
+const tortellini = __importStar(__nccwpck_require__(3167));
+const fairtally = __importStar(__nccwpck_require__(7955));
+const searchSECO = __importStar(__nccwpck_require__(629));
+const citingPapers = __importStar(__nccwpck_require__(706));
+const citationcff = __importStar(__nccwpck_require__(4208));
+const sbom = __importStar(__nccwpck_require__(147));
+const qualityMetrics = __importStar(__nccwpck_require__(2829));
+const log_1 = __nccwpck_require__(8375);
+const git_1 = __nccwpck_require__(6350);
 /**
- * Retrieves the url of the repository.
- * @returns The url of the repository the program is being run in.
+ * Runs each FAIRSECO data collection module and compiles the results.
+ *
+ * @returns An array containing data generation outputs from all modules that did not encounter fatal errors.
+ */
+function data() {
+    return __awaiter(this, void 0, void 0, function* () {
+        // Get GitHub repository info
+        const ghInfo = yield (0, git_1.getGitHubInfo)();
+        // We clear the github token from the output
+        const ghReturnObject = {
+            ModuleName: "GithubInfo",
+            Data: Object.assign(Object.assign({}, ghInfo), { GithubToken: "" }),
+        };
+        // Run modules
+        const tortelliniResult = yield runModule(tortellini);
+        const fairtallyResult = yield runModule(fairtally, ghInfo);
+        const searchSECOResult = yield runModule(searchSECO, ghInfo);
+        const cffResult = yield runModule(citationcff);
+        const SBOMResult = yield runModule(sbom);
+        const citingPapersResult = yield runModule(citingPapers, cffResult === null || cffResult === void 0 ? void 0 : cffResult.Data);
+        const qualityMetricsResult = yield runModule(qualityMetrics, ghInfo, fairtallyResult === null || fairtallyResult === void 0 ? void 0 : fairtallyResult.Data, tortelliniResult === null || tortelliniResult === void 0 ? void 0 : tortelliniResult.Data);
+        // Return the data produced by modules
+        return [
+            ghReturnObject,
+            tortelliniResult,
+            fairtallyResult,
+            searchSECOResult,
+            cffResult,
+            SBOMResult,
+            citingPapersResult,
+            qualityMetricsResult
+        ].filter((e) => e !== undefined);
+    });
+}
+exports.data = data;
+function runModule(module, ...parameters) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const resultData = yield module.runModule(...parameters);
+            const result = {
+                ModuleName: module.ModuleName,
+                Data: resultData,
+            };
+            return result;
+        }
+        catch (error) {
+            (0, log_1.LogMessage)(module.ModuleName + " encountered an error:\n" + error.message, log_1.ErrorLevel.err);
+            return undefined;
+        }
+    });
+}
+
+
+/***/ }),
+
+/***/ 6350:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+/**
+ * This module contains functions that retrieve data of the GitHub repository using Octokit.
+ *
+ * @module
+ */
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.filterBadgeURLS = exports.getRepoReadme = exports.getRepoUrl = exports.getContributors = exports.getGitHubInfo = exports.getRepoStats = void 0;
+const core = __importStar(__nccwpck_require__(2186));
+const gh = __importStar(__nccwpck_require__(5438));
+const log = __importStar(__nccwpck_require__(8375));
+/**
+ * Retrieves the stats of the repository from Octokit.
+ *
+ * @param owner The username of the owner of the repository.
+ * @param repo The name of the repository.
+ * @param token The GitHub token associated with the owner.
+ * @returns A `RepoStats` object containing stats of the repository.
+ */
+function getRepoStats(owner, repo, token) {
+    return __awaiter(this, void 0, void 0, function* () {
+        // Make a dummy response first, this is sent instead when we error
+        const repostats = {
+            stars: -1,
+            forks: -1,
+            watchers: -1,
+            visibility: "",
+        };
+        let octokit;
+        try {
+            // First try our supplied token, if that doesn't work, we can already return the dummy.
+            octokit = gh.getOctokit(token);
+        }
+        catch (error) {
+            log.LogMessage("Error while contacting Octokit API: " + error.message, log.ErrorLevel.err);
+            // We return the dummy when we can't do anything
+            return repostats;
+        }
+        try {
+            // Now we contact the api
+            const { data: response } = yield octokit.rest.repos.get({
+                owner,
+                repo,
+            });
+            repostats.stars = response.stargazers_count;
+            repostats.forks = response.forks_count;
+            repostats.watchers = response.watchers_count;
+            repostats.visibility = response.visibility;
+        }
+        catch (error) {
+            log.LogMessage("Error when requesting repo information: " + error.message, log.ErrorLevel.err);
+        }
+        return repostats;
+    });
+}
+exports.getRepoStats = getRepoStats;
+/**
+ * Creates a GitHubInfo object with all data collected from the Octokit API.
+ *
+ * @returns A GitHubInfo object containing all data recieved from Octokit.
+ */
+function getGitHubInfo() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const ghInfo = {
+            Owner: "",
+            Repo: "",
+            GithubToken: "",
+            FullURL: "",
+            Stars: 0,
+            Forks: 0,
+            Watched: 0,
+            Readme: "",
+            Badges: [],
+            Visibility: "",
+            Contributors: [],
+        };
+        const ghtoken = core.getInput("myToken");
+        ghInfo.Repo = core.getInput("repository").split("/")[1];
+        ghInfo.Owner = core.getInput("repository").split("/")[0];
+        ghInfo.GithubToken = ghtoken;
+        ghInfo.FullURL = yield getRepoUrl();
+        const ghstats = yield getRepoStats(ghInfo.Owner, ghInfo.Repo, ghtoken);
+        ghInfo.Stars = ghstats.stars;
+        ghInfo.Forks = ghstats.forks;
+        ghInfo.Watched = ghstats.forks;
+        ghInfo.Visibility = ghstats.visibility;
+        ghInfo.Readme = yield getRepoReadme(ghInfo.Owner, ghInfo.Repo, ghtoken);
+        ghInfo.Badges = filterBadgeURLS(ghInfo.Readme);
+        ghInfo.Contributors = yield getContributors(ghInfo.Owner, ghInfo.Repo, ghtoken);
+        return ghInfo;
+    });
+}
+exports.getGitHubInfo = getGitHubInfo;
+/**
+ * Retrieves the contributors of the repository.
+ *
+ * @param owner The username of the owner of the repository.
+ * @param repo The name of the repository.
+ * @param token The GitHub token associated with the owner.
+ * @returns An array with the GitHub contributors of the repository.
+ */
+function getContributors(owner, repo, token) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const octokit = gh.getOctokit(token);
+            const { data: contributors } = yield octokit.rest.repos.listContributors({
+                owner,
+                repo,
+            });
+            return contributors;
+        }
+        catch (_a) {
+            log.LogMessage("An error occured while retrieving contributors.", log.ErrorLevel.err);
+            return [];
+        }
+    });
+}
+exports.getContributors = getContributors;
+/**
+ * Constructs the full URL of the repository by combining the username and repo name.
+ *
+ * @returns The URL of the repository.
  */
 function getRepoUrl() {
     return __awaiter(this, void 0, void 0, function* () {
-        const prefix = 'https://github.com/';
-        const repository = core.getInput('repository');
+        const prefix = "https://github.com/";
+        const repository = core.getInput("repository");
         return prefix + repository;
     });
 }
 exports.getRepoUrl = getRepoUrl;
+/**
+ * Retrieves the readme.md file from the repository.
+ *
+ * @param owner The username of the owner of the repository.
+ * @param repo The name of the repository.
+ * @param token The GitHub token associated with the owner.
+ * @returns A string with the contents of the readme.md file.
+ */
+function getRepoReadme(owner, repo, token) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let result = "";
+        try {
+            const octokit = gh.getOctokit(token);
+            const { data: { content: readme }, } = yield octokit.rest.repos.getReadme({
+                owner,
+                repo,
+            });
+            result = Buffer.from(readme, "base64").toString();
+        }
+        catch (_a) {
+            log.LogMessage("An error occured while retrieving readme.", log.ErrorLevel.err);
+        }
+        return result;
+    });
+}
+exports.getRepoReadme = getRepoReadme;
+/**
+ * Searches through the readme.md file for badge links from shields.io.
+ *
+ * @param input The contents of the readme.md file.
+ * @returns An array of badge links.
+ */
+function filterBadgeURLS(input) {
+    const rgexp = /!\[.*\]\s*\(https:\/\/img\.shields\.io\/badge\/.*\)/g;
+    const result = input.match(rgexp);
+    if (result == null) {
+        return [];
+    }
+    else {
+        return result;
+    }
+}
+exports.filterBadgeURLS = filterBadgeURLS;
+
+
+/***/ }),
+
+/***/ 8655:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+/**
+ * This module contains a function that handles getting and updating FAIRSECO history data.
+ *
+ * @module
+ */
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getHistoryData = void 0;
+const fs = __importStar(__nccwpck_require__(7147));
+const log_1 = __nccwpck_require__(8375);
+/**
+ * Gets history data and updates the history file with new data.
+ * - If the history file can not be read, the history is reset.
+ * - If the last entry in the history has the current date, it will be updated with the new data.
+ *
+ * @param filePath The path to read history from and write history to.
+ * @param result The data gathered by FAIRSECO.
+ * @returns The history data with the new data added.
+ */
+function getHistoryData(filePath, result) {
+    var _a, _b, _c, _d, _e;
+    // Get current date
+    const currentDate = new Date();
+    const day = currentDate.getDate();
+    const month = currentDate.getMonth() + 1;
+    const year = currentDate.getFullYear();
+    const date = (day <= 9 ? "0" + String(day) : String(day)) +
+        "/" +
+        (month <= 9 ? "0" + String(month) : String(month)) +
+        "/" +
+        year;
+    // Get quality score
+    const quality = (_b = (_a = result.find((ele) => (ele.ModuleName === "QualityMetrics"))) === null || _a === void 0 ? void 0 : _a.Data) === null || _b === void 0 ? void 0 : _b.score;
+    // Get citations
+    const citationsData = (_c = result.find((ele) => (ele.ModuleName === "CitingPapers"))) === null || _c === void 0 ? void 0 : _c.Data;
+    const firstHandCitations = citationsData === null || citationsData === void 0 ? void 0 : citationsData.firstHandCitations;
+    const secondHandCitations = citationsData === null || citationsData === void 0 ? void 0 : citationsData.secondHandCitations;
+    const citations = firstHandCitations === undefined || secondHandCitations === undefined ? undefined : firstHandCitations + secondHandCitations;
+    // Get fairness
+    const fairnessOutput = (_d = result.find((ele) => (ele.ModuleName === "fairtally"))) === null || _d === void 0 ? void 0 : _d.Data;
+    const fairness = fairnessOutput !== undefined ? fairnessOutput[0].count : undefined;
+    // Get method matches
+    const searchsecoOutput = (_e = result.find((ele) => (ele.ModuleName === "SearchSECO"))) === null || _e === void 0 ? void 0 : _e.Data;
+    let matches;
+    if ((searchsecoOutput === null || searchsecoOutput === void 0 ? void 0 : searchsecoOutput.methods) !== undefined) {
+        matches = 0;
+        for (const method of searchsecoOutput.methods) {
+            matches += method.matches.length;
+        }
+    }
+    // New data object
+    const newData = {
+        date,
+        quality,
+        citations,
+        fairness,
+        matches
+    };
+    // Read the history file
+    const historyData = readHistoryFile(filePath);
+    // Check if the last entry is of the current date.
+    // If it is, update it with the new data.
+    // Otherwise, add a new entry
+    let includeLater = false;
+    if (historyData.length >= 1 && historyData[historyData.length - 1].date === date) {
+        // Update the last entry
+        const lastEntry = historyData[historyData.length - 1];
+        Object.assign(lastEntry, newData);
+    }
+    else {
+        // Append new data to the history if it has useful data.
+        // Otherwise, append it later to exclude it from the history file.
+        if (newData.quality !== undefined || newData.citations !== undefined || newData.fairness !== undefined || newData.fairness !== undefined) {
+            historyData.push(newData);
+        }
+        else {
+            includeLater = true;
+        }
+    }
+    // Write new history to the history file
+    try {
+        fs.writeFileSync(filePath, JSON.stringify(historyData));
+    }
+    catch (error) {
+        (0, log_1.LogMessage)("Failed to write to FAIRSECO history file:\n" + error.message, log_1.ErrorLevel.err);
+    }
+    // Include new data after writing file, if needed
+    if (includeLater) {
+        historyData.push(newData);
+    }
+    return historyData;
+}
+exports.getHistoryData = getHistoryData;
+function readHistoryFile(filePath) {
+    // Get the history data
+    let historyData = [];
+    try {
+        // Read the history file
+        const readData = JSON.parse(fs.readFileSync(filePath).toString());
+        // Verify that the history data is an array
+        if (readData.constructor !== Array) {
+            throw new Error("Incorrect format (history is not an array)");
+        }
+        // Verify that the children are objects
+        for (const data of readData) {
+            if (typeof (data) !== "object") {
+                throw new Error("Incorrect format (element of history is not an object)");
+            }
+        }
+        historyData = readData;
+    }
+    catch (error) {
+        if (error.code === "ENOENT") {
+            // File not found
+            (0, log_1.LogMessage)("No FAIRSECO history file found:\n" + error.message, log_1.ErrorLevel.info);
+        }
+        else {
+            // Error reading history file
+            (0, log_1.LogMessage)("Failed to read FAIRSECO history file (history will be reset!):\n" + error.message, log_1.ErrorLevel.warn);
+        }
+    }
+    return historyData;
+}
 
 
 /***/ }),
@@ -14826,6 +19400,12 @@ exports.getRepoUrl = getRepoUrl;
 
 "use strict";
 
+/**
+ * This module contains functions that are called after the main program is done, like
+ * creating the output files.
+ *
+ * @module
+ */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -14843,53 +19423,51 @@ exports.post = void 0;
 const yaml_1 = __importDefault(__nccwpck_require__(4083));
 const fs_1 = __importDefault(__nccwpck_require__(7147));
 const webapp_1 = __nccwpck_require__(6137);
+const log_1 = __nccwpck_require__(8375);
+const history_1 = __nccwpck_require__(8655);
 /**
  * Creates reports showing the gathered data in .yml and .html format.
- * @param result The data gathered by FairSECO.
+ * The FAIRSECO history file is also read and updated.
+ *
+ * @param result The data gathered by FAIRSECO.
  */
 function post(result) {
     return __awaiter(this, void 0, void 0, function* () {
-        createFairSECODir("./.FairSECO/"); // Make sure the output dir exists before we place files in it.
-        createReport(result); // Create report.yml file
+        // Create report.yml file
+        createReport(result);
+        // Get (and update) history data.
+        // Add this after generating the raw data report to not include it there.
+        // It will be used by the dashboard.
+        const historyData = (0, history_1.getHistoryData)("./.fairseco_history.json", result);
+        result.push({
+            ModuleName: "History",
+            Data: historyData
+        });
+        // Create dashboard.html file
         yield generateHTML(result);
-        return true;
     });
 }
 exports.post = post;
-function createFairSECODir(path) {
-    // Create dir if not exists
-    console.log("Creating FairSECO directory.");
-    try {
-        fs_1.default.mkdirSync(path);
-    }
-    catch (_a) {
-        console.log("Folder already exists, skipping");
-    }
-}
-// Generate the report of FairSeco
+// Generate the report of FAIRSECO
 function createReport(result) {
-    const fd = fs_1.default.openSync("./.FairSECO/Report.yml", "w+");
     try {
-        console.log(result);
-        fs_1.default.writeSync(fd, yaml_1.default.stringify(result));
-        console.log("Successfully wrote YML file to dir");
-        fs_1.default.closeSync(fd);
+        fs_1.default.writeFileSync("./.FAIRSECO/report.yml", yaml_1.default.stringify(result));
+        fs_1.default.writeFileSync("./.FAIRSECO/report.json", JSON.stringify(result));
+        (0, log_1.LogMessage)("Successfully wrote YML file to dir.", log_1.ErrorLevel.info);
     }
     catch (_a) {
-        console.error("Error writing yaml file");
+        (0, log_1.LogMessage)("Error writing YML file.", log_1.ErrorLevel.err);
     }
 }
 // Make a webapp from the report
 function generateHTML(result) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            yield (0, webapp_1.WriteHTML)(result, "./.FairSECO/index.html");
-            console.log("Successfully wrote HTML to dir");
-            // await WriteCSS("./.FairSECO/style.css");
-            // console.log("Successfully wrote CSS to dir");
+            yield (0, webapp_1.WriteHTML)(result, "./.FAIRSECO/");
+            (0, log_1.LogMessage)("Successfully wrote HTML file to dir.", log_1.ErrorLevel.info);
         }
-        catch (_a) {
-            console.error("Error writing HTML file");
+        catch (err) {
+            (0, log_1.LogMessage)("Error writing HTML file: " + err.message, log_1.ErrorLevel.err);
         }
     });
 }
@@ -14902,72 +19480,12 @@ function generateHTML(result) {
 
 "use strict";
 
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.pre = void 0;
-const core = __importStar(__nccwpck_require__(2186));
 /**
- * Handles preconditions for getting the data.
- * @returns Whether the preconditions for getting the data are satisfied.
+ * This module contains functions that are called before the main action is run,
+ * to set up the directory and files used by the program and make sure the program has the necessary input to run.
+ *
+ * @module
  */
-function pre() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const repositories = core.getInput('repository');
-            if (repositories === '') {
-                return false;
-            }
-            else {
-                return true;
-            }
-        }
-        catch (error) {
-            core.setFailed(error.message);
-        }
-        return false;
-    });
-}
-exports.pre = pre;
-
-
-/***/ }),
-
-/***/ 4208:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -15004,52 +19522,148 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getError = exports.unknownErrorMsg = exports.getCitationFile = void 0;
+exports.createFAIRSECODir = exports.pre = void 0;
+const core = __importStar(__nccwpck_require__(2186));
+const log_1 = __nccwpck_require__(8375);
+const fs_1 = __importDefault(__nccwpck_require__(7147));
+/**
+ * Handles preconditions for running the program.
+ *
+ * The function performs the following:
+ * - Creating the FAIRSECO directory
+ * - Creating the log file
+ * - Checking the necessary inputs that are required for the program to run
+ *
+ * @returns Whether the preconditions for running the program are satisfied.
+ */
+function pre() {
+    return __awaiter(this, void 0, void 0, function* () {
+        createFAIRSECODir();
+        (0, log_1.createLogFile)();
+        try {
+            const repositories = core.getInput("repository");
+            return repositories !== "";
+        }
+        catch (error) {
+            core.setFailed(error.message);
+            return false;
+        }
+    });
+}
+exports.pre = pre;
+/**
+ * Creates the FAIRSECO directory.
+ * This function is only exported for unit tests.
+ */
+function createFAIRSECODir() {
+    // Create directory if it does not yet exist
+    try {
+        fs_1.default.mkdirSync("./.FAIRSECO/");
+        (0, log_1.LogMessage)("FAIRSECO directory created.", log_1.ErrorLevel.info);
+    }
+    catch (_a) {
+        (0, log_1.LogMessage)("FAIRSECO directory already exists.", log_1.ErrorLevel.info);
+    }
+}
+exports.createFAIRSECODir = createFAIRSECODir;
+
+
+/***/ }),
+
+/***/ 4208:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+/**
+ * This module contains functions for reading and validating a CITATION.cff file.
+ *
+ * @module
+ */
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getError = exports.unknownErrorMsg = exports.runModule = exports.ModuleName = void 0;
+const dockerExit = __importStar(__nccwpck_require__(7681));
 const yaml_1 = __importDefault(__nccwpck_require__(4083));
 const path_ = __importStar(__nccwpck_require__(1017));
 const fs = __importStar(__nccwpck_require__(7147));
 const exec_1 = __nccwpck_require__(1514);
+const log_1 = __nccwpck_require__(8375);
+/** The name of the module. */
+exports.ModuleName = "CitationCff";
 /**
  * Reads a CITATION.cff file.
+ *
  * @param path Specifies the path to the directory the CITATION.cff file is in.
- * @returns The data from the CITATION.cff file.
+ * @returns An object containing the data from/about the CITATION.cff file.
  */
-function getCitationFile(path) {
+function runModule(path = ".") {
     return __awaiter(this, void 0, void 0, function* () {
         let file;
-        // Use current directory if none is specified
-        const filePath = path === undefined ? "." : path;
-        // Read the citation.cff file
+        // Read the CITATION.cff file
         try {
-            file = fs.readFileSync(filePath + "/CITATION.cff");
+            file = fs.readFileSync(path + "/CITATION.cff");
         }
-        catch (_a) {
-            // Reading file failed
-            console.log("WARNING: No citation.cff file found");
-            // Return MissingCFFObject indicating missing citation.cff file
-            const returnData = { status: "missing_file" };
-            return {
-                ReturnName: "Citation",
-                ReturnData: returnData,
-            };
+        catch (e) {
+            if (e.code === "ENOENT") {
+                // File not found, return MissingCffObject to indicate missing CITATION.cff file
+                (0, log_1.LogMessage)("No CITATION.cff file found.", log_1.ErrorLevel.info);
+                const Data = { status: "missing_file" };
+                return Data;
+            }
+            else {
+                // Critical error, stop
+                throw e;
+            }
         }
         let result;
-        // Parse the citation.cff file (YAML format)
+        // Parse the CITATION.cff file (YAML format)
         try {
             result = yaml_1.default.parse(file.toString());
         }
-        catch (_b) {
-            // Parsing failed, incorrect YAML
-            console.log("WARNING: Incorrect format");
-            // Return IncorrectYamlCFFObject to indicate incorrect yaml
-            const returnData = { status: "incorrect_yaml" };
-            return {
-                ReturnName: "Citation",
-                ReturnData: returnData,
-            };
+        catch (_a) {
+            // Parsing failed, incorrect YAML.
+            // Return IncorrectYamlCffObject to indicate incorrect yaml
+            (0, log_1.LogMessage)("CITATION.cff file contains incorrect yaml", log_1.ErrorLevel.warn);
+            const Data = { status: "incorrect_yaml" };
+            return Data;
         }
         const cmd = "docker";
-        const absPath = path_.resolve(filePath);
+        const absPath = path_.resolve(path);
         const args = [
             "run",
             "--rm",
@@ -15058,10 +19672,25 @@ function getCitationFile(path) {
             "citationcff/cffconvert",
             "--validate",
         ];
+        // Output from the docker container
         let stdout = "";
         let stderr = "";
+        try {
+            if (!fs.existsSync("./cffOutputFiles"))
+                fs.mkdirSync("./cffOutputFiles/");
+            else
+                (0, log_1.LogMessage)("Directory cffOutputFiles already exists!", log_1.ErrorLevel.info);
+        }
+        catch (_b) {
+            (0, log_1.LogMessage)("Could not create cffOutputFiles directory", log_1.ErrorLevel.err);
+        }
+        const stdOutStream = fs.createWriteStream("./cffOutputFiles/cffOutput.txt");
+        const stdErrStream = fs.createWriteStream("./cffOutputFiles/cffError.txt");
         const options = {
             ignoreReturnCode: true,
+            windowsVerbatimArguments: true,
+            outStream: stdOutStream,
+            errStream: stdErrStream,
         };
         options.listeners = {
             stdout: (data) => {
@@ -15071,42 +19700,42 @@ function getCitationFile(path) {
                 stderr += data.toString();
             },
         };
-        // Run cffconvert in docker to validate the citation.cff file
+        // Run cffconvert in Docker to validate the CITATION.cff file
+        (0, log_1.LogMessage)("Starting Docker program: cffconvert", log_1.ErrorLevel.info);
         const exitCode = yield (0, exec_1.exec)(cmd, args, options);
-        // Check the exit code for success
-        if (exitCode === 0) {
-            // Citation.cff file is valid, return ValidCFFObject with data and validation message
-            const returnData = {
+        // Check the Docker exit code for Docker specific errors
+        dockerExit.throwDockerError(exitCode);
+        // Check cffconvert exit code for success
+        if (!dockerExit.isError(exitCode)) {
+            // CITATION.cff file is valid, return ValidCffObject with data and validation message
+            (0, log_1.LogMessage)("Read valid CITATION.cff file", log_1.ErrorLevel.info);
+            const Data = {
                 status: "valid",
                 citation: result,
-                validation_message: stdout,
+                validation_message: getLastLine(stdout),
             };
-            return {
-                ReturnName: "Citation",
-                ReturnData: returnData,
-            };
+            return Data;
         }
         else {
-            // Citation.cff file is invalid, return ValidationErrorCFFObject with data and error message
-            const returnData = {
+            // CITATION.cff file is invalid, return ValidationErrorCffObject with data and error message
+            const error = getError(stderr);
+            (0, log_1.LogMessage)("Read CITATION.cff file has is invalid: " + error, log_1.ErrorLevel.warn);
+            const Data = {
                 status: "validation_error",
                 citation: result,
-                validation_message: getError(stderr),
+                validation_message: error,
             };
-            return {
-                ReturnName: "Citation",
-                ReturnData: returnData,
-            };
+            return Data;
         }
     });
 }
-exports.getCitationFile = getCitationFile;
+exports.runModule = runModule;
 exports.unknownErrorMsg = "Unknown Error";
 /**
- * Finds the error when trying to run cffconvert in docker
- * yields a non-zero exit code indicating failure.
+ * Finds the error when cffconvert returns an error code.
+ *
  * @param stderr The stderr output produced by docker.
- * @returns A string showing information about the error.
+ * @returns A string containing information about the error.
  */
 function getError(stderr) {
     // An error given by cffconvert appears as a line which looks like *Error: *
@@ -15121,15 +19750,583 @@ function getError(stderr) {
     return exports.unknownErrorMsg;
 }
 exports.getError = getError;
+function getLastLine(input) {
+    const lines = input.split("\n");
+    return lines[lines.length - 1];
+}
 
 
 /***/ }),
 
-/***/ 8274:
+/***/ 6099:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
+/**
+ * This module contains functions for finding papers that cite a piece of research software, making use of OpenAlex.
+ *
+ * The main function to be used by other modules is {@link openAlexCitations | openAlexCitations()}.
+ *
+ * @module
+ */
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getOpenAlexPaperID = exports.getReferencePapers = exports.getCitationPapers = exports.openAlexCitations = void 0;
+const node_fetch_1 = __importDefault(__nccwpck_require__(467));
+const paper_1 = __nccwpck_require__(920);
+const log_1 = __nccwpck_require__(8375);
+const referencepaper_1 = __nccwpck_require__(257);
+/**
+ * Finds papers citing the given piece of research software using OpenAlex.
+ *
+ * @param authors An array containing the authors of the software.
+ * @param title The title of the software.
+ * @param firstRefTitles Titles of known papers of the software.
+ *
+ * @returns An array containing the list of papers citing the given piece of software.
+ */
+function openAlexCitations(authors, title, firstRefTitles) {
+    return __awaiter(this, void 0, void 0, function* () {
+        // Find the OpenAlex paper IDs of the input
+        let paperIDs = [];
+        if (firstRefTitles.length === 0) {
+            // No reference titles given: find reference papers and their paper IDs
+            paperIDs = yield getReferencePapers(authors, title);
+        }
+        else {
+            // Reference titles given: get their paper IDs
+            for (const title of firstRefTitles) {
+                const id = yield getOpenAlexPaperID(title);
+                if (id !== undefined) {
+                    paperIDs.push(id);
+                }
+            }
+        }
+        // Find papers citing the given papers
+        let output = [];
+        for (const paperID of paperIDs) {
+            if (paperID !== undefined) {
+                output = output.concat(yield getCitationPapers(paperID));
+            }
+        }
+        return output;
+    });
+}
+exports.openAlexCitations = openAlexCitations;
+/**
+ * Finds papers citing a given paper.
+ *
+ * @param paperID The [OpenAlex ID](https://docs.openalex.org/api-entities/works/work-object#id) corresponding to the paper.
+ *
+ * @returns An array of papers citing the given paper.
+ */
+function getCitationPapers(paperID) {
+    var _a, _b;
+    return __awaiter(this, void 0, void 0, function* () {
+        paperID = paperID.replace("https://openalex.org/", "");
+        // Prepare query strings: query journals/articles that cite the paper with the given ID
+        // Query returns works: https://docs.openalex.org/api-entities/works/work-object
+        const apiURL = "https://api.openalex.org/";
+        const query = "works";
+        const filter = "?filter=cites:" + paperID + ",type:journal-article";
+        // Get the works that cite this paper
+        const output = [];
+        try {
+            // Get the results
+            let outputJSON = [];
+            let pageCursor = "*";
+            while (pageCursor !== null && pageCursor !== undefined) {
+                // Request a page
+                const response = yield (0, node_fetch_1.default)(apiURL +
+                    query +
+                    filter +
+                    "&per-page=200&cursor=" + pageCursor, {
+                    method: "GET",
+                    headers: {},
+                });
+                const responseJSON = yield response.json();
+                // Add the page results
+                if (responseJSON.results !== undefined) {
+                    outputJSON = outputJSON.concat(responseJSON.results);
+                }
+                // Get cursor for next page of results
+                pageCursor = responseJSON.meta.next_cursor;
+            }
+            // Extract data from the works that cite the paper,
+            // data is represented as Paper objects
+            for (const openAlexPaper of outputJSON) {
+                const title = openAlexPaper.title;
+                const year = openAlexPaper.publication_year;
+                const journal = (_a = openAlexPaper.host_venue.publisher) !== null && _a !== void 0 ? _a : "";
+                const numberOfCitations = openAlexPaper.cited_by_count;
+                const url = openAlexPaper.open_access.oa_status === "closed" ? openAlexPaper.id : openAlexPaper.open_access.oa_url;
+                // Get paper id (doi, pmid, or pmcid)
+                let doi = "";
+                let pmid = "";
+                let pmcid = "";
+                for (const [key, value] of Object.entries(openAlexPaper.ids)) {
+                    switch (key) {
+                        case "doi":
+                            doi = String(value);
+                            break;
+                        case "pmid":
+                            pmid = String(value);
+                            break;
+                        case "pmcid":
+                            pmcid = String(value);
+                            break;
+                    }
+                }
+                doi = doi.slice(16);
+                pmid = pmid.slice(32);
+                pmcid = pmcid.slice(32);
+                // Get fields
+                const fields = [];
+                for (const concept of openAlexPaper.concepts) {
+                    // Add the concept as a field if it's top-level and if it applies strongly enough to this paper
+                    if (concept.level === 0 && concept.score > 0.2) {
+                        fields.push(concept.display_name);
+                    }
+                }
+                ;
+                // Get authors
+                const authors = [];
+                for (const authorship of openAlexPaper.authorships) {
+                    authors.push(new paper_1.Author(authorship.author.display_name, (_b = authorship.author.orcid) !== null && _b !== void 0 ? _b : ""));
+                }
+                ;
+                // Add the paper data to the results
+                const paper = new paper_1.Paper(title, doi, pmid, pmcid, year, "OpenAlex", authors, fields, journal, url, numberOfCitations);
+                output.push(paper);
+            }
+            ;
+            return output;
+        }
+        catch (error) {
+            (0, log_1.LogMessage)("Error while searching OpenAlex paper " + paperID + ":\n" + error.message, log_1.ErrorLevel.err);
+            return output;
+        }
+    });
+}
+exports.getCitationPapers = getCitationPapers;
+/**
+ * Finds papers that are likely reference papers of a piece of research software.
+ *
+ * @param authors The authors of the software.
+ * @param title The title of the software.
+ *
+ * @returns An array of [OpenAlex IDs](https://docs.openalex.org/api-entities/works/work-object#id) of reference papers for the given piece of software.
+ */
+function getReferencePapers(authors, title) {
+    return __awaiter(this, void 0, void 0, function* () {
+        // Prepare API strings for querying authors with a name
+        const apiURL = "https://api.openalex.org/";
+        const query = "authors";
+        const filter = "?filter=display_name.search:";
+        // Find the papers of every author that mentions the software in the title
+        const papersPerAuthor = new Map();
+        for (const author of authors) {
+            let papers = [];
+            try {
+                // Query first author on OpenAlex with the author's name
+                // https://docs.openalex.org/api-entities/authors/author-object
+                const response = yield (0, node_fetch_1.default)(apiURL + query + filter + author.name + "&per-page=1", {
+                    method: "GET",
+                    headers: {},
+                });
+                const outputJSON = yield response.json();
+                const openAlexAuthor = outputJSON.results[0];
+                // If no OpenAlex author was found, skip this author
+                if (openAlexAuthor === undefined)
+                    continue;
+                // Find all the works of the author
+                const worksApiURL = openAlexAuthor.works_api_url;
+                let pageCursor = "*";
+                while (pageCursor !== null && pageCursor !== undefined) {
+                    // Get page of works
+                    // https://docs.openalex.org/api-entities/works/work-object
+                    const response = yield (0, node_fetch_1.default)(worksApiURL + "&per-page=200&cursor=" + pageCursor, {
+                        method: "GET",
+                        headers: {},
+                    });
+                    const responseJSON = yield response.json();
+                    // Add results to papers
+                    if (responseJSON.results !== undefined) {
+                        papers = papers.concat(responseJSON.results);
+                    }
+                    // Get cursor for next page of results
+                    pageCursor = responseJSON.meta.next_cursor;
+                }
+            }
+            catch (error) {
+                const errorMessage = "Error while searching for author " +
+                    author.name +
+                    " on OpenAlex:\n" +
+                    error.message;
+                (0, log_1.LogMessage)(errorMessage, log_1.ErrorLevel.err);
+            }
+            // Add all works from author that include the title of the given paper
+            const papersFiltered = [];
+            for (const p of papers) {
+                const paperTitle = p.title === undefined || p.title === null ? "" : p.title;
+                if (paperTitle.toLowerCase().includes(title.toLowerCase())) {
+                    papersFiltered.push(p);
+                }
+            }
+            // Add to papersPerAuthor dictionary
+            papersPerAuthor.set(author, papersFiltered);
+        }
+        // Find all the unique papers, and keep count of how many authors it shares
+        const uniquePapers = new Map();
+        for (const papers of papersPerAuthor.values()) {
+            for (const paper of papers.values()) {
+                let paperData;
+                if (uniquePapers.has(paper.id)) {
+                    paperData = uniquePapers.get(paper.id);
+                    paperData.contributors = paperData.contributors + 1;
+                    uniquePapers.set(paper.paperId, paperData);
+                }
+                else {
+                    uniquePapers.set(paper.id, new paper_1.MetaDataPaper(paper.title, 1, paper.cited_by_count, paper.host_venue));
+                }
+            }
+        }
+        // Return the papers that are probably reference papers
+        const probability = 0.6;
+        return (0, referencepaper_1.selectReferencePapers)(title, uniquePapers, probability);
+    });
+}
+exports.getReferencePapers = getReferencePapers;
+/**
+ * Finds the [OpenAlex ID](https://docs.openalex.org/api-entities/works/work-object#id) of a paper.
+ *
+ * @param title The title of the paper.
+ *
+ * @returns The [OpenAlex ID](https://docs.openalex.org/api-entities/works/work-object#id) of the paper, or undefined if it could not be found.
+ */
+function getOpenAlexPaperID(title) {
+    return __awaiter(this, void 0, void 0, function* () {
+        // Query strings for searching the paper
+        const apiURL = "https://api.openalex.org/";
+        const searchQuery = "works?search=";
+        try {
+            // API call for searching paper with the title
+            const response = yield (0, node_fetch_1.default)(apiURL + searchQuery + title + "?per-page=1", {
+                method: "GET",
+                headers: {},
+            });
+            const outputJSON = yield response.json();
+            // Get and return the paper ID
+            if (outputJSON.results[0].id === undefined) {
+                throw new Error("No result");
+            }
+            return outputJSON.results[0].id;
+        }
+        catch (error) {
+            (0, log_1.LogMessage)("Error while fetching paperID of " + title + " on OpenAlex:\n" + error.message, log_1.ErrorLevel.err);
+            return undefined;
+        }
+    });
+}
+exports.getOpenAlexPaperID = getOpenAlexPaperID;
+
+
+/***/ }),
+
+/***/ 8642:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+/**
+ * This module contains functions for finding papers that cite a piece of research software, making use of Semantic Scholar.
+ * <br>The main function to be used by other modules is {@link semanticScholarCitations | semanticScholarCitations()}.
+ *
+ * @module
+ */
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getSemanticScholarPaperID = exports.getReferencePapers = exports.getCitationPapers = exports.semanticScholarCitations = void 0;
+const node_fetch_1 = __importDefault(__nccwpck_require__(467));
+const paper_1 = __nccwpck_require__(920);
+const log_1 = __nccwpck_require__(8375);
+const referencepaper_1 = __nccwpck_require__(257);
+/**
+ * Finds papers citing the given piece of research software using Semantic Scholar.
+ *
+ * @param authors An array containing the authors of the software.
+ * @param title The title of the software.
+ * @param firstRefTitles Titles of known papers of the software.
+ *
+ * @returns An array containing the list of papers citing the given piece of software.
+ */
+function semanticScholarCitations(authors, title, firstRefTitles) {
+    return __awaiter(this, void 0, void 0, function* () {
+        // Find the OpenAlex paper IDs of the input
+        let paperIDs = [];
+        if (firstRefTitles.length === 0) {
+            // No reference titles given: find reference papers and their paper IDs
+            paperIDs = yield getReferencePapers(authors, title);
+        }
+        else {
+            // Reference titles given: get their paper IDs
+            for (const title of firstRefTitles) {
+                const id = yield getSemanticScholarPaperID(title);
+                if (id !== undefined) {
+                    paperIDs.push(id);
+                }
+            }
+        }
+        // Find papers citing the given papers
+        let output = [];
+        for (const paperID of paperIDs) {
+            output = output.concat(yield getCitationPapers(paperID));
+        }
+        return output;
+    });
+}
+exports.semanticScholarCitations = semanticScholarCitations;
+/**
+ * Finds papers citing a given paper.
+ *
+ * @param paperID The [Semantic Scholar paper ID](https://api.semanticscholar.org/api-docs/graph#tag/Paper-Data/operation/get_graph_get_paper) corresponding to the paper.
+ *
+ * @returns An array of papers citing the given paper.
+ */
+function getCitationPapers(paperID) {
+    var _a, _b;
+    return __awaiter(this, void 0, void 0, function* () {
+        // Prepare query strings: query citations of the given paper
+        // https://api.semanticscholar.org/api-docs/graph#tag/Paper-Data/operation/get_graph_get_paper
+        const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/paper/";
+        const fieldsQuery = "/citations?fields=title,externalIds,year,authors,s2FieldsOfStudy,journal,openAccessPdf,url,citationCount&limit=1000";
+        // Get the works that cite this paper
+        const output = [];
+        try {
+            // Get the paper data
+            const response = yield (0, node_fetch_1.default)(semanticScholarApiURL + paperID + fieldsQuery, {
+                method: "GET",
+                headers: {},
+            });
+            const outputJSON = yield response.json();
+            // Extract data from the works that cite the paper,
+            // data is represented as Paper objects
+            for (const scholarPaper of outputJSON.data) {
+                const title = scholarPaper.citingPaper.title;
+                const year = scholarPaper.citingPaper.year;
+                const journalObject = scholarPaper.citingPaper.journal;
+                let journal;
+                if (journalObject == null) {
+                    journal = "unknown journal";
+                }
+                else if (journalObject.name == null) {
+                    journal = journalObject;
+                }
+                else {
+                    journal = journalObject.name;
+                }
+                const numberOfCitations = (_a = scholarPaper.citingPaper.citationCount) !== null && _a !== void 0 ? _a : 0;
+                let url;
+                if (scholarPaper.citingPaper.openAccessPdf === null || scholarPaper.citingPaper.openAccessPdf === undefined) {
+                    url = scholarPaper.citingPaper.url;
+                }
+                else {
+                    url = ((_b = scholarPaper.citingPaper.openAccessPdf.url) !== null && _b !== void 0 ? _b : scholarPaper.citingPaper.url);
+                }
+                // Get paper ID (doi, pmid, or pmcid)
+                let doi = "";
+                let pmid = "";
+                let pmcid = "";
+                if (scholarPaper.citingPaper.externalIds !== undefined) {
+                    for (const [key, value] of Object.entries(scholarPaper.citingPaper.externalIds)) {
+                        switch (key) {
+                            case "DOI":
+                                doi = String(value);
+                                break;
+                            case "PubMed":
+                                pmid = String(value);
+                                break;
+                            case "PubMedCentral":
+                                pmcid = String(value);
+                                break;
+                        }
+                    }
+                    doi = doi.toLowerCase();
+                    pmid = pmid.toLowerCase();
+                    pmcid = pmcid.toLowerCase();
+                }
+                // Get fields
+                const fields = [];
+                if (scholarPaper.citingPaper.s2FieldsOfStudy !== undefined) {
+                    for (const field of scholarPaper.citingPaper.s2FieldsOfStudy) {
+                        fields.push(field.category);
+                    }
+                }
+                // Get authors
+                const authors = [];
+                if (scholarPaper.authors !== undefined) {
+                    for (const author of scholarPaper.authors) {
+                        authors.push(new paper_1.Author(author.name, ""));
+                    }
+                }
+                // Add the paper data to the results
+                const paper = new paper_1.Paper(title, doi, pmid, pmcid, year, "SemanticScholar", authors, fields, journal, url, numberOfCitations);
+                output.push(paper);
+            }
+            ;
+            return output;
+        }
+        catch (error) {
+            (0, log_1.LogMessage)("Error while searching Semantic Scholar paper " + paperID + ":\n" + error.message, log_1.ErrorLevel.err);
+            return output;
+        }
+    });
+}
+exports.getCitationPapers = getCitationPapers;
+/**
+ * Finds papers that are likely reference papers of a piece of research software.
+ *
+ * @param authors The authors of the software.
+ * @param title The title of the software.
+ *
+ * @returns An array of [Semantic Scholar paper IDs](https://api.semanticscholar.org/api-docs/graph#tag/Paper-Data/operation/get_graph_get_paper) for the given piece of software.
+ */
+function getReferencePapers(authors, title) {
+    return __awaiter(this, void 0, void 0, function* () {
+        // Prepare API strings
+        const apiURL = "https://api.semanticscholar.org/graph/v1/author/";
+        const query = "search?query=";
+        const filter = "&fields=papers.title,papers.citationCount,papers.venue&limit=1";
+        // Find the papers of every author that mentions the software in the title
+        const papersPerAuthor = new Map();
+        for (const author of authors) {
+            let papers = [];
+            try {
+                // Query first author on Semantic Scholar with the author's name
+                // https://api.semanticscholar.org/api-docs/graph#tag/Author-Data/operation/get_graph_get_author_papers
+                const response = yield (0, node_fetch_1.default)(apiURL + query + author.name + filter, {
+                    method: "GET",
+                    headers: {},
+                });
+                const outputJSON = yield response.json();
+                const semanticScholarAuthor = outputJSON.data[0];
+                // If no Semantic Scholar author was found, skip this author
+                if (semanticScholarAuthor === undefined)
+                    continue;
+                for (const [key, value] of Object.entries(semanticScholarAuthor)) {
+                    if (key === "papers") {
+                        papers = papers.concat(value);
+                    }
+                }
+            }
+            catch (error) {
+                const errorMessage = "Error while searching for author " +
+                    author.name +
+                    " on Semantic Scholar:\n" +
+                    error.essage;
+                (0, log_1.LogMessage)(errorMessage, log_1.ErrorLevel.err);
+            }
+            // Add all works from author that include the title of the given paper
+            const papersFiltered = [];
+            for (const p of papers) {
+                const paperTitle = p.title === undefined || p.title === null ? "" : p.title;
+                if (paperTitle.toLowerCase().includes(title.toLowerCase())) {
+                    papersFiltered.push(p);
+                }
+            }
+            // Add to papersPerAuthor dictionary
+            papersPerAuthor.set(author, papersFiltered);
+        }
+        // Find all the unique papers, and keep count of how many authors it shares
+        const uniquePapers = new Map();
+        for (const papers of papersPerAuthor.values()) {
+            for (const paper of papers.values()) {
+                let paperData;
+                if (uniquePapers.has(paper.paperId)) {
+                    paperData = uniquePapers.get(paper.paperId);
+                    paperData.contributors = paperData.contributors + 1;
+                    uniquePapers.set(paper.paperId, paperData);
+                }
+                else {
+                    uniquePapers.set(paper.paperId, new paper_1.MetaDataPaper(paper.title, 1, paper.citationCount, paper.venue));
+                }
+            }
+        }
+        // Return the papers that are probably reference papers
+        const probability = 0.6;
+        return (0, referencepaper_1.selectReferencePapers)(title, uniquePapers, probability);
+    });
+}
+exports.getReferencePapers = getReferencePapers;
+/**
+ * Finds the [Semantic Scholar paper ID](https://api.semanticscholar.org/api-docs/graph#tag/Paper-Data/operation/get_graph_get_paper) of a paper.
+ *
+ * @param title The title of the paper.
+ *
+ * @returns The [Semantic Scholar paper ID](https://api.semanticscholar.org/api-docs/graph#tag/Paper-Data/operation/get_graph_get_paper) of a paper.
+ */
+function getSemanticScholarPaperID(title) {
+    return __awaiter(this, void 0, void 0, function* () {
+        // Query strings for searching the paper
+        const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/paper/";
+        const searchQuery = "search?query=";
+        try {
+            // API call for searching paper with the title
+            const response = yield (0, node_fetch_1.default)(semanticScholarApiURL + searchQuery + '"' + title + '"', {
+                method: "GET",
+                headers: {},
+            });
+            const outputJSON = yield response.json();
+            // Get and return the paper ID
+            if (outputJSON.data[0].paperId === undefined) {
+                throw new Error("No result");
+            }
+            return outputJSON.data[0].paperId;
+        }
+        catch (error) {
+            (0, log_1.LogMessage)("Error while fetching paper ID of " + title + " on Semantic Scholar:\n" + error.message, log_1.ErrorLevel.err);
+            return undefined;
+        }
+    });
+}
+exports.getSemanticScholarPaperID = getSemanticScholarPaperID;
+
+
+/***/ }),
+
+/***/ 706:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+/**
+ * Module containing functions for finding unique papers that cite a piece of research software.
+ *
+ * @module
+ */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -15140,56 +20337,585 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.deleteDuplicates = exports.runCitingPapers = void 0;
-const semanticscholarAPI_1 = __nccwpck_require__(3695);
-const openalexAPI_1 = __nccwpck_require__(3920);
-const journal_1 = __nccwpck_require__(2550);
-function runCitingPapers(cffFile) {
+exports.mergeDuplicates = exports.runModule = exports.ModuleName = void 0;
+const semanticscholar_api_1 = __nccwpck_require__(8642);
+const openalex_api_1 = __nccwpck_require__(6099);
+const paper_1 = __nccwpck_require__(920);
+const log_1 = __nccwpck_require__(8375);
+/** The name of the module. */
+exports.ModuleName = "CitingPapers";
+/**
+ * Finds papers citing a piece of research software, given the CITATION.cff file of its repository.
+ *
+ * @param cffFile The information from the CITATION.cff file.
+ *
+ * @returns An object containing information about the citations.
+ */
+function runModule(cffFile) {
     return __awaiter(this, void 0, void 0, function* () {
-        const authors = [];
+        // Check cff output
+        if (cffFile === undefined) {
+            throw new Error("Missing CitationCff module data");
+        }
+        if (cffFile.status !== "valid") {
+            throw new Error("Missing CITATION.cff file data (status: \"" + cffFile.status + "\")");
+        }
+        // Get title
         const title = cffFile.citation.title;
+        // Get reference paper titles from CITATION.cff file
         const refTitles = [];
         if (cffFile.citation.references !== undefined) {
-            cffFile.citation.references.forEach((element) => {
-                if (element.type === "article")
-                    refTitles.push(element.title);
-            });
+            for (const ref of cffFile.citation.references) {
+                if (ref.type === "article" || ref.type === "journal-article") {
+                    refTitles.push(ref.title);
+                }
+            }
         }
-        cffFile.citation.authors.forEach((element) => {
+        // Get authors from CITATION.cff file
+        const authors = [];
+        for (const author of cffFile.citation.authors) {
             let familyName = "";
             let givenNames = "";
-            let orchidId = "";
-            for (const [key, value] of Object.entries(element)) {
+            let orchidID = "";
+            for (const [key, value] of Object.entries(author)) {
                 switch (key) {
-                    case ("family-names"):
+                    case "family-names":
                         familyName = String(value);
                         break;
-                    case ("given-names"):
+                    case "given-names":
                         givenNames = String(value);
                         break;
-                    case ("orcid"):
-                        orchidId = String(value);
+                    case "orcid":
+                        orchidID = String(value);
                         break;
                 }
             }
-            authors.push(new journal_1.Author(givenNames, familyName, orchidId));
-        });
-        const outData1 = yield (0, semanticscholarAPI_1.semanticScholarCitations)(authors, title, refTitles);
-        const outData2 = yield (0, openalexAPI_1.openAlexCitations)(authors, title, refTitles);
-        const output = deleteDuplicates(outData1, outData2);
-        return {
-            ReturnName: "citingPapers",
-            ReturnData: output
-        };
+            authors.push(new paper_1.Author(givenNames + " " + familyName, orchidID));
+        }
+        let semanticScholarData = [];
+        try {
+            semanticScholarData = yield (0, semanticscholar_api_1.semanticScholarCitations)(authors, title, refTitles);
+        }
+        catch (error) {
+            const errorMessage = "Error while getting semanticScholar data:\n" +
+                error.message;
+            (0, log_1.LogMessage)(errorMessage, log_1.ErrorLevel.err);
+        }
+        let openAlexData = [];
+        try {
+            openAlexData = yield (0, openalex_api_1.openAlexCitations)(authors, title, refTitles);
+        }
+        catch (error) {
+            const errorMessage = "Error while getting openAlex data:\n" +
+                error.message;
+            (0, log_1.LogMessage)(errorMessage, log_1.ErrorLevel.err);
+        }
+        const outputPapers = mergeDuplicates(semanticScholarData, openAlexData);
+        return new paper_1.Citations(outputPapers);
     });
 }
-exports.runCitingPapers = runCitingPapers;
-function deleteDuplicates(array1, array2) {
-    let output = array1.concat(array2);
-    output = output.filter((value, index, self) => index === self.findIndex((t) => t.doi === value.doi && t.doi !== "" || t.pmid === value.pmid && t.pmid !== "" || t.pmcid === value.pmcid && t.pmcid !== ""));
+exports.runModule = runModule;
+/**
+ * Merges two sources of papers into one.
+ *
+ * @remarks Splitting this process over three foreach calls and three maps ensures an O(n) runtime, instead of O(n<sup>2</sup>).
+ *
+ * @param array1 The first array of papers.
+ * @param array2 The second array of papers.
+ *
+ * @returns An array of all the unique papers with the combined metadata from both sources.
+*/
+function mergeDuplicates(array1, array2) {
+    let totalArray = array1.concat(array2);
+    // Merge papers with the same doi
+    const doiMap = new Map();
+    let mockID = 0;
+    for (const paper of totalArray) {
+        if (doiMap.has(paper.doi)) {
+            const tempPaper = doiMap.get(paper.doi);
+            doiMap.set(paper.doi, paper.combine(tempPaper));
+        }
+        else if (paper.doi === "") {
+            doiMap.set(mockID.toString(), paper);
+            mockID++;
+        }
+        else {
+            doiMap.set(paper.doi, paper);
+        }
+    }
+    totalArray = Array.from(doiMap.values());
+    // Merge papers with the same pmid
+    const pmidMap = new Map();
+    mockID = 0;
+    for (const paper of totalArray) {
+        if (pmidMap.has(paper.pmid)) {
+            const tempPaper = pmidMap.get(paper.pmid);
+            pmidMap.set(paper.pmid, paper.combine(tempPaper));
+        }
+        else if (paper.pmid === "") {
+            pmidMap.set(mockID.toString(), paper);
+            mockID++;
+        }
+        else {
+            pmidMap.set(paper.pmid, paper);
+        }
+    }
+    totalArray = Array.from(pmidMap.values());
+    // Merge papers with the same pmcid
+    const pmcidMap = new Map();
+    mockID = 0;
+    for (const element of totalArray) {
+        if (pmcidMap.has(element.pmcid)) {
+            const tempPaper = pmcidMap.get(element.pmcid);
+            pmcidMap.set(element.pmcid, element.combine(tempPaper));
+        }
+        else if (element.pmcid === "") {
+            pmcidMap.set(mockID.toString(), element);
+            mockID++;
+        }
+        else {
+            pmcidMap.set(element.pmcid, element);
+        }
+    }
+    ;
+    totalArray = Array.from(pmcidMap.values());
+    return totalArray;
+}
+exports.mergeDuplicates = mergeDuplicates;
+
+
+/***/ }),
+
+/***/ 920:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+/**
+ * Contains class definitions for handling papers and getting citation information.
+ *
+ * @module
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Citations = exports.Author = exports.MetaDataPaper = exports.Paper = void 0;
+/** Contains the data belonging to a paper found in OpenAlex or Semantic Scholar. */
+class Paper {
+    constructor(title, doi, pmid, pmcid, year, database, authors, fields, journal, url, numberOfCitations) {
+        this.title = title;
+        this.year = year;
+        this.doi = doi;
+        this.pmid = pmid;
+        this.pmcid = pmcid;
+        this.database = database;
+        this.authors = authors;
+        this.fields = this.getFields(fields);
+        this.discipline = this.getDiscipline(fields);
+        this.journal = journal;
+        this.url = url;
+        this.numberOfCitations = numberOfCitations;
+    }
+    /**
+     * Combines the metadata of this paper with that of another.
+     *
+     * @param input The other paper.
+     * @returns A paper containing the combined metadata of both papers.
+     */
+    combine(input) {
+        // Combine identifiers
+        if (this.doi === "") {
+            this.doi = input.doi;
+        }
+        if (this.pmid === "") {
+            this.pmid = input.pmid;
+        }
+        if (this.pmcid === "") {
+            this.pmcid = input.pmcid;
+        }
+        // Combine authors
+        const uniqueAuthors = new Set(this.authors.concat(input.authors));
+        this.authors = Array.from(uniqueAuthors.values());
+        // Combine fields
+        const uniqueFields = new Set(this.fields.concat(input.fields));
+        this.fields = Array.from(uniqueFields.values());
+        // Combine databases
+        if (!this.database.includes(input.database)) {
+            this.database += ", " + input.database;
+        }
+        return this;
+    }
+    getFields(input) {
+        var _a;
+        // Get the unique fields
+        const uniqueFields = new Set();
+        for (const subject of input) {
+            uniqueFields.add((_a = Paper.fieldMap[subject.toLowerCase()]) !== null && _a !== void 0 ? _a : "Unknown");
+        }
+        // Return an array of the unique fields,
+        // or an array with a single unknown if it's empty
+        const fields = Array.from(uniqueFields.values());
+        if (fields.length > 0) {
+            return fields;
+        }
+        else {
+            return ["Unknown"];
+        }
+    }
+    getDiscipline(input) {
+        var _a;
+        // Get the discipline of each subject
+        const uniqueDisc = new Set();
+        for (const subject of input) {
+            uniqueDisc.add((_a = Paper.disciplineMap[subject.toLowerCase()]) !== null && _a !== void 0 ? _a : "Unknown");
+        }
+        // Return an array of the unique disciplines,
+        // or an array with a single unknown if it's empty
+        let output = Array.from(uniqueDisc.values());
+        if (output.length <= 0) {
+            output = ["Unknown"];
+        }
+        // Count the number of occurences of each discipline
+        const map = new Map();
+        for (const disc of output) {
+            if (map.has(disc)) {
+                map.set(disc, map.get(disc) + 1);
+            }
+            else {
+                map.set(disc, 1);
+            }
+        }
+        // Get the main (most common) discipline
+        let mainDiscipline = "Unknown";
+        let max = 0;
+        for (const [key, value] of map) {
+            if (key !== "Unknown" && value > max) {
+                max = value;
+                mainDiscipline = key;
+            }
+        }
+        return mainDiscipline;
+    }
+}
+exports.Paper = Paper;
+Paper.fieldMap = {
+    "computer science": "Computer science",
+    "medicine": "Medicine",
+    "chemistry": "Chemistry",
+    "biology": "Biology",
+    "materials science": "Materials science",
+    "physics": "Physics",
+    "geology": "Geology",
+    "psychology": "Psychology",
+    "art": "Art",
+    "history": "History",
+    "geography": "Geography",
+    "sociology": "Sociology",
+    "business": "Business",
+    "political science": "Political science",
+    "economics": "Economics",
+    "philosophy": "Philosophy",
+    "mathematics": "Mathematics",
+    "engineering": "Engineering",
+    "environmental science": "Environmental science",
+    "agricultural and food sciences": "Biology",
+    "law": "Philosophy",
+    "education": "Psychology",
+    "linguistics": "Psychology",
+};
+Paper.disciplineMap = {
+    "computer science": "Formal Sciences",
+    "medicine": "Applied Sciences",
+    "chemistry": "Natural Sciences",
+    "biology": "Natural Sciences",
+    "materials science": "Applied Sciences",
+    "physics": "Natural Sciences",
+    "geology": "Natural Sciences",
+    "psychology": "Social Sciences",
+    "art": "Humanities",
+    "history": "Humanities",
+    "geography": "Social Sciences",
+    "sociology": "Social Sciences",
+    "business": "Applied Sciences",
+    "political science": "Applied Sciences",
+    "economics": "Social Sciences",
+    "philosophy": "Humanities",
+    "mathematics": "Formal Sciences",
+    "engineering": "Applied Sciences",
+    "environmental science": "Applied Sciences",
+    "agricultural and food sciences": "Applied Sciences",
+    "law": "Humanities",
+    "education": "Social Sciences",
+    "linguistics": "Social Sciences",
+};
+/** Contains metadata belonging to a paper found in OpenAlex or Semantic Scholar. */
+class MetaDataPaper {
+    constructor(title, contributors, citationCount, paperID) {
+        this.title = title;
+        this.contributors = contributors;
+        this.citationCount = citationCount;
+        this.paperID = paperID;
+    }
+}
+exports.MetaDataPaper = MetaDataPaper;
+/** Contains the name and OrchidID of an author. */
+class Author {
+    constructor(name, orchidID) {
+        this.name = name;
+        this.orchidID = orchidID;
+    }
+}
+exports.Author = Author;
+/**
+ * Contains papers that cite the software, and general information about the citations.
+ */
+class Citations {
+    /**
+     * Analyzes metadata of citing papers and constructs the object containing this information.
+     *
+     * @param papers The citing papers.
+     * @returns An object containing citation information.
+     */
+    constructor(papers) {
+        var _a;
+        let firstYear = Number.MAX_SAFE_INTEGER;
+        let highestCitations = 1;
+        let secondHandCitations = 0;
+        const uniqueFields = new Set();
+        let disciplines = {};
+        for (const paper of papers) {
+            // Find year of oldest paper
+            firstYear = Math.min(firstYear, paper.year);
+            // Find secondhand citations
+            secondHandCitations += paper.numberOfCitations;
+            // find highest citation
+            if (paper.numberOfCitations > highestCitations)
+                highestCitations = paper.numberOfCitations;
+            // Find all fields occuring in papers
+            for (const field of paper.fields) {
+                uniqueFields.add(field);
+            }
+            ;
+            // Count the disciplines of all papers
+            const disciplineCounter = (_a = disciplines[paper.discipline]) !== null && _a !== void 0 ? _a : 0;
+            disciplines[paper.discipline] = disciplineCounter + 1;
+        }
+        ;
+        this.papers = papers;
+        this.firstHandCitations = this.papers.length;
+        this.uniqueFields = Array.from(uniqueFields.values());
+        this.firstYear = firstYear;
+        this.secondHandCitations = secondHandCitations;
+        this.disciplines = disciplines;
+        this.highestCitations = highestCitations;
+    }
+}
+exports.Citations = Citations;
+
+
+/***/ }),
+
+/***/ 257:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+/**
+ * This module contains a function that selects reference papers for a paper title.
+ *
+ * @module
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.selectReferencePapers = void 0;
+/**
+ * Selects papers that are likely a reference paper of the main paper given by its title.
+ * The number of contributors should be at least the average of contributors of all papers given.
+ * Probability is defined as the number of words that occur in both titles divided by the total number of words in the title of the main paper.
+ *
+ * @param title The title of the main paper.
+ * @param uniquePapers A map containing the ID and metadata of the papers.
+ * @param probabilityThreshold The minimum probability a paper need to be counted as a reference paper.
+ *
+ * @returns An array containing the keys of papers that are likely a reference paper.
+ */
+function selectReferencePapers(title, uniquePapers, probabilityThreshold) {
+    let contributors = 0;
+    let citations = 0;
+    let highestContributors = 0;
+    let lowestContributors = Number.MAX_SAFE_INTEGER;
+    let highestCitations = 0;
+    let lowestCitations = Number.MAX_SAFE_INTEGER;
+    // Find the highest/lowest contributor/citation count
+    uniquePapers.forEach((paper, key) => {
+        contributors += paper.contributors;
+        if (paper.contributors > highestContributors) {
+            highestContributors = paper.contributors;
+        }
+        lowestContributors = Math.min(lowestContributors, paper.contributors);
+        citations += paper.citationCount;
+        highestCitations = Math.max(highestCitations, paper.citationCount);
+        lowestCitations = Math.min(lowestCitations, paper.citationCount);
+    });
+    // Calculate mean values of contributors and citations
+    const meanContributors = contributors / uniquePapers.size;
+    const meanCitations = citations / uniquePapers.size;
+    // Holds IDs of works that are likely a reference paper
+    const output = [];
+    // Get number of occurences of unique words in main title
+    const mainTitleWordOccurences = wordOccurences(title);
+    // Find the probabilty of a paper being a reference paper based on the similarity of the title to the main paper.
+    // Papers that meet the probability threshold are added to the output.
+    uniquePapers.forEach((paper, id) => {
+        // Ignore papers that have less than the mean value of contributors or citations
+        if (paper.contributors >= meanContributors && paper.citationCount >= meanCitations) {
+            // Get number of occurences of unique words in paper title
+            const paperWordOccurences = wordOccurences(paper.title);
+            // Calculate probability of being a reference paper
+            let similarWordsCount = 0;
+            mainTitleWordOccurences.forEach((count, word) => {
+                if (paperWordOccurences.has(word)) {
+                    similarWordsCount += Math.min(mainTitleWordOccurences.get(word), paperWordOccurences.get(word));
+                }
+            });
+            const probability = similarWordsCount / title.split(" ").length;
+            // Add paper to output if the probability is high enough
+            if (probability >= probabilityThreshold) {
+                output.push(id);
+            }
+        }
+    });
     return output;
 }
-exports.deleteDuplicates = deleteDuplicates;
+exports.selectReferencePapers = selectReferencePapers;
+// Counts the number of occurences of each unique word of a title
+function wordOccurences(title) {
+    const wordCount = new Map();
+    for (const word of title.toLowerCase().split(" ")) {
+        if (wordCount.has(word)) {
+            const count = wordCount.get(word);
+            wordCount.set(word, count + 1);
+        }
+        else {
+            wordCount.set(word, 1);
+        }
+        ;
+    }
+    return wordCount;
+}
+
+
+/***/ }),
+
+/***/ 7955:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+/**
+ * This module contains a function that runs the [fairtally](https://github.com/fair-software/fairtally) Docker image and parses it to JSON.
+ *
+ * @module
+ */
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.runModule = exports.ModuleName = void 0;
+const dockerExit = __importStar(__nccwpck_require__(7681));
+const log_1 = __nccwpck_require__(8375);
+const exec_1 = __nccwpck_require__(1514);
+const fs_1 = __importDefault(__nccwpck_require__(7147));
+/** The name of the module. */
+exports.ModuleName = "fairtally";
+/**
+ * Runs the fairtally docker image on the current repo,
+ * and gives the checklist of FAIRness criteria.
+ *
+ * @param ghInfo Information about the GitHub repository.
+ * @returns The result objects from fairtally.
+ */
+function runModule(ghInfo) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const cmd = "docker";
+        const args = [
+            "run",
+            "--rm",
+            "fairsoftware/fairtally",
+            "--format",
+            "json",
+            "-o",
+            "-",
+            ghInfo.FullURL,
+        ];
+        // Output from the docker container
+        let stdout = "";
+        try {
+            if (!fs_1.default.existsSync("./hfiOutputFiles"))
+                fs_1.default.mkdirSync("./hfiOutputFiles/");
+            else
+                (0, log_1.LogMessage)("Directory hfiOutputFiles already exists!", log_1.ErrorLevel.info);
+        }
+        catch (_a) {
+            (0, log_1.LogMessage)("Could not create hfiOutputFiles directory.", log_1.ErrorLevel.err);
+        }
+        const stdOutStream = fs_1.default.createWriteStream("./hfiOutputFiles/hfiOutput.txt");
+        const stdErrStream = fs_1.default.createWriteStream("./hfiOutputFiles/hfiError.txt");
+        const options = {
+            ignoreReturnCode: true,
+            windowsVerbatimArguments: true,
+            outStream: stdOutStream,
+            errStream: stdErrStream,
+        };
+        options.listeners = {
+            stdout: (data) => {
+                stdout += data.toString();
+            }
+        };
+        // Run fairtally in Docker
+        (0, log_1.LogMessage)("Starting Docker program: fairtally", log_1.ErrorLevel.info);
+        const exitCode = yield (0, exec_1.exec)(cmd, args, options);
+        // Check Docker exit code
+        dockerExit.throwError("fairtally", exitCode);
+        // Parse the JSON output
+        try {
+            return JSON.parse(stdout);
+        }
+        catch (_b) {
+            throw new Error("Run output is not valid JSON");
+        }
+    });
+}
+exports.runModule = runModule;
 
 
 /***/ }),
@@ -15199,6 +20925,13 @@ exports.deleteDuplicates = deleteDuplicates;
 
 "use strict";
 
+/**
+ * This module contains functions to retrieve GitHub workflow artifacts.
+ *
+ * The custom interfaces allow `@actions/artifact` to be mocked in the unit tests.
+ *
+ * @module
+ */
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -15240,8 +20973,8 @@ const path = __importStar(__nccwpck_require__(1017));
  *
  * @param artifactName The name of the artifact given by the action that created it.
  * @param destination The directory in which the artifact files should be downloaded.
- * @param artifactObject The {@link Artifact} module that is used. During normal operation of the program, this should simply be \@actions/artifact, but for the unit tests a mock is passed instead.
- * @returns A {@link DownloadResponse} object containing the download path and the artifact name.
+ * @param artifactObject The artifact module that is used. During normal operation of the program, this should simply be `@actions/artifact`, but for the unit tests a mock is passed instead.
+ * @returns The download reponse.
  */
 function getArtifactData(artifactName, destination, artifactObject) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -15252,24 +20985,22 @@ function getArtifactData(artifactName, destination, artifactObject) {
 }
 exports.getArtifactData = getArtifactData;
 /**
- * Get a file from the artifact as a string.
+ * Gets a file from the artifact as a string.
  *
- * @param dlResponse The {@link DownloadResponse} object that was returned by {@link getArtifactData}.
+ * @param dlResponse The object that was returned by {@link getArtifactData | getArtifactData()}.
  * @param fileName The name of the file that should be read.
  * @returns The contents of the file.
  */
 function getFileFromArtifact(dlResponse, fileName) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const filePath = path.join(dlResponse.downloadPath, fileName);
-        const buffer = fs.readFileSync(filePath);
-        return buffer.toString();
-    });
+    const filePath = path.join(dlResponse.downloadPath, fileName);
+    const buffer = fs.readFileSync(filePath);
+    return buffer.toString();
 }
 exports.getFileFromArtifact = getFileFromArtifact;
 /**
- * An {@link Artifact} object that can be used for unit testing.
- * the {@link ArtifactClient} provided by create() does not download anything
- * when downloadArtifact is called, but it returns a download response
+ * An Artifact object that can be used for unit testing.
+ * the {@link ArtifactClient artifact client} provided by {@link Artifact.create | create()} does not download anything
+ * when {@link ArtifactClient.downloadArtifact | downloadArtifact()} is called, but it returns a download response
  * as if a file was correctly downloaded.
  */
 exports.testArtifactObject = {
@@ -15286,396 +21017,17 @@ exports.testArtifactObject = {
 
 /***/ }),
 
-/***/ 7935:
+/***/ 2829:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.runHowfairis = void 0;
-const git_1 = __nccwpck_require__(6350);
-const exec_1 = __nccwpck_require__(1514);
 /**
- * This function runs the fairtally docker image on the current repo,
- * and gives the checklist of FAIRness criteria.
+ * This module contains functions that get data from the previously run modules and new data from GitHub,
+ * and calculates a number of metrics used to calculate the quality score.
  *
- * @returns A {@link action.ReturnObject} containing the result from fairtally.
+ * @module
  */
-function runHowfairis() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const gitrepo = yield (0, git_1.getRepoUrl)();
-        console.debug("HowFairIs started");
-        const cmd = "docker";
-        const args = [
-            "run",
-            "--rm",
-            "fairsoftware/fairtally",
-            "--format",
-            "json",
-            "-o",
-            "-",
-            gitrepo,
-        ];
-        let stdout = "";
-        let stderr = "";
-        const options = {
-            ignoreReturnCode: true,
-        };
-        options.listeners = {
-            stdout: (data) => {
-                stdout += data.toString();
-            },
-            stderr: (data) => {
-                stderr += data.toString();
-            },
-        };
-        const exitCode = yield (0, exec_1.exec)(cmd, args, options);
-        return {
-            ReturnName: "HowFairIs",
-            ReturnData: JSON.parse(stdout),
-        };
-    });
-}
-exports.runHowfairis = runHowfairis;
-
-
-/***/ }),
-
-/***/ 2550:
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Author = exports.MetaDataJournal = exports.Journal = void 0;
-class Journal {
-    constructor(title, doi, pmid, pmcid, year, database, authors) {
-        this.title = title;
-        this.year = year;
-        this.doi = doi;
-        this.pmid = pmid;
-        this.pmcid = pmcid;
-        this.database = database;
-        this.authors = authors;
-    }
-}
-exports.Journal = Journal;
-class MetaDataJournal {
-    constructor(title, contributors, citationCount, journal, probabilty) {
-        this.title = title;
-        this.contributors = contributors;
-        this.citationCount = citationCount;
-        this.journal = journal;
-        this.probability = probabilty;
-    }
-}
-exports.MetaDataJournal = MetaDataJournal;
-class Author {
-    constructor(givenNames, familyName, orchidId) {
-        this.familyName = familyName;
-        this.givenNames = givenNames;
-        this.orchidId = orchidId;
-    }
-}
-exports.Author = Author;
-
-
-/***/ }),
-
-/***/ 3920:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getOpenAlexPaperId = exports.getRefTitles = exports.openAlexCitations = void 0;
-const node_fetch_1 = __importDefault(__nccwpck_require__(467));
-const journal_1 = __nccwpck_require__(2550);
-const probability_1 = __nccwpck_require__(4257);
-function openAlexCitations(authors, title, refTitles) {
-    return __awaiter(this, void 0, void 0, function* () {
-        //title = title.toLowerCase();
-        // if(refTitle=== ""){
-        //     refTitle = await getTitle(authors, title);
-        // }
-        const extraRefTitles = yield getRefTitles(authors, title);
-        refTitles.concat(extraRefTitles);
-        const apiURL = "https://api.openalex.org/";
-        const query = "works?filter=cites:";
-        const filter = ",type:journal-article";
-        let output = [];
-        // get paper id
-        let paperId = yield getOpenAlexPaperId(refTitles[0]);
-        paperId = paperId.replace("https://openalex.org/", "");
-        try {
-            // get meta data for amount of results
-            let outputText = "";
-            const firstResponse = yield (0, node_fetch_1.default)(apiURL + query + paperId + filter + "&per-page=1", {
-                method: 'GET',
-                headers: {},
-            });
-            const firstResponseText = yield firstResponse.text();
-            const firstResponseJSON = JSON.parse(firstResponseText);
-            const amount = firstResponseJSON.meta.count;
-            const pages = Math.ceil(amount / 200);
-            for (let i = 1; i <= pages; i++) {
-                const response = yield (0, node_fetch_1.default)(apiURL + query + paperId + filter + "&page=" + String(i) + "&per-page=200", {
-                    method: 'GET',
-                    headers: {},
-                });
-                const responseText = yield response.text();
-                const responseJSON = JSON.parse(responseText);
-                outputText += JSON.stringify(responseJSON.results).slice(1, -1) + ",";
-            }
-            outputText = "[" + outputText.slice(0, -1) + "]";
-            const outputJSON = JSON.parse(outputText);
-            outputJSON.forEach((element) => {
-                const title = element.title;
-                const year = element.publication_year;
-                let DOI = "";
-                let pmid = "";
-                let pmcid = "";
-                if (element.ids !== undefined) {
-                    for (const [key, value] of Object.entries(element.ids)) {
-                        switch (key) {
-                            case ("doi"):
-                                DOI = String(value);
-                                break;
-                            case ("pmid"):
-                                pmid = String(value);
-                                break;
-                            case ("pmcid"):
-                                pmcid = String(value);
-                                break;
-                        }
-                    }
-                    DOI = DOI.slice(16);
-                    pmid = pmid.slice(32);
-                    pmcid = pmcid.slice(32);
-                    const tempJournal = new journal_1.Journal(title, DOI, pmid, pmcid, year, "OpenAlex", []);
-                    output = output.concat([tempJournal]);
-                }
-                else {
-                    const tempJournal = new journal_1.Journal(title, DOI, pmid, pmcid, year, "OpenAlex", []);
-                    output = output.concat([tempJournal]);
-                }
-            });
-            return output;
-        }
-        catch (error) {
-            console.log("error while searching openAlex with openAlex ID of: " + title);
-            return output;
-        }
-    });
-}
-exports.openAlexCitations = openAlexCitations;
-function getRefTitles(authors, title) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const apiURL = "https://api.openalex.org/";
-        const query = "authors?filter=orcid:";
-        const output = [];
-        // Beter orcid-id or Author?
-        const papersPerAuthor = new Map();
-        for (const author of authors) {
-            const orcid = author.orchidId;
-            let titles = [];
-            //const query = "works?filter=title.search:" + title + "authorships.author.orcidid:" + orcid
-            try {
-                const response = yield (0, node_fetch_1.default)(apiURL + query + orcid, {
-                    method: 'GET',
-                    headers: {},
-                });
-                const responseText = yield response.text();
-                const responseJSON = JSON.parse(responseText);
-                // console.log(responseJSON.results[0].works_api_url);
-                const results = responseJSON.results[0];
-                let authorworks_url = "";
-                if (results.hasOwnProperty("works_api_url")) {
-                    authorworks_url = results.works_api_url;
-                    //console.log("-----------\nAuthor with id: " + author.orchidId + " has url: "+ authorworks_url);
-                    const response2 = yield (0, node_fetch_1.default)(authorworks_url, {
-                        method: 'GET',
-                        headers: {},
-                    });
-                    const responseText2 = yield response2.text();
-                    const responseJSON2 = JSON.parse(responseText2);
-                    //console.log(responseJSON2);
-                    const authorTitles = responseJSON2.results
-                        .filter(function (o) { return o.title.toLowerCase().includes(title.toLowerCase()); });
-                    //.map(function(o:any){return o.title.toLowerCase()});
-                    //console.log(titles)
-                    titles.push(authorTitles);
-                    //titles = titles.flat(1);
-                    //papersPerAuthor.set(author.orchidId,titles)
-                    papersPerAuthor.set(author, titles);
-                }
-                else {
-                    console.log("Author with id: " + author.orchidId + " has no works-url");
-                }
-            }
-            catch (_a) { }
-        }
-        ;
-        const uniquePapers = new Map();
-        papersPerAuthor.forEach(papers => {
-            papers.forEach(paper => {
-                paper = paper[0];
-                let paperData;
-                //console.log(paper.id)
-                if (uniquePapers.has(paper.id)) {
-                    paperData = uniquePapers.get(paper.id);
-                    paperData.contributors = paperData.contributors + 1;
-                    uniquePapers.set(paper.id, paperData);
-                }
-                else {
-                    uniquePapers.set(paper.id, new journal_1.MetaDataJournal(paper.title, 1, paper.cited_by_count, paper.host_venue.publisher, 1));
-                }
-            });
-        });
-        //console.log(uniquePapers)
-        const probScores = (0, probability_1.calculateProbabiltyOfReference)(uniquePapers);
-        let i = 0;
-        uniquePapers.forEach((value, key) => {
-            if (probScores[i] > 0.6)
-                output.push(key);
-            i++;
-        });
-        return output;
-        // titles = titles.flat(1);
-        // console.log(titles);
-        // titles = titles.filter((item, index) => titles.indexOf(item) === index);
-        // console.log(titles);
-        // return [""];
-    });
-}
-exports.getRefTitles = getRefTitles;
-function getOpenAlexPaperId(title) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const apiURL = "https://api.openalex.org/";
-        const searchQuery = "works?search=";
-        try {
-            const response = yield (0, node_fetch_1.default)(apiURL + searchQuery + title, {
-                method: 'GET',
-                headers: {},
-            });
-            const output = yield response.text();
-            const outputJSON = JSON.parse(output);
-            const paperid = outputJSON.results[0].id;
-            ;
-            return paperid;
-        }
-        catch (error) {
-            console.log("Error while fetching paperID from openAlex of: " + title);
-            const output = JSON.parse("");
-            return output;
-        }
-    });
-}
-exports.getOpenAlexPaperId = getOpenAlexPaperId;
-
-
-/***/ }),
-
-/***/ 4257:
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.calculateProbabiltyOfReference = void 0;
-/**
- *
- * @returns array containing for each paper a probability from 0 to 1 that they are a reference paper.
- * Probability is definied as the number of words that occur in both titles divided by the total number of words in the title of the main paper.
- */
-function calculateProbabiltyOfReference(uniquePapers) {
-    var _a;
-    // initialization
-    let mainPaperId = "";
-    let highestContributors = 0;
-    let lowestContributors = Number.MAX_SAFE_INTEGER;
-    let highestCitations = 0;
-    let lowestCitations = Number.MAX_SAFE_INTEGER;
-    let i = 0;
-    const output = new Array(uniquePapers.size).fill(0); // Holds probabilities for each paper that they are a reference paper
-    // find highest/lowest contributor/citation count, then assign one paper as main
-    uniquePapers.forEach((paper, key) => {
-        if (paper.contributors > highestContributors) {
-            highestContributors = paper.contributors;
-            mainPaperId = key;
-        }
-        if (paper.contributors < lowestContributors)
-            lowestContributors = paper.contributors;
-        if (paper.citationCount > highestCitations)
-            highestCitations = paper.citationCount;
-        if (paper.citationCount < lowestCitations)
-            lowestCitations = paper.citationCount;
-    });
-    // calculate mean values of contributors and citations and find the unique id of the main paper
-    const meanContributors = lowestContributors + ((highestContributors - lowestContributors) / 2);
-    const meanCitations = lowestCitations + ((highestCitations - lowestCitations) / 2);
-    const title = (_a = uniquePapers.get(mainPaperId)) === null || _a === void 0 ? void 0 : _a.title;
-    // Find the probabilty of a paper being a reference paper based on the similarity of the title to the main paper, ignoring papers beneath the mean value of contributors or citations.
-    // TODO: change title strings to Map<word, count> and compare those.
-    if (title === undefined) {
-        console.log("Paper has no title");
-    }
-    else {
-        const wordsMainPaper = title.toLowerCase().split(" ");
-        uniquePapers.forEach((paper, id) => {
-            if (id === mainPaperId)
-                output[i] = 1;
-            else if (paper.contributors <= meanContributors && paper.citationCount <= meanCitations)
-                output[i] = 0;
-            else {
-                const wordsPaper = paper.title.toLowerCase().split(" ");
-                let similarWordsCount = 0;
-                for (let i = 0; i < wordsMainPaper.length; i++) {
-                    for (let j = 0; j < wordsPaper.length; j++) {
-                        if (wordsMainPaper[i] === wordsPaper[j]) {
-                            similarWordsCount++;
-                            wordsPaper[j] = "";
-                        }
-                    }
-                }
-                output[i] = similarWordsCount / wordsMainPaper.length;
-            }
-            i++;
-        });
-    }
-    return output;
-}
-exports.calculateProbabiltyOfReference = calculateProbabiltyOfReference;
-
-
-/***/ }),
-
-/***/ 147:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -15709,46 +21061,216 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.runSBOM = void 0;
-const artifact_1 = __nccwpck_require__(8394);
-const artifact = __importStar(__nccwpck_require__(2605));
+exports.getIssues = exports.hasDocumentationDir = exports.getAvgSolveTime = exports.getMaintainabilityScore = exports.getLicenseScore = exports.runModule = exports.ModuleName = void 0;
+const gh = __importStar(__nccwpck_require__(5438));
+const fs = __importStar(__nccwpck_require__(7147));
+/** The name of the module. */
+exports.ModuleName = "QualityMetrics";
 /**
- * This function downloads the artifact created by the SBOM action,
- * and parses the JSON to an object.
+ * Calculates the quality metrics of the repository.
  *
- * @param artifactObject The {@link Artifact} object that is used. During normal operation of the program, this should simply be \@actions/artifact, but for the unit tests a mock is passed instead.
- * @param destination The path to the directory in which the artifact file should be downloaded.
- * @param fileName The name of the file that should be read.
- * @returns A {@link action.ReturnObject} containing the data from the spdx file.
+ * @param ghInfo Information about the GitHub repository.
+ * @param fairtallyOutput The output from the fairtally module.
+ * @param tortelliniOutput The output from the tortellini module.
+ * @returns The quality metrics of the repository.
+ *
+ * @remarks
+ * #### FAIRness score
+ * Score between 0 and 100 proportional to how many of the five FAIRness criteria are met.
+ * #### Maintainability score
+ * The percentage of closed GitHub issues.
+ * #### License score
+ * Score between 0 and 100 indicating how compatible the license of the project is with those of its dependencies. The more violations there are, the lower the license score will be.
+ * #### Documentation
+ * Score between 0 and 100, depending on the presence of a documentation directory and readme.md file.
+ * #### Average Solve Time
+ * Average number of days between opening and closing an issue. This number is not used to calculate the quality score, but may be displayed separately. This is because the acceptable amount of time it takes to solve an issue can be different for each project.
  */
-function runSBOM(artifactObject = artifact, destination = ".SBOM-artifact", fileName = "SBOM.spdx") {
+function runModule(ghInfo, fairtallyOutput, tortelliniOutput) {
     return __awaiter(this, void 0, void 0, function* () {
-        // Get the SBOM file
-        const downloadResponse = yield (0, artifact_1.getArtifactData)(fileName, destination, artifactObject);
-        const fileContents = yield (0, artifact_1.getFileFromArtifact)(downloadResponse, fileName);
-        let obj;
-        if (fileContents !== "") {
-            obj = JSON.parse(fileContents);
+        // Check if fairtally and Tortellini output exist
+        if (fairtallyOutput === undefined || tortelliniOutput === undefined) {
+            throw new Error("fairtallyOutput or tortelliniOutput is undefined");
         }
-        else {
-            obj = {};
-        }
+        // FAIRness score
+        const fairnessScore = fairtallyOutput[0].count * 20;
+        // License score
+        const licenseScore = getLicenseScore(tortelliniOutput);
+        // Get github issues
+        const issues = yield getIssues(ghInfo);
+        // Maintainability score
+        const maintainabilityScore = getMaintainabilityScore(issues);
+        // Average solve time
+        const avgSolveTime = getAvgSolveTime(issues);
+        // Documentation score
+        const docsDirectoryScore = hasDocumentationDir() ? 50 : 0;
+        const readmeScore = ghInfo.Readme !== "" ? 50 : 0;
+        const documentationScore = docsDirectoryScore + readmeScore;
+        // Scoring weights
+        const fairnessWeight = 38;
+        const licenseWeight = 27;
+        const maintainabilityWeight = 23;
+        const documentationWeight = 12;
+        const totalWeight = fairnessWeight + licenseWeight + maintainabilityWeight + documentationWeight;
+        // Total score
+        const score = Math.round((fairnessScore * fairnessWeight +
+            licenseScore * licenseWeight +
+            maintainabilityScore * maintainabilityWeight +
+            documentationScore * documentationWeight) / totalWeight);
         return {
-            ReturnName: "SBOM",
-            ReturnData: obj,
+            score,
+            fairnessScore,
+            licenseScore,
+            maintainabilityScore,
+            documentationScore,
+            avgSolveTime,
         };
     });
 }
-exports.runSBOM = runSBOM;
+exports.runModule = runModule;
+/**
+ * Calculates the percentage of license violations. The more violations there are,
+ * the lower the score will be.
+ *
+ * @param licenseInfo The output from Tortellini.
+ * @returns Score between 0 and 100 indicating how well licenses correspond with each other.
+ */
+function getLicenseScore(licenseInfo) {
+    const licenseCount = licenseInfo.packages.length;
+    const violationCount = licenseInfo.violations.length;
+    // Check if there's no licenses
+    if (licenseCount === 0) {
+        return 100;
+    }
+    // Fraction of licenses that are not violated
+    const correctFraction = (licenseCount - violationCount) / licenseCount;
+    // When there are more licenses, the same fraction of violations results in a lower score
+    return Math.round(Math.pow(correctFraction, Math.log2(1 + licenseCount)) * 100);
+}
+exports.getLicenseScore = getLicenseScore;
+/**
+ * Calculates the maintainability of the code, by comparing the number of open
+ * issues with the total number of issues. If the number of open issues is relatively high,
+ * this will result in a lower score.
+ *
+ * @param issues Array of issues from GitHub.
+ * @returns Score between 0 and 100 indicating the maintainability of the code.
+ */
+function getMaintainabilityScore(issues) {
+    const total = issues.length;
+    // Count amount of closed issues
+    let closed = 0;
+    for (const issue of issues) {
+        if (issue.closed_at)
+            closed++;
+    }
+    // Return score as percentage of closed issues
+    return total > 0 ? Math.round((100 * closed) / total) : 100;
+}
+exports.getMaintainabilityScore = getMaintainabilityScore;
+/**
+ * Calculates the average number of days it takes to solve an issue.
+ *
+ * @param issues Array of issues from GitHub.
+ * @returns The average solve time of issues (in days).
+ */
+function getAvgSolveTime(issues) {
+    let totalTime = 0;
+    let numberOfIssues = 0;
+    for (const issue of issues) {
+        // Skip unsolved issues
+        if (issue.closed_at === null)
+            continue;
+        // Get created and closed times in milliseconds
+        const created = Date.parse(issue.created_at);
+        const closed = Date.parse(issue.closed_at);
+        // Add solved time in days
+        totalTime += (closed - created) / (1000 * 60 * 60 * 24);
+        numberOfIssues++;
+    }
+    // Return average solve time (rounded up to next day)
+    return numberOfIssues > 0 ? Math.round(totalTime / numberOfIssues) : undefined;
+}
+exports.getAvgSolveTime = getAvgSolveTime;
+/**
+ * Checks if the repository has documentation by checking if there is a directory
+ * named "docs" or "documentation" in the root of the repositiory.
+ *
+ * @returns A boolean indicating the existence of a "docs" or "documentation" directory.
+ */
+function hasDocumentationDir() {
+    return fs.existsSync("./docs") || fs.existsSync("./documentation");
+}
+exports.hasDocumentationDir = hasDocumentationDir;
+/**
+ * Gets issues (excluding pull requests) of the current repository from GitHub.
+ *
+ * @param ghInfo Information about the GitHub repository.
+ * @returns An array of GitHub issue objects.
+ */
+function getIssues(ghInfo) {
+    return __awaiter(this, void 0, void 0, function* () {
+        // Get octokit
+        let octokit;
+        try {
+            octokit = gh.getOctokit(ghInfo.GithubToken);
+        }
+        catch (error) {
+            throw new Error("Error while contacting Octokit API: " + error.message);
+        }
+        // Request issues of the repo (pull requests are also counted as issues)
+        // https://docs.github.com/en/rest/issues/issues#list-repository-issues
+        try {
+            const response = yield octokit.request("GET /repos/" + ghInfo.Owner + "/" + ghInfo.Repo + "/issues", {
+                owner: ghInfo.Owner,
+                repo: ghInfo.Repo,
+            });
+            // Filter out pull requests and return the issues
+            return response.data.filter((issue) => issue.pull_request === undefined);
+        }
+        catch (error) {
+            throw new Error("Error getting issues: " + error.message);
+        }
+    });
+}
+exports.getIssues = getIssues;
 
 
 /***/ }),
 
-/***/ 629:
+/***/ 147:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
+/**
+ * This module contains a function that retrieves the artifact from [sbom-action](https://github.com/anchore/sbom-action) and parses the data to JSON.
+ *
+ * @module
+ */
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -15759,56 +21281,121 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getMatchIndicesOfHash = exports.getMatches = exports.getMethodInfo = exports.getHashIndices = exports.parseInput = exports.runSearchseco = void 0;
-const git_1 = __nccwpck_require__(6350);
-const exec_1 = __nccwpck_require__(1514);
+exports.runModule = exports.ModuleName = void 0;
+const artifact_1 = __nccwpck_require__(8394);
+const artifact = __importStar(__nccwpck_require__(2605));
+/** The name of the module. */
+exports.ModuleName = "SBOM";
 /**
- * This function first runs the searchSECO docker and listens to stdout for its output.
+ * This function downloads the artifact created by the SBOM action,
+ * and parses the JSON to an object.
+ *
+ * @param artifactObject The Artifact object that is used. During normal operation of the program, this should simply be \@actions/artifact, but for the unit tests a mock is passed instead.
+ * @param destination The path to the directory in which the artifact file should be downloaded.
+ * @param fileName The name of the file that should be read.
+ * @returns The data from the spdx file.
+ */
+function runModule(artifactObject = artifact, destination = ".SBOM-artifact", fileName = "SBOM.spdx") {
+    return __awaiter(this, void 0, void 0, function* () {
+        // Get the SBOM file
+        const downloadResponse = yield (0, artifact_1.getArtifactData)(fileName, destination, artifactObject);
+        const fileContents = (0, artifact_1.getFileFromArtifact)(downloadResponse, fileName);
+        // Check if the file is empty
+        if (fileContents !== "") {
+            return JSON.parse(fileContents);
+        }
+        else {
+            throw new Error("SBOM artifact file appears to be empty.");
+        }
+    });
+}
+exports.runModule = runModule;
+
+
+/***/ }),
+
+/***/ 629:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+/**
+ * This module contains functions that run the SearchSECO Docker image and parses its output.
+ *
+ * @remarks
+ * If the action is run on a private repository, SearchSECO will be unable
+ * to analyze the code. To circumvent this, a mock of SearchSECO was created
+ * ([jarnohendriksen/MockSECO:v1](https://hub.docker.com/r/jarnohendriksen/mockseco)).
+ *
+ * @module
+ */
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getMatchIndicesOfHash = exports.getMatches = exports.getMethodInfo = exports.getHashIndices = exports.parseOutput = exports.runModule = exports.ModuleName = void 0;
+const log_1 = __nccwpck_require__(8375);
+const docker_exit_1 = __nccwpck_require__(7681);
+const fs = __importStar(__nccwpck_require__(7147));
+const exec_1 = __nccwpck_require__(1514);
+/** The name of the module. */
+exports.ModuleName = "SearchSECO";
+/**
+ * This function first runs the SearchSECO Docker and listens to stdout for its output.
  * Then, it tries to parse whatever SearchSECO returned into an {@link Output} object.
  *
- * **Because the real SearchSECO is currently not available, [a mock](https://hub.docker.com/r/jarnohendriksen/mockseco) was used instead**
- *
- * The mock simply returns a hard-coded output, that has no relation to the repo it is run on.
- * Calling the docker image works slightly differently then the real SearchSECO. For instance, the mock can't have a custom entrypoint, but SearchSECO requires it.
- * To solve this, the line `const entrypoint = '--entrypoint="./controller/build/searchseco"';` is included in the code. This entrypoint must be added to the args that are passed to docker:
- * ```ts
- * const args = [
-        "run",
-        "--rm",
-        "--name",
-        "searchseco-container",
-        // This is where 'entrypoint' goes
-        "-e",
-        '"github_token=' + ghToken + '"',
-        "-e",
-        '"worker_name=test"',
-        dockerImage,
-        "check",
-        gitrepo,
-    ];
-    ```
- *
- * @returns A {@link action.ReturnObject} containing the name of the module and the object constructed from SearchSECO's output.
- *
+ * @param ghInfo Information about the GitHub repository.
+ * @returns The object constructed from SearchSECO's output.
  */
-function runSearchseco() {
+function runModule(ghInfo) {
     return __awaiter(this, void 0, void 0, function* () {
-        const gitrepo = yield (0, git_1.getRepoUrl)();
-        // Once the real SearchSECO is fully functional again, this should be replaced with 'searchseco/controller'
-        const dockerImage = "jarnohendriksen/mockseco:v1";
-        // This needs to be added to the docker command (const args) on the line indicated below
-        const entrypoint = '--entrypoint="./controller/build/searchseco"';
-        // This needs to contain a working Github token, since the real SearchSECO needs it
-        const ghToken = ""; // core.getInput("GITHUB_TOKEN");
-        console.debug("SearchSECO started");
-        console.debug("WARNING: Running a mock of SearchSECO. The output will be incorrect!");
+        const gitrepo = ghInfo.FullURL;
+        const useMock = ghInfo.Visibility !== "public";
+        // Determine which Docker image to use
+        const dockerImage = useMock
+            ? "jarnohendriksen/mockseco:v1"
+            : "searchseco/controller";
+        // The mock can't handle a custom entrypoint, while SearchSECO requires it
+        const entrypoint = useMock
+            ? ""
+            : '--entrypoint="./controller/build/searchseco"';
+        // The token will be retrieved from the git data collection object once that is merged
+        const ghToken = ghInfo.GithubToken;
         const cmd = "docker";
-        const args = [
+        const mockArgs = [
             "run",
             "--rm",
             "--name",
             "searchseco-container",
-            // This is where 'entrypoint' goes
             "-e",
             '"github_token=' + ghToken + '"',
             "-e",
@@ -15817,10 +21404,39 @@ function runSearchseco() {
             "check",
             gitrepo,
         ];
+        const realArgs = [
+            "run",
+            "--rm",
+            "--name",
+            "searchseco-container",
+            entrypoint,
+            "-e",
+            '"github_token=' + ghToken + '"',
+            "-e",
+            '"worker_name=test"',
+            dockerImage,
+            "check",
+            gitrepo,
+        ];
+        const args = useMock ? mockArgs : realArgs;
+        // Output from the Docker container
         let stdout = "";
-        let stderr = "";
+        try {
+            if (!fs.existsSync("./ssOutputFiles"))
+                fs.mkdirSync("./ssOutputFiles/");
+            else
+                (0, log_1.LogMessage)("Directory ssOutputFiles already exists!", log_1.ErrorLevel.info);
+        }
+        catch (_a) {
+            (0, log_1.LogMessage)("Could not create ssOutputFiles directory", log_1.ErrorLevel.err);
+        }
+        const stdOutStream = fs.createWriteStream("./ssOutputFiles/ssOutput.txt");
+        const stdErrStream = fs.createWriteStream("./ssOutputFiles/ssError.txt");
         const options = {
             ignoreReturnCode: true,
+            windowsVerbatimArguments: true,
+            outStream: stdOutStream,
+            errStream: stdErrStream,
         };
         // SearchSECO prints its results in the console. The code below copies the
         // output to the variables stdout and stderr
@@ -15828,17 +21444,14 @@ function runSearchseco() {
             stdout: (data) => {
                 stdout += data.toString();
             },
-            stderr: (data) => {
-                stderr += data.toString();
-            },
         };
-        // Executes the docker run command
+        // Executes the Docker run command
+        (0, log_1.LogMessage)("Starting Docker program: SearchSECO", log_1.ErrorLevel.info);
+        if (useMock)
+            (0, log_1.LogMessage)("Running a mock of SearchSECO. The output will be incorrect!", log_1.ErrorLevel.warn);
         const exitCode = yield (0, exec_1.exec)(cmd, args, options);
-        console.debug("Docker running SearchSECO returned " + String(exitCode));
-        console.debug("stdout:");
-        console.debug(stdout);
-        console.debug("stderr:");
-        console.debug(stderr);
+        // Check Docker exit code
+        (0, docker_exit_1.throwError)("SearchSECO", exitCode);
         // ParseInput expects an array of trimmed lines
         // (i.e. without trailing or leading whitespace)
         const lines = stdout.split("\n");
@@ -15846,20 +21459,18 @@ function runSearchseco() {
         for (let n = 0; n < filteredlines.length; n++) {
             filteredlines[n] = filteredlines[n].trim();
         }
-        const output = parseInput(filteredlines);
-        return {
-            ReturnName: "SearchSeco",
-            ReturnData: output,
-        };
+        const output = parseOutput(filteredlines);
+        return output;
     });
 }
-exports.runSearchseco = runSearchseco;
+exports.runModule = runModule;
 /**
+ * Parses the output of SearchSECO.
  *
  * @param input The string returned by SearchSECO, split on newlines. Each line is also trimmed to remove leading and trailing whitespace.
- * @returns An {@link Output} object with data parsed from the output of SearchSECO.
+ * @returns The data parsed from the output of SearchSECO.
  */
-function parseInput(input) {
+function parseOutput(input) {
     const hashIndices = getHashIndices(input);
     const ms = [];
     for (let i = 0; i < hashIndices.length - 1; i++) {
@@ -15870,10 +21481,10 @@ function parseInput(input) {
     }
     return { methods: ms };
 }
-exports.parseInput = parseInput;
+exports.parseOutput = parseOutput;
 /**
- * This function gives the lines that contain a hash, and the total number of lines. The array is used
- * to indicate where data for a particular method begins and ends.
+ * Gives the lines that contain a hash, and the total number of lines.
+ * The array is used to indicate where data for a particular method begins and ends.
  *
  * @param input The string returned by SearchSECO, split on newlines. Each line is also trimmed to remove leading and trailing whitespace.
  * @returns An array containing the indices of lines that contain a hash.
@@ -15882,8 +21493,9 @@ function getHashIndices(input) {
     const indices = [];
     for (let i = 1; i < input.length; i++) {
         // Check if the previous line consists of dashes to make sure an author named Hash isn't included
-        if (input[i - 1].match(/(-)+/) !== null && input[i].startsWith("Hash "))
+        if (input[i - 1].match(/(-)+/) !== null && input[i].startsWith("Hash ")) {
             indices.push(i);
+        }
     }
     // Add last line + 1, to let the program know when to stop looping
     indices.push(input.length);
@@ -15891,7 +21503,7 @@ function getHashIndices(input) {
 }
 exports.getHashIndices = getHashIndices;
 /**
- * This function looks for the first line within a hash that contains `*Method`, and extracts
+ * Looks for the first line within a hash that contains `*Method`, and extracts
  * the data from the line. This only succeeds if the line has the structure:
  *
  * `*Method <methodName> in file <fileName> line <lineNumber>`
@@ -15899,7 +21511,7 @@ exports.getHashIndices = getHashIndices;
  * @param input The string returned by SearchSECO, split on newlines. Each line is also trimmed to remove leading and trailing whitespace.
  * @param start The index of the first line that belongs to this method.
  * @param end The index of the first line that belongs to the next method (or that indicates the end of the input array).
- * @returns A {@link MethodData} object containing the data belonging to this method in this project.
+ * @returns The data belonging to this method in this project.
  */
 function getMethodInfo(input, start, end) {
     const methodDataLine = getMatchIndicesOfHash(input, start, end);
@@ -15929,12 +21541,12 @@ function getMethodInfo(input, start, end) {
 }
 exports.getMethodInfo = getMethodInfo;
 /**
- *
+ * Retrieves the matches from the output of SearchSECO.
  *
  * @param input The string returned by SearchSECO, split on newlines. Each line is also trimmed to remove leading and trailing whitespace.
  * @param start The index of the first line that belongs to this method.
  * @param end The index of the first line that belongs to the next method (or that indicates the end of the input array).
- * @returns An array containing {@link Match} objects. These objects contain data of the methods that were found in other projects.
+ * @returns An array of matches containing data of the methods that were found in other projects.
  */
 function getMatches(input, start, end) {
     const matchList = [];
@@ -16013,11 +21625,39 @@ exports.getMatchIndicesOfHash = getMatchIndicesOfHash;
 
 /***/ }),
 
-/***/ 3695:
+/***/ 3167:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
+/**
+ * This module contains a function that retrieves the artifact from Tortellini and filters the data.
+ *
+ * @module
+ */
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -16031,173 +21671,87 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getSemanticScholarPaperId = exports.getRefTitles = exports.semanticScholarCitations = void 0;
-const node_fetch_1 = __importDefault(__nccwpck_require__(467));
-const journal_1 = __nccwpck_require__(2550);
-const probability_1 = __nccwpck_require__(4257);
-function semanticScholarCitations(authors, title, refTitles) {
+exports.filterData = exports.runModule = exports.ModuleName = void 0;
+const yaml_1 = __importDefault(__nccwpck_require__(4083));
+const artifact_1 = __nccwpck_require__(8394);
+const input = __importStar(__nccwpck_require__(9546));
+/** The name of the module. */
+exports.ModuleName = "Tortellini";
+/**
+ * Downloads the artifact that was uploaded by Tortellini, and parses the YAML file.
+ *
+ * @param fileName The name of the file that should be retrieved from the artifact.
+ * @returns The relevant data from the YAML file given by Tortellini.
+ */
+function runModule(fileName = "evaluation-result.yml") {
     return __awaiter(this, void 0, void 0, function* () {
-        // find reference titles
-        const extraRefTitles = yield getRefTitles(authors, title);
-        refTitles.concat(extraRefTitles);
-        // prepare query strings
-        const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/paper/";
-        const fieldsQuery = "/citations?fields=title,externalIds,year&limit=1000";
-        // get the unique id semantic scholar gives it's papers
-        const paperId = yield getSemanticScholarPaperId(refTitles[0]);
-        // instanciate output array
-        let output = [];
-        try {
-            // API call and save output in Json object
-            const response = yield (0, node_fetch_1.default)(semanticScholarApiURL + paperId + fieldsQuery, {
-                method: 'GET',
-                headers: {},
-            });
-            const outputJSON = yield response.json();
-            // save outputted metadata in Journal object and append to output array
-            outputJSON.data.forEach((element) => {
-                const title = element.citingPaper.title;
-                const year = element.citingPaper.year;
-                let DOI = "";
-                let pmid = "";
-                let pmcid = "";
-                if (element.citingPaper.externalIds !== undefined) {
-                    for (const [key, value] of Object.entries(element.citingPaper.externalIds)) {
-                        switch (key) {
-                            case ("DOI"):
-                                DOI = String(value);
-                                break;
-                            case ("PubMed"):
-                                pmid = String(value);
-                                break;
-                            case ("PubMedCentral"):
-                                pmcid = String(value);
-                                break;
-                        }
-                    }
-                    DOI = DOI.toLowerCase();
-                    pmid = pmid.toLowerCase();
-                    pmcid = pmcid.toLowerCase();
-                    const tempJournal = new journal_1.Journal(title, DOI, pmid, pmcid, year, "SemanticScholar", []);
-                    output = output.concat([tempJournal]);
-                }
-                else {
-                    const tempJournal = new journal_1.Journal(title, DOI, pmid, pmcid, year, "SemanticScholar", []);
-                    output = output.concat([tempJournal]);
-                }
-            });
-            return output;
+        const downloadResponse = yield (0, artifact_1.getArtifactData)("tortellini-result", input.destination, input.artifactObject);
+        const fileContents = (0, artifact_1.getFileFromArtifact)(downloadResponse, fileName);
+        if (fileContents === "") {
+            throw new Error("Tortellini artifact file appears to be empty.");
         }
-        catch (error) {
-            console.log("error while searching semantic scholar with semantic scholar ID of: " + title);
-            return output;
-        }
+        const obj = yaml_1.default.parse(fileContents);
+        const filteredData = filterData(obj);
+        return filteredData;
     });
 }
-exports.semanticScholarCitations = semanticScholarCitations;
-// function that searches semantic scholar for possible reference titles
-function getRefTitles(authors, title) {
-    return __awaiter(this, void 0, void 0, function* () {
-        // instanciate output array and maps
-        const output = [];
-        const papersPerAuthor = new Map();
-        const uniquePapers = new Map();
-        // prepare API strings
-        const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/author/";
-        const searchQuery = "search?query=";
-        const fieldsQuery = "&fields=papers.title,papers.citationCount,papers.venue";
-        // find of every author their papers with the title of the software mentioned in the paper
-        for (const author of authors) {
-            let papers = [];
-            let papersFiltered = [];
-            try {
-                const response = yield (0, node_fetch_1.default)(semanticScholarApiURL + searchQuery + author.givenNames + " " + author.familyName + fieldsQuery, {
-                    method: 'GET',
-                    headers: {},
-                });
-                const outputText = yield response.text();
-                const outputJSON = JSON.parse(outputText);
-                outputJSON.data.forEach((element) => {
-                    for (const [key, value] of Object.entries(element)) {
-                        if (key === "papers")
-                            papers = papers.concat(value);
-                    }
-                });
-            }
-            catch (error) {
-                let errorMessage = "Error while searching for author " + author.givenNames + " " + author.familyName + " on semantics scholar";
-                if (error instanceof Error) {
-                    errorMessage = error.message;
-                }
-                console.log(errorMessage);
-            }
-            papers.forEach((element) => {
-                // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-                if (element.title.toLowerCase().includes(title.toLowerCase()))
-                    papersFiltered = papersFiltered.concat([element]);
-            });
-            papersPerAuthor.set(author, papersFiltered);
-        }
-        // find all the unique papers, and keep count of how many authors it shares
-        papersPerAuthor.forEach(papers => {
-            papers.forEach(paper => {
-                let paperData;
-                if (uniquePapers.has(paper.paperId)) {
-                    paperData = uniquePapers.get(paper.paperId);
-                    paperData.contributors = paperData.contributors + 1;
-                    uniquePapers.set(paper.paperId, paperData);
-                }
-                else {
-                    uniquePapers.set(paper.paperId, new journal_1.MetaDataJournal(paper.title, 1, paper.citationCount, paper.venue, 1));
-                }
-            });
-        });
-        // calculate the probability of each paper being a reference paper
-        const probScores = (0, probability_1.calculateProbabiltyOfReference)(uniquePapers);
-        let i = 0;
-        uniquePapers.forEach((value, key) => {
-            if (probScores[i] > 0.6)
-                output.push(key);
-            i++;
-        });
-        return output;
-    });
+exports.runModule = runModule;
+/**
+ * Filters the data from the YAML file.
+ *
+ * The YAML file contains a lot of information that is not interesting for this project,
+ * like information about the analysis itself (start and end time, environment info, etc.), and
+ * a massive dependency tree.
+ *
+ * We only need a list of dependencies with their license data, and a list of license violations.
+ *
+ * @param obj The object that contains the data from the YAML file.
+ * @returns An object containing only the data that is relevant for FAIRSECO.
+ */
+function filterData(obj) {
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t;
+    // Project data
+    const projects = (_a = obj.analyzer.result.projects) !== null && _a !== void 0 ? _a : [];
+    const project = (_b = projects[0]) !== null && _b !== void 0 ? _b : {};
+    const projData = {
+        id: (_c = project.id) !== null && _c !== void 0 ? _c : "-",
+        licenses: (_d = project.declared_licenses) !== null && _d !== void 0 ? _d : "-",
+        description: (_e = project.description) !== null && _e !== void 0 ? _e : "-",
+        authors: (_f = project.authors) !== null && _f !== void 0 ? _f : "-",
+        vcs: (_g = project.vcs_processed) !== null && _g !== void 0 ? _g : "-",
+    };
+    // Package data
+    const packages = (_h = obj.analyzer.result.packages) !== null && _h !== void 0 ? _h : [];
+    const packData = [];
+    for (const pack of packages) {
+        const p = {
+            id: (_k = (_j = pack.package) === null || _j === void 0 ? void 0 : _j.id) !== null && _k !== void 0 ? _k : "-",
+            licenses: (_m = (_l = pack.package) === null || _l === void 0 ? void 0 : _l.declared_licenses) !== null && _m !== void 0 ? _m : "-",
+            description: (_p = (_o = pack.package) === null || _o === void 0 ? void 0 : _o.description) !== null && _p !== void 0 ? _p : "-",
+            authors: (_r = (_q = pack.package) === null || _q === void 0 ? void 0 : _q.authors) !== null && _r !== void 0 ? _r : "-",
+            vcs: (_t = (_s = pack.package) === null || _s === void 0 ? void 0 : _s.vcs_processed) !== null && _t !== void 0 ? _t : "-",
+        };
+        packData.push(p);
+    }
+    // Violations
+    const viol = obj.evaluator.violations;
+    return { project: projData, packages: packData, violations: viol };
 }
-exports.getRefTitles = getRefTitles;
-// function that gets unique id of the paper from the semantic scholar API
-function getSemanticScholarPaperId(title) {
-    return __awaiter(this, void 0, void 0, function* () {
-        // prepare query strings
-        const semanticScholarApiURL = "https://api.semanticscholar.org/graph/v1/paper/";
-        const searchQuery = "search?query=";
-        try {
-            // API call and save it in JSON, then extract the paperID
-            // TODO: remove ANYs 
-            const response = yield (0, node_fetch_1.default)(semanticScholarApiURL + searchQuery + "\"" + title + "\"", {
-                method: 'GET',
-                headers: {},
-            });
-            const outputJSON = yield response.json();
-            const paperid = outputJSON.data[0].paperId;
-            return paperid;
-        }
-        catch (error) {
-            console.log("Error while fetching paperID from semantic scholar of: " + title);
-            const output = "";
-            return output;
-        }
-    });
-}
-exports.getSemanticScholarPaperId = getSemanticScholarPaperId;
+exports.filterData = filterData;
 
 
 /***/ }),
 
-/***/ 8546:
+/***/ 9546:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
+/**
+ * This module contains variables that need to be mocked in the unit tests.
+ *
+ * @module
+ */
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -16225,7 +21779,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.destination = exports.artifactObject = void 0;
 const artifact = __importStar(__nccwpck_require__(2605));
 /**
- * The {@link Artifact} object that will be used by tortellini.ts.
+ * The `Artifact` object that will be used by tortellini.ts.
  * Can be overridden by mocking this module in jest for unit testing.
  */
 exports.artifactObject = artifact;
@@ -16238,124 +21792,17 @@ exports.destination = ".tortellini-artifact";
 
 /***/ }),
 
-/***/ 3167:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.filterData = exports.runTortellini = void 0;
-const yaml_1 = __importDefault(__nccwpck_require__(4083));
-const artifact_1 = __nccwpck_require__(8394);
-const input = __importStar(__nccwpck_require__(8546));
-/**
- * Downloads the artifact that was uploaded by Tortellini, and parses the YAML file.
- *
- * @param fileName Name of the file that should be retrieved from the artifact.
- * @returns A {@link action.ReturnObject} containing the relevant data from the YAML file given by Tortellini.
- */
-function runTortellini(fileName = "evaluation-result.yml") {
-    return __awaiter(this, void 0, void 0, function* () {
-        const downloadResponse = yield (0, artifact_1.getArtifactData)("tortellini-result", input.destination, input.artifactObject);
-        const fileContents = yield (0, artifact_1.getFileFromArtifact)(downloadResponse, fileName);
-        if (fileContents === "")
-            return { ReturnName: "Tortellini", ReturnData: {} };
-        const obj = yaml_1.default.parse(fileContents);
-        const filteredData = yield filterData(obj);
-        return {
-            ReturnName: "Tortellini",
-            ReturnData: filteredData,
-        };
-    });
-}
-exports.runTortellini = runTortellini;
-/**
- * Filters the data from the YAML file.
- *
- * The YAML file contains a lot of information that is not interesting for this project,
- * like information about the analysis itself (start and end time, environment info, etc.), and
- * a massive dependency tree.
- *
- * We only need a list of dependencies with their license data, and a list of license violations.
- *
- * @param obj The object that contains the data from the YAML file.
- * @returns An object containing only the data that is relevant for FairSECO.
- */
-function filterData(obj) {
-    return __awaiter(this, void 0, void 0, function* () {
-        // Project data
-        const projects = obj.analyzer.result.projects || [];
-        const project = projects[0] || {};
-        const projData = {
-            id: project.id || "-",
-            licenses: project.declared_licenses || "-",
-            description: project.description || "-",
-            authors: project.authors || "-",
-            vcs: project.vcs_processed || "-",
-        };
-        // Package data
-        const packages = obj.analyzer.result.packages || [];
-        const packData = [];
-        for (const pack of packages) {
-            const p = {
-                id: pack.package.id || "-",
-                licenses: pack.package.declared_licenses || "-",
-                description: pack.package.description || "-",
-                authors: pack.package.authors || "-",
-                vcs: pack.package.vcs_processed || "-",
-            };
-            packData.push(p);
-        }
-        // Violations
-        const viol = obj.evaluator.violations;
-        return { project: projData, packages: packData, violations: viol };
-    });
-}
-exports.filterData = filterData;
-
-
-/***/ }),
-
 /***/ 6137:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
+/**
+ * This module contains a function that handles the creation of the HTML file. It compiles the EJS files into
+ * an HTML file, and inserts the data generated by the program.
+ *
+ * @module
+ */
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -16392,35 +21839,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.WriteCSS = exports.WriteHTML = void 0;
+exports.WriteHTML = void 0;
 const fs = __importStar(__nccwpck_require__(7147));
+const ejs_1 = __importDefault(__nccwpck_require__(8431));
 const path_1 = __importDefault(__nccwpck_require__(1017));
 /**
- * Creates a webapp that reports the data gathered by FairSECO.
+ * Creates a webapp that reports the data gathered by FAIRSECO.
+ *
  * @param data The gathered data.
  * @param filePath The path to which the HTML file will be written.
  */
-function WriteHTML(data, filePath) {
+function WriteHTML(data, filePath = "./.FAIRSECO/", templatePath = "./FAIRSECO_Assets/templates/") {
     return __awaiter(this, void 0, void 0, function* () {
-        const templateFilename = path_1.default.join(__dirname, '..', 'templates', 'index.html.template');
-        const template = yield fs.promises.readFile(templateFilename, 'utf8');
-        const app = template.replace('{{node inserts the data here}}', JSON.stringify(data));
-        yield fs.promises.writeFile(filePath, app, 'utf8');
+        const template = yield ejs_1.default.renderFile(path_1.default.join(templatePath, "index.ejs"), { data });
+        const template2 = yield ejs_1.default.renderFile(path_1.default.join(templatePath, "citationgraph.ejs"), { data });
+        yield fs.promises.writeFile(path_1.default.join(filePath, "dashboard.html"), template, "utf8");
+        yield fs.promises.writeFile(path_1.default.join(filePath, "citationgraph.html"), template2, "utf8");
     });
 }
 exports.WriteHTML = WriteHTML;
-/**
- * Includes the local CSS file for the webapp.
- * @param filePath The path to the HTML file of the webapp.
- */
-function WriteCSS(filePath) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const cssFilename = path_1.default.join(__dirname, '..', 'templates', 'style.css');
-        const cssContent = yield fs.promises.readFile(cssFilename, 'utf8');
-        yield fs.promises.writeFile(filePath, cssContent, 'utf8');
-    });
-}
-exports.WriteCSS = WriteCSS;
 
 
 /***/ }),
@@ -24883,6 +30320,14 @@ exports.visitAsync = visitAsync;
 
 /***/ }),
 
+/***/ 3558:
+/***/ ((module) => {
+
+"use strict";
+module.exports = {"i8":"3.1.8"};
+
+/***/ }),
+
 /***/ 2020:
 /***/ ((module) => {
 
@@ -24935,8 +30380,15 @@ var __webpack_exports__ = {};
 "use strict";
 var exports = __webpack_exports__;
 
+/**
+ * This module is the entrypoint of the program.
+ * It calls {@link action.main | main()} in {@link action | action.ts}.
+ *
+ * @module
+ */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const action_1 = __nccwpck_require__(7672);
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
 (0, action_1.main)();
 
 })();

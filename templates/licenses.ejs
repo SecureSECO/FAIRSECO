@@ -1,0 +1,199 @@
+<%
+    if (licenses === undefined) {
+        throw new Error("Missing licenses data");
+    }
+%> 
+
+<div class="LicensesContainer Hidden">
+    <h3 class="Disclaimer">This information is retrievied from the <a href="https://github.com/tortellini-tools/action" target="_blank" rel="noopener noreferrer">Tortellini GitHub Action</a>. Please be aware that we cannot make any guarantees about correct licensing. </h3>
+    <h1 class="issuesheader"> Issues detected: <%= licenses.violations?.length %></h1>
+    <div class="LicensesContainerScroll">
+        <div class="Licenses">
+            <% licenses.violations.forEach((violation) => { %> 
+            <%- include('violation', {"violation": violation})%> 
+            <% }) %>
+        </div>
+    </div>
+</div>
+
+<style>
+    .LicensesContainer {
+        height: 76%;
+        width: 100%;
+    }
+
+    .Disclaimer{
+        color:#779C7E;
+        font-size: 0.9rem;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        margin-left: 20px;
+        font-style: italic;
+    }
+
+    .Licenses {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .issuesheader{
+        color:#779C7E;
+        font-size: 24px;
+        margin-bottom: 0px;
+        margin-left: 20px;
+    }
+
+    .LicensesContainerScroll{
+        overflow-y: scroll;
+        height: 78%;
+        padding: 0;
+        margin: 0;
+        -webkit-mask-image: linear-gradient(
+        to bottom,
+        black 90%,
+        transparent 100%
+        );
+        mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+    }
+
+    .Licenses h1 {
+        margin: 5px;
+    }
+    
+    .ViolationDetailsHeader {
+        font-weight: bold;
+    }
+
+    .space3 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .message {
+        display: inline-block;
+        width: 43%;
+        font-size: 12px;
+    }
+
+    .space4 {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .howToFix {
+        display: inline-block;
+        width: 40%;
+        text-align: right;
+        font-size: 12px;
+    }
+
+    .space1 {
+        display: inline-block;
+        width: 5%;
+    }
+
+    .issue {
+        display: inline-block;
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .space2 {
+        display: inline-block;
+        width: 27%;
+    }
+
+    .howToSolve {
+        display: inline-block;
+        width: 36%;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .Violation {
+        color: #D9F8DF;
+        border: 1px solid #779C7E;
+        border-radius: 7px;
+        margin: 8px;
+        padding: 5px;
+    }
+    
+    .Arrow {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+        text-align: center;
+    }
+    .Arrow i:hover {
+        color: #b8d7cc;
+        cursor: pointer;
+    }
+
+    .Warning {
+        display: inline-block;
+        width: 5%;
+        font-size: 11px;
+    }
+
+    .Rule {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+    }
+
+    .PackageName {
+        display: inline-block;
+        width: 48%;
+        font-size: 16px;
+    }
+
+    .Licensetype {
+        display: inline-block;
+        width: 15%;
+        font-size: 16px;
+    }
+
+    .Licensetype p {
+        text-align: right;
+    }
+</style>
+
+<!-- license table  -->
+<!-- 
+border-collapse: collapse;
+padding: 0px;
+margin: 0px;
+display: block; -->
+
+<!-- tbody -->
+<!-- width: 97%;
+display: table;
+margin: auto;
+margin-top: 20px; -->
+
+<!-- tr -->
+<!-- border: 1px solid wheat;
+border-radius: 10px;
+position: relative;
+min-width: fit-content; -->
+
+<script>
+
+let details = document.getElementsByClassName('Arrow')
+
+for (var i = 0; i < details.length; ++i){
+    details[i].addEventListener('click', function(event){
+        if (event.target.className == "fa-solid fa-angle-right"){
+            event.target.className = "fa-solid fa-angle-down";
+            var hid = event.target.parentElement.parentElement.parentElement.children[5].hidden;
+            event.target.parentElement.parentElement.parentElement.children[5].hidden = !hid;
+        } else if (event.target.className == "fa-solid fa-angle-down") {
+            event.target.className = "fa-solid fa-angle-right"
+            var hid = event.target.parentElement.parentElement.parentElement.children[5].hidden;
+            event.target.parentElement.parentElement.parentElement.children[5].hidden = !hid;
+        }
+})
+}
+
+</script>

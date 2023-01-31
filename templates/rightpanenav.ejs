@@ -1,0 +1,170 @@
+<ul id="RightPaneNav">
+    <li class="RightPaneNav__Tab--Active" onClick="clickTab(this)" data-linked-class="Overview">Overview</li>
+    <li class="RightPaneNav__Tab--1Away" onClick="clickTab(this)" data-linked-class="FairtallyReport">FAIRness</li>
+    <li class="RightPaneNav__Tab--2Away" onClick="clickTab(this)" data-linked-class="ImpactScore">Impact</li>
+    <li class="RightPaneNav__Tab--3Away" onClick="clickTab(this)" data-linked-class="Quality">Quality</li>
+    <li class="RightPaneNav__Tab--4Away" onClick="clickTab(this)" data-linked-class="ImpactHistory">Impact History</li>
+</ul>
+
+
+<style>
+#RightPaneNav {
+    display: flex;
+    flex-direction: row;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#RightPaneNav li {
+    display: block;
+    backdrop-filter: blur(50px);
+    border-radius: 16px 16px 0 0;
+    padding: 1.3vh 2vw;
+    cursor: pointer;
+    font-size: 1.2rem;
+    height: 50px;
+    color: #EAFEED;
+    transition: all 150ms ease;
+}
+
+#RightPaneNav li:hover {
+    height: 65px;
+    margin-bottom: -15px;
+    translate: 0 -15px;
+}
+
+#RightPaneNav li:nth-child(n + 2):before {
+    content: "";
+    display: block;
+    height: 100%;
+    position: absolute;
+    border-radius: 16px 0 0 0;
+    top: 0;
+    left: -20px;
+    width: 40px;
+    transition: all 150ms ease;
+}
+#RightPaneNav li:nth-child(1) {
+    z-index: 5;
+}
+#RightPaneNav li:nth-child(2) {
+    z-index: 4;
+}
+#RightPaneNav li:nth-child(3) {
+    z-index: 3;
+}
+#RightPaneNav li:nth-child(4) {
+    z-index: 2;
+}
+#RightPaneNav li:nth-child(5) {
+    z-index: 1;
+}
+
+#RightPaneNav .RightPaneNav__Tab--Active {
+    height: 65px;
+    margin-bottom: -15px;
+    translate: 0 -15px;
+    color: #497361;
+    background-color: #D3EEE0;
+}
+
+.RightPaneNav__Tab--1Away {
+    background-color: #8bcca9;
+}
+
+.RightPaneNav__Tab--2Away {
+    background-color: #5e9577;
+}
+
+.RightPaneNav__Tab--3Away {
+    background-color: #1f674e;
+}
+
+.RightPaneNav__Tab--4Away {
+    background-color: #0C281E;
+}
+
+@media screen and (max-width: 1500px) {
+
+    #RightPaneNav li:nth-child(1) {
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    #RightPaneNav li:nth-child(2) {
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    #RightPaneNav li:nth-child(3) {
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    #RightPaneNav li:nth-child(4) {
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    #RightPaneNav li:nth-child(5) {
+        padding-bottom: 0px;
+        font-size: 1rem;
+        text-align: center;
+    }
+    
+
+}
+</style>
+
+<script>
+    <%# Handle missing pages %>
+    window.addEventListener("load", () => {
+        for (const tab of document.getElementById("RightPaneNav").getElementsByTagName("li")) {
+            if (document.querySelector("." + tab.dataset.linkedClass).classList.contains("RightPaneError")) {
+                const textNode = tab.childNodes.item(0);
+                textNode.textContent = " " + textNode.textContent;
+
+                const icon = document.createElement("i");
+                icon.classList.add("fa-solid", "fa-triangle-exclamation");
+                tab.prepend(icon);
+            }
+        }
+    });
+
+    function clickTab(tab) {
+        const activeTab = document.querySelector(".RightPaneNav__Tab--Active");
+        if (tab === activeTab) {
+            return;
+        }
+
+        <%# Hide active tab and show clicked tab %>
+        document.querySelector("." + activeTab.dataset.linkedClass).hidden = true;
+        document.querySelector("." + tab.dataset.linkedClass).hidden = false;
+
+        <%# Find the index of the clicked tab %>
+        const tabList = tab.parentElement.getElementsByTagName("li");
+        let tabIndex = 0;
+        for (const navtab of tabList) {
+            if (navtab === tab) {
+                break;
+            }
+
+            tabIndex++;
+        }
+
+        <%# Classes corrosponding to distance from clicked tab index %>
+        const classes = ["RightPaneNav__Tab--Active", "RightPaneNav__Tab--1Away", "RightPaneNav__Tab--2Away", "RightPaneNav__Tab--3Away", "RightPaneNav__Tab--4Away"];
+
+        <%# Assign tabs the correct classes for the right style %>
+        for (let i = 0; i < tabList.length; i++) {
+            const navtab = tabList.item(i);
+
+            for (const removeclass of classes) {
+                navtab.classList.remove(removeclass);
+            }
+
+            navtab.classList.add(classes[Math.abs(tabIndex - i)]);
+        }
+    }
+</script>

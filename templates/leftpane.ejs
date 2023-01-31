@@ -1,0 +1,83 @@
+<div class="LeftPane">
+    <div class="Branding">
+        <h1 class="Name"><%- include('logo')%></i>FAIRSECO</h1>
+        <h2 class="Tagline">FAIR is fair.</h2>
+    </div>
+    <%- include('leftpanenav')%>
+    
+    <%
+    const citations = data.find((ele) => (ele.ModuleName === "CitingPapers"))?.Data.papers;
+    const licenses = data.find((ele) => (ele.ModuleName === "Tortellini"))?.Data;
+    const SBOM = data.find((ele) => (ele.ModuleName === "SBOM"))?.Data;
+    const searchseco = data.find((ele) => (ele.ModuleName === "SearchSECO"))?.Data;
+
+    includePage('citations', {citations}, "CitationsContainer ActiveTab");
+    includePage('licenses', {licenses}, "LicensesContainer Hidden");
+    includePage('SBOM', {SBOM}, "SBOMContainer Hidden");
+    includePage('searchseco', {searchseco}, "SearchSECO Hidden");
+    %>
+
+    <%- include('footer') %>
+
+</div>
+
+<style>
+    .citationgraphbutton .citationgraphBtn{
+        display: none;
+    }
+
+    .LeftPane {
+        width: 50vw;
+        height: 100vh;
+        padding: 0;
+        margin: 0;
+        background: rgba(15, 45, 30, 0.82);
+        backdrop-filter: blur(30px);
+        overflow: hidden;
+        position: relative;
+    }
+
+    .LeftPane .Branding {
+        display: flex;
+        flex-direction: row;
+        justify-content: start;
+        align-items: center;
+        padding: 8px;
+    }
+
+    .LeftPane .Branding .Name {
+        color: #d9f8df;
+        margin: 0 8px;
+    }
+
+    .LeftPane .Branding .Tagline {
+        align-self: center;
+        color: #88bf93;
+        font-size: 0.8rem;
+        position: relative;
+        top: 8px;
+        font-style: italic;
+    }
+    .Logo {
+        height: 2.5rem;
+        margin: 0px -38px; 
+    }
+
+    .LeftPaneError {
+        width: 92%;
+        margin: 4%;
+        word-wrap: break-word;
+        font-size: 1.5rem;
+        color: #779C7E;
+    }
+</style>
+
+<%
+    function includePage(page, data, classes) {
+        try {
+            %><%- include(page, data) %><%
+        } catch(error) {
+            %><%- include('leftpane-error', {error, classes}) %><%
+        }
+    }
+%> 

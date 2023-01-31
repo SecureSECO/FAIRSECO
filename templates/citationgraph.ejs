@@ -1,0 +1,15 @@
+<html>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,700;1,7..72,400&display=swap');
+
+        body{
+            margin: 0px;
+        }
+
+    </style>
+    <%- include('head') %>
+    <body>
+         <%- include('leftpane-citationgraph', {"data": data}) %>
+         <%- include('starfieldgraph', {"data": data}) %>
+    </body>
+</html>

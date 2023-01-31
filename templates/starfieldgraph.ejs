@@ -1,0 +1,521 @@
+<style>
+    div.tooltip {
+        background-color: lightblue;
+    }
+    #mainContainer h2{
+    text-align: left;
+    font-size: 1.3rem;
+    color: #D9F8DF;
+    }
+
+    #mainContainer h3{
+        text-align: left;
+        font-size: 0.9rem;            
+        color: #0C281E;
+    }
+    #mainContainer {
+        text-align: center;
+        margin-left: 40vw;
+    }
+
+    /* SVG */
+    #svgchart {
+        background-color: #D3ECDE;
+    }
+
+    .node {
+        fill: #164434;
+        stroke: #D3ECDE;
+        stroke-width: 1px;
+    }
+
+    .links {
+        stroke: #538475;
+        stroke-width: 0.5px;
+    }
+    div.tooltip {
+        position: absolute;
+        text-align: left;
+        padding: 12px;
+        background: rgba(234,254,237, 0.55);
+        -webkit-backdrop-filter: blur(50px);
+        backdrop-filter: blur(50px);
+        font: 8px 'Literata', serif;
+        text-align: left;
+        font-weight: bold;
+        border-radius: 8px;
+        pointer-events: none; /* keep the mouseover when over the tooltip */
+        word-wrap: break-word;
+        max-width: 280px;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    }
+
+    .label {
+        color: white;
+        display: flex;
+        font: 7px "Literata", serif;
+        font-style: italic;
+        text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        width: 60px;
+        height: 60px;
+    }
+
+    #footer {
+    color: black;
+    text-align: center;
+    }
+    #footer a{
+        color: blue;
+    }
+</style>
+<div id="mainContainer"><svg id="svgChart"></svg></div>
+<%# For the Citations Graph we use the D3 Javascript library (https://d3js.org/)  %>
+<% let starfieldInput = data.find((ele) => (ele.ModuleName === "CitingPapers"))?.Data; %>
+<script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+<script>
+    'use strict'
+class link {
+    source; // int
+    target; // int
+    constructor(source, target) {
+        this.source = source;
+        this.target = target;
+    }
+}
+
+class node {
+    name; // string
+    id; // int -- 0 = "Philosophy" 1 = "Art" 2 ="History" 3 = "Economics" 4 = "Geography" 5 = "Psychology"
+        //        6 = "Sociology" 7 ="Biology" 8 = "Chemistry" 9 = "Geology" 10 = "Physics" 11 = "Mathematics"
+        //        12 = "Computer science" 13 = "Business" 14 = "Engineering" 15 = "Environmental science" 16 = "Medicine" 17 = "Political science" 18 = "Materials science" 19... = [papers]
+    size; // int
+
+    constructor(name, id, size) {
+        this.name = name;
+        this.id = id;
+        this.size = size;
+    }
+}
+
+class starField {
+    nodes; // [node]
+    links; // [link]
+    fieldIndexMap; // Map<string, int>
+
+    constructor(citations) {
+        let nodes = [];
+        let links = [];
+        let fieldIndexMap = new Map();
+        for (let i = 0; i < citations.uniqueFields.length; i++) {
+            nodes.push(new node(citations.uniqueFields[i], i, 30));
+            fieldIndexMap.set(citations.uniqueFields[i], i);
+        }
+        for (let i = 0; i < citations.papers.length; i++) {
+            nodes.push(new node("", i + citations.uniqueFields.length, 6 + (citations.papers[i].numberOfCitations / citations.highestCitations) * 6));
+            citations.papers[i].fields.forEach(field => {
+                links.push(new link(i + citations.uniqueFields.length, fieldIndexMap.get(field)));
+            });
+        }
+        this.nodes = nodes;
+        this.links = links;
+        this.fieldIndexMap = fieldIndexMap;
+    }
+}
+
+function renderStarField() {
+    let input = <%- JSON.stringify(starfieldInput) %>;
+    var starfield = new starField(input);
+
+    const chartHeight = window.innerHeight,
+        chartWidth = 0.6 * window.innerWidth;
+
+    //initial height 800, width 900
+
+    const svg = d3.select("#svgChart")
+        .attr("width", chartWidth)
+        .attr("height", chartHeight);
+    
+    var g = svg.append("g")
+        .attr("class", "everything");
+    
+    // functions to avoid nodes and links going outside the svg container, when calculating the position:
+    function getNodeXCoordinate(x, r) {
+        return Math.max(0, Math.min(chartWidth - r, x))
+    }
+    function getNodeYCoordinate(y, r) {
+        return Math.max(0, Math.min(chartHeight - r, y))
+    }
+
+    // create a new simulation (a simulation starts with alpha = 1 and decrese it slowly to 0):
+    const simulation = d3.forceSimulation()
+        .force("charge", d3.forceManyBody().distanceMax(300).strength(function (d) { return -(d.size * 20) }))
+        .force("collide", d3.forceCollide(function (d) { return d.size + 2 }).iterations(10))
+        .force("center", d3.forceCenter(chartWidth / 2, chartHeight / 2))
+        .force("link", d3.forceLink());
+
+
+    const nodes = starfield.nodes
+    const links = starfield.links
+
+    // add links
+    const link = g.append("g")
+        .attr("class", "links")
+        .selectAll("line")
+        .data(links)
+        .enter().append("line") // line to connect nodes
+        .attr("stroke-width", 0.5) // line width
+
+    // use a g element to contain nodes:
+    const nodeWrapper = g.append("g")
+        .attr("class", "nodes")
+        .selectAll(".node")
+        .data(nodes)
+        .enter().append("g")
+        .attr("class", "nodeWrapper")
+
+    // add nodes
+    const node = nodeWrapper
+        .append("circle")
+        .attr("class", "node")
+        .attr("r", d => d.size);
+
+    const label = nodeWrapper.append("foreignObject")
+        .attr("width", d => d.size * 2)
+        .attr("height", d => d.size * 2)
+        .attr("x", d => -d.size)
+        .attr("y", d => -d.size)
+        .append("xhtml:div")
+        .attr("class", "label")
+        .append("xhtml:p")
+        .html(function (d) { return d.name });
+
+    // tooltip div:
+    const tooltip = d3.select('#mainContainer').append("div")
+        .classed("tooltip", true)
+        .style("opacity", 0) // start invisible
+    
+    var clickedNodes = [];
+    var connectedNodesClick = [];
+    var isZoomed = false;
+
+    nodeWrapper
+        .on("mouseenter", function (d) {
+            var connectedNodesHover = [];
+            var nodes = clickedNodes.concat([d]);
+            if (!isZoomed) {
+                if (d.id > input.uniqueFields.length) {
+                    var html = "<h3>" + input.papers[d.id - input.uniqueFields.length].title + "</h3>"
+                    tooltip.transition()
+                        .duration(300)
+                        .style("opacity", 1); // show the tooltip
+                    if (input.papers[d.id - input.uniqueFields.length].year !== null) {
+                        html += "<hr/><h3>" + input.papers[d.id - input.uniqueFields.length].year + "</h3>"
+                    }
+                    var x = d3.event.pageX - d3.select('.tooltip').node().offsetWidth - 5
+                    var chartMiddle = ((chartWidth - d3.select('.tooltip').node().offsetWidth) / 2)
+                    //html += "\nx: \n" + x + "offsetwidt: \n" +  chartmiddle
+                    if (x < chartMiddle) {
+                        tooltip.html(html)
+                            .style("left", (d3.event.pageX - d3.select('.tooltip').node().offsetWidth - 5) + "px")
+                            .style("top", (d3.event.pageY - d3.select('.tooltip').node().offsetHeight) + "px");
+                    }
+                    else {
+                        tooltip.html(html)
+                            .style("left", (d3.event.pageX - d3.select('.tooltip').node().offsetWidth + 335) + "px")
+                            .style("top", (d3.event.pageY - d3.select('.tooltip').node().offsetHeight) + "px");
+                    }
+                }
+                link.each(function (l) {
+                    if (d == l.source || d == l.target) {
+                        connectedNodesHover.push(l.source);
+                        connectedNodesHover.push(l.target);
+                    }
+                })
+                    .transition()
+                    .duration(300)
+                    .style("stroke-width", function (l) {
+                        if (clickedNodes.length > 0) {
+                            if (d.id < input.uniqueFields.length && connectedNodesClick.includes(l.source) && connectedNodesHover.includes(l.source) && (nodes.includes(l.target)))
+                                return "1.5px";
+                            else if (d.id < input.uniqueFields.length && connectedNodesClick.includes(l.source) && (nodes.includes(l.target)))
+                                return "1px";
+                            else
+                                return "0.5px";
+                        }
+                        else {
+                            if (nodes.includes(l.source) || nodes.includes(l.target)) {
+                                return "1.5px";
+                            }
+                            else
+                                return "0.5px";
+                        }
+                    });
+                node.transition()
+                    .duration(300)
+                    .style("stroke", function (d2) {
+                        if (clickedNodes.length > 0) {
+                            if (nodes.includes(d2) || (connectedNodesClick.includes(d2)))
+                                return "#538475";
+                            else
+                                return "#D3ECDE";
+                        }
+                        else {
+                            if (connectedNodesHover.includes(d2))
+                                return "#538475";
+                            else
+                                return "#D3ECDE";
+                        }
+                    })
+                    .style("stroke-width", function (d2) {
+                        if (clickedNodes.length > 0) {
+                            if (nodes.includes(d2) || (connectedNodesClick.includes(d2) && connectedNodesHover.includes(d2)))
+                                return "1.5px";
+                            else
+                                return "1px";
+                        }
+                        else {
+                            if (connectedNodesHover.includes(d2))
+                                return "1.5px";
+                            else
+                                return "1px";
+                        }
+                    })
+                    .style("fill", function (d2) {
+                        if (clickedNodes.length > 0) {
+                            if (nodes.includes(d2) || (connectedNodesClick.includes(d2) && connectedNodesHover.includes(d2)))
+                                return "#0c271d";
+                            else
+                                return "#648579";
+                        }
+                        else {
+                            if (connectedNodesHover.includes(d2))
+                                return "#0c271d";
+                            else
+                                return "#648579";
+                        }
+                    });
+            }
+        })
+        .on("mouseleave", function (d) {
+            tooltip.transition()
+                .duration(200)
+                .style("opacity", 0);
+            link.transition()
+                .duration(300)
+                .style("stroke-width", function (l) {
+                    if (clickedNodes.includes(l.target) && connectedNodesClick.includes(l.source))
+                        return "1.5px";
+                    else
+                        return "0.5px";
+                });
+            node.transition()
+                .duration(300)
+                .style("stroke", function (d2) {
+                    if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2))
+                        return "#538475";
+                    else
+                        return "#D3ECDE";
+                })
+                .style("stroke-width", function (d2) {
+                    if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2))
+                        return "1.5px";
+                    else
+                        return "1px";
+                })
+                .style("fill", function (d2) {
+                    if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2) || clickedNodes == 0)
+                        return "#0c271d";
+                    else
+                        return "#648579";
+                });
+        })
+        .on("click", function (d) {
+            
+            
+            //remove help page
+            const help = d3.select("body").select(".LeftPane").select(".HelpInfo");
+            help.style("display","none");
+            
+            // make sure previous generated Citation is removed
+            const citationContainer = d3.select("body").select(".LeftPane").select(".CitationgraphInfo").select(".CitationsContainer");
+            citationContainer.selectAll(".Citation").remove();
+
+            // nodes that aren't fields
+            if (d.id > input.uniqueFields.length && !isZoomed) {
+                citationContainer.select()
+                var html =  "<h3>Title</h3><h2>" + input.papers[d.id - input.uniqueFields.length].title + "</h2>"
+                if(input.papers[d.id - input.uniqueFields.length].year !== null)
+                    html += "<h3>Year</h3><h2>" + input.papers[d.id - input.uniqueFields.length].year + "</h2>"
+                
+                if (input.papers[d.id - input.uniqueFields.length].authors.length > 0) {
+                    html += "<h3>Authors</h3>";
+                    for (let i = 0; i < input.papers[d.id - input.uniqueFields.length].authors.length || i < 4; i++)
+                        html += "<h2>" + input.papers[d.id - input.uniqueFields.length].authors[i].name + "</h2>";
+                }
+                else 
+                    html += "<h3>Authors</h3><h2> No known authors. </h2>";
+                
+                html += "<h3>Fields</h3>";
+                input.papers[d.id - input.uniqueFields.length].fields.forEach(field => {
+                    html += "<h2>" + field + "</h2>";
+                });
+                if (input.papers[d.id - input.uniqueFields.length].url !== null)
+                    html += "<a href=" + input.papers[d.id - input.uniqueFields.length].url + ">Link to Paper</a>";
+
+                // add Citation element and append html to show data of citation
+                citationContainer
+                    .append("div")
+                    .classed("Citation", true)
+                    .html(html)
+                
+                //handle zoom event
+                clickedNodes = [d];
+                connectedNodesClick = [];
+                // zoom in on node
+                var scaleZoom = 15;
+                svg.transition()
+                    .duration(750)
+                    .call(zoom_handler.transform,
+                        d3.zoomIdentity
+                            .translate(chartWidth * 0.5 - scaleZoom * d.x,
+                                chartHeight * 0.5 - scaleZoom * d.y)
+                            .scale(scaleZoom));
+                setTimeout(() => { isZoomed = true; }, 1000);
+            }
+            // selected node is a field that is not alrady connected
+            else if (d.id < input.uniqueFields.length && !clickedNodes.includes(d)) {
+                var newConnectedNodesClick = [];
+                clickedNodes.push(d);
+                if (clickedNodes.length == 1) {
+                    link.each(function (l) {
+                        if (l.target == d)
+                            newConnectedNodesClick.push(l.source);
+                    });
+                }
+                else {
+                    link.each(function (l) {
+                        if (l.target == d && connectedNodesClick.includes(l.source))
+                            newConnectedNodesClick.push(l.source);
+                    });
+                }
+                connectedNodesClick = newConnectedNodesClick;
+                var html = "<div class=listedPapersContainer> <div class=listedPaper> <h2>Selected Papers</h2> <h3>Citations</h3> </div>";
+                connectedNodesClick.forEach(ele => {
+                    html += "<div class=listedPaper> <h2>" + input.papers[ele.id - input.uniqueFields.length].title + "</h2> <h3>" + input.papers[ele.id - input.uniqueFields.length].numberOfCitations + "</h3></div>";
+                });
+                html+= "</div>";
+                citationContainer
+                    .append("div")
+                    .classed("Citation", true)
+                    .html(html)
+
+            }
+            else if (d.id < input.uniqueFields.length && clickedNodes.includes(d)) {
+                clickedNodes = [];
+                connectedNodesClick = [];
+                link.transition()
+                .duration(300)
+                .style("stroke-width", function (l) {
+                    if (clickedNodes.includes(l.target) && connectedNodesClick.includes(l.source))
+                        return "1.5px";
+                    else
+                        return "0.5px";
+                });
+                node.transition()
+                    .duration(300)
+                    .style("stroke", function (d2) {
+                        if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2))
+                            return "#538475";
+                        else
+                            return "#D3ECDE";
+                    })
+                    .style("stroke-width", function (d2) {
+                        if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2))
+                            return "1.5px";
+                        else
+                            return "1px";
+                    });
+            };
+            d3.event.stopPropagation();
+
+        })
+
+    d3.select("body").on("click", function () {
+        clickedNodes = [];
+        connectedNodesClick = [];
+        link.transition()
+            .duration(300)
+            .style("stroke-width", function (l) {
+                if (clickedNodes.includes(l.target) && connectedNodesClick.includes(l.source))
+                    return "1.5px";
+                else
+                    return "0.5px";
+            });
+        node.transition()
+            .duration(300)
+            .style("stroke", function (d2) {
+                if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2))
+                        return "#538475";
+                    else
+                        return "#D3ECDE";
+            })
+            .style("stroke-width", function (d2) {
+                if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2))
+                        return "1.5px";
+                    else
+                        return "1px";
+            })
+            .style("fill", function (d2) {
+                if (clickedNodes.includes(d2) || connectedNodesClick.includes(d2) || clickedNodes == 0)
+                    return "#123b2c";
+                else
+                    return "#6e9184";
+            });  
+    })
+
+    //zoom actions
+    var zoom_handler = d3.zoom()
+        .on("zoom", zoom_actions);
+    
+    zoom_handler(svg);
+    
+    function zoom_actions(){
+        g.attr("transform", d3.event.transform);
+        if (isZoomed) {
+            isZoomed = false;
+            clickedNodes = [];
+            node.transition()
+                .duration(300)
+                .style("stroke", "#D3ECDE")
+                .style("stroke-width", "1px")
+                .style("fill", "#0c271d");
+        }
+    }
+    
+
+    simulation
+        .nodes(nodes)
+        .on("tick", () => {
+            // set each node's position on each tick of the simulation:
+            nodeWrapper.attr("transform", d => "translate(" + getNodeXCoordinate(d.x, 30) + "," + getNodeYCoordinate(d.y, 30) + ")")
+            // set start (x1,y1) and point (x2,y2) coordinate of each link on each tick of the simulation:
+            link.attr("x1", d => getNodeXCoordinate(d.source.x, 30))
+            link.attr("y1", d => getNodeYCoordinate(d.source.y, 30))
+            link.attr("x2", d => getNodeXCoordinate(d.target.x, 30))
+            link.attr("y2", d => getNodeYCoordinate(d.target.y, 30))
+        })
+
+    // pass the links to the link force:
+    simulation
+        .force("link")
+        .links(links)
+        .distance(30)
+}
+
+renderStarField();
+
+
+</script>

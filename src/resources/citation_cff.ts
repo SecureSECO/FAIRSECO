@@ -1,29 +1,59 @@
-import { ReturnObject } from "../getdata";
+/**
+ * This module contains functions for reading and validating a CITATION.cff file.
+ * 
+ * @module
+ */
+
+import * as dockerExit from "../errorhandling/docker_exit";
 import YAML from "yaml";
 import * as path_ from "path";
 
 import * as fs from "fs";
 import { exec, ExecOptions } from "@actions/exec";
+import { ErrorLevel, LogMessage } from "../errorhandling/log";
 
+/** The name of the module. */
+export const ModuleName = "CitationCff";
+
+/**
+ * A CffObject can be one of the following interfaces:
+ * 
+ * #### MssingCffObject
+ * There is no CITATION.cff file present in the root of the repository.
+ * 
+ * #### IncorrectYamlCffObject
+ * The CITATION.cff file is not formatted correctly, i.e. it is not a valid .yml file
+ * 
+ * #### ValidationErrorCffObject
+ * There is a CITATION.cff file that is properly formatted, but the data is incorrect or missing.
+ * 
+ * #### ValidCffObject
+ * The CITATION.cff file is completely valid.
+ */
 export type CffObject =
     | MissingCffObject
     | IncorrectYamlCffObject
     | ValidCffObject
     | ValidationErrorCffObject;
 
+/** An object showing there is no CITATION.cff file present in the root of the repository. */
 export interface MissingCffObject {
     status: "missing_file";
 }
 
+/** An object showing that the CITATION.cff file is not formatted correctly, i.e. it is not a valid .yml file */
 export interface IncorrectYamlCffObject {
     status: "incorrect_yaml";
 }
+
+/** An object containing data of a completely valid CITATION.cff file. */
 export interface ValidCffObject {
     status: "valid";
     citation: any;
     validation_message: string;
 }
 
+/** An object containing data of a CITATION.cff file that is properly formatted, but the data is incorrect or missing. */
 export interface ValidationErrorCffObject {
     status: "validation_error";
     citation: any;
@@ -32,48 +62,43 @@ export interface ValidationErrorCffObject {
 
 /**
  * Reads a CITATION.cff file.
+ * 
  * @param path Specifies the path to the directory the CITATION.cff file is in.
- * @returns The data from the CITATION.cff file.
+ * @returns An object containing the data from/about the CITATION.cff file.
  */
-export async function getCitationFile(path?: string): Promise<ReturnObject> {
+export async function runModule(path: string = "."): Promise<CffObject> {
     let file: Buffer;
 
-    // Use current directory if none is specified
-    const filePath = path === undefined ? "." : path;
-    // Read the citation.cff file
+    // Read the CITATION.cff file
     try {
-        file = fs.readFileSync(filePath + "/CITATION.cff");
-    } catch {
-        // Reading file failed
-        console.log("WARNING: No citation.cff file found");
-
-        // Return MissingCFFObject indicating missing citation.cff file
-        const returnData: MissingCffObject = { status: "missing_file" };
-        return {
-            ReturnName: "Citation",
-            ReturnData: returnData,
-        };
+        file = fs.readFileSync(path + "/CITATION.cff");
+    } catch (e) {
+        if (e.code === "ENOENT") {
+            // File not found, return MissingCffObject to indicate missing CITATION.cff file
+            LogMessage("No CITATION.cff file found.", ErrorLevel.info);
+            const Data : MissingCffObject = { status: "missing_file" };
+            return Data;
+        } else {
+            // Critical error, stop
+            throw e;
+        }
     }
 
     let result: any;
 
-    // Parse the citation.cff file (YAML format)
+    // Parse the CITATION.cff file (YAML format)
     try {
         result = YAML.parse(file.toString());
     } catch {
-        // Parsing failed, incorrect YAML
-        console.log("WARNING: Incorrect format");
-
-        // Return IncorrectYamlCFFObject to indicate incorrect yaml
-        const returnData: IncorrectYamlCffObject = { status: "incorrect_yaml" };
-        return {
-            ReturnName: "Citation",
-            ReturnData: returnData,
-        };
+        // Parsing failed, incorrect YAML.
+        // Return IncorrectYamlCffObject to indicate incorrect yaml
+        LogMessage("CITATION.cff file contains incorrect yaml", ErrorLevel.warn);
+        const Data: IncorrectYamlCffObject = { status: "incorrect_yaml" };
+        return Data;
     }
 
     const cmd = "docker";
-    const absPath = path_.resolve(filePath);
+    const absPath = path_.resolve(path);
     const args = [
         "run",
         "--rm",
@@ -83,12 +108,32 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
         "--validate",
     ];
 
+    // Output from the docker container
     let stdout = "";
     let stderr = "";
 
+    try {
+        if (!fs.existsSync("./cffOutputFiles"))
+            fs.mkdirSync("./cffOutputFiles/");
+        else
+            LogMessage(
+                "Directory cffOutputFiles already exists!",
+                ErrorLevel.info
+            );
+    } catch {
+        LogMessage("Could not create cffOutputFiles directory", ErrorLevel.err);
+    }
+
+    const stdOutStream = fs.createWriteStream("./cffOutputFiles/cffOutput.txt");
+    const stdErrStream = fs.createWriteStream("./cffOutputFiles/cffError.txt");
+
     const options: ExecOptions = {
         ignoreReturnCode: true,
+        windowsVerbatimArguments: true,
+        outStream: stdOutStream,
+        errStream: stdErrStream,
     };
+
     options.listeners = {
         stdout: (data: Buffer) => {
             stdout += data.toString();
@@ -97,42 +142,44 @@ export async function getCitationFile(path?: string): Promise<ReturnObject> {
             stderr += data.toString();
         },
     };
-    // Run cffconvert in docker to validate the citation.cff file
+
+    // Run cffconvert in Docker to validate the CITATION.cff file
+    LogMessage("Starting Docker program: cffconvert", ErrorLevel.info);
     const exitCode = await exec(cmd, args, options);
 
-    // Check the exit code for success
-    if (exitCode === 0) {
-        // Citation.cff file is valid, return ValidCFFObject with data and validation message
-        const returnData: ValidCffObject = {
+    // Check the Docker exit code for Docker specific errors
+    dockerExit.throwDockerError(exitCode);
+
+    // Check cffconvert exit code for success
+    if (!dockerExit.isError(exitCode)) {
+        // CITATION.cff file is valid, return ValidCffObject with data and validation message
+        LogMessage("Read valid CITATION.cff file", ErrorLevel.info);
+        const Data: ValidCffObject = {
             status: "valid",
             citation: result,
-            validation_message: stdout,
+            validation_message: getLastLine(stdout),
         };
-        return {
-            ReturnName: "Citation",
-            ReturnData: returnData,
-        };
+        return Data;
     } else {
-        // Citation.cff file is invalid, return ValidationErrorCFFObject with data and error message
-        const returnData: ValidationErrorCffObject = {
+        // CITATION.cff file is invalid, return ValidationErrorCffObject with data and error message
+        const error = getError(stderr);
+        LogMessage("Read CITATION.cff file has is invalid: " + error, ErrorLevel.warn);
+        const Data: ValidationErrorCffObject = {
             status: "validation_error",
             citation: result,
-            validation_message: getError(stderr),
+            validation_message: error,
         };
-        return {
-            ReturnName: "Citation",
-            ReturnData: returnData,
-        };
+        return Data;
     }
 }
 
 export const unknownErrorMsg = "Unknown Error";
 
 /**
- * Finds the error when trying to run cffconvert in docker
- * yields a non-zero exit code indicating failure.
+ * Finds the error when cffconvert returns an error code.
+ * 
  * @param stderr The stderr output produced by docker.
- * @returns A string showing information about the error.
+ * @returns A string containing information about the error.
  */
 export function getError(stderr: string): string {
     // An error given by cffconvert appears as a line which looks like *Error: *
@@ -145,4 +192,10 @@ export function getError(stderr: string): string {
 
     // No cffconvert error message was found, so the error is unknown.
     return unknownErrorMsg;
+}
+
+function getLastLine(input: string): string {
+    const lines = input.split("\n");
+
+    return lines[lines.length - 1];
 }

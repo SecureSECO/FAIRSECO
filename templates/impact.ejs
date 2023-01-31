@@ -1,0 +1,297 @@
+<%
+if (ss === undefined && pp === undefined) {
+    throw new Error("Missing both SearchSECO and CitingPapers data");
+}
+
+// Get citations
+const citations = pp !== undefined ? pp.firstHandCitations + pp.secondHandCitations : "?";
+
+// Get number of fields
+const fieldCount = pp !== undefined ? pp.uniqueFields.filter(x => x !== "Unknown").length : "?";
+
+// Get most notable paper
+let mostNotablePaper = {title: "missing data", journal: undefined};
+if (pp !== undefined) {
+    if (pp.papers.length >= 1) {
+        mostNotablePaper = pp.papers.sort((a, b) => b.numberOfCitations - a.numberOfCitations)[0]
+    }
+    else {
+        mostNotablePaper.title = "none";
+    }
+};
+
+const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
+
+// Sets the font size based on the length of the string, to make sure the text
+// always fits on the page. This is necessary because paper titles can be very long.
+function setFontSize(text) {
+    return clamp(35/text.length, 0.8, 2).toString() + "rem";
+}
+
+// Process searchseco projects
+let projectCount = "?";
+let mostNotableProjectName = "missing data";
+let mostNotableProjectAuthors;
+if (ss !== undefined) {
+    // Fill map for project -> the matches involving that project
+    let projectMatches = {};
+    for(const method of ss.methods) {
+        for(const match of method.matches) {
+            if (projectMatches[match.data.project] === undefined) {
+                projectMatches[match.data.project] = [match];
+            } else {
+                projectMatches[match.data.project].push(match);
+            }
+        }
+    }
+    
+
+    // Get project count
+    projectCount = Object.keys(projectMatches).length;
+
+    // Get most notable project name
+    if (projectCount >= 1) {
+        let bestProjectMatches = 0;
+        for (const proj in projectMatches) {
+            let matchCount = projectMatches[proj].length;
+            if (matchCount > bestProjectMatches) {
+                mostNotableProjectName = proj;
+                bestProjectMatches = matchCount;
+            }
+        }
+
+        // Get most notable project authors
+        let authors = projectMatches[mostNotableProjectName][0].data.authors;
+        mostNotableProjectAuthors = "";
+        if (authors.length >= 1) {
+            for (let i = 0; i < authors.length; i++) {
+                if (i === authors.length - 1) {
+                    mostNotableProjectAuthors += authors[i];
+                } else {
+                    mostNotableProjectAuthors += authors[i] + ", ";
+                }
+            }
+        } else {
+            mostNotableProjectAuthors = "unknown authors";
+        }
+    } else {
+        mostNotableProjectName = "none";
+    }
+}
+
+
+const labels = [
+    "Humanities" ,
+    "Social Sciences",
+    "Natural Sciences",
+    "Formal Sciences",
+    "Applied Sciences"
+]
+
+// Constructs a comma-separated list of labels,
+// to be inserted in the chart data (see the <script> block below)
+// Simply inserting the labels array directly doesn't work, because the strings
+// are inserted as plain text, not as strings.
+function getChartLabels() {
+    let result = "";
+
+    for (let i = 0; i < labels.length; i++) {
+        if (i === labels.length - 1) result += '"' + labels[i] + '"';
+        else result += '"' + labels[i] + '", ';
+    }
+
+    return result;
+}
+
+// Retrieves the number of papers associated with each discipline. The data
+// needs to be pushed in the same order as the labels above, because they need to line up.
+function getChartData() {
+    if (pp === undefined) {
+        return [];
+    }
+    
+    const data = [];
+
+    const disc = pp.disciplines;
+
+    data.push(disc[labels[0]] ?? 0);
+    data.push(disc[labels[1]] ?? 0);
+    data.push(disc[labels[2]] ?? 0);
+    data.push(disc[labels[3]] ?? 0);
+    data.push(disc[labels[4]] ?? 0);
+
+    return data;
+}
+
+%>
+
+<div class="ImpactScore" hidden>
+    <h1 class="Impact__Title">Impact</h1>
+    <div class="ImpactScore__Content">
+        <div class="Impact__Row">
+            <h2> Papers and Citations</h2>
+            <div id="Impact__Citation__Row" class="Impact__Row__Content">
+                <div class="Impact__Row__Block">
+                    <p>Your project was cited</p>
+                    <div class="Row__Number"><%- citations %></div>
+                    <p>time<% if (citations !== 1) { %>s<% } %></p>
+                </div>
+                <div class="Impact__Row__Block">
+                    <p>in papers across</p>
+                    <div class="Row__Number"><%- fieldCount %></div>
+                    <p>scientific field<% if (fieldCount !== 1) { %>s<% } %></p>
+                </div>
+                <div class="Impact__Row__Block">
+                    <p>The most notable of which was</p>
+                    <div class="Row__PaperTitle" style="font-size:<%- setFontSize(mostNotablePaper.title) %>"><%- mostNotablePaper.title %></div>
+                    <% if (mostNotablePaper.journal !== undefined) { %>
+                        <p>from <%- mostNotablePaper.journal %></p>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+
+        <div id="Impact__Chart__Row" class="Impact__Row">
+            <div class="Citations__Chart__Container">
+                <canvas id="Citations__RadarChart"></canvas>
+            </div>
+        </div>
+
+        <div class="Impact__Row">
+            <h2>Projects and Reuse</h2>
+            <div id="Impact__Project__Row" class="Impact__Row__Content">
+                <div class="Impact__Row__Block">
+                    <p>Your code made its way into</p>
+                    <div class="Row__Number"><%- projectCount ?? "0" %></div>
+                    <p>other project<% if (projectCount !== 1) { %>s<% } %></p>
+                </div>
+                <div class="Impact__Row__Block">
+                    <p>The most notable of which was</p>
+                        <h1 class="Row__PaperTitle" style="font-size:<%- setFontSize(mostNotableProjectName) %>"><%- mostNotableProjectName %></h1>
+                    <% if (mostNotableProjectAuthors !== undefined ) {%>
+                        <p>by <%- mostNotableProjectAuthors %></p>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+<%# The data for the radar chart %>
+const data = {
+    labels: [<%- getChartLabels() %>],
+    datasets: [
+        {
+            data: [<%- getChartData() %>],
+            borderColor: "rgb(170, 85, 183)",
+            backgroundColor: "rgba(175, 102, 186, 0.4)",
+            pointBackgroundColor: "rgb(175, 102, 186)"
+        }]
+};
+
+<%#
+    Settings for the radar chart
+    The settings for ticks are necessary to hide the labels on the grid.
+    Simply setting display to false doesn't work.
+%>
+const config = {
+  type: 'radar',
+  data: data,
+  options: {
+    responsive: true,
+    spanGaps: true,
+    plugins: {
+        legend: false
+    },
+    scale: {
+        ticks: {
+            callback: function() {return ""},
+            backdropColor: "rgba(0, 0, 0, 0)"
+        },
+        pointLabels:{
+            fontSize: 16
+        }
+    }
+  }
+};
+
+<%# Initializes and renders the chart in the canvas with id "Citations__RadarChart" %>
+new Chart("Citations__RadarChart", config);
+
+</script>
+
+<style>
+.ImpactScore {
+    height: 100%;
+    overflow-y: auto;
+}
+
+.Impact__Title {
+    color: #0C281E;
+    text-align: center;
+    margin: 2%;
+    font-size: 2vw;
+}
+
+.ImpactScore__Content {
+    width: 80%;
+    margin: auto;
+    display: grid;
+    height: 80%;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: 1fr;
+}
+
+.Impact__Row h2 {
+    margin-top: 0;
+}
+
+.Impact__Row__Content {
+    width: 100%;
+    display: grid;
+}
+#Impact__Citation__Row {
+    grid-template-columns: repeat(3, 1fr)
+}
+#Impact__Project__Row{
+    grid-template-columns: repeat(2, 1fr)
+}
+#Impact__Chart__Row{
+    padding: 2vw 0;
+}
+
+.Citations__Chart__Container{
+    position: relative;
+    width: 30vw;
+    max-width: 500px;
+    margin: auto;
+}
+
+.Impact__Row__Block .Row__PaperTitle {
+    font-weight: bold;
+    margin: 0.25vw;
+    text-align: center;
+}
+h1.Row__PaperTitle {
+    color: #0C281E;
+}
+
+.Impact__Row__Block {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Impact__Row__Block p {
+    margin: 0;
+    text-align: center;
+}
+
+.Impact__Row__Block .Row__Number {
+    font-size: 1.75vw;
+    font-weight: bold;
+    margin: 0.25vw;
+}
+</style>

@@ -126,4 +126,5 @@ out
 .yarn/install-state.gz
 .pnp.*
 
-.FairSECO/
+.FAIRSECO/
+.fairseco_history.json

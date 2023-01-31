@@ -1,0 +1,48 @@
+<div class="Violation">
+    <div class="Arrow">
+        <h1><i class="fa-solid fa-angle-right"></i></h1>
+    </div>
+    <div class="Warning">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+    <div class="Rule">
+        <p>
+            <%# function to change the violation rule to something more readable. %>
+            <% 
+            function toTitleCase(str) 
+                { 
+                return str.replace( 
+                    /\w\S*/g,
+                    function(txt) {
+                        return txt.charAt(0).toUpperCase() +
+                        txt.substr(1).toLowerCase();
+                        txt.replace('_',' ');
+                    }); 
+                }%>
+            <%= toTitleCase(violation.rule) %>
+        </p>
+    </div> 
+    <div class="PackageName">
+        <p><%= violation.pkg %></p>
+    </div>
+    <div class="Licensetype"><p><%= violation.license%></p>
+    </div>
+
+    <div class="ViolationDetails" hidden>
+        <div class="ViolationDetailsHeader">
+            <div class="space1"></div>
+            <div class="issue">Issue</div>
+            <div class="space2"></div>
+            <div class="howToSolve">How to solve</div>
+        </div>
+        
+        <div class="ViolationsContent">
+            <div class="space3"></div>
+            <div class="message"> <%= violation.message %> </div>
+            <div class="space4"></div>
+            <div class="howToFix"> <%= violation.how_to_fix %></div>
+        </div>
+    </div>
+        
+        
+</div>

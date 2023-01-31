@@ -1,0 +1,31 @@
+<div class="SearchSECO__ListObject SearchSECO__ArrowOwner<%- !method.vulnerable ? ' SearchSECO--NotVulnerable' : '' %>">
+    <div class="SearchSECO__ListObject__Header">
+        <div class="SearchSECO__ListObject__Header__Start">
+            <h1>
+                <i class="fa-solid fa-angle-right" onClick="searchSecoClickArrow(event)"></i><%- method.data.name %> (<%- method.data.file %>:<%- method.data.line %>)
+            </h1>
+            <p>
+                <%- method.vulnerable ? '<span><i class="fa-solid fa-file-circle-exclamation"></i> Vulnerable</span>' : '' %>
+                <%- method.matches.length %> match<% if (method.matches.length !== 1) { %>es<% } %>
+            </p>
+        </div>
+        <%- ((authors) => {
+            if (authors.length === 0) {
+                return "Authors unknown"
+            } else if (authors.length === 1) {
+                return "Author: " + authors[0];
+            } else {
+                let str = "Authors: ";
+                for (let i = 0; i < authors.length - 1; i++) {
+                    str += authors[0] + ", ";
+                }
+                return str + authors[authors.length - 1];
+            }
+        })(method.data.authors) %>
+    </div>
+    <div class="SearchSECO__ListObject__MatchList SearchSECO__ArrowTarget" hidden>
+        <% for (const match of method.matches) { %>
+        <%- include('searchseco-match', {"match": match}); %>
+        <% } %>
+    </div>
+</div>

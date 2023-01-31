@@ -1,0 +1,160 @@
+<%
+if (fairtally === undefined) {
+    throw new Error("Missing fairtally data");
+}
+
+function checkOrCross(x) {
+    return x ? '<p>Yes</p>' : '<p>No</p>'
+}
+%>
+
+<div class="FairtallyReport" hidden>
+    <h1>FAIRness Report</h1>
+    <div class="stars">
+        <h2>
+        <%# Here we add the appropriate amount of filled stars, half stars, and hollow stars for displaying the fairness score. %>
+        <% for (let i = 0; i < Math.floor(fairtally.count); i++) { %>
+            <i class="fa-solid fa-star"></i>
+        <% } %>
+        <% if (fairtally.count % 1 > 0) {%>
+            <i class="fa-solid fa-star-half-stroke"></i>
+        <%}%> 
+        <% for (let i = 0; i < (5 - Math.ceil(fairtally.count)); i++) { %>
+            <i class="fa-regular fa-star"></i>
+        <% } %>
+
+        </h2>
+        <h2>
+        <%= `${fairtally.count} / 5` %>
+        </h2>
+    </div>
+        <div class="ChecklistContainer">
+            <div onClick="togglePanel(this)">
+                <p><i class="fa-solid fa-arrow-up-from-bracket"></i>Registered in public registry?</p> <%- checkOrCross(fairtally.registry)%>
+            </div>
+            <div class="info">
+                Whether your software is registered in a public registry, so that it is easily <b>F</b>indable.
+                <a href="https://fair-software.eu/recommendations/registry" target="_blank">Read more</a>
+            </div>
+            <div onClick="togglePanel(this)">
+                <p><i class="fa-solid fa-code-fork"></i>Repository is public?</p><%- checkOrCross(fairtally.repository)%>
+            </div>
+            <div class="info">
+                Whether your repository is public, so that your software is <b>A</b>ccessible.
+                <a href="https://fair-software.eu/recommendations/repository" target="_blank">Read more</a>
+            </div>
+            <div onClick="togglePanel(this)">
+                <p><i class="fa-solid fa-list-check"></i>Using a quality checklist?</p> <%- checkOrCross(fairtally.checklist)%>
+            </div>
+            <div class="info">
+                Whether your project uses a software quality checklist, so that your software is <b>I</b>nteroperable.
+                <a href="https://fair-software.eu/recommendations/checklist" target="_blank">Read more</a>
+            </div>
+            <div onClick="togglePanel(this)">
+                <p><i class="fa-solid fa-quote-right"></i>Citation file present?</p> <%- checkOrCross(fairtally.citation)%>
+            </div>
+            <div class="info">
+                <p>Whether your repository contains a citation file, so that your software is <b>R</b>eusable.
+                <a href="https://fair-software.eu/recommendations/citation" target="_blank">Read more.</a>
+                <%- fairtally.citation ? '' : ' Need help creating a CFF File? <a href = "https://citation-file-format.github.io/cff-initializer-javascript/#/start">This tool can help.</a>' %>
+                </p>
+            </div>
+            <div onClick="togglePanel(this)">
+                <p><i class="fa-solid fa-copyright"></i>License file present?</p> <%- checkOrCross(fairtally.license)%>
+            </div>
+            <div class="info">
+                Whether you have a license file in your repository, so that your software is correctly <b>R</b>eusable.
+                <a href="https://fair-software.eu/recommendations/license" target="_blank">Read more</a>
+            </div>
+        </div>
+        <h4>Click on a checklist item to learn more about it.</h4>
+</div>
+
+<style>
+
+    .FairtallyReport {
+        color: #0C281E;
+        height: 100%;
+        overflow-y: auto;
+    }
+
+    .FairtallyReport h1 {
+        margin: 2%;
+        font-size: 2vw;
+        color: #0C281E;
+        text-align: center;
+    }
+
+    .FairtallyReport h2 {
+        text-align: center;
+    }
+    .FairtallyReport h4 {
+        font-weight: 400;
+        font-style: italic;
+        text-align: center;
+    }
+
+    .ChecklistContainer {
+        display: flex;
+        flex-direction: column;
+        width: 70%;
+        border: 1px solid #0C281E;
+        padding: 8px;
+        padding-top: 0;
+        border-radius: 8px;
+        margin: auto;
+    }
+    .ChecklistContainer p {
+        margin: 0;
+    }
+    .ChecklistContainer p i{
+        margin: 0px 8px;
+        width: 1rem;
+        text-align: center;
+    }
+
+    .ChecklistContainer div:nth-child(2n-1){ <%# Panel Heads %>
+        display: flex;
+        margin-top: 8px;
+        width: 100%;
+        padding: 1%;
+        font-size: 1.2rem;
+        flex-direction: row;
+        justify-content: space-between;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.4s;
+    }
+    .ChecklistContainer div:nth-child(2n-1):hover{ <%# Panel Heads %>
+        background-color: #abd2c5;
+    }
+    .ChecklistContainer div:nth-child(2n){ <%# Panels %>
+        padding: 0px 16px;
+        height: 0;
+        opacity: 0;
+        font-size: 1rem;
+        overflow: hidden;
+        transition: all 0.2s ease-out;
+    }
+
+    .ChecklistContainer__PanelHead--Active {
+        background-color: #abd2c5;
+    }
+</style>
+
+<script>
+    function togglePanel(head) {
+        head.classList.toggle("ChecklistContainer__PanelHead--Active");
+        var panel = head.nextElementSibling;
+
+        if (panel.style.height) {
+            panel.style.height = null;
+            panel.style.opacity = 0;
+            panel.style.padding = "0px 16px";
+        } else {
+            panel.style.height = (panel.scrollHeight + 5 + 24).toString() + "px";
+            panel.style.opacity = 1
+            panel.style.padding = "16px 16px";
+        }
+    }
+</script>
