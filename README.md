@@ -5,10 +5,10 @@
 ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
 <br>
-![BuildAction](https://img.shields.io/github/actions/workflow/status/QDUNI/FairSECO/runfairseco.yml?branch=main&logo=FAIRSECO&style=for-the-badge)
-![Version](https://img.shields.io/github/package-json/v/QDUNI/FairSECO/main?style=for-the-badge)
+![BuildAction](https://img.shields.io/github/actions/workflow/status/QDUNI/FAIRSECO/runfairseco.yml?branch=main&logo=FAIRSECO&style=for-the-badge)
+![Version](https://img.shields.io/github/package-json/v/QDUNI/FAIRSECO/main?style=for-the-badge)
 ![Fairtally](https://img.shields.io/badge/fair--software.eu-%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F-green?style=for-the-badge)
-![license](https://img.shields.io/github/license/QDUNI/FairSECO?style=for-the-badge)
+![license](https://img.shields.io/github/license/QDUNI/FAIRSECO?style=for-the-badge)
 
 FAIRSECO provides a way to quickly analyse a variety of data and metrics of your software, and it allows you to explore the impact of your software on the academic world. To accomplish this, we gather lots of metadata, either directly from the GitHub repository or through external sources. The data is then analysed and compiled into a clear and concise overview.
 
