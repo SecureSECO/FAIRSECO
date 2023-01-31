@@ -1,6 +1,9 @@
 
-*FAIRSECO* is a GitHub Action that analyzes your repository to give information about:
+# FAIRSECO
 
+FAIRSECO provides a way to quickly analyse a variety of data and metrics of your software, and it allows you to explore the impact of your software on the academic world. To accomplish this, we gather lots of metadata, either directly from the GitHub repository or through external sources. The data is then analysed and compiled into a clear and concise overview.
+
+The FAIRSECO github action will seperate the following categories:
 - **Impact**
     - Academic references
         - Citations
@@ -98,7 +101,9 @@ The workflow creates an artifact in the `.FAIRSECO` directory that contains the 
 - citationgraph.html
     - Graph view for citations in the dashboard
 - report.yml
-    - Contains the data collected and processed by the action
+    - Contains the data collected and processed by the action (yml)
+- report.json
+    - Contains the data collected and processed by the action (json)
 - program.log
     - The log of the program
 
