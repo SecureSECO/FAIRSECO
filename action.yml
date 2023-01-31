@@ -1,5 +1,6 @@
 name: "FAIRSECO-Action"
-description: "FAIRSECO-Action provides a way to quickly analyse a variety of data and metrics of your software, and it allows you to explore the impact of your software on the academic world. To accomplish this, we gather lots of metadata, either directly from the GitHub repository or through external sources. The data is then analysed and compiled into a clear and concise overview."
+description: "FAIRSECO-Action provides a way to analyse a variety of data and metrics of your software, 
+              and it allows you to explore the impact of your software on the academic world."
 author: "Utrecht University"
 inputs:
     repository:
