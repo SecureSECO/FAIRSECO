@@ -1,6 +1,4 @@
 
----
-
 *FAIRSECO* is a GitHub Action that analyzes your repository to give information about:
 
 - **Impact**
@@ -34,8 +32,6 @@
 <br>
 
 # How to Run
-
----
 
 In your GitHub repository, put the following workflow code in a `.yml` file in the `.github/workflows` directory:
 
@@ -81,6 +77,7 @@ jobs:
               with:
                   name: FAIRSECO Result
                   path: .FAIRSECO/
+            # commit and push the history file to the repo
             - name: Commit files
               run: |
                   git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -105,13 +102,33 @@ The workflow creates an artifact in the `.FAIRSECO` directory that contains the 
 - program.log
     - The log of the program
 
+<br>
+
+# Impact History
 The workflow also writes the `.fairseco_history.json` file to the repository. This file contains historical data used for the Impact History page in the dashboard.
+To prevent the history file from becoming too large too quickly, a new run on the same day overwrites the data from the previous run on the same day. This means if someone decides to run the action 100 times on a single day, it will still result in a single entry in the history file.
+<br>
+**_Note:_** To make this work, the repo needs to give read and write permissions to workflows. This can be done as follows:
+- Go to Settings
+- On the left side, click on Actions->General
+- Under Workflow Permissions, select Read and Write permissions
+
+<br>
+
+# Instructions for Developers
+All commands that are necessary when developing the program have an alias described in `package.json`.
+
+To build the files in `src`, you can simply execute `npm run build`. This will compile all Typescript files into a single `index.js` in the `dist` folder.
+This is the file that will be used when running the action.
+
+To convert docstrings into actual documentation, you can run `npm run builddocs`, or simply `typedoc`. This will convert all docstrings and extra pages
+defined in `docs_src` into a set of html files, and put them in the `docs` folder.
+
+We use Jest for our unit and integration tests. You can run all tests by simply running `npm run test`. To run a single test file, you can run `npm test -- filename.ts`. Because the files in the `__tests__` folder have no access to GitHub tokens, some modules will fail (like `@action/artifact` or `octokit`). To make sure the unit tests work, we mock these modules.
 
 <br>
 
 # License 
-
----
 
 This project is licensed under the GNU Affero General Public License v3.0. See LICENSE for more info.
 
