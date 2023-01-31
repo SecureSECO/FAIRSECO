@@ -73,7 +73,7 @@ jobs:
             - uses: actions/checkout@v3
             - uses: actions/checkout@v3
               with:
-                repository: QDUNI/FairSECO
+                repository: QDUNI/FAIRSECO
                 path: FAIRSECO_Assets
             - uses: QDUNI/FAIRSECO@v1.0.0 # this is the main action
               with:
