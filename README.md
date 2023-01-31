@@ -84,7 +84,7 @@ jobs:
               with:
                 repository: QDUNI/FairSECO
                 path: FAIRSECO_Assets
-            - uses: QDUNI/FairSECO@main # this is the main action
+            - uses: QDUNI/FairSECO@V1.0.0 # this is the main action
               with:
                   myToken: ${{ secrets.GITHUB_TOKEN }}
             - uses: actions/upload-artifact@v3
