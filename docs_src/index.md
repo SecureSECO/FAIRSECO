@@ -73,9 +73,9 @@ jobs:
             - uses: actions/checkout@v3
             - uses: actions/checkout@v3
               with:
-                repository: QDUNI/FAIRSECO
+                repository: SecureSECO/FAIRSECO
                 path: FAIRSECO_Assets
-            - uses: QDUNI/FAIRSECO@v1.0.0 # this is the main action
+            - uses: SecureSECO/FAIRSECO@v1.0.0 # this is the main action
               with:
                   myToken: ${{ secrets.GITHUB_TOKEN }}
             - uses: actions/upload-artifact@v3
