@@ -1,6 +1,12 @@
+/*
+This program has been developed by students from the bachelor Computer Science at
+Utrecht University within the Software Project course.
+© Copyright Utrecht University (Department of Information and Computing Sciences)
+ */
+
 /**
  * This module contains a function that runs the [fairtally](https://github.com/fair-software/fairtally) Docker image and parses it to JSON.
- * 
+ *
  * @module
  */
 
@@ -16,26 +22,28 @@ export const ModuleName = "fairtally";
 
 /** An object containing the output from fairtally. */
 export interface FairtallyOutput {
-    badge: string,
-    checklist: boolean,
-    citation: boolean,
-    count: number,
-    license: boolean,
-    registry: boolean,
-    repository: boolean,
-    stderr: string,
-    stdout: string,
-    url: string
+    badge: string;
+    checklist: boolean;
+    citation: boolean;
+    count: number;
+    license: boolean;
+    registry: boolean;
+    repository: boolean;
+    stderr: string;
+    stdout: string;
+    url: string;
 }
 
 /**
  * Runs the fairtally docker image on the current repo,
  * and gives the checklist of FAIRness criteria.
- * 
+ *
  * @param ghInfo Information about the GitHub repository.
  * @returns The result objects from fairtally.
  */
-export async function runModule(ghInfo: GitHubInfo): Promise<FairtallyOutput[]> {
+export async function runModule(
+    ghInfo: GitHubInfo
+): Promise<FairtallyOutput[]> {
     const cmd = "docker";
     const args = [
         "run",
@@ -55,9 +63,15 @@ export async function runModule(ghInfo: GitHubInfo): Promise<FairtallyOutput[]> 
         if (!fs.existsSync("./hfiOutputFiles"))
             fs.mkdirSync("./hfiOutputFiles/");
         else
-            LogMessage("Directory hfiOutputFiles already exists!", ErrorLevel.info);
+            LogMessage(
+                "Directory hfiOutputFiles already exists!",
+                ErrorLevel.info
+            );
     } catch {
-        LogMessage("Could not create hfiOutputFiles directory.", ErrorLevel.err);
+        LogMessage(
+            "Could not create hfiOutputFiles directory.",
+            ErrorLevel.err
+        );
     }
 
     const stdOutStream = fs.createWriteStream("./hfiOutputFiles/hfiOutput.txt");
@@ -73,7 +87,7 @@ export async function runModule(ghInfo: GitHubInfo): Promise<FairtallyOutput[]> 
     options.listeners = {
         stdout: (data: Buffer) => {
             stdout += data.toString();
-        }
+        },
     };
     // Run fairtally in Docker
     LogMessage("Starting Docker program: fairtally", ErrorLevel.info);

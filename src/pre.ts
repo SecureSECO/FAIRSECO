@@ -1,7 +1,13 @@
+/*
+This program has been developed by students from the bachelor Computer Science at
+Utrecht University within the Software Project course.
+© Copyright Utrecht University (Department of Information and Computing Sciences)
+ */
+
 /**
  * This module contains functions that are called before the main action is run,
  * to set up the directory and files used by the program and make sure the program has the necessary input to run.
- * 
+ *
  * @module
  */
 
@@ -11,12 +17,12 @@ import fs from "fs";
 
 /**
  * Handles preconditions for running the program.
- * 
+ *
  * The function performs the following:
  * - Creating the FAIRSECO directory
  * - Creating the log file
  * - Checking the necessary inputs that are required for the program to run
- * 
+ *
  * @returns Whether the preconditions for running the program are satisfied.
  */
 export async function pre(): Promise<boolean> {
@@ -25,7 +31,7 @@ export async function pre(): Promise<boolean> {
 
     try {
         const repositories: string = core.getInput("repository");
-        
+
         return repositories !== "";
     } catch (error) {
         core.setFailed(error.message);

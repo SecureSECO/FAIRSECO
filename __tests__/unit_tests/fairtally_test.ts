@@ -1,3 +1,9 @@
+/*
+This program has been developed by students from the bachelor Computer Science at
+Utrecht University within the Software Project course.
+© Copyright Utrecht University (Department of Information and Computing Sciences)
+ */
+
 // Test to check if fairtally works correctly
 // We check if fairtally gives the correct JSON output
 // Using a json schema and the jest-json-schema package we can run the test with jest

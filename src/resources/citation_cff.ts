@@ -1,6 +1,12 @@
+/*
+This program has been developed by students from the bachelor Computer Science at
+Utrecht University within the Software Project course.
+© Copyright Utrecht University (Department of Information and Computing Sciences)
+ */
+
 /**
  * This module contains functions for reading and validating a CITATION.cff file.
- * 
+ *
  * @module
  */
 
@@ -17,16 +23,16 @@ export const ModuleName = "CitationCff";
 
 /**
  * A CffObject can be one of the following interfaces:
- * 
+ *
  * #### MssingCffObject
  * There is no CITATION.cff file present in the root of the repository.
- * 
+ *
  * #### IncorrectYamlCffObject
  * The CITATION.cff file is not formatted correctly, i.e. it is not a valid .yml file
- * 
+ *
  * #### ValidationErrorCffObject
  * There is a CITATION.cff file that is properly formatted, but the data is incorrect or missing.
- * 
+ *
  * #### ValidCffObject
  * The CITATION.cff file is completely valid.
  */
@@ -62,7 +68,7 @@ export interface ValidationErrorCffObject {
 
 /**
  * Reads a CITATION.cff file.
- * 
+ *
  * @param path Specifies the path to the directory the CITATION.cff file is in.
  * @returns An object containing the data from/about the CITATION.cff file.
  */
@@ -76,7 +82,7 @@ export async function runModule(path: string = "."): Promise<CffObject> {
         if (e.code === "ENOENT") {
             // File not found, return MissingCffObject to indicate missing CITATION.cff file
             LogMessage("No CITATION.cff file found.", ErrorLevel.info);
-            const Data : MissingCffObject = { status: "missing_file" };
+            const Data: MissingCffObject = { status: "missing_file" };
             return Data;
         } else {
             // Critical error, stop
@@ -92,7 +98,10 @@ export async function runModule(path: string = "."): Promise<CffObject> {
     } catch {
         // Parsing failed, incorrect YAML.
         // Return IncorrectYamlCffObject to indicate incorrect yaml
-        LogMessage("CITATION.cff file contains incorrect yaml", ErrorLevel.warn);
+        LogMessage(
+            "CITATION.cff file contains incorrect yaml",
+            ErrorLevel.warn
+        );
         const Data: IncorrectYamlCffObject = { status: "incorrect_yaml" };
         return Data;
     }
@@ -163,7 +172,10 @@ export async function runModule(path: string = "."): Promise<CffObject> {
     } else {
         // CITATION.cff file is invalid, return ValidationErrorCffObject with data and error message
         const error = getError(stderr);
-        LogMessage("Read CITATION.cff file has is invalid: " + error, ErrorLevel.warn);
+        LogMessage(
+            "Read CITATION.cff file has is invalid: " + error,
+            ErrorLevel.warn
+        );
         const Data: ValidationErrorCffObject = {
             status: "validation_error",
             citation: result,
@@ -177,7 +189,7 @@ export const unknownErrorMsg = "Unknown Error";
 
 /**
  * Finds the error when cffconvert returns an error code.
- * 
+ *
  * @param stderr The stderr output produced by docker.
  * @returns A string containing information about the error.
  */

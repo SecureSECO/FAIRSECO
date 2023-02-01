@@ -1,3 +1,9 @@
+/*
+This program has been developed by students from the bachelor Computer Science at
+Utrecht University within the Software Project course.
+© Copyright Utrecht University (Department of Information and Computing Sciences)
+ */
+
 import { ReturnObject } from "../../src/getdata";
 import { GitHubInfo } from "../../src/git";
 import * as quality from "../../src/resources/qualitymetrics";
@@ -47,15 +53,14 @@ test("Test runModule", async () => {
         violations: [{}, {}, {}], // 3
     };
 
-    let qualityScore = (
-        await quality.runModule(
-            {Readme: ""} as unknown as GitHubInfo,
-            mockHowfairisOutput,
-            mockTortelliniOutput
-        )
-    ) as quality.QualityMetrics;
+    let qualityScore = (await quality.runModule(
+        { Readme: "" } as unknown as GitHubInfo,
+        mockHowfairisOutput,
+        mockTortelliniOutput
+    )) as quality.QualityMetrics;
 
-    const docsDirectoryScore = fs.existsSync("./docs") || fs.existsSync("./documentation") ? 50 : 0;
+    const docsDirectoryScore =
+        fs.existsSync("./docs") || fs.existsSync("./documentation") ? 50 : 0;
     const readmeScore = 0; // No readme
     const docsScore = docsDirectoryScore + readmeScore;
 
@@ -67,9 +72,9 @@ test("Test runModule", async () => {
 describe("Test getLicenseScore", () => {
     test("Some violations", () => {
         const mockTortelliniOutput = {
-                packages: [{}, {}, {}, {}, {}, {}], // 6
-                violations: [{}, {}], // 2
-            };
+            packages: [{}, {}, {}, {}, {}, {}], // 6
+            violations: [{}, {}], // 2
+        };
 
         expect(quality.getLicenseScore(mockTortelliniOutput)).toBe(32);
     });

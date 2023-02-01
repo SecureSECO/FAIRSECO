@@ -1,11 +1,17 @@
+/*
+This program has been developed by students from the bachelor Computer Science at
+Utrecht University within the Software Project course.
+© Copyright Utrecht University (Department of Information and Computing Sciences)
+ */
+
 /**
  * This module contains functions that run the SearchSECO Docker image and parses its output.
- * 
+ *
  * @remarks
  * If the action is run on a private repository, SearchSECO will be unable
  * to analyze the code. To circumvent this, a mock of SearchSECO was created
  * ([jarnohendriksen/MockSECO:v1](https://hub.docker.com/r/jarnohendriksen/mockseco)).
- * 
+ *
  * @module
  */
 
@@ -218,7 +224,10 @@ export function getHashIndices(input: String[]): number[] {
 
     for (let i = 1; i < input.length; i++) {
         // Check if the previous line consists of dashes to make sure an author named Hash isn't included
-        if (input[i - 1].match(/(-)+/) !== null && input[i].startsWith("Hash ")) {
+        if (
+            input[i - 1].match(/(-)+/) !== null &&
+            input[i].startsWith("Hash ")
+        ) {
             indices.push(i);
         }
     }

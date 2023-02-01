@@ -1,12 +1,18 @@
+/*
+This program has been developed by students from the bachelor Computer Science at
+Utrecht University within the Software Project course.
+© Copyright Utrecht University (Department of Information and Computing Sciences)
+ */
+
 /**
  * Contains class definitions for handling papers and getting citation information.
- * 
+ *
  * @module
  */
 
 /** All possible fields. */
-export type Field = 
-    | "Philosophy" 
+export type Field =
+    | "Philosophy"
     | "Art"
     | "History"
     | "Economics"
@@ -25,16 +31,16 @@ export type Field =
     | "Medicine"
     | "Political science"
     | "Materials science"
-    | "Unknown"
+    | "Unknown";
 
 /** All possible disciplines. */
-export type Discipline = 
-    | "Humanities" 
+export type Discipline =
+    | "Humanities"
     | "Social Sciences"
     | "Natural Sciences"
     | "Formal Sciences"
     | "Applied Sciences"
-    | "Unknown"
+    | "Unknown";
 
 /** Contains the data belonging to a paper found in OpenAlex or Semantic Scholar. */
 export class Paper {
@@ -48,20 +54,22 @@ export class Paper {
     discipline: Discipline;
     fields: Field[];
     journal: string;
-    url : string;
+    url: string;
     numberOfCitations: number;
 
-    constructor(title: string,
-                doi: string,
-                pmid: string,
-                pmcid: string,
-                year: number,
-                database: string,
-                authors: Author[],
-                fields: string[],
-                journal: string,
-                url: string,
-                numberOfCitations: number) {
+    constructor(
+        title: string,
+        doi: string,
+        pmid: string,
+        pmcid: string,
+        year: number,
+        database: string,
+        authors: Author[],
+        fields: string[],
+        journal: string,
+        url: string,
+        numberOfCitations: number
+    ) {
         this.title = title;
         this.year = year;
         this.doi = doi;
@@ -78,7 +86,7 @@ export class Paper {
 
     /**
      * Combines the metadata of this paper with that of another.
-     * 
+     *
      * @param input The other paper.
      * @returns A paper containing the combined metadata of both papers.
      */
@@ -93,9 +101,11 @@ export class Paper {
         if (this.pmcid === "") {
             this.pmcid = input.pmcid;
         }
-        
+
         // Combine authors
-        const uniqueAuthors = new Set<Author>(this.authors.concat(input.authors));
+        const uniqueAuthors = new Set<Author>(
+            this.authors.concat(input.authors)
+        );
         this.authors = Array.from(uniqueAuthors.values());
 
         // Combine fields
@@ -110,39 +120,41 @@ export class Paper {
         return this;
     }
 
-    private static readonly fieldMap : {[index: string] : Field} = {
+    private static readonly fieldMap: { [index: string]: Field } = {
         "computer science": "Computer science",
-        "medicine": "Medicine",
-        "chemistry": "Chemistry",
-        "biology": "Biology",
+        medicine: "Medicine",
+        chemistry: "Chemistry",
+        biology: "Biology",
         "materials science": "Materials science",
-        "physics": "Physics",
-        "geology": "Geology",
-        "psychology": "Psychology",
-        "art": "Art",
-        "history": "History",
-        "geography": "Geography",
-        "sociology": "Sociology",
-        "business": "Business",
+        physics: "Physics",
+        geology: "Geology",
+        psychology: "Psychology",
+        art: "Art",
+        history: "History",
+        geography: "Geography",
+        sociology: "Sociology",
+        business: "Business",
         "political science": "Political science",
-        "economics": "Economics",
-        "philosophy": "Philosophy",
-        "mathematics": "Mathematics",
-        "engineering": "Engineering",
+        economics: "Economics",
+        philosophy: "Philosophy",
+        mathematics: "Mathematics",
+        engineering: "Engineering",
         "environmental science": "Environmental science",
         "agricultural and food sciences": "Biology",
-        "law": "Philosophy",
-        "education": "Psychology",
-        "linguistics": "Psychology",
-    }
+        law: "Philosophy",
+        education: "Psychology",
+        linguistics: "Psychology",
+    };
 
     private getFields(input: string[]): Field[] {
         // Get the unique fields
         const uniqueFields = new Set<Field>();
         for (const subject of input) {
-            uniqueFields.add(Paper.fieldMap[subject.toLowerCase()] ?? "Unknown");
+            uniqueFields.add(
+                Paper.fieldMap[subject.toLowerCase()] ?? "Unknown"
+            );
         }
-        
+
         // Return an array of the unique fields,
         // or an array with a single unknown if it's empty
         const fields = Array.from(uniqueFields.values());
@@ -153,31 +165,31 @@ export class Paper {
         }
     }
 
-    private static readonly disciplineMap : {[index: string] : Discipline} = {
-        "computer science" : "Formal Sciences",
-        "medicine" : "Applied Sciences",
-        "chemistry" : "Natural Sciences",
-        "biology" : "Natural Sciences",
-        "materials science" : "Applied Sciences",
-        "physics" : "Natural Sciences",
-        "geology" : "Natural Sciences",
-        "psychology" : "Social Sciences",
-        "art" : "Humanities",
-        "history" : "Humanities",
-        "geography" : "Social Sciences",
-        "sociology" : "Social Sciences",
-        "business" : "Applied Sciences",
-        "political science" : "Applied Sciences",
-        "economics" : "Social Sciences",
-        "philosophy" : "Humanities",
-        "mathematics" : "Formal Sciences",
-        "engineering" : "Applied Sciences",
-        "environmental science" : "Applied Sciences",
+    private static readonly disciplineMap: { [index: string]: Discipline } = {
+        "computer science": "Formal Sciences",
+        medicine: "Applied Sciences",
+        chemistry: "Natural Sciences",
+        biology: "Natural Sciences",
+        "materials science": "Applied Sciences",
+        physics: "Natural Sciences",
+        geology: "Natural Sciences",
+        psychology: "Social Sciences",
+        art: "Humanities",
+        history: "Humanities",
+        geography: "Social Sciences",
+        sociology: "Social Sciences",
+        business: "Applied Sciences",
+        "political science": "Applied Sciences",
+        economics: "Social Sciences",
+        philosophy: "Humanities",
+        mathematics: "Formal Sciences",
+        engineering: "Applied Sciences",
+        "environmental science": "Applied Sciences",
         "agricultural and food sciences": "Applied Sciences",
-        "law" : "Humanities",
-        "education" : "Social Sciences",
-        "linguistics" : "Social Sciences",
-    }
+        law: "Humanities",
+        education: "Social Sciences",
+        linguistics: "Social Sciences",
+    };
 
     private getDiscipline(input: string[]): Discipline {
         // Get the discipline of each subject
@@ -243,7 +255,7 @@ export class MetaDataPaper {
 export class Author {
     name: string;
     orchidID: string;
-        
+
     constructor(name: string, orchidID: string) {
         this.name = name;
         this.orchidID = orchidID;
@@ -260,11 +272,11 @@ export class Citations {
     highestCitations: number;
     firstHandCitations: number;
     secondHandCitations: number;
-    disciplines: {[index: string]: number};
+    disciplines: { [index: string]: number };
 
-    /** 
+    /**
      * Analyzes metadata of citing papers and constructs the object containing this information.
-     * 
+     *
      * @param papers The citing papers.
      * @returns An object containing citation information.
      */
@@ -273,12 +285,12 @@ export class Citations {
         let highestCitations = 1;
         let secondHandCitations = 0;
         const uniqueFields: Set<Field> = new Set();
-        let disciplines: {[index: string]: number} = {};
+        let disciplines: { [index: string]: number } = {};
 
         for (const paper of papers) {
             // Find year of oldest paper
             firstYear = Math.min(firstYear, paper.year);
-            
+
             // Find secondhand citations
             secondHandCitations += paper.numberOfCitations;
 
@@ -289,13 +301,13 @@ export class Citations {
             // Find all fields occuring in papers
             for (const field of paper.fields) {
                 uniqueFields.add(field);
-            };
+            }
 
             // Count the disciplines of all papers
             const disciplineCounter = disciplines[paper.discipline] ?? 0;
             disciplines[paper.discipline] = disciplineCounter + 1;
-        };
-        
+        }
+
         this.papers = papers;
         this.firstHandCitations = this.papers.length;
         this.uniqueFields = Array.from(uniqueFields.values());

@@ -1,7 +1,13 @@
+/*
+This program has been developed by students from the bachelor Computer Science at
+Utrecht University within the Software Project course.
+© Copyright Utrecht University (Department of Information and Computing Sciences)
+ */
+
 /**
  * This module contains functions that get data from the previously run modules and new data from GitHub,
  * and calculates a number of metrics used to calculate the quality score.
- * 
+ *
  * @module
  */
 
@@ -16,7 +22,7 @@ export const ModuleName = "QualityMetrics";
 /**
  * Contains information about the quality of the repository.
  * The reported values are whole numbers.
-*/
+ */
 export interface QualityMetrics {
     /** The total score 0-100 as a whole number. */
     score: number;
@@ -26,10 +32,10 @@ export interface QualityMetrics {
 
     /** The license score based on license violations 0-100. */
     licenseScore: number;
-    
+
     /** The maintainability score, percentage of solved issues 0-100. */
     maintainabilityScore: number;
-    
+
     /** The documentation score 0-100, based on presence of documentation. */
     documentationScore: number;
 
@@ -39,12 +45,12 @@ export interface QualityMetrics {
 
 /**
  * Calculates the quality metrics of the repository.
- * 
+ *
  * @param ghInfo Information about the GitHub repository.
  * @param fairtallyOutput The output from the fairtally module.
  * @param tortelliniOutput The output from the tortellini module.
  * @returns The quality metrics of the repository.
- * 
+ *
  * @remarks
  * #### FAIRness score
  * Score between 0 and 100 proportional to how many of the five FAIRness criteria are met.
@@ -92,16 +98,19 @@ export async function runModule(
     const licenseWeight = 27;
     const maintainabilityWeight = 23;
     const documentationWeight = 12;
-    const totalWeight = fairnessWeight + licenseWeight + maintainabilityWeight + documentationWeight;
+    const totalWeight =
+        fairnessWeight +
+        licenseWeight +
+        maintainabilityWeight +
+        documentationWeight;
 
     // Total score
     const score = Math.round(
-        (
-            fairnessScore * fairnessWeight +
+        (fairnessScore * fairnessWeight +
             licenseScore * licenseWeight +
             maintainabilityScore * maintainabilityWeight +
-            documentationScore * documentationWeight
-        ) / totalWeight
+            documentationScore * documentationWeight) /
+            totalWeight
     );
 
     return {
@@ -122,8 +131,8 @@ export async function runModule(
  * @returns Score between 0 and 100 indicating how well licenses correspond with each other.
  */
 export function getLicenseScore(licenseInfo: any): number {
-    const licenseCount : number = licenseInfo.packages.length;
-    const violationCount : number = licenseInfo.violations.length;
+    const licenseCount: number = licenseInfo.packages.length;
+    const violationCount: number = licenseInfo.violations.length;
 
     // Check if there's no licenses
     if (licenseCount === 0) {
@@ -134,7 +143,9 @@ export function getLicenseScore(licenseInfo: any): number {
     const correctFraction = (licenseCount - violationCount) / licenseCount;
 
     // When there are more licenses, the same fraction of violations results in a lower score
-    return Math.round(Math.pow(correctFraction, Math.log2(1 + licenseCount)) * 100);
+    return Math.round(
+        Math.pow(correctFraction, Math.log2(1 + licenseCount)) * 100
+    );
 }
 
 /**
@@ -147,7 +158,7 @@ export function getLicenseScore(licenseInfo: any): number {
  */
 export function getMaintainabilityScore(issues: any[]): number {
     const total = issues.length;
-    
+
     // Count amount of closed issues
     let closed = 0;
     for (const issue of issues) {
@@ -182,7 +193,9 @@ export function getAvgSolveTime(issues: any[]): number | undefined {
     }
 
     // Return average solve time (rounded up to next day)
-    return numberOfIssues > 0 ? Math.round(totalTime / numberOfIssues) : undefined;
+    return numberOfIssues > 0
+        ? Math.round(totalTime / numberOfIssues)
+        : undefined;
 }
 
 /**
@@ -207,7 +220,9 @@ export async function getIssues(ghInfo: GitHubInfo): Promise<any[]> {
     try {
         octokit = gh.getOctokit(ghInfo.GithubToken);
     } catch (error) {
-        throw new Error("Error while contacting Octokit API: " + (error.message as string));
+        throw new Error(
+            "Error while contacting Octokit API: " + (error.message as string)
+        );
     }
 
     // Request issues of the repo (pull requests are also counted as issues)
@@ -222,7 +237,9 @@ export async function getIssues(ghInfo: GitHubInfo): Promise<any[]> {
         );
 
         // Filter out pull requests and return the issues
-        return response.data.filter((issue: any) => issue.pull_request === undefined);
+        return response.data.filter(
+            (issue: any) => issue.pull_request === undefined
+        );
     } catch (error) {
         throw new Error("Error getting issues: " + (error.message as string));
     }

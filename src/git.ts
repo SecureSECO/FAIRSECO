@@ -1,12 +1,18 @@
+/*
+This program has been developed by students from the bachelor Computer Science at
+Utrecht University within the Software Project course.
+© Copyright Utrecht University (Department of Information and Computing Sciences)
+ */
+
 /**
  * This module contains functions that retrieve data of the GitHub repository using Octokit.
- * 
+ *
  * @module
  */
 
 import * as core from "@actions/core";
 import * as gh from "@actions/github";
-import * as log from "./errorhandling/log"
+import * as log from "./errorhandling/log";
 
 /**
  * Object containing all info retrieved from Octokit about the repository.
@@ -58,7 +64,7 @@ export interface RepoStats {
 
 /**
  * Retrieves the stats of the repository from Octokit.
- * 
+ *
  * @param owner The username of the owner of the repository.
  * @param repo The name of the repository.
  * @param token The GitHub token associated with the owner.
@@ -81,7 +87,10 @@ export async function getRepoStats(
         // First try our supplied token, if that doesn't work, we can already return the dummy.
         octokit = gh.getOctokit(token);
     } catch (error) {
-        log.LogMessage("Error while contacting Octokit API: " + (error.message as string), log.ErrorLevel.err);
+        log.LogMessage(
+            "Error while contacting Octokit API: " + (error.message as string),
+            log.ErrorLevel.err
+        );
 
         // We return the dummy when we can't do anything
         return repostats;
@@ -97,7 +106,11 @@ export async function getRepoStats(
         repostats.watchers = response.watchers_count;
         repostats.visibility = response.visibility;
     } catch (error) {
-        log.LogMessage("Error when requesting repo information: " + (error.message as string), log.ErrorLevel.err);
+        log.LogMessage(
+            "Error when requesting repo information: " +
+                (error.message as string),
+            log.ErrorLevel.err
+        );
     }
 
     return repostats;
@@ -105,7 +118,7 @@ export async function getRepoStats(
 
 /**
  * Creates a GitHubInfo object with all data collected from the Octokit API.
- * 
+ *
  * @returns A GitHubInfo object containing all data recieved from Octokit.
  */
 export async function getGitHubInfo(): Promise<GitHubInfo> {
@@ -148,7 +161,7 @@ export async function getGitHubInfo(): Promise<GitHubInfo> {
 
 /**
  * Retrieves the contributors of the repository.
- * 
+ *
  * @param owner The username of the owner of the repository.
  * @param repo The name of the repository.
  * @param token The GitHub token associated with the owner.
@@ -166,30 +179,33 @@ export async function getContributors(
                 owner,
                 repo,
             });
-            
+
         return contributors;
     } catch {
-        log.LogMessage("An error occured while retrieving contributors.", log.ErrorLevel.err);
-        
+        log.LogMessage(
+            "An error occured while retrieving contributors.",
+            log.ErrorLevel.err
+        );
+
         return [];
     }
 }
 
 /**
  * Constructs the full URL of the repository by combining the username and repo name.
- * 
+ *
  * @returns The URL of the repository.
  */
 export async function getRepoUrl(): Promise<string> {
     const prefix = "https://github.com/";
     const repository: string = core.getInput("repository");
-    
+
     return prefix + repository;
 }
 
 /**
  * Retrieves the readme.md file from the repository.
- * 
+ *
  * @param owner The username of the owner of the repository.
  * @param repo The name of the repository.
  * @param token The GitHub token associated with the owner.
@@ -212,15 +228,18 @@ export async function getRepoReadme(
         });
         result = Buffer.from(readme, "base64").toString();
     } catch {
-        log.LogMessage("An error occured while retrieving readme.", log.ErrorLevel.err);
+        log.LogMessage(
+            "An error occured while retrieving readme.",
+            log.ErrorLevel.err
+        );
     }
-    
+
     return result;
 }
 
 /**
  * Searches through the readme.md file for badge links from shields.io.
- * 
+ *
  * @param input The contents of the readme.md file.
  * @returns An array of badge links.
  */
@@ -228,7 +247,7 @@ export function filterBadgeURLS(input: string): string[] {
     const rgexp: RegExp =
         /!\[.*\]\s*\(https:\/\/img\.shields\.io\/badge\/.*\)/g;
     const result: string[] | null = input.match(rgexp);
-    
+
     if (result == null) {
         return [];
     } else {

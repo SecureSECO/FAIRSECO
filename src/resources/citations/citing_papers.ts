@@ -1,6 +1,12 @@
+/*
+This program has been developed by students from the bachelor Computer Science at
+Utrecht University within the Software Project course.
+© Copyright Utrecht University (Department of Information and Computing Sciences)
+ */
+
 /**
  * Module containing functions for finding unique papers that cite a piece of research software.
- * 
+ *
  * @module
  */
 
@@ -15,22 +21,24 @@ export const ModuleName = "CitingPapers";
 
 /**
  * Finds papers citing a piece of research software, given the CITATION.cff file of its repository.
- * 
+ *
  * @param cffFile The information from the CITATION.cff file.
- * 
+ *
  * @returns An object containing information about the citations.
  */
 export async function runModule(
-    cffFile: CffObject | undefined 
+    cffFile: CffObject | undefined
 ): Promise<Citations> {
     // Check cff output
     if (cffFile === undefined) {
         throw new Error("Missing CitationCff module data");
     }
     if (cffFile.status !== "valid") {
-        throw new Error("Missing CITATION.cff file data (status: \"" + cffFile.status + "\")");
+        throw new Error(
+            'Missing CITATION.cff file data (status: "' + cffFile.status + '")'
+        );
     }
-    
+
     // Get title
     const title = cffFile.citation.title;
 
@@ -66,47 +74,43 @@ export async function runModule(
         authors.push(new Author(givenNames + " " + familyName, orchidID));
     }
     let semanticScholarData: Paper[] = [];
-    try{
-    semanticScholarData = await semanticScholarCitations(
-        authors,
-        title,
-        refTitles
-    );
-    }
-    catch(error){
+    try {
+        semanticScholarData = await semanticScholarCitations(
+            authors,
+            title,
+            refTitles
+        );
+    } catch (error) {
         const errorMessage =
-                "Error while getting semanticScholar data:\n" +
-                (error.message as string);
-            LogMessage(errorMessage, ErrorLevel.err);
+            "Error while getting semanticScholar data:\n" +
+            (error.message as string);
+        LogMessage(errorMessage, ErrorLevel.err);
     }
     let openAlexData: Paper[] = [];
-    try{
-    openAlexData = await openAlexCitations(
-        authors,
-        title,
-        refTitles
-    );
-    }
-    catch(error){
+    try {
+        openAlexData = await openAlexCitations(authors, title, refTitles);
+    } catch (error) {
         const errorMessage =
-                "Error while getting openAlex data:\n" +
-                (error.message as string);
-            LogMessage(errorMessage, ErrorLevel.err);
+            "Error while getting openAlex data:\n" + (error.message as string);
+        LogMessage(errorMessage, ErrorLevel.err);
     }
-    const outputPapers: Paper[] = mergeDuplicates(semanticScholarData, openAlexData);
+    const outputPapers: Paper[] = mergeDuplicates(
+        semanticScholarData,
+        openAlexData
+    );
     return new Citations(outputPapers);
 }
 
 /**
  * Merges two sources of papers into one.
- * 
+ *
  * @remarks Splitting this process over three foreach calls and three maps ensures an O(n) runtime, instead of O(n<sup>2</sup>).
- * 
+ *
  * @param array1 The first array of papers.
  * @param array2 The second array of papers.
  *
  * @returns An array of all the unique papers with the combined metadata from both sources.
-*/
+ */
 export function mergeDuplicates(array1: Paper[], array2: Paper[]): Paper[] {
     let totalArray: Paper[] = array1.concat(array2);
 
@@ -155,7 +159,7 @@ export function mergeDuplicates(array1: Paper[], array2: Paper[]): Paper[] {
         } else {
             pmcidMap.set(element.pmcid, element);
         }
-    };
+    }
 
     totalArray = Array.from(pmcidMap.values());
     return totalArray;

@@ -1,12 +1,18 @@
+/*
+This program has been developed by students from the bachelor Computer Science at
+Utrecht University within the Software Project course.
+© Copyright Utrecht University (Department of Information and Computing Sciences)
+ */
+
 /**
  * This module handles the main part of the action. It runs each resource module and compiles
  * the results into an array of {@link ReturnObject | ReturnObjects}.
- * 
+ *
  * @remarks
  * Because every function is wrapped in a try-catch block separately,
  * the program doesn't crash if one of them fails. The result will simply omit the data
  * from that resource.
- * 
+ *
  * @module
  */
 
@@ -31,7 +37,7 @@ export interface ReturnObject {
 
 /**
  * Runs each FAIRSECO data collection module and compiles the results.
- * 
+ *
  * @returns An array containing data generation outputs from all modules that did not encounter fatal errors.
  */
 export async function data(): Promise<ReturnObject[]> {
@@ -54,7 +60,12 @@ export async function data(): Promise<ReturnObject[]> {
     const cffResult = await runModule(citationcff);
     const SBOMResult = await runModule(sbom);
     const citingPapersResult = await runModule(citingPapers, cffResult?.Data);
-    const qualityMetricsResult = await runModule(qualityMetrics, ghInfo, fairtallyResult?.Data, tortelliniResult?.Data);
+    const qualityMetricsResult = await runModule(
+        qualityMetrics,
+        ghInfo,
+        fairtallyResult?.Data,
+        tortelliniResult?.Data
+    );
 
     // Return the data produced by modules
     return [
@@ -65,11 +76,14 @@ export async function data(): Promise<ReturnObject[]> {
         cffResult,
         SBOMResult,
         citingPapersResult,
-        qualityMetricsResult
+        qualityMetricsResult,
     ].filter((e) => e !== undefined) as ReturnObject[];
 }
 
-async function runModule(module: any, ...parameters: any): Promise<ReturnObject | undefined> {
+async function runModule(
+    module: any,
+    ...parameters: any
+): Promise<ReturnObject | undefined> {
     try {
         const resultData = await module.runModule(...parameters);
         const result: ReturnObject = {
@@ -79,10 +93,12 @@ async function runModule(module: any, ...parameters: any): Promise<ReturnObject 
         return result;
     } catch (error) {
         LogMessage(
-            (module.ModuleName as string) + " encountered an error:\n" + (error.message as string),
+            (module.ModuleName as string) +
+                " encountered an error:\n" +
+                (error.message as string),
             ErrorLevel.err
         );
-        
+
         return undefined;
     }
 }

@@ -1,7 +1,13 @@
+/*
+This program has been developed by students from the bachelor Computer Science at
+Utrecht University within the Software Project course.
+© Copyright Utrecht University (Department of Information and Computing Sciences)
+ */
+
 /**
  * This module contains functions for finding papers that cite a piece of research software, making use of Semantic Scholar.
  * <br>The main function to be used by other modules is {@link semanticScholarCitations | semanticScholarCitations()}.
- * 
+ *
  * @module
  */
 
@@ -12,11 +18,11 @@ import { selectReferencePapers } from "../referencepaper";
 
 /**
  * Finds papers citing the given piece of research software using Semantic Scholar.
- * 
+ *
  * @param authors An array containing the authors of the software.
  * @param title The title of the software.
  * @param firstRefTitles Titles of known papers of the software.
- * 
+ *
  * @returns An array containing the list of papers citing the given piece of software.
  */
 export async function semanticScholarCitations(
@@ -50,9 +56,9 @@ export async function semanticScholarCitations(
 
 /**
  * Finds papers citing a given paper.
- * 
+ *
  * @param paperID The [Semantic Scholar paper ID](https://api.semanticscholar.org/api-docs/graph#tag/Paper-Data/operation/get_graph_get_paper) corresponding to the paper.
- * 
+ *
  * @returns An array of papers citing the given paper.
  */
 export async function getCitationPapers(paperID: string): Promise<Paper[]> {
@@ -62,12 +68,12 @@ export async function getCitationPapers(paperID: string): Promise<Paper[]> {
         "https://api.semanticscholar.org/graph/v1/paper/";
     const fieldsQuery =
         "/citations?fields=title,externalIds,year,authors,s2FieldsOfStudy,journal,openAccessPdf,url,citationCount&limit=1000";
-    
+
     // Get the works that cite this paper
     const output: Paper[] = [];
     try {
         // Get the paper data
-         const response = await fetch(
+        const response = await fetch(
             semanticScholarApiURL + paperID + fieldsQuery,
             {
                 method: "GET",
@@ -83,19 +89,24 @@ export async function getCitationPapers(paperID: string): Promise<Paper[]> {
             const year = scholarPaper.citingPaper.year;
             const journalObject = scholarPaper.citingPaper.journal;
             let journal: string;
-            if (journalObject == null){
+            if (journalObject == null) {
                 journal = "unknown journal";
-            } else if (journalObject.name == null){
+            } else if (journalObject.name == null) {
                 journal = journalObject;
             } else {
                 journal = journalObject.name;
             }
-            const numberOfCitations = scholarPaper.citingPaper.citationCount ?? 0;
+            const numberOfCitations =
+                scholarPaper.citingPaper.citationCount ?? 0;
             let url;
-            if (scholarPaper.citingPaper.openAccessPdf === null ||  scholarPaper.citingPaper.openAccessPdf === undefined) {
+            if (
+                scholarPaper.citingPaper.openAccessPdf === null ||
+                scholarPaper.citingPaper.openAccessPdf === undefined
+            ) {
                 url = scholarPaper.citingPaper.url as string;
             } else {
-                url = (scholarPaper.citingPaper.openAccessPdf.url ?? scholarPaper.citingPaper.url) as string;
+                url = (scholarPaper.citingPaper.openAccessPdf.url ??
+                    scholarPaper.citingPaper.url) as string;
             }
 
             // Get paper ID (doi, pmid, or pmcid)
@@ -122,7 +133,7 @@ export async function getCitationPapers(paperID: string): Promise<Paper[]> {
                 pmid = pmid.toLowerCase();
                 pmcid = pmcid.toLowerCase();
             }
-            
+
             // Get fields
             const fields: string[] = [];
             if (scholarPaper.citingPaper.s2FieldsOfStudy !== undefined) {
@@ -154,12 +165,15 @@ export async function getCitationPapers(paperID: string): Promise<Paper[]> {
                 numberOfCitations
             );
             output.push(paper);
-        };
-        
+        }
+
         return output;
     } catch (error) {
         LogMessage(
-            "Error while searching Semantic Scholar paper " + paperID + ":\n" + (error.message as string),
+            "Error while searching Semantic Scholar paper " +
+                paperID +
+                ":\n" +
+                (error.message as string),
             ErrorLevel.err
         );
 
@@ -172,7 +186,7 @@ export async function getCitationPapers(paperID: string): Promise<Paper[]> {
  *
  * @param authors The authors of the software.
  * @param title The title of the software.
- * 
+ *
  * @returns An array of [Semantic Scholar paper IDs](https://api.semanticscholar.org/api-docs/graph#tag/Paper-Data/operation/get_graph_get_paper) for the given piece of software.
  */
 export async function getReferencePapers(
@@ -223,7 +237,10 @@ export async function getReferencePapers(
         // Add all works from author that include the title of the given paper
         const papersFiltered: any[] = [];
         for (const p of papers) {
-            const paperTitle = p.title === undefined || p.title === null ? "" : (p.title as string);
+            const paperTitle =
+                p.title === undefined || p.title === null
+                    ? ""
+                    : (p.title as string);
             if (paperTitle.toLowerCase().includes(title.toLowerCase())) {
                 papersFiltered.push(p);
             }
@@ -263,7 +280,7 @@ export async function getReferencePapers(
 
 /**
  * Finds the [Semantic Scholar paper ID](https://api.semanticscholar.org/api-docs/graph#tag/Paper-Data/operation/get_graph_get_paper) of a paper.
- * 
+ *
  * @param title The title of the paper.
  *
  * @returns The [Semantic Scholar paper ID](https://api.semanticscholar.org/api-docs/graph#tag/Paper-Data/operation/get_graph_get_paper) of a paper.
@@ -275,7 +292,7 @@ export async function getSemanticScholarPaperID(
     const semanticScholarApiURL =
         "https://api.semanticscholar.org/graph/v1/paper/";
     const searchQuery = "search?query=";
-    
+
     try {
         // API call for searching paper with the title
         const response = await fetch(
@@ -294,10 +311,13 @@ export async function getSemanticScholarPaperID(
         return outputJSON.data[0].paperId;
     } catch (error) {
         LogMessage(
-            "Error while fetching paper ID of " + title + " on Semantic Scholar:\n" + (error.message as string),
+            "Error while fetching paper ID of " +
+                title +
+                " on Semantic Scholar:\n" +
+                (error.message as string),
             ErrorLevel.err
         );
-        
+
         return undefined;
     }
 }

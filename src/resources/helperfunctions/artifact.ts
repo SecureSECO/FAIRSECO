@@ -1,8 +1,14 @@
+/*
+This program has been developed by students from the bachelor Computer Science at
+Utrecht University within the Software Project course.
+© Copyright Utrecht University (Department of Information and Computing Sciences)
+ */
+
 /**
  * This module contains functions to retrieve GitHub workflow artifacts.
- * 
+ *
  * The custom interfaces allow `@actions/artifact` to be mocked in the unit tests.
- * 
+ *
  * @module
  */
 
@@ -18,7 +24,7 @@ export type DownloadOptions = artifact.DownloadOptions;
 /**
  * An interface for providing an {@link ArtifactClient | artifact client},
  * which can be used to download a GitHub artifact.
- * 
+ *
  * Normally the artifact client is provided by `@actions/artifact`,
  * but a different artifact client provider can be used for unit testing.
  */

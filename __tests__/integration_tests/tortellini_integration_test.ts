@@ -1,11 +1,17 @@
+/*
+This program has been developed by students from the bachelor Computer Science at
+Utrecht University within the Software Project course.
+© Copyright Utrecht University (Department of Information and Computing Sciences)
+ */
+
 import * as tort from "../../src/resources/tortellini";
-import * as art from "../../src/resources/helperfunctions/artifact"
+import * as art from "../../src/resources/helperfunctions/artifact";
 import { expect, test } from "@jest/globals";
 
 import YAML from "yaml";
 import * as input from "../../src/resources/tortellini_input";
 
-test("Data is filtered and correctly used in runModule", correctData)
+test("Data is filtered and correctly used in runModule", correctData);
 
 jest.mock("../../src/resources/tortellini_input", () => {
     const actualModule = jest.requireActual(
@@ -23,7 +29,7 @@ jest.mock("../../src/resources/tortellini_input", () => {
     };
 });
 
-async function correctData(): Promise<void>{
+async function correctData(): Promise<void> {
     const TortResultDirect = await tort.runModule("correct.yml");
     const TortResultWithoutFiltering = await runModuleWithoutFiltering();
 
@@ -31,7 +37,7 @@ async function correctData(): Promise<void>{
     return expect(TortResultDirect).toMatchObject(await TortResulWithFiltering);
 }
 
- async function runModuleWithoutFiltering(
+async function runModuleWithoutFiltering(
     fileName: string = "correct.yml"
 ): Promise<any> {
     const downloadResponse = await art.getArtifactData(

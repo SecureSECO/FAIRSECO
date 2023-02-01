@@ -1,3 +1,9 @@
+/*
+This program has been developed by students from the bachelor Computer Science at
+Utrecht University within the Software Project course.
+© Copyright Utrecht University (Department of Information and Computing Sciences)
+ */
+
 import * as tort from "../../src/resources/tortellini";
 import * as input from "../../src/resources/tortellini_input";
 import * as art from "../../src/resources/helperfunctions/artifact";
@@ -159,8 +165,6 @@ describe("Test runModule", () => {
     });
 
     test("Empty File", () => {
-        return expect(
-            tort.runModule("empty-file.yml")
-        ).rejects.toThrow();
+        return expect(tort.runModule("empty-file.yml")).rejects.toThrow();
     });
 });

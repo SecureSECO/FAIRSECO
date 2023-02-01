@@ -1,6 +1,12 @@
-/** 
+/*
+This program has been developed by students from the bachelor Computer Science at
+Utrecht University within the Software Project course.
+© Copyright Utrecht University (Department of Information and Computing Sciences)
+ */
+
+/**
  * This module contains a function that selects reference papers for a paper title.
- * 
+ *
  * @module
  */
 
@@ -10,11 +16,11 @@ import { MetaDataPaper } from "./paper";
  * Selects papers that are likely a reference paper of the main paper given by its title.
  * The number of contributors should be at least the average of contributors of all papers given.
  * Probability is defined as the number of words that occur in both titles divided by the total number of words in the title of the main paper.
- * 
+ *
  * @param title The title of the main paper.
  * @param uniquePapers A map containing the ID and metadata of the papers.
  * @param probabilityThreshold The minimum probability a paper need to be counted as a reference paper.
- * 
+ *
  * @returns An array containing the keys of papers that are likely a reference paper.
  */
 export function selectReferencePapers(
@@ -56,9 +62,14 @@ export function selectReferencePapers(
     // Papers that meet the probability threshold are added to the output.
     uniquePapers.forEach((paper, id) => {
         // Ignore papers that have less than the mean value of contributors or citations
-        if (paper.contributors >= meanContributors && paper.citationCount >= meanCitations) {
+        if (
+            paper.contributors >= meanContributors &&
+            paper.citationCount >= meanCitations
+        ) {
             // Get number of occurences of unique words in paper title
-            const paperWordOccurences: Map<string, number> = wordOccurences(paper.title);
+            const paperWordOccurences: Map<string, number> = wordOccurences(
+                paper.title
+            );
 
             // Calculate probability of being a reference paper
             let similarWordsCount = 0;
@@ -91,8 +102,8 @@ function wordOccurences(title: string): Map<string, number> {
             const count = wordCount.get(word) as number;
             wordCount.set(word, count + 1);
         } else {
-            wordCount.set(word, 1)
-        };
+            wordCount.set(word, 1);
+        }
     }
 
     return wordCount;

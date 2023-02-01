@@ -1,3 +1,9 @@
+/*
+This program has been developed by students from the bachelor Computer Science at
+Utrecht University within the Software Project course.
+© Copyright Utrecht University (Department of Information and Computing Sciences)
+ */
+
 // Test if our openAlexCitations and semanticScholarCitations function work correctly:
 // so if the conversion to an array of journals works correctly
 // We do this with a JSON schema that determines how the JSON output of the citations should look like

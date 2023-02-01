@@ -1,6 +1,12 @@
+/*
+This program has been developed by students from the bachelor Computer Science at
+Utrecht University within the Software Project course.
+© Copyright Utrecht University (Department of Information and Computing Sciences)
+ */
+
 /**
  * This module contains functions for logging program output.
- * 
+ *
  * @module
  */
 
@@ -42,26 +48,31 @@ export function LogMessage(content: string, level: ErrorLevel): void {
 
 /**
  * Creates the log file.
- * 
+ *
  * Path: `.FAIRSECO/program.log`
  */
 export function createLogFile(): void {
     // Open the log file
     const fd: number = fs.openSync("./.FAIRSECO/program.log", "w+");
-    
+
     // Write to the log file
     try {
-        fs.writeSync(fd, formatMessage("FAIRSECO Log initialized", ErrorLevel.info));
+        fs.writeSync(
+            fd,
+            formatMessage("FAIRSECO Log initialized", ErrorLevel.info)
+        );
         fs.writeSync(fd, "\n------------------------------\n");
         fs.closeSync(fd);
     } catch {
-        console.error(formatMessage("Failed to create log file", ErrorLevel.err));
+        console.error(
+            formatMessage("Failed to create log file", ErrorLevel.err)
+        );
     }
 }
 
 /**
  * Formats a message for logging.
- * 
+ *
  * @param content The message.
  * @param level The error level of the message.
  * @returns The formatted message.
@@ -71,7 +82,7 @@ export function formatMessage(content: string, level: ErrorLevel): string {
     const levelNames = {
         [ErrorLevel.info]: "INFO",
         [ErrorLevel.warn]: "WARN",
-        [ErrorLevel.err]: "ERR"
+        [ErrorLevel.err]: "ERR",
     };
 
     // Message formatted as date, error level tag, content and new line
