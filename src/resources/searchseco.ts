@@ -39,7 +39,7 @@ export async function runModule(ghInfo: GitHubInfo): Promise<Output> {
     // Determine which Docker image to use
     const dockerImage = useMock
         ? "jarnohendriksen/mockseco:v1"
-        : "searchseco/controller";
+        : "searchseco/controller:master";
 
     // The mock can't handle a custom entrypoint, while SearchSECO requires it
     const entrypoint = useMock
