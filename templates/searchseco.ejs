@@ -6,8 +6,9 @@ Utrecht University within the Software Project course.
 
 <%
     if (searchseco === undefined) {
-        throw new Error("Missing SearchSECO data");
+        throw new Error("Missing SearchSECO data2 ");
     }
+
 
     // Sort the methods by amount of matches
     searchseco.methods = searchseco.methods.sort((a, b) => { return b.matches.length - a.matches.length; });
@@ -103,7 +104,7 @@ Utrecht University within the Software Project course.
         word-break: break-word;
         padding: 16px;
     }
-    <%# Hide non-vulnerable things (methods, projects, the matches) when showing vulnerabilities only is enabled %>
+    
     .SearchSECO--HideNonVulnerable .SearchSECO--NotVulnerable {
         display: none;
     }
@@ -185,7 +186,7 @@ Utrecht University within the Software Project course.
         color: #b8d7cc;
         cursor: pointer;
     }
-    <%# Vulnerability warnings %>
+  
     .SearchSECO__ListObject__Header span {
         margin-right: 1.5vw;
         color: #fcec69;
@@ -256,13 +257,13 @@ Utrecht University within the Software Project course.
     }
 
     function searchSecoClickArrow(event) {
-        <%# Switch arrow right/down %>
+      
         event.target.classList.toggle("fa-angle-right");
         event.target.classList.toggle("fa-angle-down");
 
         let elem = event.target;
         while (elem = elem.parentNode) {
-            <%# Find the arrow owner object, then the arrow target in its children and toggle its visibility %>
+         
             if (elem.classList?.contains("SearchSECO__ArrowOwner")) {
                 let target = elem.querySelector(".SearchSECO__ArrowTarget");
                 target.hidden = !target.hidden;
