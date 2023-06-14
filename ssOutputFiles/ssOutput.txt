@@ -1,3 +1,19 @@
-[command]"C:\Program Files\Docker\Docker\resources\bin\docker.exe" run --rm --name controller-container ./controller/build/SearchSECO -e "github_token=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" -e "worker_name=test" searchseco/controller:master check https//gitdocker: invalid reference format.
-See 'ddocker: invalid reference format: repository name must be lowercase.
-See 'docker run --help'.
+[command]"C:\Program Files\Docker\Docker\resources\bin\docker.exe" run --rm --name controller-container -e "github_token=" -e "worker_name=test" searchseco/controller:master https://github.com/deekshitha-kumbla/iris-classification
+docker: Error response from daemon: Conflict. The container name "/controller-container" is a2023-06-14 14:29:51.259 (   0.014s) [controller      ]           commands.cpp:516   INFO| Starting a worker node with 4 cpu cores
+2023-06-14 14:29:51.366 (   0.121s) [controller      ]         networking.cpp:205   INFO| science-vs317.science.uu.nl?8003
+2023-06-14 14:29:51.366 (   0.121s) [controller      ]         networking.cpp:205   INFO| 
+2023-06-14 14:29:56.781 (   5.536s) [controller      ]           commands.cpp:546   INFO| New job: Download and parse https://github.com/Meowv/Blog
+2023-06-14 14:30:20.082 (  28.827s) [controller      ]           commands.cpp:178   INFO| 0 vulnerabilities found in project.
+2023-06-14 14:30:20.124 (  28.868s) [controller      ]           commands.cpp:227   INFO| Project has 3 tags
+2023-06-14 14:30:20.125 (  28.869s) [controller      ]           commands.cpp:312   INFO| Processing tag: v4.0.0(1/3)
+2023-06-14 14:30:20.287 (  29.031s) [parser          ]             Parser.cpp:27    INFO| Starting Parser
+2023-06-14 14:30:20.289 (  29.034s) [parser          ]             Parser.cpp:32    INFO| Parsing 250 files
+2023-06-14 14:30:20.698 (  29.442s) [parser          ]          XmlParser.cpp:175   INFO| Parsing: 10%.
+2023-06-14 14:30:20.861 (  29.605s) [parser          ]          XmlParser.cpp:175   INFO| Parsing: 20%.
+2023-06-14 14:30:20.959 (  29.703s) [parser          ]          XmlParser.cpp:175   INFO| Parsing: 30%.
+2023-06-14 14:30:21.063 (  29.808s) [parser          ]          XmlParser.cpp:175   INFO| Parsing: 40%.
+2023-06-14 14:30:21.183 (  29.928s) [parser          ]          XmlParser.cpp:175   INFO| Parsing: 50%.
+2023-06-14 14:30:21.304 (  30.049s) [parser          ]          XmlParser.cpp:175   INFO| Parsing: 60%.
+2023-06-14 14:30:21.447 (  30.191s) [parser          ]          XmlParser.cpp:175   INFO| Parsing: 70%.
+2023-06-14 14:30:21.513 (  30.257s) [parser          ]          XmlParser.cpp:175   INFO| Parsing: 80%.
+2023-06-14 14:30:21.552 (  30.297s) [parser          ]          XmlParser.cpp:175   INFO| Parsing: 90%.

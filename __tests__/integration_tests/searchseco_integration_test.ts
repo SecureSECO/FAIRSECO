@@ -28,7 +28,7 @@ const ghInfo: GitHubInfo = {
     GithubToken: "",
     Owner: "",
    // FullURL: "https://github.com/SecureSECO/FAIRSECO",
-   FullURL: "https//github.com/Deekshitha-kumbla/kernel_tuner",
+   FullURL: "https://github.com/deekshitha-kumbla/iris-classification",
     Stars: 0,
     Forks: 0,
     Watched: 0,
@@ -66,15 +66,16 @@ async function localrunModule(ghInfo: GitHubInfo): Promise<void> {
         : "searchseco/controller:master";*/
         const dockerImage = 
     //   "searchseco/controller";
- "searchseco/controller:master";
+ "searchseco/controller\:master";
 
     // The mock can't handle a custom entrypoint, while SearchSECO requires it
   /*  const entrypoint = useMock
         ? ""
         : '--entrypoint="./controller/build/SearchSECO"'; */
-        const entrypoint ="./controller/build/SearchSECO";
+        const entrypoint ="--entrypoint =./controller/build/searchseco";
     // The token will be retrieved from the git data collection object once that is merged
-    const ghToken = "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";
+   // const ghToken = "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";
+   const ghToken =  "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";
 
     LogMessage("SearchSECO started.", ErrorLevel.info);
     if (useMock)
@@ -86,16 +87,16 @@ async function localrunModule(ghInfo: GitHubInfo): Promise<void> {
     const cmd = "docker";
     const mockArgs = [
         "run",
-        "--rm",
+        "--rm",  
         "--name",
         //"controller-container",
-        "searchseco-container",
+       // "searchseco-container",
         "-e",
         '"github_token=' + ghToken + '"',
         "-e",
         '"worker_name=test"',
         dockerImage,
-        "check",
+     //   "check",
         gitrepo,
     ];
     const realArgs = [
@@ -103,14 +104,14 @@ async function localrunModule(ghInfo: GitHubInfo): Promise<void> {
         "--rm",
         "--name",
         "controller-container",
-      // "searchseco-container",
-        entrypoint,
+    //   "searchseco-container",
+   //    entrypoint,
        "-e",
         '"github_token=' + ghToken + '"',
         "-e",
         '"worker_name=test"',
         dockerImage,
-        "check",
+       // "check",
         gitrepo,
     ];
 
