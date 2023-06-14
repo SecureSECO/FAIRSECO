@@ -55,6 +55,7 @@ describe("Test getHashIndices", () => {
         const result = ss.getHashIndices(input);
 
         expect(result).toEqual([1, 5, 9, 11, 13]);
+        console.log(result);
     });
 
     test("Multiple Lines of Other Stuff", () => {
@@ -68,6 +69,7 @@ describe("Test getHashIndices", () => {
         const result = ss.getHashIndices(input);
 
         expect(result).toEqual([5]);
+        console.log(result)
     });
 
     test("Empty input", () => {
@@ -90,10 +92,11 @@ describe("Test getMethodInfo", () => {
         expect(result.file).toBe("SearchSECO_test.ts");
         expect(result.line).toBe(56);
         expect(result.authors).toEqual(["Jarno Hendriksen"]);
+        console.log(result);
     });
 
     test("Normal input, several Authors", () => {
-        const input = [
+        const input = [ 
             "*Method unitTest2 in file SearchSECO_test.ts line 71",
             "Authors of local function:",
             "Jarno Hendriksen",
@@ -190,6 +193,7 @@ describe("Test getMatchIndicesOfHash", () => {
         const result = ss.getMatchIndicesOfHash(input, 0, input.length);
 
         expect(result).toEqual([]);
+        console.log(result);
     });
 
     test("Empty Input", () => {
@@ -197,6 +201,7 @@ describe("Test getMatchIndicesOfHash", () => {
         const result = ss.getMatchIndicesOfHash(input, 0, input.length);
 
         expect(result).toEqual([]);
+        console.log(result);
     });
 });
 
@@ -223,13 +228,13 @@ describe("Test getMatches", () => {
             "Valia Bykova",
             "DATABASE",
             "*Method functionName1 in project projName1 in file file.ts line 33",
-            "URL: https://github.com/user/project",
+            "URL: https//github.com/Deekshitha-kumbla/kernel_tuner",//https://github.com/user/project",
             "Method marked as vulnerable with code: 123(https://www.url-of-vulnerability.com)",
             "Authors of function found in database:",
             "Tjibbe Bolhuis",
             "Rowin Schouten",
             "*Method functionName2 in project projName2 in file file.cpp line 39",
-            "URL: https://github.com/user/project",
+            "URL:https//github.com/Deekshitha-kumbla/kernel_tuner",// https://github.com/user/project",
             "Method marked as vulnerable with code: 123(https://www.url-of-vulnerability.com)",
             "Authors of function found in database:",
             "Quinn Donkers",
@@ -242,7 +247,7 @@ describe("Test getMatches", () => {
             "Bram Lankhorst",
             "DATABASE",
             "*Method otherMethod in project projName1 in file file.cpp line 88",
-            "URL: https://github.com/user/project",
+            "URL: https//github.com/Deekshitha-kumbla/kernel_tuner",//https://github.com/user/project",
             "Method marked as vulnerable with code: 123(https://www.url-of-vulnerability.com)",
             "Authors of function found in database:",
             "Bart Hageman",
@@ -475,13 +480,13 @@ describe("Test parseInput", () => {
             "Valia Bykova",
             "DATABASE",
             "*Method functionName1 in project projName1 in file file.ts line 33",
-            "URL: https://github.com/user/project",
+            "URL: https://github.com/Deekshitha-kumbla/kernel_tuner", //https://github.com/user/project",
             "Method marked as vulnerable with code: 123(https://www.url-of-vulnerability.com)",
             "Authors of function found in database:",
             "Tjibbe Bolhuis",
             "Rowin Schouten",
             "*Method functionName2 in project projName2 in file file.cpp line 39",
-            "URL: https://github.com/user/project",
+            "URL:  https://github.com/Deekshitha-kumbla/kernel_tuner",//https://github.com/user/project",
             "Method marked as vulnerable with code: 123(https://www.url-of-vulnerability.com)",
             "Authors of function found in database:",
             "Quinn Donkers",
@@ -494,7 +499,7 @@ describe("Test parseInput", () => {
             "Bram Lankhorst",
             "DATABASE",
             "*Method otherMethod in project projName1 in file file.cpp line 88",
-            "URL: https://github.com/user/project",
+            "URL:  https://github.com/Deekshitha-kumbla/kernel_tuner",//https://github.com/user/project",
             "Method marked as vulnerable with code: 123(https://www.url-of-vulnerability.com)",
             "Authors of function found in database:",
             "Bart Hageman",
@@ -580,6 +585,8 @@ describe("Test parseInput", () => {
         const result = ss.parseOutput(input);
 
         expect(result.methods).toEqual([]);
+     
+
     });
 });
 
@@ -590,11 +597,13 @@ test("Test runModule", async () => {
         Repo: "",
         GithubToken: "",
         Owner: "",
-        FullURL: "https://github.com/QDUNI/FAIRSECO",
+        //FullURL: "https://github.com/QDUNI/FAIRSECO",
+        FullURL: "https//github.com/deekshitha-kumbla/kernel_tuner",
         Stars: 0,
         Forks: 0,
         Watched: 0,
-        Visibility: "private",
+        //Visibility: "private",
+        Visibility: "public",
         Readme: "",
         Badges: [],
         Contributors: [],

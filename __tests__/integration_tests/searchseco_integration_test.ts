@@ -27,11 +27,13 @@ const ghInfo: GitHubInfo = {
     Repo: "",
     GithubToken: "",
     Owner: "",
-    FullURL: "https://github.com/QDUNI/FAIRSECO",
+   // FullURL: "https://github.com/SecureSECO/FAIRSECO",
+   FullURL: "https//github.com/Deekshitha-kumbla/kernel_tuner",
     Stars: 0,
     Forks: 0,
     Watched: 0,
-    Visibility: "private",
+  //  Visibility: "private",
+  Visibility: "public",
     Readme: "",
     Badges: [],
     Contributors: [],
@@ -58,15 +60,19 @@ async function localrunModule(ghInfo: GitHubInfo): Promise<void> {
     const useMock = ghInfo.Visibility !== "public";
 
     // Determine which docker image to use
-    const dockerImage = useMock
+    /*const dockerImage = useMock
         ? "jarnohendriksen/mockseco:v1"
-        : "searchseco/controller";
+       // :"searchseco/controller";
+        : "searchseco/controller:master";*/
+        const dockerImage = 
+    //   "searchseco/controller";
+ "searchseco/controller:master";
 
     // The mock can't handle a custom entrypoint, while SearchSECO requires it
-    const entrypoint = useMock
+  /*  const entrypoint = useMock
         ? ""
-        : '--entrypoint="./controller/build/SearchSECO"';
-
+        : '--entrypoint="./controller/build/SearchSECO"'; */
+        const entrypoint ="./controller/build/SearchSECO";
     // The token will be retrieved from the git data collection object once that is merged
     const ghToken = "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";
 
@@ -82,6 +88,7 @@ async function localrunModule(ghInfo: GitHubInfo): Promise<void> {
         "run",
         "--rm",
         "--name",
+        //"controller-container",
         "searchseco-container",
         "-e",
         '"github_token=' + ghToken + '"',
@@ -95,9 +102,10 @@ async function localrunModule(ghInfo: GitHubInfo): Promise<void> {
         "run",
         "--rm",
         "--name",
-        "searchseco-container",
+        "controller-container",
+      // "searchseco-container",
         entrypoint,
-        "-e",
+       "-e",
         '"github_token=' + ghToken + '"',
         "-e",
         '"worker_name=test"',
@@ -106,7 +114,8 @@ async function localrunModule(ghInfo: GitHubInfo): Promise<void> {
         gitrepo,
     ];
 
-    const args = useMock ? mockArgs : realArgs;
+   // const args = useMock ? mockArgs : realArgs;
+    const args =  realArgs;
 
     // Output from the docker container
     let stdout = "";

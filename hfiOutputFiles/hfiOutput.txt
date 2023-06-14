@@ -1,6 +1,6 @@
 [command]"C:\Program Files\Docker\Docker\resources\bin\docker.exe" run --rm fairsoftware/fairtally --format json -o - https://github.com/
-fairtally progress: |                                            | 0/1
+fairtally progress: |                                            | 0/1[{"badge": "https://img.shields.io/badge/fair--software.eu-%E2%97%8B%20%20%E2%97%8B%20%20%E2%97%8B%20%20%E2%97%8B%20%20%E2%97%8B-red", "checklist": false, "citation": false, "count": 0, "license": false, "registry": false, "repository": false, "stderr": "", "stdout": "", "url": "https://github.com/"}]
 [A
-currently checking https://github.com/[{"badge": "https://img.shields.io/badge/fair--software.eu-%E2%97%8B%20%20%E2%97%8B%20%20%E2%97%8B%20%20%E2%97%8B%20%20%E2%97%8B-red", "checklist": false, "citation": false, "count": 0, "license": false, "registry": false, "repository": false, "stderr": "", "stdout": "", "url": "https://github.com/"}][Afairtally progress: |████████████████████████████████████████████| 1/1
+currently checking https://github.com/[Afairtally progress: |████████████████████████████████████████████| 1/1
 
 Completed fairtally on 1 URLs and written report to -[ACompleted fairtally on 1 URLs and written report to -
