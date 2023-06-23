@@ -43,7 +43,7 @@ export async function runModule(ghInfo: GitHubInfo): Promise<Output> {
         : "searchseco/controller:master";*/
 
         const dockerImage = 
-       "searchseco/controller\:master";
+       "searchseco/controller:master";
    // "searchseco/controller:master";
 
     // The mock can't handle a custom entrypoint, while SearchSECO requires it
@@ -75,15 +75,14 @@ export async function runModule(ghInfo: GitHubInfo): Promise<Output> {
         "run",
         "--rm",
         "--name",
-       "controller-container",
-      // "searchseco-container",
-     //  entrypoint,
+      "searchseco-container",
+      entrypoint,
       "-e",
         '"github_token=' + ghToken + '"',
         "-e",
         '"worker_name=test"',
         dockerImage,
-        //"check",
+        "check",
         gitrepo,
     ];
 
