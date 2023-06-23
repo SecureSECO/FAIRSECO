@@ -1,6 +1,6 @@
 name: "FAIRSECO-action"
 description: "GitHub Action that assesses FAIRness in software"
-author: "Utrecht University"
+author: "Utrecht University - Slinger Jansen"
 inputs:
     repository:
         required: false
