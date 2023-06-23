@@ -84,7 +84,7 @@ jobs:
               with:
                 repository: SecureSECO/FAIRSECO
                 path: FAIRSECO_Assets
-            - uses: SecureSECO/FAIRSECO@v1.0.0 # this is the main action
+            - uses: SecureSECO/FAIRSECO@v1.0.1 # this is the main action
               with:
                   myToken: ${{ secrets.GITHUB_TOKEN }}
             - uses: actions/upload-artifact@v3
