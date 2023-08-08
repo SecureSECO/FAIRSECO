@@ -51,7 +51,9 @@ export async function runModule(ghInfo: GitHubInfo): Promise<Output> {
         ? ""
         : '--entrypoint="./controller/build/searchseco"';
 */
-        const entrypoint = "./controller/build/searchseco";
+       // const entrypoint = "./controller/build/searchseco";
+     const entrypoint ="--entrypoint="+'"'+"./controller/build/searchseco"+'"';
+
 
     // The token will be retrieved from the git data collection object once that is merged
     const ghToken = ghInfo.GithubToken;
@@ -71,7 +73,7 @@ export async function runModule(ghInfo: GitHubInfo): Promise<Output> {
         "check",
         gitrepo,
     ];
-    const realArgs = [
+/*    const realArgs = [
         "run",
         "--rm",
         "--name",
@@ -84,8 +86,22 @@ export async function runModule(ghInfo: GitHubInfo): Promise<Output> {
         dockerImage,
         "check",
         gitrepo,
+    ];*/
+const realArgs = [
+        "run",
+     "--rm",
+        "--name",
+        "controller-container",
+    //   "searchseco-container",
+      entrypoint,
+       "-e",
+      ghToken,
+        "-e",
+        '"worker_name=worker_1"',
+        dockerImage,
+       "check",
+        gitrepo,
     ];
-
     const args =  realArgs;
 
     // Output from the Docker container
