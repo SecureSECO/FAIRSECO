@@ -21456,14 +21456,15 @@ function runModule(ghInfo) {
             ? "jarnohendriksen/mockseco:v1"
            // :"searchseco/controller";
             : "searchseco/controller:master";*/
-        const dockerImage = "searchseco/controller\:master";
+        const dockerImage = "searchseco/controller:master";
         // "searchseco/controller:master";
         // The mock can't handle a custom entrypoint, while SearchSECO requires it
         /*const entrypoint = useMock
             ? ""
             : '--entrypoint="./controller/build/searchseco"';
     */
-        const entrypoint = "./controller/build/searchseco";
+      //  const entrypoint = "./controller/build/searchseco";
+	     const entrypoint ="--entrypoint="+'"'+"./controller/build/searchseco"+'"';
         // The token will be retrieved from the git data collection object once that is merged
         const ghToken = ghInfo.GithubToken;
         const cmd = "docker";
@@ -21487,13 +21488,13 @@ function runModule(ghInfo) {
             "--name",
             "controller-container",
             // "searchseco-container",
-         //   entrypoint,
+           entrypoint,
             "-e",
             '"github_token=' + ghToken + '"',
             "-e",
             '"worker_name=test"',
             dockerImage,
-          //  "check",
+           "check",
             gitrepo,
         ];
         const args = realArgs;
