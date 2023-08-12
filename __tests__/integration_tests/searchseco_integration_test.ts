@@ -66,17 +66,17 @@ async function localrunModule(ghInfo: GitHubInfo): Promise<void> {
         : "searchseco/controller:master";*/
         const dockerImage = 
     //   "searchseco/controller";
- "searchseco/controller\:master";
+ "searchseco/controller:master";
 
     // The mock can't handle a custom entrypoint, while SearchSECO requires it
   /*  const entrypoint = useMock
         ? ""
         : '--entrypoint="./controller/build/SearchSECO"'; */
-        const entrypoint ="--entrypoint =./controller/build/searchseco";
+   const entrypoint ="--entrypoint="+'"'+"./controller/build/searchseco"+'"';
     // The token will be retrieved from the git data collection object once that is merged
    // const ghToken = "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";
-   const ghToken =  "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";
-
+ //  const ghToken =  "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";
+ const ghToken =   '"github_token=' + "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" + '"';
     LogMessage("SearchSECO started.", ErrorLevel.info);
     if (useMock)
         LogMessage(
@@ -105,13 +105,13 @@ async function localrunModule(ghInfo: GitHubInfo): Promise<void> {
         "--name",
         "controller-container",
     //   "searchseco-container",
-   //    entrypoint,
+       entrypoint,
        "-e",
         '"github_token=' + ghToken + '"',
         "-e",
         '"worker_name=test"',
         dockerImage,
-       // "check",
+        "check",
         gitrepo,
     ];
 
