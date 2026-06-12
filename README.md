@@ -143,7 +143,8 @@ defined in `docs_src` into a set of html files, and put them in the `docs` folde
 We use Jest for our unit and integration tests. You can run all tests by simply running `npm run test`. To run a single test file, you can run `npm test -- filename.ts`. Because the files in the `__tests__` folder have no access to GitHub tokens, some modules will fail (like `@action/artifact` or `octokit`). To make sure the unit tests work, we mock these modules.
 
 <br>
-# Publication
+
+Publication
 Deekshitha, S. Farshidi, J. Maassen, R. Bakhshi, R. Van Nieuwpoort and S. Jansen, "FAIRSECO: An Extensible Framework for Impact Measurement of Research Software," 2023 IEEE 19th International Conference on e-Science (e-Science), Limassol, Cyprus, 2023, pp. 1-10, doi: 10.1109/e-Science58273.2023.10254664. 
 
 
